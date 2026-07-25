@@ -1,0 +1,13 @@
+id,owner,category,qty,date,note
+A31,Ana Obrien,boards,0,2026-03-18,priority
+A85,Carla Patel,boards,0,2026-07-16,priority
+X12,Dev Reyes,boards,0,2026-08-28,priority
+A89,Gina Patel,boards,0,2026-06-21,ok
+X70,Bob Patel,cables,0,2026-11-25,"check, later"
+X26,Erin Patel,cables,0,2026-03-05,
+A88,Bob Novak,sensors,0,2026-04-02,ok
+X78,Dev Kim,tools,234,2026-01-03,ok
+A21,Ana Kim,tools,0,2026-12-02,"check, later"
+X53,Ana Obrien,tools,0,2026-12-15,"check, later"
+X68,Gina Stone,tools,0,2026-04-06,priority
+X16,Hugo Obrien,tools,0,2026-07-06,"check, later"

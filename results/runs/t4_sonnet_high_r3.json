@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "high",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": {
+  "text": "Meanwhile database caching quietly reshapes how modern applications perform under heavy load, storing frequently accessed results in fast memory so that repeated queries avoid expensive trips to disk, letting systems answer requests in milliseconds rather than seconds during peak traffic.\n\nHowever an effective cache strategy must balance freshness against speed, since stale cache entries can silently corrupt results while overly aggressive invalidation defeats the purpose of caching altogether; engineers choose eviction policies, tune cache sizes carefully, and monitor hit ratios so that the cache genuinely reduces load instead of adding hidden complexity to fragile systems.\n\nAlong a busy path, staff should try quick lookups first, using small hot blocks to avoid slow disk swaps and pricy round trips; fast RAM stays a top priority, so many admins favor tight hash maps, strict quotas, and swift auto-scaling for growing traffic loads.\n\nFinally teams that track cache hit rates, tune expirations wisely, and document tradeoffs clearly; over time, thoughtful caching becomes done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 19253,
+  "cache_read": 0,
+  "output": 12870
+ },
+ "duration_s": 109.8,
+ "cost_usd": 0.2653,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

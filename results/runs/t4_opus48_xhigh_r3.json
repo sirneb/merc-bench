@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "xhigh",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": {
+  "text": "Meanwhile database caching stores frequently accessed data in a fast cache layer, reducing load on the primary store. A cache hit returns results quickly, while a cache miss forces a slower query; this tradeoff shapes overall system design decisions daily.\n\nHowever caching introduces the hard problem of invalidation, because stale entries can mislead users. When underlying rows change, the cache must expire or refresh; otherwise readers see outdated values. Engineers pick strategies like write-through, write-back, or time-based expiry; each balances freshness against speed, and each keeps the cache aligned with the real source of truth.\n\nAlong similar paths, many firms apply this trick to obtain rapid data lookups. Storing hot rows within RAM avoids costly disk trips, and a small ratio of RAM can absorb a majority of traffic, cutting lag and raising throughput for a myriad of apps significantly.\n\nFinally thoughtful teams monitor hit rates, tune expiry windows, and measure gains, ensuring their fast layer keeps real work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15433,
+  "cache_read": 0,
+  "output": 5
+ },
+ "duration_s": 130.8,
+ "cost_usd": 0.0966,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": ""
+}

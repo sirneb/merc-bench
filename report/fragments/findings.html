@@ -1,0 +1,25 @@
+<p class="lede">Editorial synthesis of the graded data (charts and map above regenerate automatically; this prose is curated — see §8 for the correction history).</p>
+
+<h3>F1 · Most tasks saturate — then the cheapest config strictly wins</h3>
+<p>Eight of twelve tasks (math, code trace above Haiku, 5-attribute puzzles, CSV normalization, knowledge recall, regex writing, classic-bug review, state simulation — and, after the grading correction, the constraint gauntlet) are solved by essentially every configuration. Same-score price spreads run 5–30×. For transforms, extraction, lookups, format work and classic review: buy the cheapest configuration that has ever passed the task for you.</p>
+
+<h3>F2 · The walls are precision walls, and they set each tier's effort floor</h3>
+<p>Three tasks separate hard: the ledger audit (exact aggregation over 1,400 rows), the minimal-clue logic puzzles, and the subtle semantic bugs. They define effort floors, not ceilings: Sonnet crosses the ledger only at xhigh — via a 256,000-token, $4.60, 29-minute grind on that one answer — while Opus 5 crosses at medium ($1.10, 4 min) and Fable at low. Haiku never crosses. Walls track frontier tier, not generation (Sonnet 5 shares Opus 5's generation and needs three more effort steps): what tier buys is a cheap, fast floor.</p>
+
+<h3>F3 · "Big model, low effort" is the value pattern — with a variance tax</h3>
+<p>Fable@low swept everything in its sample, fastest overall. Opus 5@low crossed both knowledge walls at half Fable's price but dropped ~1 point per 10-task sweep in an unpredictable place (n=3); one effort step to medium bought back a perfect, replicated sweep at ≈$2.50/8 min — the cheapest perfection in the dataset.</p>
+
+<h3>F4 · Effort climbs to the floor, then only burns</h3>
+<p>Above each tier's floor, no added effort improved any score in this dataset. Above-floor sweeps cost 1.2–2.6× their tier's floor for identical results. Max effort never won once, and destroyed value twice: Sonnet@max spent 512k tokens/$8.44/57 min on the ledger before exceeding the model's own 128k-per-response output ceiling (that cell cannot complete at any setting), and Opus 5@max regressed the constraint gauntlet in one of two samples. Escalate exactly one step when a configuration fails; never buy max.</p>
+
+<h3>F5 · Reliability at the top is model-specific</h3>
+<p>On the six-puzzle set, mid-effort Fable failed the same puzzle by the same two cells in 2 of 4 attempts (a last-mile verification skip — it also spent the fewest top-tier tokens there); Sonnet@low, Opus 4.8@high and Opus 5 were perfect on every attempt (Opus 5: 8 for 8). Don't assume the priciest model at its default is the safest; push Fable to xhigh for quick verification-heavy logic, or use the tiers that measured stable.</p>
+
+<h3>F6 · Cheap per token ≠ cheap per task ≠ fast</h3>
+<p>At its capability edge Haiku grinds long and still fails: 6.5× the cost per solved puzzle of Sonnet@low, and the longest wall-clock in several tasks despite the lowest sticker price. Route to Haiku only inside the saturated zone.</p>
+
+<h3>F7 · Token volume is the bill; walls tax the smallest capable model hardest</h3>
+<p>The ledger's effort ladder on Sonnet is the definitive verbosity curve: 13.7k → 58.6k → 186.8k → 256k → 512k output tokens as effort rises, with exactly one score improvement along the way and a ceiling-death at the end. Crossing a wall by effort on a mid tier costs more than jumping tiers ($4.60/29 min vs $1.10/4 min for the same answer). Harnesses that limit response length will convert the biggest grinds into hard failures — keep grind-prone precision work at the frontier tier's floor, or give the model tools (tool access saturates these tasks entirely).</p>
+
+<h3>F8 · Same-price generation upgrades are free quality</h3>
+<p>Opus 5 matches or beats Opus 4.8 at the same list price on every task measured, usually at a lower effort setting (subtle bugs: 5/5 at low vs 4/5 at high; ledger floor: medium vs xhigh). Take same-price upgrades immediately and re-find your floor one or two effort steps lower than before.</p>

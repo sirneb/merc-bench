@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "xhigh",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile a database cache stores frequent query results in fast memory, so the cache can serve repeat requests quickly, reducing load on the backend. Applications read from the cache first, then fall back to the database whenever a lookup misses.\n\nHowever caching introduces a hard problem: keeping stored data consistent with the source of truth. When records change, stale entries must be invalidated or refreshed; otherwise users receive outdated answers. Teams choose strategies like write-through, write-behind, and time-based expiration; each option balances freshness against raw speed, and every cache eventually confronts eviction under memory pressure.\n\nAlong similar paths, caching aids raw throughput dramatically: fast RAM plots hold hot data, so our SQL host avoids constant disk hits. Config knobs control how many rows stay put, and how quickly this stock rots out.\n\nFinally treat the cache as optimization, not a crutch; measure hit rates, tune expiry windows, and your work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15436,
+  "cache_read": 0,
+  "output": 11691
+ },
+ "duration_s": 128.2,
+ "cost_usd": 0.3888,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

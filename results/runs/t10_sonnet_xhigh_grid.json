@@ -1,0 +1,21 @@
+{
+ "task": "T10",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "xhigh",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": "**Final State**\n\n**Robots:**\n- R1: x=1, y=3, carrying=1\n- R2: x=4, y=3, carrying=0\n- R3: x=3, y=3, carrying=0\n\n**Floor boxes:**\n- (2,4): 2\n- (5,4): 1\n- (0,3): 2\n- (4,3): 2\n\n(Total boxes conserved: 8 initial = 1 carried + 7 on floor.)\n\n**Key trace notes:**\n- R1 picked 2 boxes at (1,0) (emptying it), traveled N,N,N,W to (0,3), dropped 1 (making that cell 1\u21922), then moved E to (1,3), ending with 1 box still carried.\n- R2 picked the 1 box at (3,2) (emptying it), moved to (2,4) and picked 1 more (3\u21922, carrying=2), then went W to (1,4) where three PICK commands were no-ops (already at capacity), looped back E,E,E,S to (4,3), and dropped both boxes there (0\u21922).\n- R3 moved S,W to (4,4) with 0 boxes carried the whole time, so its DROP at step 23 was a no-op; it then moved S,W again ending at (3,3), never picking or dropping anything.",
+ "usage": {
+  "input": 2,
+  "cache_write": 19547,
+  "cache_read": 0,
+  "output": 5075
+ },
+ "duration_s": 154.8,
+ "cost_usd": 0.1494,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

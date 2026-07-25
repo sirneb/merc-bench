@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "xhigh",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile engineers building modern web services rely on a cache layer to shrink latency and protect databases from repeated, expensive queries; well-tuned caches absorb bursts of traffic gracefully, letting core systems breathe while users still receive fast, consistent answers daily.\n\nHowever choosing an eviction policy matters just as much as choosing where to place the cache itself; recency-based strategies work well for typical workloads, though time-based expiration handles volatile data more gracefully. Distributed caches introduce extra headaches, since invalidation across many nodes can silently drift, causing stale reads unless teams add checksums for lasting safety.\n\nAlong a fast path, a small lookup layout can cut cost by a lot. Data stays warm; hits climb, and disk traffic drops without much cost. Loads stay light, and plans stay solid all day long.\n\nFinally once teams tune eviction rules, monitor hit ratios, and validate fallback paths, this cache rollout genuinely feels essentially done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 19258,
+  "cache_read": 0,
+  "output": 23525
+ },
+ "duration_s": 195.7,
+ "cost_usd": 0.4251,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

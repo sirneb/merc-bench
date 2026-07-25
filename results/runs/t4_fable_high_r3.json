@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "high",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": {
+  "text": "Meanwhile modern applications lean heavily on a database cache to reduce latency; cached rows sit in fast local memory, sparing the primary database from repeated reads. This simple layer often delivers dramatic speedups for read-heavy workloads under real peak traffic.\n\nHowever caches introduce hard problems that teams routinely underestimate. Stale entries can serve wrong answers, and invalidation strategies grow tangled as schemas evolve; distributed setups add another layer of pain when nodes disagree about which copy is current. A cache that returns outdated balances or inventory counts may damage trust long before anyone notices failures.\n\nAlong with sizing limits, staff must watch invalidation logic; stall bugs and cold starts can hurt applications badly. A good tactic is to log hit ratios daily, alarm on drops, and audit warming jobs so hot data stays local.\n\nFinally treat your cache as a system: measure it, test expiry paths, and document ownership until work is truly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15418,
+  "cache_read": 0,
+  "output": 5522
+ },
+ "duration_s": 58.4,
+ "cost_usd": 0.4688,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

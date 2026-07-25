@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "max",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile modern applications lean heavily on database caching to keep read latency low. A cache stores hot rows in memory, sparing the primary database repeated work; cached queries that once took many milliseconds now return quickly, and hardware budgets shrink.\n\nHowever this speed carries real complexity. Every cache must answer a hard question: what happens when the underlying data changes? Stale entries can mislead users, corrupt downstream reports, and erode trust in the platform; teams therefore pair each cached value with an expiration policy, plus explicit invalidation hooks that fire whenever writers touch related tables.\n\nAlong with its gains, caching brings risk; an app can show old data if invalidation is sloppy. Solid tuning aids trust: apply short TTLs, drop old rows quickly, and monitor hit ratios against traffic that shifts throughout a day.\n\nFinally treat your cache as a formal contract: measure hit rates, rehearse failure modes, and call the careful design done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15420,
+  "cache_read": 0,
+  "output": 10004
+ },
+ "duration_s": 106.3,
+ "cost_usd": 0.693,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

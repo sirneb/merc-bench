@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "high",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": {
+  "text": "Meanwhile, database caching stores frequent query results in fast memory; a cache layer intercepts requests before they hit disk, and returning cached data quickly reduces latency, easing load on the primary store while boosting overall throughput for users everywhere today.\n\nHowever, cache invalidation remains notoriously tricky, since stale entries can mislead applications badly; skilled developers must decide precisely when each cached record expires, choosing between write-through, write-back, or simple time-based eviction. Popular tools like Redis keep hot data resident in RAM, yet careful tuning matters, because a poorly sized store wastes memory and degrades performance.\n\nAlong with fast lookups, this approach can cut disk traffic drastically, but it brings tough downfalls. Stall risks abound if a data snapshot grows too old, so a solid plan for syncing back to origin is truly vital.\n\nFinally, thoughtful cache design balances speed against freshness; measure hit rates, tune expiry windows, and your optimization work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15430,
+  "cache_read": 0,
+  "output": 7300
+ },
+ "duration_s": 80.9,
+ "cost_usd": 0.2789,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

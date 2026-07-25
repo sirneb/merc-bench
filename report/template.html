@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MERC — Model · Effort · Reliability · Cost</title>
+<style>
+  :root {
+    --paper: #F6F7F5; --ink: #1C2126; --muted: #5A6572; --line: #D9DDDA;
+    --card: #FFFFFF; --wash: #EEF0ED;
+    --haiku: #0E8A7B; --sonnet: #2E5FA3; --opus: #6A4FA3; --fable: #C2521F;
+    --good: #0E8A7B; --warn: #B3830A; --good-bg: #0E8A7B14; --warn-bg: #B3830A1F;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#14181C; --ink:#E8EAE6; --muted:#97A1AB; --line:#2B323A;
+      --card:#1B2127; --wash:#1F262D; --haiku:#3BC0AE; --sonnet:#7AA5E8;
+      --opus:#B29BE8; --fable:#EC8A55; --good:#3BC0AE; --warn:#D9A93C;
+      --good-bg:#3BC0AE1C; --warn-bg:#D9A93C24; }
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--body);
+    font-size: 15.5px; line-height: 1.55; margin: 0; padding: 0 20px 80px; }
+  .sheet { max-width: 1080px; margin: 0 auto; }
+  header.masthead { padding: 44px 0 26px; border-bottom: 2px solid var(--ink); }
+  .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted); }
+  h1 { font-family: var(--mono); font-size: clamp(26px,4.6vw,40px); font-weight: 700;
+    letter-spacing: -.02em; line-height: 1.12; margin: 10px 0 12px; }
+  h1 .dim { color: var(--fable); }
+  .standfirst { max-width: 70ch; color: var(--muted); margin: 0 0 14px; }
+  .meta { font-family: var(--mono); font-size: 12px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  section { margin-top: 56px; }
+  h2 { font-family: var(--mono); font-size: 19px; font-weight: 700; margin: 0 0 6px;
+    display: flex; gap: 12px; align-items: baseline; }
+  h2 .no { color: var(--fable); font-size: 12px; letter-spacing: .12em; }
+  h3 { font-family: var(--mono); font-size: 14.5px; font-weight: 700; margin: 30px 0 8px; }
+  .lede { max-width: 70ch; color: var(--muted); margin: 0 0 18px; }
+  p { max-width: 70ch; }
+  a { color: var(--sonnet); }
+  code { font-family: var(--mono); font-size: .92em; background: var(--wash);
+    padding: 1px 5px; border-radius: 3px; }
+  .note { font-size: 12.5px; color: var(--muted); max-width: none; margin-top: 10px; }
+  .callout { border-left: 3px solid var(--fable); background: var(--card);
+    border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 18px 0; max-width: none; }
+  .callout p { margin: 0; max-width: 82ch; font-size: 14px; }
+  .panel { border: 1px solid var(--line); border-radius: 6px; background: var(--card);
+    padding: 16px 18px; margin: 14px 0; }
+  .panel .ctitle { font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 14px; }
+  .kpi { border: 1px solid var(--line); border-left: 3px solid var(--fable);
+    border-radius: 6px; background: var(--card); padding: 14px 16px; }
+  .kpi .big { font-family: var(--mono); font-size: 20px; font-weight: 700; }
+  .kpi .cap { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); text-align: left;
+    padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--wash); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top;
+    overflow-wrap: break-word; }
+  td.alt { white-space: normal; max-width: 24ch; font-family: var(--mono);
+    font-size: 12px; color: var(--muted); }
+  tr:last-child td { border-bottom: none; }
+  .chip { font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; display: inline-block; }
+  .verdict { font-family: var(--mono); font-size: 11px; font-weight: 700;
+    padding: 1px 7px; border-radius: 4px; display: inline-block; line-height: 1.4; }
+  .verdict.yes { color: var(--good); background: var(--good-bg); }
+  .verdict.no { color: var(--warn); background: var(--warn-bg); }
+  .verdict.unk { color: var(--muted); background: var(--wash); }
+  .heatwrap { overflow-x: auto; }
+  .heat { display: grid;
+    grid-template-columns: 150px repeat(12, minmax(48px,1fr)) 62px 50px;
+    gap: 3px; min-width: 1000px; }
+  .heat .hh { font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+    text-transform: uppercase; padding: 6px 2px; text-align: center; }
+  .heat .rl { font-family: var(--mono); font-size: 12px; padding: 7px 8px 7px 0;
+    white-space: nowrap; }
+  .heat .rl.grp { padding-top: 14px; font-weight: 700; font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase; grid-column: 1 / -1;
+    border-bottom: 1px solid var(--line); }
+  .heat .cell { border-radius: 4px; text-align: center; font-family: var(--mono);
+    font-size: 11.5px; font-weight: 650; padding: 7px 2px;
+    background: var(--good-bg); color: var(--good); }
+  .heat .cell.miss { background: var(--warn-bg); color: var(--warn); }
+  .heat .cell.bad { background: var(--warn-bg); color: var(--warn);
+    outline: 2px solid var(--warn); outline-offset: -2px; }
+  .heat .cell.na { background: var(--wash); color: var(--muted); font-weight: 400; }
+  .heat .cell.stat { background: var(--wash); color: var(--muted); font-weight: 600; }
+  .heat .cell.stat.win { color: var(--ink); font-weight: 700; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px;
+    color: var(--muted); margin-top: 10px; font-family: var(--mono); }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+    vertical-align: -1px; margin-right: 6px; }
+  .scatter svg { width: 100%; height: auto; display: block; }
+  .scatter text { font-family: var(--mono); font-size: 11px; fill: var(--ink); }
+  .scatter .axis { fill: var(--muted); font-size: 11px; }
+  .scatter .grid { stroke: var(--line); }
+  .scatter .pt-label { font-weight: 700; font-size: 10px; }
+  .scatter .sub { fill: var(--muted); font-size: 9px; }
+  .cards2 { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    gap: 14px; }
+  .tcard { border: 1px solid var(--line); border-radius: 6px; background: var(--card);
+    padding: 14px 16px; }
+  .tcard .tname { font-family: var(--mono); font-weight: 700; font-size: 13.5px; }
+  .tcard p { font-size: 12.8px; margin: 8px 0 0; max-width: none; }
+  .tcard p b { font-family: var(--mono); font-size: 11px; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 2px; }
+  .footer { margin-top: 60px; padding-top: 16px; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="masthead">
+    <div class="eyebrow">MERC · findings report · measured {{DATE}}</div>
+    <h1>Model <span class="dim">×</span> Effort<br>Reliability &amp; Cost, Measured</h1>
+    <p class="standfirst">Controlled experiments across Claude models at every effort
+    level that mattered — identical prompts, one variable at a time, ground truth
+    validated before any model ran, full dollar and wall-clock accounting. Every
+    number regenerates from the run records in this repository; grading is
+    recomputed from raw answers on every build.</p>
+    <div class="meta">
+      <span>{{RUN_COUNT}} GRADED RUNS · ≈${{TOTAL_COST}} INFERENCE</span>
+      <span>12 TASKS · TRACKED: SCORE · $ · TOKENS · DURATION</span>
+    </div>
+  </header>
+
+  <section id="bottomline">
+    <h2><span class="no">§1</span>The bottom line</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="big">Most tasks saturate</div>
+        <div class="cap">the majority of tasks are solved by every tier at every
+        effort — there, the cheapest configuration strictly wins.</div></div>
+      <div class="kpi"><div class="big">The perfection floor</div>
+        <div class="cap">each tier's cheapest perfect sweep of the 10 core tasks:
+        {{FLOORS}}. Tier buys a cheaper, faster floor — not exclusive capability.</div></div>
+      <div class="kpi"><div class="big">Effort ≠ accuracy</div>
+        <div class="cap">above each tier's floor, added effort bought zero accuracy
+        anywhere in this dataset — only cost, time, and occasional regressions.</div></div>
+    </div>
+    <div class="panel scatter" style="margin-top:16px">
+      <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · rings = perfect sweeps</div>
+      {{SCATTER}}
+    </div>
+  </section>
+
+  <section id="method">
+    <h2><span class="no">§2</span>How this was measured</h2>
+    {{METHOD}}
+  </section>
+
+  <section id="map">
+    <h2><span class="no">§3</span>The saturation map</h2>
+    <p class="lede">Every configuration in the dataset (models in tier order, effort
+    ascending within each) against all tasks, with per-row totals over the 10 core
+    tasks. Green = full marks; amber = dropped points; outlined = severe or failed.
+    ★ = perfect sweep; bold $ = that tier's cheapest sweep (its "perfection floor").</p>
+    <div class="panel">
+      <div class="heatwrap">
+        <div class="heat">
+          <div class="hh" style="text-align:left">config</div>
+          <div class="hh">T1<br>/16</div><div class="hh">T2<br>/8</div>
+          <div class="hh">T3<br>/6</div><div class="hh">T4<br>/10</div>
+          <div class="hh">T5A<br>/3</div><div class="hh">T6<br>/13</div>
+          <div class="hh">T7<br>/20</div><div class="hh">T8<br>/8</div>
+          <div class="hh">T9<br>/7</div><div class="hh">T10<br>/7</div>
+          <div class="hh">E<br>/5</div><div class="hh">T5B<br>/6</div>
+          <div class="hh">core $</div><div class="hh">time</div>
+          {{MAP}}
+        </div>
+      </div>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--good-bg);outline:1px solid var(--good)"></span>full marks</span>
+        <span><span class="sw" style="background:var(--warn-bg);outline:1px solid var(--warn)"></span>dropped points</span>
+        <span><span class="sw" style="background:var(--warn-bg);outline:2px solid var(--warn)"></span>failed / did not complete</span>
+        <span><span class="sw" style="background:var(--wash)"></span>not run</span>
+      </div>
+      <p class="note">Cells show min–max across samples where n&gt;1. ≈ marks totals
+      containing estimated cost cells (see docs/methodology.md). E and T5B are
+      supplementary columns and are excluded from the core totals.</p>
+    </div>
+  </section>
+
+  <section id="findings">
+    <h2><span class="no">§4</span>Findings</h2>
+    {{FINDINGS}}
+  </section>
+
+  <section id="tasks">
+    <h2><span class="no">§5</span>The tasks</h2>
+    <p class="lede">One card per task: design, rationale, and verdict. Full prompts,
+    schemas and self-contained graders live in <code>tasks/</code>.</p>
+    <div class="cards2">
+      {{CARDS}}
+    </div>
+  </section>
+
+  <section id="decisions">
+    <h2><span class="no">§6</span>Decision charts</h2>
+    {{DECISIONS}}
+  </section>
+
+  <section id="scoreboard">
+    <h2><span class="no">§7</span>External-claims scoreboard</h2>
+    {{SCOREBOARD}}
+  </section>
+
+  <section id="limits">
+    <h2><span class="no">§8</span>Method corrections &amp; honest limits</h2>
+    {{LIMITS}}
+  </section>
+
+  <div class="footer">MERC · generated by report/generate.py from results/runs ·
+  add your own runs and rebuild: see docs/adding-a-model.md</div>
+</div>
+</body>
+</html>

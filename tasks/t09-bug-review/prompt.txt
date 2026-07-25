@@ -1,0 +1,105 @@
+IMPORTANT: Review by reading only — do NOT use any tools, do not run code, no Bash, no files. Pure code review.
+
+You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — subtle semantic/algorithmic deviations from the spec, not typos. Find and fix ALL of them.
+
+Rules:
+- Do not change the public API.
+- Keep fixes minimal; no new features.
+- Return: bugs = list of {function, description}; fixed_code = the COMPLETE corrected module text.
+
+<module>
+"""ratelimiter: sliding-window and token-bucket rate limiting.
+
+Spec (authoritative — behavior must match exactly):
+
+SlidingWindowLimiter(limit, window, clock)
+- Allows at most `limit` events per rolling `window` seconds, per key.
+- allow(key) -> bool: records the event and returns True if, at call
+  time, FEWER than `limit` events for that key occurred within the last
+  `window` seconds. An event exactly `window` seconds old is OUTSIDE the
+  window (expired): only timestamps t with clock() - t < window count.
+- If the call is denied, the event is NOT recorded.
+- retry_after(key) -> float: seconds until the OLDEST in-window event
+  expires (i.e., when one slot frees up): (oldest_ts + window) - clock().
+  Returns 0.0 if the key is currently under the limit.
+
+TokenBucket(capacity, rate, clock)
+- A bucket holds at most `capacity` tokens (float), starts full, and
+  refills continuously at `rate` tokens/second (fractional accrual
+  counts: after 0.5s at rate 1, 0.5 tokens have accrued).
+- take(key, n=1) -> bool: refills the key's bucket based on elapsed
+  time since its last refill (clamped so the bucket never exceeds
+  `capacity`), then removes n tokens and returns True if at least n
+  tokens are available; otherwise removes nothing and returns False.
+- Each key has its OWN independent bucket, created full on first use.
+- tokens(key) -> float: current token count after refilling.
+
+All time comes from the injected `clock` (zero-arg callable, seconds).
+"""
+import time
+
+
+class SlidingWindowLimiter:
+    def __init__(self, limit, window, clock=time.monotonic):
+        if limit < 1 or window <= 0:
+            raise ValueError("bad limit/window")
+        self.limit = limit
+        self.window = window
+        self.clock = clock
+        self._events = {}
+
+    def _prune(self, key):
+        now = self.clock()
+        q = self._events.get(key, [])
+        q = [t for t in q if now - t <= self.window]
+        self._events[key] = q
+        return q
+
+    def allow(self, key):
+        q = self._prune(key)
+        if len(q) > self.limit:
+            return False
+        q.append(self.clock())
+        return True
+
+    def retry_after(self, key):
+        q = self._prune(key)
+        if len(q) < self.limit:
+            return 0.0
+        newest = max(q)
+        return (newest + self.window) - self.clock()
+
+
+class TokenBucket:
+    def __init__(self, capacity, rate, clock=time.monotonic,
+                 buckets={}):
+        if capacity <= 0 or rate <= 0:
+            raise ValueError("bad capacity/rate")
+        self.capacity = capacity
+        self.rate = rate
+        self.clock = clock
+        self._buckets = buckets  # key -> [tokens, last_refill_ts]
+
+    def _refill(self, key):
+        now = self.clock()
+        if key not in self._buckets:
+            self._buckets[key] = [float(self.capacity), now]
+            return self._buckets[key]
+        b = self._buckets[key]
+        elapsed = int(now - b[1])
+        b[0] = min(b[0], self.capacity)
+        b[0] = b[0] + elapsed * self.rate
+        b[1] = now
+        return b
+
+    def take(self, key, n=1):
+        b = self._refill(key)
+        if b[0] >= n:
+            b[0] -= n
+            return True
+        return False
+
+    def tokens(self, key):
+        return self._refill(key)[0]
+
+</module>

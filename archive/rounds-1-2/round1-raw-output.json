@@ -1,0 +1,842 @@
+{
+  "summary": "Measure quality vs output-token cost across model × effort configs on 3 gradable tasks",
+  "agentCount": 16,
+  "logs": [
+    "A:fable@low -> 2209 output tokens",
+    "A:fable@medium -> 3818 output tokens",
+    "A:fable@high -> 14546 output tokens",
+    "A:fable@max -> 11274 output tokens",
+    "A:opus@high -> 2567 output tokens",
+    "A:sonnet@high -> 5748 output tokens",
+    "A:haiku@high -> 14832 output tokens",
+    "B:haiku@high -> 16863 output tokens",
+    "B:sonnet@high -> 5399 output tokens",
+    "B:opus@high -> 3652 output tokens",
+    "B:fable@medium -> 4076 output tokens",
+    "B:fable@high -> 6113 output tokens",
+    "C:haiku@low -> 1641 output tokens",
+    "C:haiku@high -> 964 output tokens",
+    "C:fable@low -> 573 output tokens",
+    "C:fable@max -> 1659 output tokens"
+  ],
+  "result": [
+    {
+      "task": "A",
+      "model": "fable",
+      "effort": "low",
+      "tokens": 2209,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "Divides by len(xs) without handling empty input; spec requires returning 0.0 for empty input instead of raising ZeroDivisionError."
+          },
+          {
+            "function": "median",
+            "description": "For even length averages ys[mid] and ys[mid+1]; the two middle values are ys[mid-1] and ys[mid]."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Uses population divisor n and no guard; spec requires divisor n-1 and returning 0.0 when fewer than 2 values."
+          },
+          {
+            "function": "normalize",
+            "description": "Divides by hi instead of (hi - lo), and does not return 0.5s when all values are equal (would divide by zero or give wrong scaling)."
+          },
+          {
+            "function": "rolling_max",
+            "description": "Window slice starts at i-w (window of w+1 elements); spec requires start at i-w+1 for a window of size w."
+          },
+          {
+            "function": "top_k",
+            "description": "Returns the k smallest values in ascending order; spec requires the k largest in descending order."
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Does not sort intervals by start before merging, so unordered input is merged incorrectly."
+          },
+          {
+            "function": "ewma",
+            "description": "Recurrence uses alpha*x + (1-alpha)*x (i.e., just x) instead of alpha*x + (1-alpha)*s using the previous smoothed value."
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    n = len(xs)\n    if n < 2:\n        return 0.0\n    m = sum(xs) / n\n    return sum((x - m) ** 2 for x in xs) / (n - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if hi == lo:\n        return [0.5] * len(xs)\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    ivs = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(ivs[0])]\n    for start, end in ivs[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "A",
+      "model": "fable",
+      "effort": "medium",
+      "tokens": 3818,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "Empty input raised ZeroDivisionError instead of returning 0.0 as the spec requires."
+          },
+          {
+            "function": "median",
+            "description": "For even-length input it averaged ys[mid] and ys[mid+1] instead of the two middle values ys[mid-1] and ys[mid] (e.g. median([1,2,3,4]) returned 3.5 instead of 2.5, and crashed with IndexError for length 2)."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Used divisor n (population variance) instead of n-1 (unbiased sample variance), and did not return 0.0 for fewer than 2 values (crashed on empty input, returned 0.0 only incidentally for n=1 while still dividing by n)."
+          },
+          {
+            "function": "normalize",
+            "description": "Scaled with (x - lo) / hi instead of (x - lo) / (hi - lo), and lacked the all-equal case: when all values are equal it must return a list of 0.5 (the buggy version divided by hi, giving wrong results or ZeroDivisionError when hi == 0)."
+          },
+          {
+            "function": "rolling_max",
+            "description": "Window slice started at max(0, i - w) instead of max(0, i - w + 1), making the window one element too large (size w+1 instead of w)."
+          },
+          {
+            "function": "top_k",
+            "description": "Sorted ascending and took the first k, returning the k smallest values in ascending order instead of the k largest in descending order (needs sorted(xs, reverse=True)[:k])."
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Did not sort the intervals by start before merging, so unordered input produced incorrect merges and an unsorted result; spec says input may be in any order."
+          },
+          {
+            "function": "ewma",
+            "description": "Recurrence used s = alpha * x + (1 - alpha) * x (which simply equals x) instead of s = alpha * x + (1 - alpha) * s, so no exponential smoothing occurred — the output equaled the input."
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    if len(xs) < 2:\n        return 0.0\n    m = sum(xs) / len(xs)\n    return sum((x - m) ** 2 for x in xs) / (len(xs) - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if hi == lo:\n        return [0.5] * len(xs)\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    ivs = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(ivs[0])]\n    for start, end in ivs[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "A",
+      "model": "fable",
+      "effort": "high",
+      "tokens": 14546,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "Empty input raises ZeroDivisionError instead of returning 0.0 as the spec requires."
+          },
+          {
+            "function": "median",
+            "description": "For even-length input it averages ys[mid] and ys[mid+1] (the middle and the element after it) instead of the two middle values ys[mid-1] and ys[mid]; e.g. median([1,2,3,4]) returned 3.5 instead of 2.5 (and crashes with IndexError for length 2? no — off-by-one gives wrong value, and for [1,2] it indexes ys[2], an IndexError)."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Uses population divisor n instead of the unbiased n-1, and crashes (ZeroDivisionError) on empty input instead of returning 0.0 for fewer than 2 values."
+          },
+          {
+            "function": "normalize",
+            "description": "Scales with (x - lo) / hi instead of (x - lo) / (hi - lo), and lacks the all-equal case: when all values are equal it should return a list of 0.5 but instead returned zeros or divided by zero (e.g. normalize([0,0]))."
+          },
+          {
+            "function": "rolling_max",
+            "description": "Window slice starts at max(0, i - w) instead of max(0, i - w + 1), making the window one element too large (size w+1)."
+          },
+          {
+            "function": "top_k",
+            "description": "Returns the k smallest values in ascending order (sorted(xs)[:k]) instead of the k largest in descending order."
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Does not sort the intervals by start before merging, so out-of-order input produces wrong (unmerged and unsorted) results even though the spec says input may be in any order."
+          },
+          {
+            "function": "ewma",
+            "description": "Recurrence uses alpha * x + (1 - alpha) * x (which collapses to x) instead of alpha * x + (1 - alpha) * s, so the previous smoothed value is ignored."
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    if len(xs) < 2:\n        return 0.0\n    m = sum(xs) / len(xs)\n    return sum((x - m) ** 2 for x in xs) / (len(xs) - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if hi == lo:\n        return [0.5] * len(xs)\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    ivs = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(ivs[0])]\n    for start, end in ivs[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "A",
+      "model": "fable",
+      "effort": "max",
+      "tokens": 11274,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "No empty-input guard: mean([]) raised ZeroDivisionError instead of returning 0.0 as the spec requires. Fixed by returning 0.0 when xs is empty."
+          },
+          {
+            "function": "median",
+            "description": "Even-length case averaged the wrong pair: (ys[mid] + ys[mid+1]) / 2 instead of (ys[mid-1] + ys[mid]) / 2. This returns the wrong value (e.g. median([1,2,3,4]) gave 3.5 instead of 2.5) and raises IndexError for length 2."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Used divisor n (population variance) instead of the unbiased divisor n-1 required by the spec."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Missing fewer-than-2-values guard: empty input raised ZeroDivisionError instead of returning 0.0 (and with the corrected n-1 divisor, a single value would also divide by zero). Fixed by returning 0.0 when len(xs) < 2."
+          },
+          {
+            "function": "normalize",
+            "description": "Wrong denominator: divided by hi instead of (hi - lo), so scaling was not min-max to [0, 1] (e.g. normalize([10, 20]) gave [0.0, 0.5] instead of [0.0, 1.0])."
+          },
+          {
+            "function": "normalize",
+            "description": "Missing all-values-equal case: spec requires a list of 0.5 of the same length, but the code returned all zeros (or raised ZeroDivisionError when the values are 0). Fixed by returning [0.5] * len(xs) when lo == hi."
+          },
+          {
+            "function": "rolling_max",
+            "description": "Off-by-one window: slice started at max(0, i - w) instead of max(0, i - w + 1), making the window w+1 elements wide (e.g. rolling_max([4,1,1,1], 3) gave [4,4,4,4] instead of [4,4,4,1])."
+          },
+          {
+            "function": "top_k",
+            "description": "Returned the k smallest values in ascending order (sorted(xs)[:k]) instead of the k largest in descending order. Fixed to sorted(xs, reverse=True)[:k]."
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Did not sort the intervals before merging, although the spec says input may be in any order; unordered input produced unmerged and unsorted output (e.g. [(5,6),(1,3),(2,4)] stayed as three intervals). Fixed by sorting by start before the merge pass."
+          },
+          {
+            "function": "ewma",
+            "description": "Broken recurrence: used s = alpha * x + (1 - alpha) * x (previous smoothed value never used), so the output simply equaled the input. Fixed to s = alpha * x + (1 - alpha) * s."
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    if len(xs) < 2:\n        return 0.0\n    m = sum(xs) / len(xs)\n    return sum((x - m) ** 2 for x in xs) / (len(xs) - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if lo == hi:\n        return [0.5] * len(xs)\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    ivs = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(ivs[0])]\n    for start, end in ivs[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "A",
+      "model": "opus",
+      "effort": "high",
+      "tokens": 2567,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "Divides by len(xs) unconditionally, raising ZeroDivisionError for empty input; spec requires returning 0.0 for empty input."
+          },
+          {
+            "function": "median",
+            "description": "For even-length input it averages ys[mid] and ys[mid+1] (the wrong pair); the two middle values are ys[mid-1] and ys[mid]."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Uses population variance (divides by len(xs)) instead of unbiased sample variance (divisor n-1), and lacks the guard to return 0.0 when fewer than 2 values (also would divide by zero on empty input)."
+          },
+          {
+            "function": "normalize",
+            "description": "Divides by hi instead of (hi - lo), so it is not correct min-max scaling, and it does not handle the all-equal case (which should return a list of 0.5) — causing a division-by-zero when max == min."
+          },
+          {
+            "function": "rolling_max",
+            "description": "Window start is xs[max(0, i-w):...] instead of xs[max(0, i-w+1):...], making the window width w+1 instead of w."
+          },
+          {
+            "function": "top_k",
+            "description": "Returns the k smallest values in ascending order (sorted(xs)[:k]) instead of the k largest in descending order."
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Does not sort intervals by start before merging; spec says input may be in any order, so unsorted input produces incorrect merges and unsorted output."
+          },
+          {
+            "function": "ewma",
+            "description": "Recurrence uses alpha*x + (1-alpha)*x (which simplifies to x) instead of alpha*x + (1-alpha)*s, so it never applies the exponential smoothing."
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    n = len(xs)\n    if n < 2:\n        return 0.0\n    m = sum(xs) / n\n    return sum((x - m) ** 2 for x in xs) / (n - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if hi == lo:\n        return [0.5 for _ in xs]\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    ordered = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(ordered[0])]\n    for start, end in ordered[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "A",
+      "model": "sonnet",
+      "effort": "high",
+      "tokens": 5748,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "Empty input caused ZeroDivisionError instead of spec-required 0.0 (no guard before division)."
+          },
+          {
+            "function": "median",
+            "description": "For even-length input, averaged ys[mid] and ys[mid+1] instead of the true middle pair ys[mid-1] and ys[mid], producing a wrong result (and an IndexError at the last valid mid)."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Used the biased divisor n instead of the unbiased n-1, and had no guard for fewer-than-2 values (would ZeroDivisionError on empty input instead of returning 0.0)."
+          },
+          {
+            "function": "normalize",
+            "description": "Divided by hi instead of (hi - lo), so scaling was wrong for any range not starting at 0; also missing the required equal-values case returning a list of 0.5."
+          },
+          {
+            "function": "rolling_max",
+            "description": "Window slice used i - w instead of i - w + 1, producing windows one element too wide (off-by-one)."
+          },
+          {
+            "function": "top_k",
+            "description": "Returned sorted(xs)[:k], the k smallest values in ascending order, instead of the k largest values in descending order."
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Did not sort the input intervals by start before merging, so out-of-order input produced incorrect/unmerged results and output not sorted by start."
+          },
+          {
+            "function": "ewma",
+            "description": "Recurrence used s = alpha*x + (1-alpha)*x (both terms using the current value x) instead of alpha*x + (1-alpha)*s, so it ignored the previous smoothed value entirely."
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    n = len(xs)\n    if n < 2:\n        return 0.0\n    m = sum(xs) / n\n    return sum((x - m) ** 2 for x in xs) / (n - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if hi == lo:\n        return [0.5 for _ in xs]\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    ivs_sorted = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(ivs_sorted[0])]\n    for start, end in ivs_sorted[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "A",
+      "model": "haiku",
+      "effort": "high",
+      "tokens": 14832,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "mean",
+            "description": "Should return 0.0 for empty input, but original code crashed with ZeroDivisionError when dividing sum([]) by len([])"
+          },
+          {
+            "function": "median",
+            "description": "For even-length arrays, used wrong indices: (ys[mid] + ys[mid+1])/2 instead of (ys[mid-1] + ys[mid])/2. This returned the average of the upper two middle elements instead of the actual two middle elements."
+          },
+          {
+            "function": "sample_variance",
+            "description": "Used wrong divisor (len(xs) instead of len(xs)-1) for unbiased sample variance, and didn't handle case with fewer than 2 values (should return 0.0)"
+          },
+          {
+            "function": "normalize",
+            "description": "Divided by hi instead of (hi-lo), causing incorrect scaling. Also didn't handle case where all values are equal (should return [0.5]*len(xs))"
+          },
+          {
+            "function": "rolling_max",
+            "description": "Off-by-one error: used window xs[max(0, i-w):i+1] instead of xs[max(0, i-w+1):i+1], making window one element too large"
+          },
+          {
+            "function": "top_k",
+            "description": "Returned k smallest values in ascending order instead of k largest values in descending order. Used sorted(xs)[:k] instead of sorted(xs, reverse=True)[:k]"
+          },
+          {
+            "function": "merge_intervals",
+            "description": "Didn't sort input intervals by start position first. Spec says 'Input may be in any order' but function assumed pre-sorted input"
+          },
+          {
+            "function": "ewma",
+            "description": "Bug in exponential weighting formula: computed s = alpha*x + (1-alpha)*x = x instead of s = alpha*x + (1-alpha)*s. Used current value x instead of previous state s"
+          }
+        ],
+        "fixed_code": "\"\"\"eventstats: summary statistics over numeric event streams.\n\nSpec (authoritative — behavior must match exactly):\n\n- mean(xs): arithmetic mean of xs; returns 0.0 for empty input.\n- median(xs): standard median; for even length, the average of the two\n  middle values; raises ValueError for empty input.\n- sample_variance(xs): unbiased sample variance (divisor n-1);\n  returns 0.0 when fewer than 2 values.\n- normalize(xs): min-max scaling to [0, 1]: (x - min) / (max - min).\n  If all values are equal, returns a list of 0.5 of the same length.\n  Returns [] for empty input.\n- rolling_max(xs, w): list out where out[i] = max(xs[max(0, i-w+1) : i+1]).\n  Requires w >= 1 (raises ValueError otherwise).\n- top_k(xs, k): the k largest values, in descending order.\n- merge_intervals(ivs): merges overlapping or touching [start, end]\n  intervals. Input may be in any order. Returns merged intervals sorted\n  by start.\n- ewma(xs, alpha): exponentially weighted moving average.\n  s[0] = xs[0]; s[i] = alpha * xs[i] + (1 - alpha) * s[i-1].\n  Returns [] for empty input. Requires 0 < alpha <= 1.\n- count_above(xs, t): number of values strictly greater than t.\n- argmax(xs): index of the first maximum value; raises ValueError for\n  empty input.\n\"\"\"\n\n\ndef mean(xs):\n    if not xs:\n        return 0.0\n    return sum(xs) / len(xs)\n\n\ndef median(xs):\n    if not xs:\n        raise ValueError(\"median of empty sequence\")\n    ys = sorted(xs)\n    n = len(ys)\n    mid = n // 2\n    if n % 2 == 1:\n        return ys[mid]\n    return (ys[mid - 1] + ys[mid]) / 2\n\n\ndef sample_variance(xs):\n    if len(xs) < 2:\n        return 0.0\n    m = sum(xs) / len(xs)\n    return sum((x - m) ** 2 for x in xs) / (len(xs) - 1)\n\n\ndef normalize(xs):\n    if not xs:\n        return []\n    lo = min(xs)\n    hi = max(xs)\n    if lo == hi:\n        return [0.5] * len(xs)\n    return [(x - lo) / (hi - lo) for x in xs]\n\n\ndef rolling_max(xs, w):\n    if w < 1:\n        raise ValueError(\"window must be >= 1\")\n    out = []\n    for i in range(len(xs)):\n        window = xs[max(0, i - w + 1): i + 1]\n        out.append(max(window))\n    return out\n\n\ndef top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n\n\ndef merge_intervals(ivs):\n    if not ivs:\n        return []\n    sorted_ivs = sorted(ivs, key=lambda iv: iv[0])\n    merged = [list(sorted_ivs[0])]\n    for start, end in sorted_ivs[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1] = max(last[1], end)\n        else:\n            merged.append([start, end])\n    return merged\n\n\ndef ewma(xs, alpha):\n    if not xs:\n        return []\n    if not (0 < alpha <= 1):\n        raise ValueError(\"alpha must be in (0, 1]\")\n    out = [xs[0]]\n    s = xs[0]\n    for x in xs[1:]:\n        s = alpha * x + (1 - alpha) * s\n        out.append(s)\n    return out\n\n\ndef count_above(xs, t):\n    return sum(1 for x in xs if x > t)\n\n\ndef argmax(xs):\n    if not xs:\n        raise ValueError(\"argmax of empty sequence\")\n    best = 0\n    for i in range(1, len(xs)):\n        if xs[i] > xs[best]:\n            best = i\n    return best\n"
+      }
+    },
+    {
+      "task": "B",
+      "model": "haiku",
+      "effort": "high",
+      "tokens": 16863,
+      "ok": true,
+      "res": {
+        "notes": [
+          "OrderedDict maintains LRU order with O(1) move_to_end operations; most-recent is at the end, least-recent at the beginning",
+          "Expiration is lazy: entries expire when accessed via get/__contains__/__len__ based on clock() >= insertion_time + ttl formula",
+          "Capacity eviction prioritizes removing expired entries before evicting live LRU entries; each entry counted once as either eviction or expiration, never both",
+          "Metadata (insertion_time, ttl) stored separately; ttl=None means never expire regardless of default_ttl",
+          "Statistics tracked across all operations: hits/misses on get, evictions on capacity removal, expirations on ttl removal"
+        ],
+        "code": "import time\nfrom collections import OrderedDict\n\n\nclass TTLLRUCache:\n    \"\"\"A cache combining LRU eviction with TTL-based expiration.\"\"\"\n\n    def __init__(self, capacity, default_ttl=None, clock=time.monotonic):\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        self.capacity = capacity\n        self.default_ttl = default_ttl\n        self.clock = clock\n        self.cache = OrderedDict()  # key -> value\n        self.metadata = {}  # key -> (insertion_time, ttl)\n        self.hits = 0\n        self.misses = 0\n        self.evictions = 0\n        self.expirations = 0\n\n    def _is_expired(self, key):\n        \"\"\"Check if a key has expired.\"\"\"\n        if key not in self.metadata:\n            return False\n        insertion_time, ttl = self.metadata[key]\n        if ttl is None:\n            return False\n        return self.clock() >= insertion_time + ttl\n\n    def _purge_expired(self):\n        \"\"\"Remove all expired entries.\"\"\"\n        expired_keys = []\n        for key in list(self.cache.keys()):\n            if self._is_expired(key):\n                expired_keys.append(key)\n\n        for key in expired_keys:\n            del self.cache[key]\n            del self.metadata[key]\n            self.expirations += 1\n\n    def _remove_expired_for_key(self, key):\n        \"\"\"Check and remove a specific key if expired.\"\"\"\n        if key in self.cache and self._is_expired(key):\n            del self.cache[key]\n            del self.metadata[key]\n            self.expirations += 1\n            return True\n        return False\n\n    def put(self, key, value, ttl=None):\n        \"\"\"Insert or update an entry.\"\"\"\n        effective_ttl = ttl if ttl is not None else self.default_ttl\n\n        if key in self.cache:\n            # Updating existing key: remove it first\n            del self.cache[key]\n        else:\n            # Inserting new key: check capacity\n            if len(self.cache) >= self.capacity:\n                # Purge expired entries first\n                self._purge_expired()\n\n                # If still at capacity, evict LRU\n                if len(self.cache) >= self.capacity:\n                    lru_key = next(iter(self.cache))\n                    del self.cache[lru_key]\n                    del self.metadata[lru_key]\n                    self.evictions += 1\n\n        # Insert/update the entry (always at end, making it MRU)\n        self.cache[key] = value\n        self.metadata[key] = (self.clock(), effective_ttl)\n\n    def get(self, key):\n        \"\"\"Get a value and mark as MRU.\"\"\"\n        if key not in self.cache:\n            self.misses += 1\n            raise KeyError(key)\n\n        # Check if expired\n        if self._remove_expired_for_key(key):\n            self.misses += 1\n            raise KeyError(key)\n\n        # Move to end (mark as MRU)\n        self.cache.move_to_end(key)\n\n        self.hits += 1\n        return self.cache[key]\n\n    def __contains__(self, key):\n        \"\"\"Check if key exists and is not expired.\"\"\"\n        if key not in self.cache:\n            return False\n\n        # Remove if expired (counts as expiration)\n        if self._remove_expired_for_key(key):\n            return False\n\n        return True\n\n    def __len__(self):\n        \"\"\"Return number of live (non-expired) entries.\"\"\"\n        self._purge_expired()\n        return len(self.cache)\n\n    def stats(self):\n        \"\"\"Return statistics dict.\"\"\"\n        return {\n            \"hits\": self.hits,\n            \"misses\": self.misses,\n            \"evictions\": self.evictions,\n            \"expirations\": self.expirations\n        }\n"
+      }
+    },
+    {
+      "task": "B",
+      "model": "sonnet",
+      "effort": "high",
+      "tokens": 5399,
+      "ok": true,
+      "res": {
+        "notes": [
+          "Stores each entry as [value, inserted_at, ttl] in an OrderedDict; move_to_end() implements LRU recency for both get and put (new or updating).",
+          "put() on a new key always purges all expired entries first, then evicts the LRU (oldest) entry only if still at capacity — matches spec's 'purge expired before evicting a live one'.",
+          "get()/__contains__ check expiry lazily against clock() >= inserted_at + ttl; expired entries are removed and counted once as an expiration (get also counts it as a miss per spec), never double-counted as both eviction and expiration.",
+          "__len__() purges expired entries as a side effect before returning count, per spec.",
+          "Constructor validates capacity is an int >= 1, raising ValueError otherwise; clock is injectable for deterministic testing (verified with a fake clock in ad-hoc tests)."
+        ],
+        "code": "\"\"\"TTL-LRU cache: a fixed-capacity LRU cache with optional per-entry TTL expiry.\"\"\"\n\nimport time\nfrom collections import OrderedDict\n\n\nclass TTLLRUCache:\n    \"\"\"A least-recently-used cache with optional time-to-live expiry.\n\n    capacity: max number of entries (int >= 1).\n    default_ttl: default seconds-to-live for entries (None = never expire).\n    clock: zero-arg callable returning current time in seconds.\n    \"\"\"\n\n    def __init__(self, capacity, default_ttl=None, clock=time.monotonic):\n        if not isinstance(capacity, int) or capacity < 1:\n            raise ValueError(\"capacity must be an int >= 1\")\n        self.capacity = capacity\n        self.default_ttl = default_ttl\n        self.clock = clock\n        # key -> [value, inserted_at, ttl]\n        self._data = OrderedDict()\n        self._hits = 0\n        self._misses = 0\n        self._evictions = 0\n        self._expirations = 0\n\n    def _is_expired(self, entry, now):\n        ttl = entry[2]\n        if ttl is None:\n            return False\n        return now >= entry[1] + ttl\n\n    def _purge_expired(self):\n        \"\"\"Remove all currently-expired entries, counting each as an expiration.\"\"\"\n        now = self.clock()\n        expired_keys = [k for k, v in self._data.items() if self._is_expired(v, now)]\n        for k in expired_keys:\n            del self._data[k]\n            self._expirations += 1\n\n    def put(self, key, value, ttl=None):\n        effective_ttl = self.default_ttl if ttl is None else ttl\n        now = self.clock()\n\n        if key in self._data:\n            self._data[key] = [value, now, effective_ttl]\n            self._data.move_to_end(key)\n            return\n\n        # New key: purge expired entries first, then evict LRU if still full.\n        self._purge_expired()\n        if len(self._data) >= self.capacity:\n            # Evict least-recently-used (oldest entry in the OrderedDict).\n            self._data.popitem(last=False)\n            self._evictions += 1\n\n        self._data[key] = [value, now, effective_ttl]\n        self._data.move_to_end(key)\n\n    def get(self, key):\n        if key not in self._data:\n            self._misses += 1\n            raise KeyError(key)\n\n        entry = self._data[key]\n        now = self.clock()\n        if self._is_expired(entry, now):\n            del self._data[key]\n            self._expirations += 1\n            self._misses += 1\n            raise KeyError(key)\n\n        self._data.move_to_end(key)\n        self._hits += 1\n        return entry[0]\n\n    def __contains__(self, key):\n        if key not in self._data:\n            return False\n        entry = self._data[key]\n        now = self.clock()\n        if self._is_expired(entry, now):\n            del self._data[key]\n            self._expirations += 1\n            return False\n        return True\n\n    def __len__(self):\n        self._purge_expired()\n        return len(self._data)\n\n    def stats(self):\n        return {\n            \"hits\": self._hits,\n            \"misses\": self._misses,\n            \"evictions\": self._evictions,\n            \"expirations\": self._expirations,\n        }\n"
+      }
+    },
+    {
+      "task": "B",
+      "model": "opus",
+      "effort": "high",
+      "tokens": 3652,
+      "ok": true,
+      "res": {
+        "notes": [
+          "Backed by OrderedDict; move_to_end handles LRU recency in O(1) for both get-hits and put (new/update).",
+          "Entries stored as (value, expires_at) where expires_at = inserted_at + ttl, precomputed at put time; None means never expires. Expiry test is now >= expires_at, matching clock() >= inserted_at + ttl.",
+          "On new-key put, _purge_expired() runs before the capacity check so expired entries are reclaimed (counted as expirations) rather than forcing eviction of a live LRU entry.",
+          "Each removal path bumps exactly one counter: capacity removals -> evictions, ttl removals -> expirations, so no entry is double-counted.",
+          "get counts hits/misses (miss also on expired), __contains__ and __len__ purge expired without touching recency or hit/miss counters; bool rejected as capacity to avoid True==1 slipping through."
+        ],
+        "code": "\"\"\"A TTL + LRU cache implemented with the standard library only.\"\"\"\n\nimport time\nfrom collections import OrderedDict\n\n\nclass TTLLRUCache:\n    \"\"\"A fixed-capacity cache combining least-recently-used eviction with\n    optional per-entry time-to-live expiry.\n\n    Expiry is lazy: expired entries are detected and purged on access,\n    ``len()``, and when a capacity decision must be made during ``put``.\n    \"\"\"\n\n    def __init__(self, capacity, default_ttl=None, clock=time.monotonic):\n        if not isinstance(capacity, int) or isinstance(capacity, bool):\n            raise ValueError(\"capacity must be an int\")\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        self._capacity = capacity\n        self._default_ttl = default_ttl\n        self._clock = clock\n        # key -> (value, expires_at) where expires_at is None for no expiry.\n        self._data = OrderedDict()\n        self._hits = 0\n        self._misses = 0\n        self._evictions = 0\n        self._expirations = 0\n\n    # -- internal helpers ------------------------------------------------\n\n    def _is_expired(self, expires_at, now):\n        return expires_at is not None and now >= expires_at\n\n    def _purge_expired(self):\n        \"\"\"Remove all currently-expired entries, counting each expiration.\"\"\"\n        now = self._clock()\n        expired_keys = [\n            key\n            for key, (_value, expires_at) in self._data.items()\n            if self._is_expired(expires_at, now)\n        ]\n        for key in expired_keys:\n            del self._data[key]\n            self._expirations += 1\n\n    # -- public API ------------------------------------------------------\n\n    def put(self, key, value, ttl=None):\n        effective_ttl = self._default_ttl if ttl is None else ttl\n        now = self._clock()\n        expires_at = None if effective_ttl is None else now + effective_ttl\n\n        if key in self._data:\n            # Update value, reset expiry, mark most-recently-used.\n            self._data[key] = (value, expires_at)\n            self._data.move_to_end(key)\n            return\n\n        # New key: purge expired entries before making a capacity decision.\n        self._purge_expired()\n        if len(self._data) >= self._capacity:\n            # Evict the least-recently-used live entry.\n            self._data.popitem(last=False)\n            self._evictions += 1\n\n        self._data[key] = (value, expires_at)\n        self._data.move_to_end(key)\n\n    def get(self, key):\n        try:\n            value, expires_at = self._data[key]\n        except KeyError:\n            self._misses += 1\n            raise KeyError(key)\n\n        if self._is_expired(expires_at, self._clock()):\n            del self._data[key]\n            self._expirations += 1\n            self._misses += 1\n            raise KeyError(key)\n\n        self._data.move_to_end(key)\n        self._hits += 1\n        return value\n\n    def __contains__(self, key):\n        try:\n            _value, expires_at = self._data[key]\n        except KeyError:\n            return False\n        if self._is_expired(expires_at, self._clock()):\n            del self._data[key]\n            self._expirations += 1\n            return False\n        return True\n\n    def __len__(self):\n        self._purge_expired()\n        return len(self._data)\n\n    def stats(self):\n        return {\n            \"hits\": self._hits,\n            \"misses\": self._misses,\n            \"evictions\": self._evictions,\n            \"expirations\": self._expirations,\n        }\n"
+      }
+    },
+    {
+      "task": "B",
+      "model": "fable",
+      "effort": "medium",
+      "tokens": 4076,
+      "ok": true,
+      "res": {
+        "notes": [
+          "Backed by collections.OrderedDict mapping key -> (value, expires_at); LRU order is dict order, move_to_end on get-hit and put-update, popitem(last=False) for eviction.",
+          "Expiry stored as an absolute timestamp (clock()+ttl) computed at insert; None means never expires. Check is clock() >= expires_at per spec (boundary counts as expired).",
+          "put on a new key at capacity purges all expired entries first and only evicts (counting an eviction) if still full, so expired entries are never counted as evictions.",
+          "Lazy purging: get/__contains__ remove only the touched expired key; __len__ does a full purge sweep; each removal increments exactly one counter.",
+          "get re-raises KeyError(key) with 'from None' on absence for a clean traceback; __contains__ never touches hit/miss counters or recency."
+        ],
+        "code": "\"\"\"TTL-LRU cache: bounded LRU cache with per-entry time-to-live.\"\"\"\n\nimport time\nfrom collections import OrderedDict\n\n\nclass TTLLRUCache:\n    \"\"\"LRU cache with optional TTL expiry (lazy, no background threads).\"\"\"\n\n    def __init__(self, capacity, default_ttl=None, clock=time.monotonic):\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        self._capacity = capacity\n        self._default_ttl = default_ttl\n        self._clock = clock\n        self._data = OrderedDict()  # key -> (value, expires_at or None)\n        self._hits = 0\n        self._misses = 0\n        self._evictions = 0\n        self._expirations = 0\n\n    def _is_expired(self, expires_at, now=None):\n        if expires_at is None:\n            return False\n        if now is None:\n            now = self._clock()\n        return now >= expires_at\n\n    def _purge_expired(self):\n        now = self._clock()\n        dead = [k for k, (_, exp) in self._data.items()\n                if self._is_expired(exp, now)]\n        for k in dead:\n            del self._data[k]\n            self._expirations += 1\n\n    def put(self, key, value, ttl=None):\n        if ttl is None:\n            ttl = self._default_ttl\n        expires_at = None if ttl is None else self._clock() + ttl\n        if key in self._data:\n            self._data[key] = (value, expires_at)\n            self._data.move_to_end(key)\n            return\n        if len(self._data) >= self._capacity:\n            self._purge_expired()\n            if len(self._data) >= self._capacity:\n                self._data.popitem(last=False)\n                self._evictions += 1\n        self._data[key] = (value, expires_at)\n\n    def get(self, key):\n        try:\n            value, expires_at = self._data[key]\n        except KeyError:\n            self._misses += 1\n            raise KeyError(key) from None\n        if self._is_expired(expires_at):\n            del self._data[key]\n            self._expirations += 1\n            self._misses += 1\n            raise KeyError(key)\n        self._hits += 1\n        self._data.move_to_end(key)\n        return value\n\n    def __contains__(self, key):\n        try:\n            _, expires_at = self._data[key]\n        except KeyError:\n            return False\n        if self._is_expired(expires_at):\n            del self._data[key]\n            self._expirations += 1\n            return False\n        return True\n\n    def __len__(self):\n        self._purge_expired()\n        return len(self._data)\n\n    def stats(self):\n        return {\n            \"hits\": self._hits,\n            \"misses\": self._misses,\n            \"evictions\": self._evictions,\n            \"expirations\": self._expirations,\n        }\n"
+      }
+    },
+    {
+      "task": "B",
+      "model": "fable",
+      "effort": "high",
+      "tokens": 6113,
+      "ok": true,
+      "res": {
+        "notes": [
+          "OrderedDict holds key -> (value, expires_at) with last position = MRU; move_to_end on get hits and live updates gives O(1) recency maintenance.",
+          "Expiry stored as an absolute deadline (now + ttl, or None for immortal) so checks are a single comparison with clock() >= expires_at, matching the spec's inclusive boundary.",
+          "put on an existing-but-expired key removes it first (counted as an expiration, never an eviction) and then treats the call as a fresh insert, so each removed entry is counted exactly once.",
+          "Capacity handling in put purges all expired entries before falling back to popitem(last=False) evictions, so live LRU entries are only evicted when no expired ones remain.",
+          "__contains__ and __len__ purge expired entries they encounter (counted as expirations) but never touch hits/misses or recency; missing keys in get raise KeyError(key) with 'from None' to hide the internal lookup."
+        ],
+        "code": "\"\"\"TTL-LRU cache: bounded-capacity mapping with per-entry time-to-live.\n\nStandard library only. Expiry is lazy (no background threads): expired\nentries are purged when they are touched by get/contains/len or when a\ncapacity decision must be made in put.\n\"\"\"\n\nimport time\nfrom collections import OrderedDict\n\n__all__ = [\"TTLLRUCache\"]\n\n\nclass TTLLRUCache:\n    \"\"\"LRU cache with optional per-entry TTL expiry.\n\n    Entries are stored in recency order; both successful ``get`` calls and\n    ``put`` calls (insert or update) mark an entry most-recently-used.\n    \"\"\"\n\n    def __init__(self, capacity, default_ttl=None, clock=time.monotonic):\n        if not isinstance(capacity, int) or isinstance(capacity, bool):\n            raise ValueError(\"capacity must be an int >= 1\")\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        self._capacity = capacity\n        self._default_ttl = default_ttl\n        self._clock = clock\n        # key -> (value, expires_at or None); order = recency (last = MRU)\n        self._data = OrderedDict()\n        self._hits = 0\n        self._misses = 0\n        self._evictions = 0\n        self._expirations = 0\n\n    # ------------------------------------------------------------------\n    # internal helpers\n    # ------------------------------------------------------------------\n\n    def _is_expired(self, expires_at, now):\n        return expires_at is not None and now >= expires_at\n\n    def _remove_expired(self, key):\n        \"\"\"Remove *key* as an expiration and count it once.\"\"\"\n        del self._data[key]\n        self._expirations += 1\n\n    def _purge_expired(self, now):\n        \"\"\"Lazily remove every expired entry, counting each expiration.\"\"\"\n        expired = [k for k, (_, exp) in self._data.items()\n                   if self._is_expired(exp, now)]\n        for k in expired:\n            self._remove_expired(k)\n\n    # ------------------------------------------------------------------\n    # public API\n    # ------------------------------------------------------------------\n\n    def put(self, key, value, ttl=None):\n        now = self._clock()\n        effective_ttl = self._default_ttl if ttl is None else ttl\n        expires_at = None if effective_ttl is None else now + effective_ttl\n\n        if key in self._data:\n            _, old_exp = self._data[key]\n            if self._is_expired(old_exp, now):\n                # The old entry died of old age; count it as an expiration\n                # and treat this put as a fresh insert.\n                self._remove_expired(key)\n            else:\n                # Live update: new value, expiry reset from now, MRU.\n                self._data[key] = (value, expires_at)\n                self._data.move_to_end(key)\n                return\n\n        if len(self._data) >= self._capacity:\n            # Prefer dropping expired entries over evicting live ones.\n            self._purge_expired(now)\n            while len(self._data) >= self._capacity:\n                self._data.popitem(last=False)  # least-recently-used\n                self._evictions += 1\n\n        self._data[key] = (value, expires_at)\n\n    def get(self, key):\n        now = self._clock()\n        try:\n            value, expires_at = self._data[key]\n        except KeyError:\n            self._misses += 1\n            raise KeyError(key) from None\n        if self._is_expired(expires_at, now):\n            self._remove_expired(key)\n            self._misses += 1\n            raise KeyError(key)\n        self._hits += 1\n        self._data.move_to_end(key)\n        return value\n\n    def __contains__(self, key):\n        try:\n            _, expires_at = self._data[key]\n        except KeyError:\n            return False\n        if self._is_expired(expires_at, self._clock()):\n            self._remove_expired(key)\n            return False\n        return True\n\n    def __len__(self):\n        self._purge_expired(self._clock())\n        return len(self._data)\n\n    def stats(self):\n        return {\n            \"hits\": self._hits,\n            \"misses\": self._misses,\n            \"evictions\": self._evictions,\n            \"expirations\": self._expirations,\n        }\n"
+      }
+    },
+    {
+      "task": "C",
+      "model": "haiku",
+      "effort": "low",
+      "tokens": 1641,
+      "ok": true,
+      "res": {
+        "latest_version": "3.14.6",
+        "py3140_release_date": "2025-10-07",
+        "sources": [
+          "https://www.python.org/downloads/",
+          "https://www.python.org/downloads/release/python-3140/"
+        ]
+      }
+    },
+    {
+      "task": "C",
+      "model": "haiku",
+      "effort": "high",
+      "tokens": 964,
+      "ok": true,
+      "res": {
+        "latest_version": "3.14.6",
+        "py3140_release_date": "2025-10-07",
+        "sources": [
+          "https://www.python.org/downloads/",
+          "https://www.python.org/downloads/release/python-3140/",
+          "https://realpython.com/python-news-november-2025/"
+        ]
+      }
+    },
+    {
+      "task": "C",
+      "model": "fable",
+      "effort": "low",
+      "tokens": 573,
+      "ok": true,
+      "res": {
+        "latest_version": "3.14.6",
+        "py3140_release_date": "2025-10-07",
+        "sources": [
+          "https://www.python.org/downloads/",
+          "https://www.python.org/downloads/release/python-3140/",
+          "https://endoflife.date/python"
+        ]
+      }
+    },
+    {
+      "task": "C",
+      "model": "fable",
+      "effort": "max",
+      "tokens": 1659,
+      "ok": true,
+      "res": {
+        "latest_version": "3.14.6",
+        "py3140_release_date": "2025-10-07",
+        "sources": [
+          "https://www.python.org/downloads/",
+          "https://www.python.org/downloads/release/python-3140/"
+        ]
+      }
+    }
+  ],
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Bug hunt"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Build to spec"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 3,
+      "title": "Web lookup"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "A:fable@low",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "ac4615bcbb986fcab",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846018090,
+      "queuedAt": 1784846016524,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846036694,
+      "tokens": 16486,
+      "toolCalls": 1,
+      "durationMs": 18604,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"Divides by len(xs) without handling empty input; spec requires returning 0.0 for empty input instead of raising ZeroDivisionError.\"},{\"function\":\"median\",\"description\":\"For even length averages ys[mid] and ys[mid+1]; the two middle values are ys[mid-1] and ys[mid].\"},{\"function\":\"sample_variance\",\"description\":\"Uses population divisor n and no guard; spec…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "A:fable@medium",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "a38e07401413e1c29",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846038404,
+      "queuedAt": 1784846036697,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846079999,
+      "tokens": 18318,
+      "toolCalls": 3,
+      "durationMs": 41594,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"Empty input raised ZeroDivisionError instead of returning 0.0 as the spec requires.\"},{\"function\":\"median\",\"description\":\"For even-length input it averaged ys[mid] and ys[mid+1] instead of the two middle values ys[mid-1] and ys[mid] (e.g. median([1,2,3,4]) returned 3.5 instead of 2.5, and crashed with IndexError for length 2).\"},{\"function\":\"sample_varian…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "A:fable@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "a34fd9c07a5c485fa",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846082913,
+      "queuedAt": 1784846081273,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846124604,
+      "tokens": 18531,
+      "toolCalls": 2,
+      "durationMs": 41690,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"Empty input raises ZeroDivisionError instead of returning 0.0 as the spec requires.\"},{\"function\":\"median\",\"description\":\"For even-length input it averages ys[mid] and ys[mid+1] (the middle and the element after it) instead of the two middle values ys[mid-1] and ys[mid]; e.g. median([1,2,3,4]) returned 3.5 instead of 2.5 (and crashes with IndexError for l…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "A:fable@max",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "a4653fa5a0df2a67b",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846127460,
+      "queuedAt": 1784846126042,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846242950,
+      "tokens": 25083,
+      "toolCalls": 4,
+      "durationMs": 115489,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"No empty-input guard: mean([]) raised ZeroDivisionError instead of returning 0.0 as the spec requires. Fixed by returning 0.0 when xs is empty.\"},{\"function\":\"median\",\"description\":\"Even-length case averaged the wrong pair: (ys[mid] + ys[mid+1]) / 2 instead of (ys[mid-1] + ys[mid]) / 2. This returns the wrong value (e.g. median([1,2,3,4]) gave 3.5 instead…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "A:opus@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "a3eec562ad141f65d",
+      "model": "claude-opus-4-8[1m]",
+      "state": "done",
+      "startedAt": 1784846245690,
+      "queuedAt": 1784846244328,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846270780,
+      "tokens": 16500,
+      "toolCalls": 1,
+      "durationMs": 25090,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"Divides by len(xs) unconditionally, raising ZeroDivisionError for empty input; spec requires returning 0.0 for empty input.\"},{\"function\":\"median\",\"description\":\"For even-length input it averages ys[mid] and ys[mid+1] (the wrong pair); the two middle values are ys[mid-1] and ys[mid].\"},{\"function\":\"sample_variance\",\"description\":\"Uses population variance …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "A:sonnet@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "a78995590ded2f643",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784846272247,
+      "queuedAt": 1784846270789,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846322124,
+      "tokens": 24487,
+      "toolCalls": 4,
+      "durationMs": 49877,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"Empty input caused ZeroDivisionError instead of spec-required 0.0 (no guard before division).\"},{\"function\":\"median\",\"description\":\"For even-length input, averaged ys[mid] and ys[mid+1] instead of the true middle pair ys[mid-1] and ys[mid], producing a wrong result (and an IndexError at the last valid mid).\"},{\"function\":\"sample_variance\",\"description\":\"U…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "A:haiku@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Bug hunt",
+      "agentId": "a8d2b9aa6b07a6345",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784846324756,
+      "queuedAt": 1784846323433,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"eventstats: summary statistics over numeric event stream…",
+      "promptPreview": "You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. Find and fix ALL of them.\n\nRules:\n- Do not change function names or signatures. Do not add new features or functions. Keep fixes minimal.\n- You may use your tools (e.g., run Python via Bash) if you find that useful, but only …",
+      "lastProgressAt": 1784846468401,
+      "tokens": 31230,
+      "toolCalls": 9,
+      "durationMs": 143645,
+      "resultPreview": "{\"bugs\":[{\"function\":\"mean\",\"description\":\"Should return 0.0 for empty input, but original code crashed with ZeroDivisionError when dividing sum([]) by len([])\"},{\"function\":\"median\",\"description\":\"For even-length arrays, used wrong indices: (ys[mid] + ys[mid+1])/2 instead of (ys[mid-1] + ys[mid])/2. This returned the average of the upper two middle elements instead of the actual two middle elemen…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "B:haiku@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Build to spec",
+      "agentId": "aa3bf38124eb99240",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784846471614,
+      "queuedAt": 1784846470077,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "import time from collections import OrderedDict class TTLLR…",
+      "promptPreview": "Implement the spec below as a single Python module using only the standard library. You may use tools (e.g., Bash) to test your code before answering if you find that useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on design decisions; code = the COMPLETE module text (compilable as-is).\n\n# Task: TTL-LRU cache\n\nImplement the following spec as a single Python module,…",
+      "lastProgressAt": 1784846619983,
+      "tokens": 31787,
+      "toolCalls": 4,
+      "durationMs": 148369,
+      "resultPreview": "{\"notes\":[\"OrderedDict maintains LRU order with O(1) move_to_end operations; most-recent is at the end, least-recent at the beginning\",\"Expiration is lazy: entries expire when accessed via get/__contains__/__len__ based on clock() >= insertion_time + ttl formula\",\"Capacity eviction prioritizes removing expired entries before evicting live LRU entries; each entry counted once as either eviction or …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "B:sonnet@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Build to spec",
+      "agentId": "a5c6b610158f4ce32",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784846622699,
+      "queuedAt": 1784846621350,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"TTL-LRU cache: a fixed-capacity LRU cache with optional …",
+      "promptPreview": "Implement the spec below as a single Python module using only the standard library. You may use tools (e.g., Bash) to test your code before answering if you find that useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on design decisions; code = the COMPLETE module text (compilable as-is).\n\n# Task: TTL-LRU cache\n\nImplement the following spec as a single Python module,…",
+      "lastProgressAt": 1784846672735,
+      "tokens": 25523,
+      "toolCalls": 6,
+      "durationMs": 50035,
+      "resultPreview": "{\"notes\":[\"Stores each entry as [value, inserted_at, ttl] in an OrderedDict; move_to_end() implements LRU recency for both get and put (new or updating).\",\"put() on a new key always purges all expired entries first, then evicts the LRU (oldest) entry only if still at capacity — matches spec's 'purge expired before evicting a live one'.\",\"get()/__contains__ check expiry lazily against clock() >= in…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "B:opus@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Build to spec",
+      "agentId": "a9e368523e612eb0a",
+      "model": "claude-opus-4-8[1m]",
+      "state": "done",
+      "startedAt": 1784846676830,
+      "queuedAt": 1784846674930,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"A TTL + LRU cache implemented with the standard library …",
+      "promptPreview": "Implement the spec below as a single Python module using only the standard library. You may use tools (e.g., Bash) to test your code before answering if you find that useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on design decisions; code = the COMPLETE module text (compilable as-is).\n\n# Task: TTL-LRU cache\n\nImplement the following spec as a single Python module,…",
+      "lastProgressAt": 1784846718023,
+      "tokens": 18084,
+      "toolCalls": 3,
+      "durationMs": 41193,
+      "resultPreview": "{\"notes\":[\"Backed by OrderedDict; move_to_end handles LRU recency in O(1) for both get-hits and put (new/update).\",\"Entries stored as (value, expires_at) where expires_at = inserted_at + ttl, precomputed at put time; None means never expires. Expiry test is now >= expires_at, matching clock() >= inserted_at + ttl.\",\"On new-key put, _purge_expired() runs before the capacity check so expired entries…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "B:fable@medium",
+      "phaseIndex": 2,
+      "phaseTitle": "Build to spec",
+      "agentId": "a16e38352e09f1a8c",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846721463,
+      "queuedAt": 1784846719626,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"TTL-LRU cache: bounded LRU cache with per-entry time-to-…",
+      "promptPreview": "Implement the spec below as a single Python module using only the standard library. You may use tools (e.g., Bash) to test your code before answering if you find that useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on design decisions; code = the COMPLETE module text (compilable as-is).\n\n# Task: TTL-LRU cache\n\nImplement the following spec as a single Python module,…",
+      "lastProgressAt": 1784846769102,
+      "tokens": 19003,
+      "toolCalls": 6,
+      "durationMs": 47639,
+      "resultPreview": "{\"notes\":[\"Backed by collections.OrderedDict mapping key -> (value, expires_at); LRU order is dict order, move_to_end on get-hit and put-update, popitem(last=False) for eviction.\",\"Expiry stored as an absolute timestamp (clock()+ttl) computed at insert; None means never expires. Check is clock() >= expires_at per spec (boundary counts as expired).\",\"put on a new key at capacity purges all expired …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "B:fable@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Build to spec",
+      "agentId": "a097610704a915398",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846772346,
+      "queuedAt": 1784846770431,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"TTL-LRU cache: bounded-capacity mapping with per-entry t…",
+      "promptPreview": "Implement the spec below as a single Python module using only the standard library. You may use tools (e.g., Bash) to test your code before answering if you find that useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on design decisions; code = the COMPLETE module text (compilable as-is).\n\n# Task: TTL-LRU cache\n\nImplement the following spec as a single Python module,…",
+      "lastProgressAt": 1784846845401,
+      "tokens": 20583,
+      "toolCalls": 6,
+      "durationMs": 73055,
+      "resultPreview": "{\"notes\":[\"OrderedDict holds key -> (value, expires_at) with last position = MRU; move_to_end on get hits and live updates gives O(1) recency maintenance.\",\"Expiry stored as an absolute deadline (now + ttl, or None for immortal) so checks are a single comparison with clock() >= expires_at, matching the spec's inclusive boundary.\",\"put on an existing-but-expired key removes it first (counted as an …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "C:haiku@low",
+      "phaseIndex": 3,
+      "phaseTitle": "Web lookup",
+      "agentId": "add99bab911f9af3f",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784846848288,
+      "queuedAt": 1784846846903,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "3.14.6",
+      "promptPreview": "Using web search, answer two questions:\n(1) What is the latest stable Python 3 release available right now (exact version number)?\n(2) On what date was Python 3.14.0 (the .0 release) first released?\n\nReturn: latest_version (string like \"3.x.y\"), py3140_release_date (string, YYYY-MM-DD), sources (list of URLs you used).",
+      "lastProgressAt": 1784846877470,
+      "tokens": 17210,
+      "toolCalls": 7,
+      "durationMs": 29181,
+      "resultPreview": "{\"latest_version\":\"3.14.6\",\"py3140_release_date\":\"2025-10-07\",\"sources\":[\"https://www.python.org/downloads/\",\"https://www.python.org/downloads/release/python-3140/\"]}"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "C:haiku@high",
+      "phaseIndex": 3,
+      "phaseTitle": "Web lookup",
+      "agentId": "ac187a8b30a7755d3",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784846881561,
+      "queuedAt": 1784846878779,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "3.14.6",
+      "promptPreview": "Using web search, answer two questions:\n(1) What is the latest stable Python 3 release available right now (exact version number)?\n(2) On what date was Python 3.14.0 (the .0 release) first released?\n\nReturn: latest_version (string like \"3.x.y\"), py3140_release_date (string, YYYY-MM-DD), sources (list of URLs you used).",
+      "lastProgressAt": 1784846903464,
+      "tokens": 15802,
+      "toolCalls": 4,
+      "durationMs": 21903,
+      "resultPreview": "{\"latest_version\":\"3.14.6\",\"py3140_release_date\":\"2025-10-07\",\"sources\":[\"https://www.python.org/downloads/\",\"https://www.python.org/downloads/release/python-3140/\",\"https://realpython.com/python-news-november-2025/\"]}"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 15,
+      "label": "C:fable@low",
+      "phaseIndex": 3,
+      "phaseTitle": "Web lookup",
+      "agentId": "a170247719aeb5d54",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846905943,
+      "queuedAt": 1784846904707,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "3.14.6",
+      "promptPreview": "Using web search, answer two questions:\n(1) What is the latest stable Python 3 release available right now (exact version number)?\n(2) On what date was Python 3.14.0 (the .0 release) first released?\n\nReturn: latest_version (string like \"3.x.y\"), py3140_release_date (string, YYYY-MM-DD), sources (list of URLs you used).",
+      "lastProgressAt": 1784846918288,
+      "tokens": 17203,
+      "toolCalls": 4,
+      "durationMs": 12345,
+      "resultPreview": "{\"latest_version\":\"3.14.6\",\"py3140_release_date\":\"2025-10-07\",\"sources\":[\"https://www.python.org/downloads/\",\"https://www.python.org/downloads/release/python-3140/\",\"https://endoflife.date/python\"]}"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 16,
+      "label": "C:fable@max",
+      "phaseIndex": 3,
+      "phaseTitle": "Web lookup",
+      "agentId": "a6b48a83982f5ab0f",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784846921592,
+      "queuedAt": 1784846919596,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "3.14.6",
+      "promptPreview": "Using web search, answer two questions:\n(1) What is the latest stable Python 3 release available right now (exact version number)?\n(2) On what date was Python 3.14.0 (the .0 release) first released?\n\nReturn: latest_version (string like \"3.x.y\"), py3140_release_date (string, YYYY-MM-DD), sources (list of URLs you used).",
+      "lastProgressAt": 1784846949468,
+      "tokens": 18221,
+      "toolCalls": 6,
+      "durationMs": 27875,
+      "resultPreview": "{\"latest_version\":\"3.14.6\",\"py3140_release_date\":\"2025-10-07\",\"sources\":[\"https://www.python.org/downloads/\",\"https://www.python.org/downloads/release/python-3140/\"]}"
+    }
+  ],
+  "totalTokens": 334051,
+  "totalToolCalls": 70
+}

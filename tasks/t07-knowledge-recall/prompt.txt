@@ -1,0 +1,24 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+Answer each question with the shortest exact answer (no explanation). Return answers = list of {id, value}.
+
+1. Chemical symbol for tungsten?
+2. Atomic number of gold?
+3. The name of HTTP status code 418?
+4. Default TCP port for HTTPS?
+5. ASCII decimal code for uppercase letter A?
+6. What year does the Unix epoch start?
+7. The IPv4 loopback address?
+8. Which PEP introduced type hints to Python?
+9. Name all four git object types.
+10. Of GET, POST, PUT, DELETE: which one is defined as both safe and idempotent?
+11. How many bits in an IPv6 address?
+12. SI prefix for 10^-9?
+13. Decimal 255 in hexadecimal?
+14. Default TCP port for SSH?
+15. Chemical symbol for potassium?
+16. How many bytes in a UUID?
+17. Which character is Unicode code point U+0041?
+18. Which RFC number, published June 1999, defined HTTP/1.1?
+19. 1994 in Roman numerals?
+20. Default UDP/TCP port for DNS?

@@ -1,0 +1,45 @@
+{
+ "task": "E",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "high",
+ "sample": "canonical",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-24",
+ "answer": {
+  "bugs": [
+   {
+    "function": "_idf",
+    "description": "df was computed as the total number of occurrences of the term across all documents (`sum(len(ps) for ps in post.values())`) instead of the number of DOCUMENTS containing the term. This inflates df and yields wrong (often negative or zero) idf values. Fixed to `df = len(post)`."
+   },
+   {
+    "function": "_score",
+    "description": "The score was divided by `self._raw_len[doc_id]` (total token count, stopwords included) instead of the document's INDEXED length (non-stopword token count) as the spec requires. Fixed to divide by `self._indexed_len[doc_id]` (with a zero-length guard)."
+   },
+   {
+    "function": "search",
+    "description": "Operator precedence was inverted: the expression was split on ' AND ' at the top level and unioned on ' OR ' inside each group, which makes OR bind tighter than AND (i.e. 'a OR b AND c' evaluated as (a OR b) AND c). The spec requires AND to bind tighter: split on ' OR ' at top level and intersect ' AND '-separated terms within each group, then union the groups."
+   },
+   {
+    "function": "search",
+    "description": "Query terms were not normalized to lowercase before stopword removal and posting lookup, so 'The'/'AND'-cased stopwords were not dropped and mixed-case terms such as 'CAT' never matched indexed tokens. Non-operator tokens are now lowercased (operators AND/OR remain literal uppercase)."
+   },
+   {
+    "function": "phrase",
+    "description": "Phrase matching only required strictly increasing positions (`p > cur`, taking the minimum) rather than CONSECUTIVE positions, so e.g. 'cat dog' matched a document containing 'cat ... dog' anywhere later. Fixed to require each subsequent term to occur at exactly cur + 1."
+   }
+  ],
+  "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative \u2014 behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        length = self._indexed_len.get(doc_id, 0)\n        if not length:\n            return 0.0\n        return total / length\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                tok = tok.lower()\n                if tok in STOPWORDS:\n                    continue\n                cleaned.append(tok)\n                terms.append(tok)\n        if not terms:\n            return []\n\n        # OR groups at the top level, AND within each group\n        # (AND binds tighter than OR).\n        expr = \" \".join(cleaned)\n        matched = set()\n        for group in expr.split(\" OR \"):\n            group_docs = None\n            for term in group.split(\" AND \"):\n                term = term.strip()\n                if not term:\n                    continue\n                docs = self._docs_with(term)\n                group_docs = docs if group_docs is None else (group_docs & docs)\n            if group_docs:\n                matched |= group_docs\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        out = []\n        if not terms:\n            return out\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            tails = [set(ps) for ps in plists[1:]]\n            for start in plists[0]:\n                cur = start\n                ok = True\n                for ps in tails:\n                    if (cur + 1) not in ps:\n                        ok = False\n                        break\n                    cur += 1\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n"
+ },
+ "usage": {
+  "input": 8,
+  "cache_write": 11945,
+  "cache_read": 68918,
+  "output": 7430
+ },
+ "duration_s": 83.9,
+ "cost_usd": 0.2949,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

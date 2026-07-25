@@ -1,0 +1,56 @@
+{
+ "task": "T8",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "medium",
+ "sample": "canonical-m",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-24",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "pattern": "(?=[01])1*(01*01*)*"
+   },
+   {
+    "id": 2,
+    "pattern": "([01][0-9]|2[0-3]):[0-5][0-9]"
+   },
+   {
+    "id": 3,
+    "pattern": "[A-Za-z_][A-Za-z0-9_]*"
+   },
+   {
+    "id": 4,
+    "pattern": "[+-]?(0|[1-9][0-9]*)\\.[0-9]+"
+   },
+   {
+    "id": 5,
+    "pattern": "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])"
+   },
+   {
+    "id": 6,
+    "pattern": "(b|ab)*"
+   },
+   {
+    "id": 7,
+    "pattern": "\\([2-9][0-9]{2}\\) [0-9]{3}-[0-9]{4}"
+   },
+   {
+    "id": 8,
+    "pattern": "\"([^\"\\\\]|\\\\[\\s\\S])*\""
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 16098,
+  "cache_read": 0,
+  "output": 1399
+ },
+ "duration_s": 18.5,
+ "cost_usd": 0.1356,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

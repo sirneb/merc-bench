@@ -1,0 +1,30 @@
+{
+ "type": "object",
+ "properties": {
+  "bugs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "function": {
+      "type": "string"
+     },
+     "description": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "function",
+     "description"
+    ]
+   }
+  },
+  "fixed_code": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "bugs",
+  "fixed_code"
+ ]
+}

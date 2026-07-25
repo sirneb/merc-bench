@@ -1,0 +1,158 @@
+You are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. They may be subtle algorithmic or semantic errors, not typos. Find and fix ALL of them.
+
+Rules:
+- Do not change the public API (class name, method names/signatures, STOPWORDS, tokenization regex).
+- Keep fixes minimal; do not add features.
+- Solve without tools if your harness offers them, or note tool use in the run record.
+- Return: bugs = list of {function, description} for each real bug found; fixed_code = the COMPLETE corrected module text.
+
+<module>
+"""minisearch: a tiny in-memory text search engine.
+
+Spec (authoritative — behavior must match exactly):
+
+Tokenization
+- Tokens are maximal runs of ASCII letters/digits, lowercased.
+- Position numbering refers to the full token stream of the document
+  (stopwords included in the numbering), starting at 0.
+- STOPWORDS are never indexed and are removed from queries.
+
+Indexing
+- add(doc_id, text): indexes a document. For every non-stopword token,
+  the index records its positions. The indexed length of a document is
+  its number of non-stopword tokens.
+
+Scoring (used to rank boolean search results)
+- tf(term, doc) = number of occurrences of term in doc.
+- idf(term) = ln(N / df(term)), where N = number of documents in the
+  index and df(term) = number of DOCUMENTS that contain the term.
+- score(doc) = sum over the unique query terms of tf * idf, divided by
+  the document's INDEXED length (its non-stopword token count).
+
+Boolean search
+- search(query) -> list of doc_ids.
+- The query is a whitespace-separated sequence: term (op term)*, where
+  op is the literal uppercase word AND or OR.
+- Query terms are normalized like document tokens (lowercased); stopword
+  terms are dropped before parsing. A query with no remaining terms
+  returns [].
+- AND binds tighter than OR: "a OR b AND c" means a OR (b AND c).
+- Results are ranked by score, descending; ties broken by ascending
+  doc_id.
+
+Phrase search
+- phrase(query) -> sorted list of doc_ids (ascending).
+- A document matches when the query's tokens occur at consecutive
+  positions (p, p+1, ..., p+k-1) in the document's original token
+  stream. Phrase queries contain no stopwords.
+"""
+import math
+import re
+
+STOPWORDS = {"a", "an", "and", "the", "is", "in", "of", "to", "it",
+             "on", "for", "at", "by", "or", "be", "with", "as"}
+
+_TOKEN_RE = re.compile(r"[A-Za-z0-9]+")
+
+
+def _tokens(text):
+    return [t.lower() for t in _TOKEN_RE.findall(text)]
+
+
+class MiniSearch:
+    def __init__(self):
+        self._postings = {}          # term -> {doc_id: [positions]}
+        self._indexed_len = {}       # doc_id -> non-stopword token count
+        self._raw_len = {}           # doc_id -> total token count
+        self._docs = set()
+
+    def add(self, doc_id, text):
+        toks = _tokens(text)
+        self._docs.add(doc_id)
+        self._raw_len[doc_id] = len(toks)
+        indexed = 0
+        for pos, tok in enumerate(toks):
+            if tok in STOPWORDS:
+                continue
+            indexed += 1
+            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)
+        self._indexed_len[doc_id] = indexed
+
+    # --- scoring -----------------------------------------------------
+
+    def _idf(self, term):
+        post = self._postings.get(term)
+        if not post:
+            return 0.0
+        df = sum(len(ps) for ps in post.values())
+        return math.log(len(self._docs) / df)
+
+    def _score(self, doc_id, terms):
+        total = 0.0
+        for term in set(terms):
+            ps = self._postings.get(term, {}).get(doc_id)
+            if ps:
+                total += len(ps) * self._idf(term)
+        return total / self._raw_len[doc_id]
+
+    def _docs_with(self, term):
+        return set(self._postings.get(term, {}))
+
+    # --- boolean search ----------------------------------------------
+
+    def search(self, query):
+        parts = query.split()
+        terms = []
+        cleaned = []
+        for tok in parts:
+            if tok in ("AND", "OR"):
+                cleaned.append(tok)
+            else:
+                if tok in STOPWORDS:
+                    continue
+                cleaned.append(tok)
+                terms.append(tok)
+        if not terms:
+            return []
+
+        # AND groups at the top level, OR within each group.
+        expr = " ".join(cleaned)
+        result = None
+        for group in expr.split(" AND "):
+            group_docs = set()
+            for term in group.split(" OR "):
+                term = term.strip()
+                if term:
+                    group_docs |= self._docs_with(term)
+            result = group_docs if result is None else (result & group_docs)
+        matched = result or set()
+
+        ranked = sorted(matched,
+                        key=lambda d: (-self._score(d, terms), d))
+        return ranked
+
+    # --- phrase search -------------------------------------------------
+
+    def phrase(self, query):
+        terms = _tokens(query)
+        out = []
+        for doc_id in sorted(self._docs):
+            plists = [self._postings.get(t, {}).get(doc_id, [])
+                      for t in terms]
+            if any(not ps for ps in plists):
+                continue
+            for start in plists[0]:
+                cur = start
+                ok = True
+                for ps in plists[1:]:
+                    nxt = [p for p in ps if p > cur]
+                    if not nxt:
+                        ok = False
+                        break
+                    cur = min(nxt)
+                if ok:
+                    out.append(doc_id)
+                    break
+        return out
+
+</module>

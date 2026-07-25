@@ -1,0 +1,67 @@
+{
+ "type": "object",
+ "properties": {
+  "answers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "integer"
+     },
+     "nationality": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 5,
+      "maxItems": 5
+     },
+     "color": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 5,
+      "maxItems": 5
+     },
+     "drink": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 5,
+      "maxItems": 5
+     },
+     "pet": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 5,
+      "maxItems": 5
+     },
+     "job": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "minItems": 5,
+      "maxItems": 5
+     }
+    },
+    "required": [
+     "id",
+     "nationality",
+     "color",
+     "drink",
+     "pet",
+     "job"
+    ]
+   }
+  }
+ },
+ "required": [
+  "answers"
+ ]
+}

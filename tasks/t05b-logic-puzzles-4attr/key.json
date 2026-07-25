@@ -1,0 +1,182 @@
+{
+ "1": {
+  "nationality": [
+   "Swede",
+   "Dane",
+   "Norwegian",
+   "Brit",
+   "German"
+  ],
+  "color": [
+   "white",
+   "green",
+   "blue",
+   "red",
+   "yellow"
+  ],
+  "drink": [
+   "water",
+   "tea",
+   "beer",
+   "milk",
+   "coffee"
+  ],
+  "pet": [
+   "fish",
+   "cat",
+   "dog",
+   "bird",
+   "horse"
+  ]
+ },
+ "2": {
+  "nationality": [
+   "Dane",
+   "German",
+   "Norwegian",
+   "Brit",
+   "Swede"
+  ],
+  "color": [
+   "green",
+   "blue",
+   "red",
+   "white",
+   "yellow"
+  ],
+  "drink": [
+   "water",
+   "beer",
+   "tea",
+   "coffee",
+   "milk"
+  ],
+  "pet": [
+   "horse",
+   "bird",
+   "cat",
+   "fish",
+   "dog"
+  ]
+ },
+ "3": {
+  "nationality": [
+   "Brit",
+   "German",
+   "Norwegian",
+   "Dane",
+   "Swede"
+  ],
+  "color": [
+   "red",
+   "green",
+   "white",
+   "blue",
+   "yellow"
+  ],
+  "drink": [
+   "milk",
+   "water",
+   "tea",
+   "beer",
+   "coffee"
+  ],
+  "pet": [
+   "fish",
+   "horse",
+   "dog",
+   "cat",
+   "bird"
+  ]
+ },
+ "4": {
+  "nationality": [
+   "Brit",
+   "Dane",
+   "Norwegian",
+   "German",
+   "Swede"
+  ],
+  "color": [
+   "blue",
+   "white",
+   "red",
+   "green",
+   "yellow"
+  ],
+  "drink": [
+   "water",
+   "tea",
+   "beer",
+   "milk",
+   "coffee"
+  ],
+  "pet": [
+   "horse",
+   "cat",
+   "fish",
+   "bird",
+   "dog"
+  ]
+ },
+ "5": {
+  "nationality": [
+   "Dane",
+   "Norwegian",
+   "German",
+   "Brit",
+   "Swede"
+  ],
+  "color": [
+   "green",
+   "yellow",
+   "white",
+   "red",
+   "blue"
+  ],
+  "drink": [
+   "coffee",
+   "milk",
+   "tea",
+   "beer",
+   "water"
+  ],
+  "pet": [
+   "cat",
+   "fish",
+   "dog",
+   "bird",
+   "horse"
+  ]
+ },
+ "6": {
+  "nationality": [
+   "Norwegian",
+   "German",
+   "Swede",
+   "Dane",
+   "Brit"
+  ],
+  "color": [
+   "blue",
+   "green",
+   "red",
+   "white",
+   "yellow"
+  ],
+  "drink": [
+   "tea",
+   "milk",
+   "coffee",
+   "beer",
+   "water"
+  ],
+  "pet": [
+   "bird",
+   "dog",
+   "fish",
+   "horse",
+   "cat"
+  ]
+ }
+}

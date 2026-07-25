@@ -1,0 +1,14 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+Write a short essay about database caching that satisfies ALL of these constraints simultaneously. Return {text: "..."}.
+
+C1. Exactly 4 paragraphs, separated by blank lines (a word = any whitespace-separated token).
+C2. Paragraph 1: exactly 40 words.
+C3. Paragraph 2: exactly 55 words.
+C4. Paragraph 3: at least 30 words, and contains NO letter 'e' (or 'E') anywhere.
+C5. Paragraph 4: exactly 20 words, and its final word is exactly "done." (with the period).
+C6. The whole text contains exactly 3 semicolons (;).
+C7. The four paragraphs begin with these exact first words, in order: "Meanwhile", "However", "Along", "Finally".
+C8. The substring "cache" (case-insensitive) occurs exactly 5 times in the whole text (count substring occurrences; e.g. "caches" contains it once).
+C9. No word is longer than 14 characters (measure words after stripping the punctuation characters .,;:!?"' from both ends).
+C10. The whole text is at most 180 words.

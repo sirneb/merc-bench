@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "xhigh",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, modern databases lean heavily on caching to survive demanding workloads. A cache stores frequently requested rows in memory, sparing the disk from repeated reads. When traffic spikes, this buffer absorbs the load; latency drops and throughput climbs quite steadily.\n\nHowever, a cache introduces hard problems of its own. Stale data lurks wherever invalidation is sloppy; a customer may see yesterday's price long after an update landed. Engineers choose among write-through, write-back, and TTL policies to bound this risk. Each choice trades freshness against speed, and no single answer neatly fits every workload or budget.\n\nAlong with rapid gains, caching brings toil: monitoring must watch hit ratios, warm-up runs must fill cold pools, and admins must plan for RAM growth. A drop in hit ratio is not an option; it hurts all workflows badly.\n\nFinally, treat the cache as a tool: measure cache hits, tune cache sizes, verify results, and call the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15423,
+  "cache_read": 0,
+  "output": 5358
+ },
+ "duration_s": 57.8,
+ "cost_usd": 0.4607,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,28 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+For each task write ONE Python regular expression pattern (a string for re.fullmatch) that fully matches every MUST MATCH string and none of the MUST NOT MATCH strings. You cannot test them — get them right by reasoning. Return answers = list of {id, pattern}.
+
+TASK 1: match: nonempty binary strings (only 0/1) containing an EVEN number of 0s
+  MUST MATCH: ["1", "00", "1001", "0110", "111", "010010"]
+  MUST NOT MATCH: ["0", "01", "10", "0100", "", "102"]
+TASK 2: match: 24-hour times HH:MM from 00:00 to 23:59, leading zeros required
+  MUST MATCH: ["00:00", "09:59", "13:07", "23:59"]
+  MUST NOT MATCH: ["24:00", "7:30", "12:60", "23:5", "123:45"]
+TASK 3: match: valid ASCII Python identifiers
+  MUST MATCH: ["_x", "a1", "Foo_bar", "_", "x_"]
+  MUST NOT MATCH: ["1a", "a-b", "", "a b", "a.b"]
+TASK 4: match: decimal literals with optional sign, required decimal point, no leading zeros (except a bare 0 before the point)
+  MUST MATCH: ["3.14", "-0.5", "10.0", "+2.75", "0.0"]
+  MUST NOT MATCH: [".5", "3.", "007.1", "1,5", "2", "-.5"]
+TASK 5: match: dates YYYY-MM-DD with MM 01-12 and DD 01-31
+  MUST MATCH: ["2024-01-31", "1999-12-01", "0001-06-15"]
+  MUST NOT MATCH: ["2024-13-01", "2024-00-10", "24-01-01", "2024-1-01", "2024-01-32"]
+TASK 6: match: strings over letters a/b where every 'a' is immediately followed by 'b'
+  MUST MATCH: ["", "b", "ab", "babb", "abab"]
+  MUST NOT MATCH: ["a", "ba", "abba", "aab", "abc"]
+TASK 7: match: US phone numbers formatted (XXX) XXX-XXXX where the area code does not start with 0 or 1
+  MUST MATCH: ["(212) 555-0187", "(919) 867-5309"]
+  MUST NOT MATCH: ["(012) 555-0187", "212-555-0187", "(212)555-0187", "(212) 555-018"]
+TASK 8: match: double-quoted string literals where inner backslash escapes (\" or \\ or any \x) are allowed and unescaped quotes/backslashes are not
+  MUST MATCH: ["\"\"", "\"ab\"", "\"a\\\"b\"", "\"\\\\\"", "\"a\\nb\""]
+  MUST NOT MATCH: ["\"a\"b\"", "\"ab", "abc", "\"a\\\""]

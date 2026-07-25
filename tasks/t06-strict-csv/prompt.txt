@@ -1,0 +1,45 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+Convert the messy inventory records below into a strict CSV. Return {csv: "..."}. Rules:
+
+1. Output header exactly: id,owner,category,qty,date,note
+2. Keep ONLY records whose id matches exactly one uppercase letter followed by two digits (e.g. A42). Drop all others.
+3. If the same id appears more than once, keep only the record with the LATEST date.
+4. Dates: normalize to ISO YYYY-MM-DD. Input formats are YYYY-MM-DD, D/M/2026 (day first), and M-D-2026 (month first).
+5. owner: convert to Title Case (each word capitalized, rest lowercase).
+6. qty: keep the integer; if empty or not a number, use 0.
+7. note: keep as-is (may be empty).
+8. CSV quoting: wrap a field in double quotes ONLY if it contains a comma; no other quoting.
+9. Sort rows by: category ascending, then qty DESCENDING, then owner ascending (all as plain string/number comparisons).
+
+RECORDS:
+id=X68; owner=gina stone; cat=tools; qty=n/a; date=2026-04-06; note=priority
+id=X16; owner=FElix kim; cat=cables; qty=n/a; date=4-27-2026; note=
+id=A31; owner=ana OBrien; cat=boards; qty=n/a; date=3-18-2026; note=priority
+id=915; owner=hugo REYES; cat=cables; qty=n/a; date=17/11/2026; note=check, later
+id=112; owner=hugo REYES; cat=sensors; qty=318; date=2-16-2026; note=
+id=378; owner=BOB kim; cat=tools; qty=82; date=7-19-2026; note=ok
+id=??; owner=erin kim; cat=sensors; qty=255; date=6-21-2026; note=check, later
+id=757; owner=ana patel; cat=sensors; qty=n/a; date=22/12/2026; note=ok
+id=??; owner=carla stone; cat=sensors; qty=; date=2-17-2026; note=
+id=X16; owner=hugo OBrien; cat=tools; qty=; date=6/7/2026; note=check, later
+id=A21; owner=ana kim; cat=tools; qty=; date=2026-12-02; note=check, later
+id=??; owner=BOB stone; cat=boards; qty=n/a; date=7/8/2026; note=check, later
+id=??; owner=dev stone; cat=boards; qty=376; date=15/11/2026; note=
+id=A85; owner=carla patel; cat=boards; qty=n/a; date=16/7/2026; note=priority
+id=X26; owner=erin patel; cat=cables; qty=; date=3-5-2026; note=
+id=??; owner=ana novak; cat=tools; qty=; date=26/6/2026; note=check, later
+id=X12; owner=dev REYES; cat=boards; qty=; date=2026-08-28; note=priority
+id=X78; owner=dev kim; cat=tools; qty=234; date=3/1/2026; note=ok
+id=115; owner=ana novak; cat=sensors; qty=; date=8-28-2026; note=
+id=952; owner=carla REYES; cat=sensors; qty=142; date=8-28-2026; note=
+id=??; owner=FElix stone; cat=tools; qty=n/a; date=2026-10-10; note=priority
+id=X53; owner=ana OBrien; cat=tools; qty=; date=2026-12-15; note=check, later
+id=X70; owner=BOB patel; cat=cables; qty=n/a; date=11-25-2026; note=check, later
+id=??; owner=BOB novak; cat=cables; qty=; date=8-27-2026; note=ok
+id=??; owner=erin patel; cat=boards; qty=n/a; date=22/2/2026; note=priority
+id=715; owner=FElix OBrien; cat=cables; qty=n/a; date=9/2/2026; note=check, later
+id=A88; owner=BOB novak; cat=sensors; qty=n/a; date=2026-04-02; note=ok
+id=134; owner=dev OBrien; cat=tools; qty=410; date=7-17-2026; note=check, later
+id=??; owner=dev OBrien; cat=boards; qty=53; date=22/11/2026; note=
+id=A89; owner=gina patel; cat=boards; qty=n/a; date=21/6/2026; note=ok

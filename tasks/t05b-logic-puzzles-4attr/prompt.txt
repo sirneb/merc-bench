@@ -1,0 +1,97 @@
+Solve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:
+
+nationalities: Brit, Swede, Dane, Norwegian, German
+colors: red, green, blue, yellow, white
+drinks: tea, coffee, milk, beer, water
+pets: dog, cat, bird, fish, horse
+
+"Immediately to the left of Y" means X's house number = Y's house number - 1. "Adjacent" means the house numbers differ by exactly 1. Every puzzle has exactly one solution.
+
+IMPORTANT: Solve by pure logical reasoning only. Do NOT use any tools — no Bash, no code execution, no files.
+
+Return via structured output: answers = one entry per puzzle with id (1-6) and, for each attribute (nationality, color, drink, pet), an array of 5 values ordered by house 1..5.
+
+PUZZLE 1 (13 clues):
+1. The brit is the milk drinker.
+2. The coffee drinker is in house 5.
+3. The dog owner is immediately to the left of the red house.
+4. The beer drinker is immediately to the left of the red house.
+5. The norwegian lives in the blue house.
+6. The beer drinker is immediately to the left of the bird owner.
+7. The swede is the fish owner.
+8. The white house is immediately to the left of the tea drinker.
+9. The german is in house 5.
+10. The brit is immediately to the left of the yellow house.
+11. The swede and the green house are in adjacent houses.
+12. The green house and the water drinker are in adjacent houses.
+13. The coffee drinker is the horse owner.
+
+PUZZLE 2 (14 clues):
+1. The green house and the bird owner are in adjacent houses.
+2. The yellow house is the dog owner.
+3. The water drinker is immediately to the left of the German.
+4. The green house is immediately to the left of the German.
+5. The red house and the fish owner are in adjacent houses.
+6. The beer drinker and the cat owner are in adjacent houses.
+7. The yellow house is the milk drinker.
+8. The norwegian and the fish owner are in adjacent houses.
+9. The red house and the coffee drinker are in adjacent houses.
+10. The red house is immediately to the left of the Brit.
+11. The coffee drinker is immediately to the left of the Swede.
+12. The green house is immediately to the left of the beer drinker.
+13. The milk drinker and the fish owner are in adjacent houses.
+14. The blue house is immediately to the left of the cat owner.
+
+PUZZLE 3 (12 clues):
+1. The tea drinker is immediately to the left of the Dane.
+2. The coffee drinker is the bird owner.
+3. The green house is the water drinker.
+4. The red house is the milk drinker.
+5. The horse owner is immediately to the left of the white house.
+6. The german is immediately to the left of the dog owner.
+7. The red house is the fish owner.
+8. The yellow house and the beer drinker are in adjacent houses.
+9. The brit is immediately to the left of the water drinker.
+10. The dog owner is immediately to the left of the blue house.
+11. The tea drinker is immediately to the left of the cat owner.
+12. The swede is in house 5.
+
+PUZZLE 4 (12 clues):
+1. The brit is immediately to the left of the cat owner.
+2. The white house is immediately to the left of the fish owner.
+3. The blue house is the horse owner.
+4. The milk drinker is the bird owner.
+5. The water drinker is immediately to the left of the white house.
+6. The milk drinker is immediately to the left of the dog owner.
+7. The green house and the beer drinker are in adjacent houses.
+8. The dane and the red house are in adjacent houses.
+9. The german is immediately to the left of the coffee drinker.
+10. The german is immediately to the left of the dog owner.
+11. The green house is immediately to the left of the dog owner.
+12. The norwegian is immediately to the left of the bird owner.
+
+PUZZLE 5 (11 clues):
+1. The green house is the coffee drinker.
+2. The yellow house is immediately to the left of the tea drinker.
+3. The dog owner is immediately to the left of the red house.
+4. The white house is the tea drinker.
+5. The german and the fish owner are in adjacent houses.
+6. The milk drinker is the fish owner.
+7. The norwegian is in house 2.
+8. The dane is the coffee drinker.
+9. The white house is immediately to the left of the bird owner.
+10. The swede is the horse owner.
+11. The brit is immediately to the left of the water drinker.
+
+PUZZLE 6 (11 clues):
+1. The tea drinker is immediately to the left of the German.
+2. The swede is immediately to the left of the horse owner.
+3. The blue house is the bird owner.
+4. The fish owner is immediately to the left of the beer drinker.
+5. The coffee drinker is immediately to the left of the Dane.
+6. The milk drinker is immediately to the left of the Swede.
+7. The red house is immediately to the left of the horse owner.
+8. The dane is immediately to the left of the yellow house.
+9. The tea drinker is immediately to the left of the dog owner.
+10. The green house and the tea drinker are in adjacent houses.
+11. The norwegian and the milk drinker are in adjacent houses.

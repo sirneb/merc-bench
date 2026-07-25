@@ -1,0 +1,21 @@
+{
+ "task": "T10",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "high",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": "Robots:\n- R1: (1,3), carrying 1\n- R2: (4,3), carrying 0\n- R3: (3,3), carrying 0\n\nfloor_boxes:\n- (0,3): 2\n- (2,4): 2\n- (5,4): 1\n- (4,3): 2\n\n```json\n{\n  \"robots\": [\n    {\"id\": \"R1\", \"x\": 1, \"y\": 3, \"carrying\": 1},\n    {\"id\": \"R2\", \"x\": 4, \"y\": 3, \"carrying\": 0},\n    {\"id\": \"R3\", \"x\": 3, \"y\": 3, \"carrying\": 0}\n  ],\n  \"floor_boxes\": [\n    {\"x\": 0, \"y\": 3, \"count\": 2},\n    {\"x\": 2, \"y\": 4, \"count\": 2},\n    {\"x\": 5, \"y\": 4, \"count\": 1},\n    {\"x\": 4, \"y\": 3, \"count\": 2}\n  ]\n}\n```",
+ "usage": {
+  "input": 2,
+  "cache_write": 15719,
+  "cache_read": 0,
+  "output": 1818
+ },
+ "duration_s": 17.9,
+ "cost_usd": 0.1437,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

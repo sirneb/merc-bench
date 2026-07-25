@@ -1,0 +1,113 @@
+{
+ "1": {
+  "nationality": [
+   "Swede",
+   "Dane",
+   "Brit",
+   "Norwegian",
+   "German"
+  ],
+  "color": [
+   "green",
+   "white",
+   "blue",
+   "yellow",
+   "red"
+  ],
+  "drink": [
+   "coffee",
+   "water",
+   "beer",
+   "tea",
+   "milk"
+  ],
+  "pet": [
+   "cat",
+   "fish",
+   "horse",
+   "dog",
+   "bird"
+  ],
+  "job": [
+   "pilot",
+   "doctor",
+   "teacher",
+   "chef",
+   "artist"
+  ]
+ },
+ "2": {
+  "nationality": [
+   "Swede",
+   "German",
+   "Brit",
+   "Dane",
+   "Norwegian"
+  ],
+  "color": [
+   "red",
+   "yellow",
+   "blue",
+   "green",
+   "white"
+  ],
+  "drink": [
+   "coffee",
+   "beer",
+   "water",
+   "tea",
+   "milk"
+  ],
+  "pet": [
+   "bird",
+   "horse",
+   "fish",
+   "dog",
+   "cat"
+  ],
+  "job": [
+   "pilot",
+   "doctor",
+   "teacher",
+   "artist",
+   "chef"
+  ]
+ },
+ "3": {
+  "nationality": [
+   "Brit",
+   "German",
+   "Norwegian",
+   "Dane",
+   "Swede"
+  ],
+  "color": [
+   "blue",
+   "yellow",
+   "red",
+   "green",
+   "white"
+  ],
+  "drink": [
+   "beer",
+   "milk",
+   "coffee",
+   "water",
+   "tea"
+  ],
+  "pet": [
+   "dog",
+   "cat",
+   "bird",
+   "horse",
+   "fish"
+  ],
+  "job": [
+   "artist",
+   "teacher",
+   "doctor",
+   "pilot",
+   "chef"
+  ]
+ }
+}

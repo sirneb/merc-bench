@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "low",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, database systems rely on a cache to speed queries; a well-tuned cache stores frequently accessed rows in memory, cutting disk reads dramatically and lowering latency for users who expect instant responses from modern applications built at massive global scale.\n\nHowever, a cache introduces tricky problems; stale data appears when the underlying tables change but the cache still holds old values. Engineers apply invalidation strategies, time-to-live limits, and write-through updates; each approach trades freshness against speed, so teams must choose wisely based on how often their records actually shift over a given period of time.\n\nAlong with this, our fast data pool holds vital rows for many apps, aiding rapid lookups without hitting slow disks. Wrong pools hurt throughput, so smart admins watch traffic charts and adjust ratios day by day, gaining solid gains.\n\nFinally, treat your cache as one tool among many, measure results, tune wisely, and your database work stays mostly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15433,
+  "cache_read": 0,
+  "output": 3259
+ },
+ "duration_s": 38.9,
+ "cost_usd": 0.1779,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

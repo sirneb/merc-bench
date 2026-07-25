@@ -1,0 +1,88 @@
+{
+ "task": "T1",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "max",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "696580"
+   },
+   {
+    "id": 2,
+    "value": "2505762"
+   },
+   {
+    "id": 3,
+    "value": "1814384"
+   },
+   {
+    "id": 4,
+    "value": "413336"
+   },
+   {
+    "id": 5,
+    "value": "1841616"
+   },
+   {
+    "id": 6,
+    "value": "-985"
+   },
+   {
+    "id": 7,
+    "value": "-1683"
+   },
+   {
+    "id": 8,
+    "value": "-569"
+   },
+   {
+    "id": 9,
+    "value": "-2194"
+   },
+   {
+    "id": 10,
+    "value": "114"
+   },
+   {
+    "id": 11,
+    "value": "46"
+   },
+   {
+    "id": 12,
+    "value": "114"
+   },
+   {
+    "id": 13,
+    "value": "38614.7"
+   },
+   {
+    "id": 14,
+    "value": "33782.4"
+   },
+   {
+    "id": 15,
+    "value": "10960.32"
+   },
+   {
+    "id": 16,
+    "value": "78036.42"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15587,
+  "cache_read": 0,
+  "output": 2825
+ },
+ "duration_s": 27.8,
+ "cost_usd": 0.1681,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

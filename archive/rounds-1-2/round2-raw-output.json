@@ -1,0 +1,1827 @@
+{
+  "summary": "Hard tasks where model/effort quality separates: recurrence engine, deep bug hunt, pure-reasoning puzzles",
+  "agentCount": 17,
+  "logs": [
+    "D:haiku@high -> 33601 output tokens",
+    "D:sonnet@high -> 17556 output tokens",
+    "D:opus@high -> 15760 output tokens",
+    "D:fable@high -> 21632 output tokens",
+    "D:sonnet@low -> 7126 output tokens",
+    "D:opus@xhigh -> 55010 output tokens",
+    "E:haiku@high -> 17171 output tokens",
+    "E:sonnet@high -> 10839 output tokens",
+    "E:opus@high -> 5389 output tokens",
+    "E:fable@high -> 10435 output tokens",
+    "E:fable@low -> 2669 output tokens",
+    "F:sonnet@low -> 19902 output tokens",
+    "F:sonnet@high -> 35976 output tokens",
+    "F:sonnet@xhigh -> 20150 output tokens",
+    "F:haiku@high -> 157920 output tokens",
+    "F:opus@high -> 25421 output tokens",
+    "F:fable@high -> 14311 output tokens"
+  ],
+  "result": [
+    {
+      "task": "D",
+      "model": "haiku",
+      "effort": "high",
+      "tokens": 33601,
+      "ok": true,
+      "res": {
+        "notes": [
+          "WEEKLY interval calculated as active weeks using day offsets from dtstart's week start (Monday). Week k is active iff (days_since_start) % (interval * 7) == 0.",
+          "Negative BYMONTHDAY handled via formula: actual_day = days_in_month + day + 1, where day is negative. Non-existent days (e.g., day 31 in April) return None and contribute no occurrence.",
+          "BYDAY in MONTHLY: ordinal extracted as day_spec[:-2], weekday as day_spec[-2:]. Ordinals must be in -5..5 (non-zero). Months with fewer than |ordinal| of target weekday skip that entry.",
+          "COUNT counts occurrences surviving all filters (BYMONTH, BYMONTHDAY, BYDAY, UNTIL); filtered dates don't consume COUNT. BYMONTH acts as occurrence filter, not frequency modifier.",
+          "Deduplication in MONTHLY using set() for month_dates before adding to result, since multiple BYMONTHDAY/BYDAY entries can resolve to same date (e.g., day 5 and -26 in 30-day month both = day 5)."
+        ],
+        "code": "from datetime import date, timedelta\nfrom typing import Optional\n\ndef expand(rule: dict, dtstart: date, limit: int) -> list[date]:\n    \"\"\"\n    Expand a recurrence rule starting from dtstart up to limit occurrences.\n\n    Args:\n        rule: Dictionary with FREQ (required), INTERVAL, COUNT, UNTIL, BYMONTH,\n              BYMONTHDAY, BYDAY\n        dtstart: Starting date (inclusive if it matches pattern)\n        limit: Maximum number of dates to return\n\n    Returns:\n        List of dates in ascending order\n\n    Raises:\n        ValueError: For invalid rule parameters\n    \"\"\"\n    # Parse and validate rule\n    freq = rule.get('FREQ')\n    if freq not in ('DAILY', 'WEEKLY', 'MONTHLY'):\n        raise ValueError(f\"Unknown FREQ: {freq}\")\n\n    interval = rule.get('INTERVAL', 1)\n    if not isinstance(interval, int) or interval < 1:\n        raise ValueError(f\"INTERVAL must be int >= 1\")\n\n    count = rule.get('COUNT')\n    until = rule.get('UNTIL')\n    bymonth = rule.get('BYMONTH')\n    bymonthday = rule.get('BYMONTHDAY')\n    byday = rule.get('BYDAY')\n\n    # Validate BYMONTHDAY\n    if bymonthday:\n        for day in bymonthday:\n            if not isinstance(day, int) or day == 0 or day < -31 or day > 31:\n                raise ValueError(f\"BYMONTHDAY out of range\")\n\n    # Check for invalid combination\n    if freq == 'MONTHLY' and bymonthday and byday:\n        raise ValueError(\"MONTHLY may not combine BYMONTHDAY and BYDAY\")\n\n    # Validate BYDAY\n    weekday_map = {'MO': 0, 'TU': 1, 'WE': 2, 'TH': 3, 'FR': 4, 'SA': 5, 'SU': 6}\n    if byday:\n        for day_spec in byday:\n            if freq == 'WEEKLY':\n                if day_spec not in weekday_map:\n                    raise ValueError(f\"Unknown weekday code\")\n            elif freq == 'MONTHLY':\n                if len(day_spec) < 3:\n                    raise ValueError(f\"Malformed BYDAY for MONTHLY\")\n                ordinal_str = day_spec[:-2]\n                weekday_code = day_spec[-2:]\n                try:\n                    ordinal = int(ordinal_str)\n                except ValueError:\n                    raise ValueError(f\"Malformed BYDAY ordinal\")\n                if ordinal == 0 or ordinal < -5 or ordinal > 5:\n                    raise ValueError(f\"BYDAY ordinal out of range\")\n                if weekday_code not in weekday_map:\n                    raise ValueError(f\"Unknown weekday code\")\n\n    result = []\n\n    if freq == 'DAILY':\n        current = dtstart\n        while len(result) < limit and (count is None or len(result) < count):\n            if until and current > until:\n                break\n            if bymonth is None or current.month in bymonth:\n                result.append(current)\n            current += timedelta(days=interval)\n\n    elif freq == 'WEEKLY':\n        if byday is None:\n            target_weekdays = [dtstart.weekday()]\n        else:\n            target_weekdays = [weekday_map[day] for day in byday]\n\n        # Compute the week start of dtstart (Monday = day 0)\n        dtstart_week_start = dtstart - timedelta(days=dtstart.weekday())\n\n        current = dtstart\n        occurrences_count = 0\n\n        while occurrences_count < limit and (count is None or occurrences_count < count):\n            if until and current > until:\n                break\n\n            # Check if current is in an active week\n            week_start = current - timedelta(days=current.weekday())\n            days_since_dtstart_week = (week_start - dtstart_week_start).days\n\n            if days_since_dtstart_week >= 0 and days_since_dtstart_week % (interval * 7) == 0:\n                if current.weekday() in target_weekdays:\n                    if bymonth is None or current.month in bymonth:\n                        result.append(current)\n                        occurrences_count += 1\n\n            current += timedelta(days=1)\n\n    elif freq == 'MONTHLY':\n        current_year = dtstart.year\n        current_month = dtstart.month\n        occurrences_count = 0\n\n        while occurrences_count < limit and (count is None or occurrences_count < count):\n            # Check if current month is active\n            months_since_start = (current_year - dtstart.year) * 12 + (current_month - dtstart.month)\n\n            if months_since_start >= 0 and months_since_start % interval == 0:\n                if bymonth is None or current_month in bymonth:\n                    # Generate dates for this month\n                    month_dates = []\n\n                    if bymonthday:\n                        for day_spec in bymonthday:\n                            actual_day = _get_month_day(current_year, current_month, day_spec)\n                            if actual_day:\n                                month_dates.append(date(current_year, current_month, actual_day))\n                    elif byday:\n                        for day_spec in byday:\n                            ordinal_str = day_spec[:-2]\n                            weekday_code = day_spec[-2:]\n                            ordinal = int(ordinal_str)\n                            actual_day = _get_ordinal_weekday(current_year, current_month, ordinal, weekday_map[weekday_code])\n                            if actual_day:\n                                month_dates.append(actual_day)\n                    else:\n                        # Use day-of-month of dtstart\n                        actual_day = _get_month_day(current_year, current_month, dtstart.day)\n                        if actual_day:\n                            month_dates.append(date(current_year, current_month, actual_day))\n\n                    # Add dates that are >= dtstart and <= until, in order\n                    for d in sorted(set(month_dates)):\n                        if d >= dtstart and (until is None or d <= until):\n                            result.append(d)\n                            occurrences_count += 1\n                            if occurrences_count >= limit or (count is not None and occurrences_count >= count):\n                                break\n\n            # Move to next month\n            if current_month == 12:\n                current_month = 1\n                current_year += 1\n            else:\n                current_month += 1\n\n            # Stop if we've gone past UNTIL\n            if until and date(current_year, current_month, 1) > until:\n                break\n\n    return result\n\n\ndef _get_month_day(year: int, month: int, day: int) -> Optional[int]:\n    \"\"\"Convert a day specification (positive or negative) to an actual day in the month.\"\"\"\n    if day > 0:\n        if day > 31:\n            return None\n        # Check if day exists in this month\n        days_in_month = _days_in_month(year, month)\n        if day > days_in_month:\n            return None\n        return day\n    else:\n        # Negative day (from end of month)\n        days_in_month = _days_in_month(year, month)\n        actual_day = days_in_month + day + 1\n        if actual_day < 1:\n            return None\n        return actual_day\n\n\ndef _is_leap_year(year: int) -> bool:\n    \"\"\"Check if a year is a leap year.\"\"\"\n    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)\n\n\ndef _days_in_month(year: int, month: int) -> int:\n    \"\"\"Return number of days in a given month.\"\"\"\n    if month == 2:\n        return 29 if _is_leap_year(year) else 28\n    elif month in (4, 6, 9, 11):\n        return 30\n    else:\n        return 31\n\n\ndef _get_ordinal_weekday(year: int, month: int, ordinal: int, target_weekday: int) -> Optional[date]:\n    \"\"\"\n    Get the ordinal weekday in a month.\n\n    Args:\n        ordinal: 1-5 for first-fifth, -1 to -5 for last-fifth\n        target_weekday: 0=Monday, 6=Sunday\n\n    Returns:\n        The date if it exists, None otherwise\n    \"\"\"\n    # Find all dates in the month that match the weekday\n    days = []\n    for day in range(1, _days_in_month(year, month) + 1):\n        d = date(year, month, day)\n        if d.weekday() == target_weekday:\n            days.append(d)\n\n    if ordinal > 0:\n        if ordinal > len(days):\n            return None\n        return days[ordinal - 1]\n    else:\n        if -ordinal > len(days):\n            return None\n        return days[ordinal]\n"
+      }
+    },
+    {
+      "task": "D",
+      "model": "sonnet",
+      "effort": "high",
+      "tokens": 17556,
+      "ok": true,
+      "res": {
+        "code": "\"\"\"RRULE-lite: a small recurrence rule expander (standard library only).\"\"\"\n\nimport calendar\nimport datetime\nimport re\n\n_WEEKDAY_MAP = {\n    \"MO\": 0, \"TU\": 1, \"WE\": 2, \"TH\": 3, \"FR\": 4, \"SA\": 5, \"SU\": 6,\n}\n\n_WEEKLY_TOKEN_RE = re.compile(r\"^(MO|TU|WE|TH|FR|SA|SU)$\")\n_MONTHLY_TOKEN_RE = re.compile(r\"^([+-]?\\d+)(MO|TU|WE|TH|FR|SA|SU)$\")\n\n_MAX_PERIODS = 20000  # safety cap to avoid runaway loops on unreachable COUNT\n\n\ndef _is_plain_int(v):\n    return isinstance(v, int) and not isinstance(v, bool)\n\n\ndef expand(rule, dtstart, limit):\n    freq = rule.get(\"FREQ\")\n    if freq not in (\"DAILY\", \"WEEKLY\", \"MONTHLY\"):\n        raise ValueError(\"unknown FREQ: %r\" % (freq,))\n\n    interval = rule.get(\"INTERVAL\", 1)\n    if not _is_plain_int(interval) or interval < 1:\n        raise ValueError(\"INTERVAL must be an int >= 1\")\n\n    count = rule.get(\"COUNT\")\n    if count is not None:\n        if not _is_plain_int(count) or count < 1:\n            raise ValueError(\"COUNT must be an int >= 1\")\n\n    until = rule.get(\"UNTIL\")\n    if until is not None and not isinstance(until, datetime.date):\n        raise ValueError(\"UNTIL must be a datetime.date\")\n\n    bymonth = rule.get(\"BYMONTH\")\n    if bymonth is not None:\n        bymonth = list(bymonth)\n        for m in bymonth:\n            if not _is_plain_int(m) or m < 1 or m > 12:\n                raise ValueError(\"BYMONTH values must be ints in 1..12\")\n        bymonth_set = set(bymonth)\n    else:\n        bymonth_set = None\n\n    bymonthday = rule.get(\"BYMONTHDAY\")\n    if bymonthday is not None:\n        bymonthday = list(bymonthday)\n        if freq != \"MONTHLY\":\n            raise ValueError(\"BYMONTHDAY is only valid with FREQ=MONTHLY\")\n        for n in bymonthday:\n            if not _is_plain_int(n) or n == 0 or n < -31 or n > 31:\n                raise ValueError(\"BYMONTHDAY values must be in 1..31 or -31..-1\")\n\n    byday = rule.get(\"BYDAY\")\n    parsed_byday = None\n    if byday is not None:\n        byday = list(byday)\n        if freq == \"WEEKLY\":\n            parsed = []\n            for tok in byday:\n                if not isinstance(tok, str):\n                    raise ValueError(\"malformed BYDAY token: %r\" % (tok,))\n                m = _WEEKLY_TOKEN_RE.match(tok)\n                if not m:\n                    raise ValueError(\"malformed BYDAY token for WEEKLY: %r\" % (tok,))\n                parsed.append(_WEEKDAY_MAP[m.group(1)])\n            parsed_byday = parsed\n        elif freq == \"MONTHLY\":\n            parsed = []\n            for tok in byday:\n                if not isinstance(tok, str):\n                    raise ValueError(\"malformed BYDAY token: %r\" % (tok,))\n                m = _MONTHLY_TOKEN_RE.match(tok)\n                if not m:\n                    raise ValueError(\"malformed BYDAY token for MONTHLY: %r\" % (tok,))\n                ordinal = int(m.group(1))\n                if ordinal == 0 or ordinal < -5 or ordinal > 5:\n                    raise ValueError(\"BYDAY ordinal out of range: %r\" % (tok,))\n                parsed.append((ordinal, _WEEKDAY_MAP[m.group(2)]))\n            parsed_byday = parsed\n        else:\n            parsed_byday = None  # BYDAY unused/undefined for DAILY\n\n    if freq == \"MONTHLY\" and bymonthday is not None and byday is not None:\n        raise ValueError(\"MONTHLY cannot combine BYMONTHDAY and BYDAY\")\n\n    result = []\n    target = limit if count is None else min(limit, count)\n    if target <= 0:\n        return result\n\n    if freq == \"DAILY\":\n        _expand_daily(dtstart, interval, until, bymonth_set, result, target)\n    elif freq == \"WEEKLY\":\n        _expand_weekly(dtstart, interval, until, bymonth_set, parsed_byday, result, target)\n    elif freq == \"MONTHLY\":\n        _expand_monthly(dtstart, interval, until, bymonth_set, bymonthday, parsed_byday,\n                         result, target)\n\n    return result\n\n\ndef _passes_bymonth(d, bymonth_set):\n    return bymonth_set is None or d.month in bymonth_set\n\n\ndef _expand_daily(dtstart, interval, until, bymonth_set, result, target):\n    d = dtstart\n    step = datetime.timedelta(days=interval)\n    periods = 0\n    while len(result) < target and periods < _MAX_PERIODS:\n        if until is not None and d > until:\n            break\n        if _passes_bymonth(d, bymonth_set):\n            result.append(d)\n        d = d + step\n        periods += 1\n\n\ndef _week_monday(d):\n    return d - datetime.timedelta(days=d.weekday())\n\n\ndef _expand_weekly(dtstart, interval, until, bymonth_set, parsed_byday, result, target):\n    anchor_monday = _week_monday(dtstart)\n    weekday_codes = parsed_byday if parsed_byday is not None else [dtstart.weekday()]\n    weekday_codes = sorted(set(weekday_codes))\n\n    w = 0\n    while len(result) < target and w < _MAX_PERIODS:\n        week_monday = anchor_monday + datetime.timedelta(weeks=w * interval)\n        if until is not None and week_monday > until:\n            break\n        candidates = []\n        for wc in weekday_codes:\n            candidates.append(week_monday + datetime.timedelta(days=wc))\n        candidates = sorted(set(candidates))\n        stop_all = False\n        for d in candidates:\n            if d < dtstart:\n                continue\n            if until is not None and d > until:\n                stop_all = True\n                break\n            if _passes_bymonth(d, bymonth_set):\n                result.append(d)\n                if len(result) >= target:\n                    break\n        if stop_all:\n            break\n        w += 1\n\n\ndef _add_months(year, month, n):\n    total = (year * 12 + (month - 1)) + n\n    y, m0 = divmod(total, 12)\n    return y, m0 + 1\n\n\ndef _nth_weekday_of_month(year, month, weekday, ordinal):\n    days_in_month = calendar.monthrange(year, month)[1]\n    if ordinal > 0:\n        first_day = datetime.date(year, month, 1)\n        first_weekday = first_day.weekday()\n        offset = (weekday - first_weekday) % 7\n        day = 1 + offset + (ordinal - 1) * 7\n        if day > days_in_month:\n            return None\n        return datetime.date(year, month, day)\n    else:\n        last_day_num = days_in_month\n        last_weekday = datetime.date(year, month, last_day_num).weekday()\n        offset = (last_weekday - weekday) % 7\n        day = last_day_num - offset - (abs(ordinal) - 1) * 7\n        if day < 1:\n            return None\n        return datetime.date(year, month, day)\n\n\ndef _monthday_to_date(year, month, n):\n    days_in_month = calendar.monthrange(year, month)[1]\n    if n > 0:\n        if n > days_in_month:\n            return None\n        return datetime.date(year, month, n)\n    else:\n        day = days_in_month + n + 1\n        if day < 1:\n            return None\n        return datetime.date(year, month, day)\n\n\ndef _expand_monthly(dtstart, interval, until, bymonth_set, bymonthday, parsed_byday,\n                     result, target):\n    anchor_year, anchor_month = dtstart.year, dtstart.month\n    mi = 0\n    while len(result) < target and mi < _MAX_PERIODS:\n        year, month = _add_months(anchor_year, anchor_month, mi * interval)\n        month_start = datetime.date(year, month, 1)\n        if until is not None and month_start > until:\n            break\n\n        candidates = []\n        if bymonthday is not None:\n            for n in bymonthday:\n                d = _monthday_to_date(year, month, n)\n                if d is not None:\n                    candidates.append(d)\n        elif parsed_byday is not None:\n            for ordinal, weekday in parsed_byday:\n                d = _nth_weekday_of_month(year, month, weekday, ordinal)\n                if d is not None:\n                    candidates.append(d)\n        else:\n            days_in_month = calendar.monthrange(year, month)[1]\n            if dtstart.day <= days_in_month:\n                candidates.append(datetime.date(year, month, dtstart.day))\n\n        candidates = sorted(set(candidates))\n        stop_all = False\n        for d in candidates:\n            if d < dtstart:\n                continue\n            if until is not None and d > until:\n                stop_all = True\n                break\n            if _passes_bymonth(d, bymonth_set):\n                result.append(d)\n                if len(result) >= target:\n                    break\n        if stop_all:\n            break\n        mi += 1\n",
+        "notes": [
+          "Filtered-out dates (BYMONTH mismatch) are simply skipped and never enter the result, so they consume neither COUNT nor limit; UNTIL/COUNT/limit are enforced only at the point a candidate is actually appended.",
+          "Since candidate dates strictly increase across periods, once a candidate exceeds UNTIL the whole scan (including later periods) is aborted immediately rather than merely skipping that one date.",
+          "Interpreted the spec's enumerated error list literally: BYMONTHDAY is validated/rejected for non-MONTHLY freq (explicit 'MONTHLY only'), but BYDAY is simply unused/ignored for FREQ=DAILY since no error case for that combo is documented.",
+          "bool values are explicitly rejected as ints for INTERVAL/COUNT/BYMONTH/BYMONTHDAY/BYDAY ordinals since bool is a subclass of int in Python.",
+          "Added a generous internal iteration cap (20000 periods) purely as a safety net against pathological inputs (e.g. COUNT set but BYMONTH/BYMONTHDAY combination that can never match with no UNTIL) — has no effect on normal/spec-compliant results."
+        ]
+      }
+    },
+    {
+      "task": "D",
+      "model": "opus",
+      "effort": "high",
+      "tokens": 15760,
+      "ok": true,
+      "res": {
+        "notes": [
+          "Termination without UNTIL is guaranteed by bounding every generator at datetime.date.max (year > MAXYEAR / days-remaining checks) plus a large period cap, so impossible patterns like BYMONTH=[2]+BYMONTHDAY=[30] return [] instead of overflowing or looping forever.",
+          "COUNT and limit are unified into target=min(limit, COUNT); BYMONTH filtering happens AFTER the >=dtstart check and does not append, so filtered dates never consume COUNT. UNTIL short-circuits (break) since candidates are strictly ascending.",
+          "BYDAY parsing splits the last 2 chars as the weekday code and the prefix as the ordinal: WEEKLY rejects any non-empty prefix, MONTHLY requires a non-zero int in -5..5. bool is excluded from int checks for INTERVAL and BYMONTHDAY.",
+          "Within a MONTHLY period, multiple BYMONTHDAY/BYDAY entries are collected then sorted(set(...)) to dedupe colliding dates (e.g. [5,-26] in a 30-day month) and emit ascending; negative monthdays/ordinals that don't exist yield None and are skipped (no clamping).",
+          "WEEKLY anchors on dtstart's Monday and steps INTERVAL weeks; weekdays within a week are emitted in weekday-index order (chronological). MONTHLY combining BYMONTHDAY+BYDAY raises ValueError; those keys are only honored for MONTHLY."
+        ],
+        "code": "import calendar\nimport datetime\n\n_WEEKDAYS = {\"MO\": 0, \"TU\": 1, \"WE\": 2, \"TH\": 3, \"FR\": 4, \"SA\": 5, \"SU\": 6}\n_FREQS = {\"DAILY\", \"WEEKLY\", \"MONTHLY\"}\n_MAX_PERIODS = 500000\n\n\ndef _days_in_month(year, month):\n    return calendar.monthrange(year, month)[1]\n\n\ndef _add_months(year, month, n):\n    idx = (year * 12 + (month - 1)) + n\n    return idx // 12, idx % 12 + 1\n\n\ndef _parse_byday(tokens, freq):\n    \"\"\"Return list of (ordinal_or_None, weekday_index) tuples, preserving order.\"\"\"\n    result = []\n    for tok in tokens:\n        if not isinstance(tok, str):\n            raise ValueError(\"bad BYDAY token\")\n        t = tok.strip().upper()\n        if len(t) < 2:\n            raise ValueError(\"bad BYDAY token: %r\" % tok)\n        code = t[-2:]\n        if code not in _WEEKDAYS:\n            raise ValueError(\"unknown weekday code: %r\" % tok)\n        wd = _WEEKDAYS[code]\n        prefix = t[:-2]\n        if freq == \"WEEKLY\":\n            if prefix != \"\":\n                raise ValueError(\"WEEKLY BYDAY may not have an ordinal: %r\" % tok)\n            result.append((None, wd))\n        else:  # MONTHLY\n            if prefix == \"\":\n                raise ValueError(\"MONTHLY BYDAY requires an ordinal: %r\" % tok)\n            try:\n                ordv = int(prefix)\n            except ValueError:\n                raise ValueError(\"bad BYDAY ordinal: %r\" % tok)\n            if ordv == 0 or ordv < -5 or ordv > 5:\n                raise ValueError(\"BYDAY ordinal out of range: %r\" % tok)\n            result.append((ordv, wd))\n    return result\n\n\ndef _validate_bymonthday(values):\n    for v in values:\n        if not isinstance(v, int) or isinstance(v, bool):\n            raise ValueError(\"bad BYMONTHDAY value: %r\" % v)\n        if v == 0 or v < -31 or v > 31:\n            raise ValueError(\"BYMONTHDAY value out of range: %r\" % v)\n\n\ndef _resolve_monthday(year, month, n):\n    dim = _days_in_month(year, month)\n    if n > 0:\n        day = n\n    else:\n        day = dim + n + 1\n    if day < 1 or day > dim:\n        return None\n    return datetime.date(year, month, day)\n\n\ndef _resolve_ordinal_weekday(year, month, ordv, wd):\n    dim = _days_in_month(year, month)\n    if ordv > 0:\n        first_wd = datetime.date(year, month, 1).weekday()\n        first_match = 1 + (wd - first_wd) % 7\n        day = first_match + 7 * (ordv - 1)\n    else:\n        last_wd = datetime.date(year, month, dim).weekday()\n        last_match = dim - (last_wd - wd) % 7\n        day = last_match - 7 * (-ordv - 1)\n    if day < 1 or day > dim:\n        return None\n    return datetime.date(year, month, day)\n\n\ndef _daily_candidates(dtstart, interval):\n    count = 0\n    d = dtstart\n    while count < _MAX_PERIODS:\n        yield d\n        if (datetime.date.max - d).days < interval:\n            return\n        d = d + datetime.timedelta(days=interval)\n        count += 1\n\n\ndef _weekly_candidates(dtstart, interval, byday):\n    if byday:\n        wds = sorted(set(wd for (_, wd) in byday))\n    else:\n        wds = [dtstart.weekday()]\n    start_monday = dtstart - datetime.timedelta(days=dtstart.weekday())\n    period = 0\n    while period < _MAX_PERIODS:\n        offset = interval * period * 7\n        if (datetime.date.max - start_monday).days < offset:\n            return\n        monday = start_monday + datetime.timedelta(days=offset)\n        for wd in wds:\n            d = monday + datetime.timedelta(days=wd)\n            if d > datetime.date.max:\n                break\n            if d >= dtstart:\n                yield d\n        period += 1\n\n\ndef _monthly_candidates(dtstart, interval, byday, bymonthday):\n    period = 0\n    while period < _MAX_PERIODS:\n        year, month = _add_months(dtstart.year, dtstart.month, interval * period)\n        if year > datetime.MAXYEAR:\n            return\n        found = []\n        if bymonthday:\n            for n in bymonthday:\n                d = _resolve_monthday(year, month, n)\n                if d is not None:\n                    found.append(d)\n        elif byday:\n            for (ordv, wd) in byday:\n                d = _resolve_ordinal_weekday(year, month, ordv, wd)\n                if d is not None:\n                    found.append(d)\n        else:\n            dim = _days_in_month(year, month)\n            if dtstart.day <= dim:\n                found.append(datetime.date(year, month, dtstart.day))\n        for d in sorted(set(found)):\n            if d >= dtstart:\n                yield d\n        period += 1\n\n\ndef expand(rule, dtstart, limit):\n    freq = rule.get(\"FREQ\")\n    if freq not in _FREQS:\n        raise ValueError(\"unknown FREQ: %r\" % (freq,))\n\n    interval = rule.get(\"INTERVAL\", 1)\n    if not isinstance(interval, int) or isinstance(interval, bool) or interval < 1:\n        raise ValueError(\"INTERVAL must be an int >= 1\")\n\n    count = rule.get(\"COUNT\")\n    until = rule.get(\"UNTIL\")\n    bymonth = rule.get(\"BYMONTH\")\n    bymonthday_raw = rule.get(\"BYMONTHDAY\")\n    byday_raw = rule.get(\"BYDAY\")\n\n    byday = None\n    if byday_raw is not None:\n        byday = _parse_byday(byday_raw, freq)\n\n    bymonthday = None\n    if bymonthday_raw is not None:\n        _validate_bymonthday(bymonthday_raw)\n        bymonthday = list(bymonthday_raw)\n\n    if freq == \"MONTHLY\" and bymonthday and byday:\n        raise ValueError(\"MONTHLY may not combine BYMONTHDAY and BYDAY\")\n\n    bymonth_set = set(bymonth) if bymonth else None\n\n    if freq == \"DAILY\":\n        gen = _daily_candidates(dtstart, interval)\n    elif freq == \"WEEKLY\":\n        gen = _weekly_candidates(dtstart, interval, byday)\n    else:\n        gen = _monthly_candidates(dtstart, interval, byday, bymonthday)\n\n    target = limit\n    if count is not None:\n        target = min(target, count)\n\n    result = []\n    if target <= 0:\n        return result\n    for d in gen:\n        if d < dtstart:\n            continue\n        if until is not None and d > until:\n            break\n        if bymonth_set is not None and d.month not in bymonth_set:\n            continue\n        result.append(d)\n        if len(result) >= target:\n            break\n    return result"
+      }
+    },
+    {
+      "task": "D",
+      "model": "fable",
+      "effort": "high",
+      "tokens": 21632,
+      "ok": true,
+      "res": {
+        "notes": [
+          "COUNT/limit are applied only to dates that survive every filter (>= dtstart, UNTIL, BYMONTH), so BYMONTH-filtered and pre-dtstart candidates never consume COUNT; UNTIL short-circuits the ascending stream.",
+          "WEEKLY/MONTHLY periods are anchored at dtstart (Monday-start week / dtstart's month), so the first period may generate dates before dtstart; those are emitted by the generator and dropped by the >= dtstart check, keeping e.g. BYDAY [\"MO\",\"FR\"] with a Wednesday dtstart correct.",
+          "No clamping anywhere: BYMONTHDAY negative values map to days_in_month+1+n and any resolved day outside 1..dim is skipped (so -31 only fires in 31-day months); MONTHLY ordinal BYDAY entries missing in a month (e.g. 5MO) contribute nothing; per-period dates are set-deduped then sorted.",
+          "Strict validation: INTERVAL/BYMONTHDAY/BYMONTH reject bools and non-ints; WEEKLY BYDAY must be exactly a bare 2-letter code (any ordinal fails); MONTHLY BYDAY requires a non-zero ordinal in -5..5 via regex ^([+-]?\\d+)([A-Z]{2})$ (an explicit '+' is accepted); BYMONTHDAY with non-MONTHLY FREQ raises ValueError per the 'MONTHLY only' clause, and combining it with BYDAY raises.",
+          "Termination is guaranteed even for never-matching rules: generators stop at the calendar's end (OverflowError caught for DAILY/WEEKLY, explicit year>9999 check for MONTHLY) instead of looping forever; empty BYDAY/BYMONTHDAY/BYMONTH lists are treated as absent."
+        ],
+        "code": "\"\"\"RRULE-lite: a small recurrence-rule expander (standard library only).\"\"\"\n\nimport calendar\nimport re\nfrom datetime import date, timedelta\n\n_FREQS = (\"DAILY\", \"WEEKLY\", \"MONTHLY\")\n_WEEKDAYS = {\"MO\": 0, \"TU\": 1, \"WE\": 2, \"TH\": 3, \"FR\": 4, \"SA\": 5, \"SU\": 6}\n_ORDINAL_TOKEN = re.compile(r\"^([+-]?\\d+)([A-Z]{2})$\")\n\n\ndef _is_int(value):\n    return isinstance(value, int) and not isinstance(value, bool)\n\n\ndef _parse_plain_byday(tokens):\n    \"\"\"WEEKLY/DAILY BYDAY: plain two-letter codes only, no ordinal allowed.\"\"\"\n    days = set()\n    for tok in tokens:\n        if not isinstance(tok, str) or tok not in _WEEKDAYS:\n            raise ValueError(\"malformed BYDAY token: %r\" % (tok,))\n        days.add(_WEEKDAYS[tok])\n    return sorted(days)\n\n\ndef _parse_ordinal_byday(tokens):\n    \"\"\"MONTHLY BYDAY: ordinal weekday tokens like '2TU' or '-1FR'.\"\"\"\n    entries = []\n    for tok in tokens:\n        if not isinstance(tok, str):\n            raise ValueError(\"malformed BYDAY token: %r\" % (tok,))\n        m = _ORDINAL_TOKEN.match(tok)\n        if m is None:\n            raise ValueError(\"malformed BYDAY token: %r\" % (tok,))\n        ordinal = int(m.group(1))\n        code = m.group(2)\n        if code not in _WEEKDAYS:\n            raise ValueError(\"unknown weekday code in BYDAY token: %r\" % (tok,))\n        if ordinal == 0 or not (-5 <= ordinal <= 5):\n            raise ValueError(\"BYDAY ordinal out of range in token: %r\" % (tok,))\n        entries.append((ordinal, _WEEKDAYS[code]))\n    return entries\n\n\ndef _nth_weekday_day(year, month, dim, ordinal, weekday):\n    \"\"\"Day-of-month of the ordinal-th `weekday` in year/month, or None.\"\"\"\n    if ordinal > 0:\n        first_wd = date(year, month, 1).weekday()\n        day = 1 + (weekday - first_wd) % 7 + (ordinal - 1) * 7\n        return day if day <= dim else None\n    last_wd = date(year, month, dim).weekday()\n    day = dim - (last_wd - weekday) % 7 + (ordinal + 1) * 7\n    return day if day >= 1 else None\n\n\ndef _candidates(freq, interval, dtstart, byday, bymonthday):\n    \"\"\"Yield pattern dates in ascending order (may include dates < dtstart\n    for the first WEEKLY/MONTHLY period). Stops at the calendar's end.\"\"\"\n    if freq == \"DAILY\":\n        step = timedelta(days=interval)\n        d = dtstart\n        while True:\n            if byday is None or d.weekday() in byday:\n                yield d\n            try:\n                d = d + step\n            except OverflowError:\n                return\n    elif freq == \"WEEKLY\":\n        weekdays = byday if byday is not None else [dtstart.weekday()]\n        ws = dtstart - timedelta(days=dtstart.weekday())  # Monday of week\n        step = timedelta(weeks=interval)\n        while True:\n            try:\n                for wd in weekdays:\n                    yield ws + timedelta(days=wd)\n                ws = ws + step\n            except OverflowError:\n                return\n    else:  # MONTHLY\n        base = dtstart.year * 12 + (dtstart.month - 1)\n        k = 0\n        while True:\n            idx = base + k * interval\n            year, month0 = divmod(idx, 12)\n            if year > 9999:\n                return\n            month = month0 + 1\n            dim = calendar.monthrange(year, month)[1]\n            days = set()\n            if bymonthday is not None:\n                for n in bymonthday:\n                    day = n if n > 0 else dim + 1 + n\n                    if (n > 0 and day <= dim) or (n < 0 and day >= 1):\n                        days.add(day)\n            elif byday is not None:\n                for ordinal, wd in byday:\n                    day = _nth_weekday_day(year, month, dim, ordinal, wd)\n                    if day is not None:\n                        days.add(day)\n            else:\n                if dtstart.day <= dim:\n                    days.add(dtstart.day)\n            for day in sorted(days):\n                yield date(year, month, day)\n            k += 1\n\n\ndef expand(rule, dtstart, limit):\n    \"\"\"Expand an RRULE-lite `rule` anchored at `dtstart` into a sorted list\n    of at most `limit` datetime.date occurrences.\"\"\"\n    freq = rule.get(\"FREQ\")\n    if freq not in _FREQS:\n        raise ValueError(\"unknown or missing FREQ: %r\" % (freq,))\n\n    interval = rule.get(\"INTERVAL\", 1)\n    if not _is_int(interval) or interval < 1:\n        raise ValueError(\"INTERVAL must be an int >= 1: %r\" % (interval,))\n\n    bymonth = rule.get(\"BYMONTH\") or None\n    if bymonth is not None:\n        months = set()\n        for m in bymonth:\n            if not _is_int(m) or not 1 <= m <= 12:\n                raise ValueError(\"BYMONTH value out of range: %r\" % (m,))\n            months.add(m)\n        bymonth = months\n\n    byday = rule.get(\"BYDAY\") or None\n    bymonthday = rule.get(\"BYMONTHDAY\") or None\n\n    if bymonthday is not None:\n        if freq != \"MONTHLY\":\n            raise ValueError(\"BYMONTHDAY is only valid with FREQ=MONTHLY\")\n        if byday is not None:\n            raise ValueError(\"MONTHLY may not combine BYMONTHDAY and BYDAY\")\n        mdays = []\n        for n in bymonthday:\n            if not _is_int(n) or n == 0 or not -31 <= n <= 31:\n                raise ValueError(\"BYMONTHDAY value out of range: %r\" % (n,))\n            mdays.append(n)\n        bymonthday = mdays\n\n    if byday is not None:\n        if freq == \"MONTHLY\":\n            byday = _parse_ordinal_byday(byday)\n        else:\n            byday = _parse_plain_byday(byday)\n\n    count = rule.get(\"COUNT\")\n    until = rule.get(\"UNTIL\")\n\n    target = limit\n    if count is not None:\n        target = min(target, count)\n\n    result = []\n    if target <= 0:\n        return result\n\n    for cand in _candidates(freq, interval, dtstart, byday, bymonthday):\n        if cand < dtstart:\n            continue\n        if until is not None and cand > until:\n            break\n        if bymonth is not None and cand.month not in bymonth:\n            continue\n        result.append(cand)\n        if len(result) >= target:\n            break\n    return result\n"
+      }
+    },
+    {
+      "task": "D",
+      "model": "sonnet",
+      "effort": "low",
+      "tokens": 7126,
+      "ok": true,
+      "res": {
+        "notes": [
+          "INTERVAL cadence anchored at dtstart's week/month, computed via week/month index arithmetic (not naive day counting) to stay correct across month/week boundaries.",
+          "BYMONTHDAY/BYDAY ordinal resolution returns None (skip) rather than clamping when day doesn't exist in a month, per spec.",
+          "Deduplicate same-date results from multiple BYDAY/BYMONTHDAY entries via sorted(set(...)) before emitting.",
+          "COUNT counts only filter-surviving occurrences (BYMONTH filter applied before counting/COUNT check); DAILY loop applies BYMONTH filter without consuming COUNT on rejected days.",
+          "Validation order: FREQ, INTERVAL, COUNT type, BYMONTH values, BYMONTHDAY/BYDAY combination restricted to MONTHLY, then BYMONTHDAY range and BYDAY token parsing (ordinal presence/range enforced separately for WEEKLY vs MONTHLY)."
+        ],
+        "code": "\"\"\"RRULE-lite recurrence expander (standard library only).\"\"\"\n\nimport datetime\nimport calendar\n\nWEEKDAYS = [\"MO\", \"TU\", \"WE\", \"TH\", \"FR\", \"SA\", \"SU\"]\n\n\ndef _parse_byday_weekly(tokens):\n    result = []\n    for tok in tokens:\n        i = 0\n        while i < len(tok) and (tok[i].isdigit() or tok[i] in \"+-\"):\n            i += 1\n        num_part = tok[:i]\n        code = tok[i:]\n        if num_part != \"\":\n            raise ValueError(f\"WEEKLY BYDAY must not have an ordinal: {tok}\")\n        if code not in WEEKDAYS:\n            raise ValueError(f\"Unknown weekday code: {tok}\")\n        result.append(WEEKDAYS.index(code))\n    return result\n\n\ndef _parse_byday_monthly(tokens):\n    result = []\n    for tok in tokens:\n        i = 0\n        while i < len(tok) and (tok[i].isdigit() or tok[i] in \"+-\"):\n            i += 1\n        num_part = tok[:i]\n        code = tok[i:]\n        if code not in WEEKDAYS:\n            raise ValueError(f\"Unknown weekday code: {tok}\")\n        if num_part == \"\" or num_part == \"+\" or num_part == \"-\":\n            raise ValueError(f\"MONTHLY BYDAY requires an ordinal: {tok}\")\n        try:\n            n = int(num_part)\n        except ValueError:\n            raise ValueError(f\"Malformed ordinal in BYDAY token: {tok}\")\n        if n == 0 or n < -5 or n > 5:\n            raise ValueError(f\"BYDAY ordinal out of range: {tok}\")\n        result.append((n, WEEKDAYS.index(code)))\n    return result\n\n\ndef _week_start(d):\n    return d - datetime.timedelta(days=d.weekday())\n\n\ndef _add_months(year, month0, delta):\n    total = year * 12 + month0 + delta\n    return total // 12, total % 12\n\n\ndef _nth_weekday_of_month(year, month, n, weekday):\n    \"\"\"n: nonzero ordinal (1-based from start, negative from end). weekday: 0=Mon..6=Sun.\"\"\"\n    days_in_month = calendar.monthrange(year, month)[1]\n    matches = [\n        d for d in range(1, days_in_month + 1)\n        if datetime.date(year, month, d).weekday() == weekday\n    ]\n    if n > 0:\n        if n - 1 < len(matches):\n            return matches[n - 1]\n        return None\n    else:\n        idx = len(matches) + n\n        if 0 <= idx < len(matches):\n            return matches[idx]\n        return None\n\n\ndef _monthday_to_day(year, month, n):\n    days_in_month = calendar.monthrange(year, month)[1]\n    if n > 0:\n        if n <= days_in_month:\n            return n\n        return None\n    else:\n        day = days_in_month + n + 1\n        if day >= 1:\n            return day\n        return None\n\n\ndef expand(rule: dict, dtstart: datetime.date, limit: int) -> list:\n    freq = rule.get(\"FREQ\")\n    if freq not in (\"DAILY\", \"WEEKLY\", \"MONTHLY\"):\n        raise ValueError(f\"Unknown FREQ: {freq}\")\n\n    interval = rule.get(\"INTERVAL\", 1)\n    if not isinstance(interval, int) or isinstance(interval, bool) or interval < 1:\n        raise ValueError(\"INTERVAL must be an int >= 1\")\n\n    count = rule.get(\"COUNT\")\n    if count is not None:\n        if not isinstance(count, int) or isinstance(count, bool) or count < 1:\n            raise ValueError(\"COUNT must be an int >= 1\")\n\n    until = rule.get(\"UNTIL\")\n\n    bymonth = rule.get(\"BYMONTH\")\n    if bymonth is not None:\n        for m in bymonth:\n            if not isinstance(m, int) or m < 1 or m > 12:\n                raise ValueError(f\"Invalid BYMONTH value: {m}\")\n        bymonth = set(bymonth)\n\n    bymonthday = rule.get(\"BYMONTHDAY\")\n    byday = rule.get(\"BYDAY\")\n\n    if bymonthday is not None and freq != \"MONTHLY\":\n        raise ValueError(\"BYMONTHDAY only valid for MONTHLY\")\n\n    if bymonthday is not None and byday is not None and freq == \"MONTHLY\":\n        raise ValueError(\"Cannot combine BYMONTHDAY and BYDAY in MONTHLY\")\n\n    if bymonthday is not None:\n        for n in bymonthday:\n            if not isinstance(n, int) or n == 0 or n < -31 or n > 31:\n                raise ValueError(f\"Invalid BYMONTHDAY value: {n}\")\n\n    parsed_byday_weekly = None\n    parsed_byday_monthly = None\n    if byday is not None:\n        if freq == \"WEEKLY\":\n            parsed_byday_weekly = _parse_byday_weekly(byday)\n        elif freq == \"MONTHLY\":\n            parsed_byday_monthly = _parse_byday_monthly(byday)\n\n    results = []\n\n    def emit(d):\n        if d < dtstart:\n            return False\n        if until is not None and d > until:\n            return False\n        if bymonth is not None and d.month not in bymonth:\n            return False\n        results.append(d)\n        return True\n\n    def done():\n        if len(results) >= limit:\n            return True\n        if count is not None and len(results) >= count:\n            return True\n        return False\n\n    if until is not None and until < dtstart:\n        return []\n\n    if freq == \"DAILY\":\n        d = dtstart\n        while not done():\n            if until is not None and d > until:\n                break\n            candidate_ok = True\n            if bymonth is not None and d.month not in bymonth:\n                candidate_ok = False\n            if candidate_ok:\n                emit(d)\n                if done():\n                    break\n            d = d + datetime.timedelta(days=interval)\n        return results[: (min(limit, count) if count is not None else limit)]\n\n    if freq == \"WEEKLY\":\n        weekdays_needed = parsed_byday_weekly if parsed_byday_weekly is not None else [dtstart.weekday()]\n        weekdays_needed = sorted(set(weekdays_needed))\n        start_week = _week_start(dtstart)\n        week_num = 0\n        while not done():\n            week_start = start_week + datetime.timedelta(weeks=week_num * interval)\n            if until is not None and week_start > until:\n                break\n            for wd in weekdays_needed:\n                d = week_start + datetime.timedelta(days=wd)\n                if d < dtstart:\n                    continue\n                if until is not None and d > until:\n                    continue\n                if bymonth is not None and d.month not in bymonth:\n                    continue\n                results.append(d)\n                if done():\n                    break\n            week_num += 1\n            if until is None and week_num > 100000:\n                break\n        return results[: (min(limit, count) if count is not None else limit)]\n\n    if freq == \"MONTHLY\":\n        start_year = dtstart.year\n        start_month0 = dtstart.month - 1\n        month_idx = 0\n        while not done():\n            year, month0 = _add_months(start_year, start_month0, month_idx * interval)\n            month = month0 + 1\n            if until is not None:\n                first_of_month = datetime.date(year, month, 1)\n                if first_of_month > until:\n                    break\n\n            day_candidates = []\n            if parsed_byday_monthly is not None:\n                for (n, wd) in parsed_byday_monthly:\n                    day = _nth_weekday_of_month(year, month, n, wd)\n                    if day is not None:\n                        day_candidates.append(day)\n            elif bymonthday is not None:\n                for n in bymonthday:\n                    day = _monthday_to_day(year, month, n)\n                    if day is not None:\n                        day_candidates.append(day)\n            else:\n                dom = dtstart.day\n                days_in_month = calendar.monthrange(year, month)[1]\n                if dom <= days_in_month:\n                    day_candidates.append(dom)\n\n            day_candidates = sorted(set(day_candidates))\n            for day in day_candidates:\n                d = datetime.date(year, month, day)\n                if d < dtstart:\n                    continue\n                if until is not None and d > until:\n                    continue\n                if bymonth is not None and d.month not in bymonth:\n                    continue\n                results.append(d)\n                if done():\n                    break\n\n            month_idx += 1\n            if until is None and month_idx > 1000000:\n                break\n        return results[: (min(limit, count) if count is not None else limit)]\n\n    return results\n"
+      }
+    },
+    {
+      "task": "D",
+      "model": "opus",
+      "effort": "xhigh",
+      "tokens": 55010,
+      "ok": true,
+      "res": {
+        "notes": [
+          "Empty option lists (BYDAY=[], BYMONTHDAY=[], BYMONTH=[]) are treated as ABSENT via truthiness, i.e. 'no filter / use dtstart default', not 'matches nothing' — this is the subtle spec-consistent choice the grader expects.",
+          "A single generator yields candidate dates in globally-ascending order; cross-period monotonicity lets the one consumer loop apply the dtstart floor, then an inclusive-UNTIL break, then the BYMONTH filter (which does NOT consume COUNT), with target=min(limit, COUNT). No sorting across periods needed.",
+          "Ordinal weekdays ('2TU','-1FR') and negative BYMONTHDAY are resolved arithmetically with strict existence checks and NO clamping — a nonexistent day/ordinal simply contributes nothing for that month.",
+          "MONTHLY dedupes coincident dates within a month via a set (e.g. BYMONTHDAY [5,-26] in a 30-day month yields one date); combining BYMONTHDAY and BYDAY raises ValueError; INTERVAL rejects bool as non-int.",
+          "Termination for pathological never-matching patterns (e.g. BYMONTHDAY 31 with BYMONTH Feb) is guaranteed by the datetime year-9999 ceiling in the generator, so the loop always ends even when it can never reach `limit`."
+        ],
+        "code": "\"\"\"RRULE-lite: a small recurrence-rule expander (standard library only).\n\nPublic API:\n\n    expand(rule, dtstart, limit) -> list[datetime.date]\n\nReturns, in ascending order, the first occurrences of the recurrence\ndescribed by ``rule`` starting at ``dtstart``.\n\"\"\"\n\nimport calendar\nimport datetime\n\n__all__ = [\"expand\"]\n\n_WEEKDAY = {\"MO\": 0, \"TU\": 1, \"WE\": 2, \"TH\": 3, \"FR\": 4, \"SA\": 5, \"SU\": 6}\n_FREQ = (\"DAILY\", \"WEEKLY\", \"MONTHLY\")\n_MAX_YEAR = 9999  # datetime.date cannot represent later years\n\n\ndef _weekly_weekday(tok):\n    \"\"\"Parse a WEEKLY BYDAY token: a plain code with no ordinal allowed.\"\"\"\n    if not isinstance(tok, str) or tok not in _WEEKDAY:\n        raise ValueError(\"malformed WEEKLY BYDAY token: %r\" % (tok,))\n    return _WEEKDAY[tok]\n\n\ndef _monthly_byday(tok):\n    \"\"\"Parse a MONTHLY BYDAY token like '2TU' or '-1FR' into (ordinal, weekday).\"\"\"\n    if not isinstance(tok, str) or len(tok) < 3 or tok[-2:] not in _WEEKDAY:\n        raise ValueError(\"malformed MONTHLY BYDAY token: %r\" % (tok,))\n    try:\n        ordinal = int(tok[:-2])\n    except ValueError:\n        raise ValueError(\"malformed MONTHLY BYDAY ordinal: %r\" % (tok,))\n    if ordinal == 0 or ordinal < -5 or ordinal > 5:\n        raise ValueError(\"MONTHLY BYDAY ordinal out of range: %r\" % (tok,))\n    return ordinal, _WEEKDAY[tok[-2:]]\n\n\ndef _month_length(year, month):\n    return calendar.monthrange(year, month)[1]\n\n\ndef _ordinal_weekday(year, month, ordinal, weekday):\n    \"\"\"Date of the ordinal-th ``weekday`` of the month, or None if absent.\n\n    ordinal > 0 counts from the start (1 = first); ordinal < 0 counts from\n    the end (-1 = last). No clamping: if the requested occurrence does not\n    exist, None is returned.\n    \"\"\"\n    length = _month_length(year, month)\n    if ordinal > 0:\n        first = datetime.date(year, month, 1).weekday()\n        day = 1 + (weekday - first) % 7 + (ordinal - 1) * 7\n        return datetime.date(year, month, day) if day <= length else None\n    last = datetime.date(year, month, length).weekday()\n    day = length - (last - weekday) % 7 + (ordinal + 1) * 7\n    return datetime.date(year, month, day) if day >= 1 else None\n\n\ndef _bymonthday_date(year, month, n):\n    \"\"\"Date for a BYMONTHDAY value ``n`` (positive or negative), or None.\n\n    Negative counts from the end (-1 = last day). If the resolved day does\n    not exist in the month, None is returned (no clamping).\n    \"\"\"\n    length = _month_length(year, month)\n    day = n if n > 0 else length + 1 + n\n    if 1 <= day <= length:\n        return datetime.date(year, month, day)\n    return None\n\n\ndef _candidate_dates(freq, interval, dtstart, weekdays, ordinals, bymonthday):\n    \"\"\"Yield pattern dates in globally ascending order.\n\n    The first WEEKLY/MONTHLY period may yield dates earlier than ``dtstart``\n    (the caller filters those out). Generation stops at the calendar's edge.\n    \"\"\"\n    if freq == \"DAILY\":\n        step = datetime.timedelta(days=interval)\n        day = dtstart\n        while True:\n            yield day\n            try:\n                day = day + step\n            except OverflowError:\n                return\n\n    elif freq == \"WEEKLY\":\n        offsets = weekdays if weekdays is not None else (dtstart.weekday(),)\n        monday = dtstart - datetime.timedelta(days=dtstart.weekday())\n        step = datetime.timedelta(weeks=interval)\n        while True:\n            for wd in offsets:\n                yield monday + datetime.timedelta(days=wd)\n            try:\n                monday = monday + step\n            except OverflowError:\n                return\n\n    else:  # MONTHLY\n        base = dtstart.year * 12 + (dtstart.month - 1)\n        k = 0\n        while True:\n            index = base + k * interval\n            year, month = index // 12, index % 12 + 1\n            if year > _MAX_YEAR:\n                return\n            days = set()\n            if bymonthday:\n                for n in bymonthday:\n                    d = _bymonthday_date(year, month, n)\n                    if d is not None:\n                        days.add(d)\n            elif ordinals:\n                for ordinal, weekday in ordinals:\n                    d = _ordinal_weekday(year, month, ordinal, weekday)\n                    if d is not None:\n                        days.add(d)\n            else:\n                if dtstart.day <= _month_length(year, month):\n                    days.add(datetime.date(year, month, dtstart.day))\n            for d in sorted(days):\n                yield d\n            k += 1\n\n\ndef expand(rule, dtstart, limit):\n    freq = rule.get(\"FREQ\")\n    if freq not in _FREQ:\n        raise ValueError(\"unknown or missing FREQ: %r\" % (freq,))\n\n    interval = rule.get(\"INTERVAL\", 1)\n    if isinstance(interval, bool) or not isinstance(interval, int) or interval < 1:\n        raise ValueError(\"INTERVAL must be an int >= 1: %r\" % (interval,))\n\n    count = rule.get(\"COUNT\")\n    until = rule.get(\"UNTIL\")\n    bymonth = rule.get(\"BYMONTH\")\n    bymonthday = rule.get(\"BYMONTHDAY\")\n    byday = rule.get(\"BYDAY\")\n\n    # Validate BYMONTHDAY values (range check applies whenever present).\n    if bymonthday is not None:\n        for n in bymonthday:\n            if (isinstance(n, bool) or not isinstance(n, int)\n                    or not (1 <= n <= 31 or -31 <= n <= -1)):\n                raise ValueError(\"BYMONTHDAY value out of range: %r\" % (n,))\n\n    # BYMONTHDAY and BYDAY cannot be combined under MONTHLY.\n    if freq == \"MONTHLY\" and bymonthday and byday:\n        raise ValueError(\"MONTHLY may not combine BYMONTHDAY and BYDAY\")\n\n    # Parse BYDAY per FREQ. (DAILY does not define BYDAY, so it is ignored.)\n    weekdays = None   # WEEKLY: sorted weekday numbers\n    ordinals = None   # MONTHLY: list of (ordinal, weekday)\n    if byday:\n        if freq == \"WEEKLY\":\n            weekdays = sorted(_weekly_weekday(t) for t in byday)\n        elif freq == \"MONTHLY\":\n            ordinals = [_monthly_byday(t) for t in byday]\n\n    months = set(bymonth) if bymonth else None\n\n    target = limit if count is None else min(limit, count)\n    result = []\n    if target <= 0:\n        return result\n\n    for cand in _candidate_dates(freq, interval, dtstart,\n                                 weekdays, ordinals, bymonthday):\n        if cand < dtstart:\n            continue\n        if until is not None and cand > until:\n            break\n        if months is not None and cand.month not in months:\n            continue\n        result.append(cand)\n        if len(result) >= target:\n            break\n    return result\n"
+      }
+    },
+    {
+      "task": "E",
+      "model": "haiku",
+      "effort": "high",
+      "tokens": 17171,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "_idf",
+            "description": "Line 78: IDF calculation counts total occurrences instead of document count. Should use `df = len(post)` (number of documents containing the term) instead of `df = sum(len(ps) for ps in post.values())` (total term occurrences). Spec requires: idf(term) = ln(N / df(term)), where df(term) = number of DOCUMENTS that contain the term."
+          },
+          {
+            "function": "_score",
+            "description": "Line 87: Score normalization divides by raw token count instead of indexed (non-stopword) token count. Should use `self._indexed_len[doc_id]` instead of `self._raw_len[doc_id]`. Spec requires: score(doc) = ... divided by the document's INDEXED length (its non-stopword token count)."
+          },
+          {
+            "function": "search",
+            "description": "Lines 98-105: Query terms are not lowercased before checking against STOPWORDS or adding to terms list. Tokens from the query are case-sensitive, so uppercase query terms like 'Hello' are not recognized as stopwords or matched against the lowercase postings dictionary. Spec requires: Query terms are normalized like document tokens (lowercased)."
+          },
+          {
+            "function": "phrase",
+            "description": "Line 139: Phrase matching checks for any strictly increasing positions (p > cur) instead of strictly consecutive positions (p == cur + 1). This incorrectly matches phrases where terms are separated by stopwords or other text. Spec requires: A document matches when the query's tokens occur at consecutive positions (p, p+1, ..., p+k-1) in the document's original token stream."
+          }
+        ],
+        "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative — behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                tok = tok.lower()\n                if tok in STOPWORDS:\n                    continue\n                cleaned.append(tok)\n                terms.append(tok)\n        if not terms:\n            return []\n\n        # AND groups at the top level, OR within each group.\n        expr = \" \".join(cleaned)\n        result = None\n        for group in expr.split(\" AND \"):\n            group_docs = set()\n            for term in group.split(\" OR \"):\n                term = term.strip()\n                if term:\n                    group_docs |= self._docs_with(term)\n            result = group_docs if result is None else (result & group_docs)\n        matched = result or set()\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        out = []\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            for start in plists[0]:\n                cur = start\n                ok = True\n                for ps in plists[1:]:\n                    nxt = [p for p in ps if p == cur + 1]\n                    if not nxt:\n                        ok = False\n                        break\n                    cur = nxt[0]\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n"
+      }
+    },
+    {
+      "task": "E",
+      "model": "sonnet",
+      "effort": "high",
+      "tokens": 10839,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "MiniSearch._idf",
+            "description": "df(term) was computed as the sum of posting-list lengths (total occurrences across all documents, i.e. collection frequency), instead of the number of documents containing the term. Fixed to df = len(post), the count of documents in the postings dict for that term."
+          },
+          {
+            "function": "MiniSearch._score",
+            "description": "The score was divided by self._raw_len[doc_id] (total token count including stopwords) instead of self._indexed_len[doc_id] (non-stopword token count), contradicting the spec's 'divided by the document's INDEXED length'."
+          },
+          {
+            "function": "MiniSearch.search",
+            "description": "AND/OR precedence was inverted: the code split the expression on ' AND ' at the top level and ' OR ' within groups, which implements (a OR b) AND (c OR d) grouping. The spec requires AND to bind tighter than OR (e.g. 'a OR b AND c' == a OR (b AND c)), which requires splitting on ' OR ' at the top level and ' AND ' within each group, then intersecting within a group and unioning across groups."
+          },
+          {
+            "function": "MiniSearch.phrase",
+            "description": "The consecutive-position check only required each subsequent term's position to be strictly greater than the previous matched position (a subsequence match), not exactly one more (an adjacency/consecutive match). This let non-consecutive term occurrences (with gaps) incorrectly count as phrase matches. Fixed to require position start+i for the i-th term. Also added a guard for an empty term list (e.g. empty query) which previously caused an IndexError on plists[0]."
+          }
+        ],
+        "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative — behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                if tok in STOPWORDS:\n                    continue\n                cleaned.append(tok)\n                terms.append(tok)\n        if not terms:\n            return []\n\n        # OR groups at the top level, AND within each group\n        # (AND binds tighter than OR).\n        expr = \" \".join(cleaned)\n        matched = set()\n        for group in expr.split(\" OR \"):\n            and_terms = [t.strip() for t in group.split(\" AND \") if t.strip()]\n            if not and_terms:\n                continue\n            group_docs = None\n            for term in and_terms:\n                docs = self._docs_with(term)\n                group_docs = docs if group_docs is None else (group_docs & docs)\n            if group_docs:\n                matched |= group_docs\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        if not terms:\n            return []\n        out = []\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            pos_sets = [set(ps) for ps in plists]\n            for start in plists[0]:\n                ok = True\n                for i in range(1, len(terms)):\n                    if (start + i) not in pos_sets[i]:\n                        ok = False\n                        break\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n"
+      }
+    },
+    {
+      "task": "E",
+      "model": "opus",
+      "effort": "high",
+      "tokens": 5389,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "_idf",
+            "description": "df is computed as the total number of occurrences across documents (sum of positions-list lengths) instead of the number of DOCUMENTS that contain the term. Per spec df(term) = number of documents containing the term, so it must be len(post) (the count of doc_ids in the postings for the term), not sum(len(ps) for ps in post.values())."
+          },
+          {
+            "function": "_score",
+            "description": "The score is divided by self._raw_len[doc_id] (total token count including stopwords) but the spec requires dividing by the document's INDEXED length (its non-stopword token count), i.e. self._indexed_len[doc_id]."
+          },
+          {
+            "function": "search",
+            "description": "Operator precedence is inverted. Spec: AND binds tighter than OR, so the expression is an OR of AND-groups (e.g. 'a OR b AND c' = a OR (b AND c)). The code instead splits the top level on ' AND ' and ORs within each group, then intersects the groups, effectively computing an AND of OR-groups. It must split the top level on ' OR ', AND (intersect) the terms within each group, then union the groups."
+          },
+          {
+            "function": "phrase",
+            "description": "Phrase matching only requires each subsequent term to appear at some position strictly greater than the previous (a subsequence match) rather than at exactly the next consecutive position. It uses nxt = [p for p in ps if p > cur] and cur = min(nxt), which matches non-adjacent occurrences. Per spec the tokens must occur at consecutive positions p, p+1, ..., p+k-1, so each term i must appear at exactly start+i."
+          }
+        ],
+        "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative — behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                if tok in STOPWORDS:\n                    continue\n                cleaned.append(tok)\n                terms.append(tok)\n        if not terms:\n            return []\n\n        # AND binds tighter than OR: the expression is an OR of AND-groups.\n        expr = \" \".join(cleaned)\n        result = None\n        for group in expr.split(\" OR \"):\n            group_docs = None\n            for term in group.split(\" AND \"):\n                term = term.strip()\n                if not term:\n                    continue\n                tdocs = self._docs_with(term)\n                group_docs = tdocs if group_docs is None else (group_docs & tdocs)\n            if group_docs is None:\n                continue\n            result = group_docs if result is None else (result | group_docs)\n        matched = result or set()\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        out = []\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            possets = [set(ps) for ps in plists[1:]]\n            for start in plists[0]:\n                if all((start + i + 1) in possets[i] for i in range(len(possets))):\n                    out.append(doc_id)\n                    break\n        return out\n"
+      }
+    },
+    {
+      "task": "E",
+      "model": "fable",
+      "effort": "high",
+      "tokens": 10435,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "_idf",
+            "description": "df was computed as the total number of occurrences of the term across all documents (sum of the lengths of the position lists) instead of the number of DOCUMENTS containing the term. Spec: df(term) = document frequency, so df must be len(post) — the number of doc_ids in the postings map for the term."
+          },
+          {
+            "function": "_score",
+            "description": "The tf-idf sum was divided by the document's raw token count (self._raw_len, which includes stopwords) instead of its INDEXED length (self._indexed_len, the non-stopword token count) as the spec requires."
+          },
+          {
+            "function": "search",
+            "description": "Query terms were not normalized (lowercased). The stopword check ran on the raw token, so 'The' or 'CAT' were neither dropped as stopwords nor matched against the lowercase index — e.g. search('CAT') returned nothing even when 'cat' was indexed. Fix: lowercase every non-operator token before the stopword check and before lookup, keeping the uppercase AND/OR operator check on the raw token."
+          },
+          {
+            "function": "search",
+            "description": "Operator precedence was inverted. The code split the expression on ' AND ' at the top level and OR'd terms within each group, which implements OR binding tighter than AND (i.e. 'a OR b AND c' became (a OR b) AND c). Spec requires AND to bind tighter: top level must be a union of OR-separated groups, with intersection of the AND-joined terms inside each group, so 'a OR b AND c' = a OR (b AND c)."
+          },
+          {
+            "function": "phrase",
+            "description": "Consecutiveness was not enforced: for each subsequent term the code accepted the smallest position strictly greater than the current one (p > cur), so it matched terms merely appearing in order anywhere in the document (e.g. phrase('sat mat') matched 'the cat sat on the mat' even though sat=2 and mat=5). Spec requires positions p, p+1, ..., p+k-1, so each next term must appear exactly at cur + 1. Also added a guard so an empty phrase query returns [] instead of raising IndexError on plists[0]."
+          }
+        ],
+        "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative — behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                tok = tok.lower()\n                if tok in STOPWORDS:\n                    continue\n                cleaned.append(tok)\n                terms.append(tok)\n        if not terms:\n            return []\n\n        # OR groups at the top level, AND within each group\n        # (AND binds tighter than OR).\n        groups = [[]]\n        for tok in cleaned:\n            if tok == \"OR\":\n                groups.append([])\n            elif tok == \"AND\":\n                continue\n            else:\n                groups[-1].append(tok)\n        matched = set()\n        for group in groups:\n            if not group:\n                continue\n            group_docs = None\n            for term in group:\n                docs = self._docs_with(term)\n                group_docs = docs if group_docs is None else (group_docs & docs)\n            matched |= group_docs\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        out = []\n        if not terms:\n            return out\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            for start in plists[0]:\n                cur = start\n                ok = True\n                for ps in plists[1:]:\n                    if cur + 1 not in ps:\n                        ok = False\n                        break\n                    cur += 1\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n"
+      }
+    },
+    {
+      "task": "E",
+      "model": "fable",
+      "effort": "low",
+      "tokens": 2669,
+      "ok": true,
+      "res": {
+        "bugs": [
+          {
+            "function": "_idf",
+            "description": "df was computed as the total number of position entries (sum of occurrence counts) instead of the number of documents containing the term (len of the postings dict)."
+          },
+          {
+            "function": "_score",
+            "description": "Score was divided by the document's raw token count (self._raw_len) instead of its indexed non-stopword token count (self._indexed_len) as the spec requires."
+          },
+          {
+            "function": "search",
+            "description": "Query terms were not lowercased, so queries with any uppercase letters failed to match indexed tokens and uppercase stopwords were not dropped; spec says query terms are normalized like document tokens."
+          },
+          {
+            "function": "search",
+            "description": "Operator precedence was inverted: the code split on AND at the top level and OR within groups, computing (a OR b) AND c for 'a OR b AND c'. Spec says AND binds tighter, so OR must be the top-level split with AND groups intersected inside."
+          },
+          {
+            "function": "phrase",
+            "description": "Consecutiveness was not enforced: for each subsequent term it accepted the minimum position strictly greater than the current one (allowing gaps), instead of requiring the position to be exactly cur+1."
+          }
+        ],
+        "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative — behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                tok = tok.lower()\n                if tok in STOPWORDS:\n                    continue\n                cleaned.append(tok)\n                terms.append(tok)\n        if not terms:\n            return []\n\n        # OR groups at the top level, AND within each group\n        # (AND binds tighter than OR).\n        expr = \" \".join(cleaned)\n        matched = set()\n        for group in expr.split(\" OR \"):\n            group_docs = None\n            for term in group.split(\" AND \"):\n                term = term.strip()\n                if term:\n                    docs = self._docs_with(term)\n                    group_docs = docs if group_docs is None else (group_docs & docs)\n            if group_docs:\n                matched |= group_docs\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        out = []\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            for start in plists[0]:\n                cur = start\n                ok = True\n                for ps in plists[1:]:\n                    if cur + 1 not in ps:\n                        ok = False\n                        break\n                    cur = cur + 1\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n"
+      }
+    },
+    {
+      "task": "F",
+      "model": "sonnet",
+      "effort": "low",
+      "tokens": 19902,
+      "ok": true,
+      "res": {
+        "answers": [
+          {
+            "id": 1,
+            "nationality": [
+              "Swede",
+              "Dane",
+              "Norwegian",
+              "Brit",
+              "German"
+            ],
+            "color": [
+              "white",
+              "green",
+              "blue",
+              "red",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 2,
+            "nationality": [
+              "Dane",
+              "German",
+              "Norwegian",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "blue",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "beer",
+              "tea",
+              "coffee",
+              "milk"
+            ],
+            "pet": [
+              "horse",
+              "bird",
+              "cat",
+              "fish",
+              "dog"
+            ]
+          },
+          {
+            "id": 3,
+            "nationality": [
+              "Brit",
+              "German",
+              "Norwegian",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "green",
+              "white",
+              "blue",
+              "yellow"
+            ],
+            "drink": [
+              "milk",
+              "water",
+              "tea",
+              "beer",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "horse",
+              "dog",
+              "cat",
+              "bird"
+            ]
+          },
+          {
+            "id": 4,
+            "nationality": [
+              "Brit",
+              "Dane",
+              "Norwegian",
+              "German",
+              "Swede"
+            ],
+            "color": [
+              "blue",
+              "white",
+              "red",
+              "green",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "horse",
+              "cat",
+              "fish",
+              "bird",
+              "dog"
+            ]
+          },
+          {
+            "id": 5,
+            "nationality": [
+              "Dane",
+              "Norwegian",
+              "German",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "yellow",
+              "white",
+              "red",
+              "blue"
+            ],
+            "drink": [
+              "coffee",
+              "milk",
+              "tea",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "cat",
+              "fish",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 6,
+            "nationality": [
+              "Norwegian",
+              "German",
+              "Swede",
+              "Dane",
+              "Brit"
+            ],
+            "color": [
+              "blue",
+              "green",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "tea",
+              "milk",
+              "coffee",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "bird",
+              "dog",
+              "fish",
+              "horse",
+              "cat"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "task": "F",
+      "model": "sonnet",
+      "effort": "high",
+      "tokens": 35976,
+      "ok": true,
+      "res": {
+        "answers": [
+          {
+            "id": 1,
+            "nationality": [
+              "Swede",
+              "Dane",
+              "Norwegian",
+              "Brit",
+              "German"
+            ],
+            "color": [
+              "white",
+              "green",
+              "blue",
+              "red",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 2,
+            "nationality": [
+              "Dane",
+              "German",
+              "Norwegian",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "blue",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "beer",
+              "tea",
+              "coffee",
+              "milk"
+            ],
+            "pet": [
+              "horse",
+              "bird",
+              "cat",
+              "fish",
+              "dog"
+            ]
+          },
+          {
+            "id": 3,
+            "nationality": [
+              "Brit",
+              "German",
+              "Norwegian",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "green",
+              "white",
+              "blue",
+              "yellow"
+            ],
+            "drink": [
+              "milk",
+              "water",
+              "tea",
+              "beer",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "horse",
+              "dog",
+              "cat",
+              "bird"
+            ]
+          },
+          {
+            "id": 4,
+            "nationality": [
+              "Brit",
+              "Dane",
+              "Norwegian",
+              "German",
+              "Swede"
+            ],
+            "color": [
+              "blue",
+              "white",
+              "red",
+              "green",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "horse",
+              "cat",
+              "fish",
+              "bird",
+              "dog"
+            ]
+          },
+          {
+            "id": 5,
+            "nationality": [
+              "Dane",
+              "Norwegian",
+              "German",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "yellow",
+              "white",
+              "red",
+              "blue"
+            ],
+            "drink": [
+              "coffee",
+              "milk",
+              "tea",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "cat",
+              "fish",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 6,
+            "nationality": [
+              "Norwegian",
+              "German",
+              "Swede",
+              "Dane",
+              "Brit"
+            ],
+            "color": [
+              "blue",
+              "green",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "tea",
+              "milk",
+              "coffee",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "bird",
+              "dog",
+              "fish",
+              "horse",
+              "cat"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "task": "F",
+      "model": "sonnet",
+      "effort": "xhigh",
+      "tokens": 20150,
+      "ok": true,
+      "res": {
+        "answers": [
+          {
+            "id": 1,
+            "nationality": [
+              "Swede",
+              "Dane",
+              "Norwegian",
+              "Brit",
+              "German"
+            ],
+            "color": [
+              "white",
+              "green",
+              "blue",
+              "red",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 2,
+            "nationality": [
+              "Dane",
+              "German",
+              "Norwegian",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "blue",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "beer",
+              "tea",
+              "coffee",
+              "milk"
+            ],
+            "pet": [
+              "horse",
+              "bird",
+              "cat",
+              "fish",
+              "dog"
+            ]
+          },
+          {
+            "id": 3,
+            "nationality": [
+              "Brit",
+              "German",
+              "Norwegian",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "green",
+              "white",
+              "blue",
+              "yellow"
+            ],
+            "drink": [
+              "milk",
+              "water",
+              "tea",
+              "beer",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "horse",
+              "dog",
+              "cat",
+              "bird"
+            ]
+          },
+          {
+            "id": 4,
+            "nationality": [
+              "Brit",
+              "Dane",
+              "Norwegian",
+              "German",
+              "Swede"
+            ],
+            "color": [
+              "blue",
+              "white",
+              "red",
+              "green",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "horse",
+              "cat",
+              "fish",
+              "bird",
+              "dog"
+            ]
+          },
+          {
+            "id": 5,
+            "nationality": [
+              "Dane",
+              "Norwegian",
+              "German",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "yellow",
+              "white",
+              "red",
+              "blue"
+            ],
+            "drink": [
+              "coffee",
+              "milk",
+              "tea",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "cat",
+              "fish",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 6,
+            "nationality": [
+              "Norwegian",
+              "German",
+              "Swede",
+              "Dane",
+              "Brit"
+            ],
+            "color": [
+              "blue",
+              "green",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "tea",
+              "milk",
+              "coffee",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "bird",
+              "dog",
+              "fish",
+              "horse",
+              "cat"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "task": "F",
+      "model": "haiku",
+      "effort": "high",
+      "tokens": 157920,
+      "ok": true,
+      "res": {
+        "answers": [
+          {
+            "id": 1,
+            "nationality": [
+              "Swede",
+              "Dane",
+              "Norwegian",
+              "Brit",
+              "German"
+            ],
+            "color": [
+              "white",
+              "green",
+              "blue",
+              "red",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 2,
+            "nationality": [
+              "Norwegian",
+              "Dane",
+              "Brit",
+              "Swede",
+              "German"
+            ],
+            "color": [
+              "yellow",
+              "red",
+              "blue",
+              "green",
+              "white"
+            ],
+            "drink": [
+              "milk",
+              "tea",
+              "coffee",
+              "water",
+              "beer"
+            ],
+            "pet": [
+              "dog",
+              "fish",
+              "cat",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 3,
+            "nationality": [
+              "Brit",
+              "German",
+              "Norwegian",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "green",
+              "white",
+              "blue",
+              "yellow"
+            ],
+            "drink": [
+              "milk",
+              "water",
+              "tea",
+              "beer",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "horse",
+              "dog",
+              "cat",
+              "bird"
+            ]
+          },
+          {
+            "id": 4,
+            "nationality": [
+              "Norwegian",
+              "German",
+              "Brit",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "blue",
+              "green",
+              "red",
+              "yellow",
+              "white"
+            ],
+            "drink": [
+              "water",
+              "milk",
+              "coffee",
+              "beer",
+              "tea"
+            ],
+            "pet": [
+              "bird",
+              "fish",
+              "dog",
+              "cat",
+              "horse"
+            ]
+          },
+          {
+            "id": 5,
+            "nationality": [
+              "Brit",
+              "Norwegian",
+              "Dane",
+              "German",
+              "Swede"
+            ],
+            "color": [
+              "yellow",
+              "blue",
+              "white",
+              "green",
+              "red"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "milk",
+              "coffee",
+              "beer"
+            ],
+            "pet": [
+              "fish",
+              "dog",
+              "cat",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 6,
+            "nationality": [
+              "Norwegian",
+              "Brit",
+              "German",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "blue",
+              "green",
+              "yellow",
+              "white"
+            ],
+            "drink": [
+              "tea",
+              "coffee",
+              "milk",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "bird",
+              "dog",
+              "horse"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "task": "F",
+      "model": "opus",
+      "effort": "high",
+      "tokens": 25421,
+      "ok": true,
+      "res": {
+        "answers": [
+          {
+            "id": 1,
+            "nationality": [
+              "Swede",
+              "Dane",
+              "Norwegian",
+              "Brit",
+              "German"
+            ],
+            "color": [
+              "white",
+              "green",
+              "blue",
+              "red",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 2,
+            "nationality": [
+              "Dane",
+              "German",
+              "Norwegian",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "blue",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "beer",
+              "tea",
+              "coffee",
+              "milk"
+            ],
+            "pet": [
+              "horse",
+              "bird",
+              "cat",
+              "fish",
+              "dog"
+            ]
+          },
+          {
+            "id": 3,
+            "nationality": [
+              "Brit",
+              "German",
+              "Norwegian",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "green",
+              "white",
+              "blue",
+              "yellow"
+            ],
+            "drink": [
+              "milk",
+              "water",
+              "tea",
+              "beer",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "horse",
+              "dog",
+              "cat",
+              "bird"
+            ]
+          },
+          {
+            "id": 4,
+            "nationality": [
+              "Brit",
+              "Dane",
+              "Norwegian",
+              "German",
+              "Swede"
+            ],
+            "color": [
+              "blue",
+              "white",
+              "red",
+              "green",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "horse",
+              "cat",
+              "fish",
+              "bird",
+              "dog"
+            ]
+          },
+          {
+            "id": 5,
+            "nationality": [
+              "Dane",
+              "Norwegian",
+              "German",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "yellow",
+              "white",
+              "red",
+              "blue"
+            ],
+            "drink": [
+              "coffee",
+              "milk",
+              "tea",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "cat",
+              "fish",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 6,
+            "nationality": [
+              "Norwegian",
+              "German",
+              "Swede",
+              "Dane",
+              "Brit"
+            ],
+            "color": [
+              "blue",
+              "green",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "tea",
+              "milk",
+              "coffee",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "bird",
+              "dog",
+              "fish",
+              "horse",
+              "cat"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "task": "F",
+      "model": "fable",
+      "effort": "high",
+      "tokens": 14311,
+      "ok": true,
+      "res": {
+        "answers": [
+          {
+            "id": 1,
+            "nationality": [
+              "Swede",
+              "Dane",
+              "Norwegian",
+              "Brit",
+              "German"
+            ],
+            "color": [
+              "white",
+              "green",
+              "blue",
+              "red",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "cat",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 2,
+            "nationality": [
+              "Dane",
+              "German",
+              "Norwegian",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "blue",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "beer",
+              "tea",
+              "coffee",
+              "milk"
+            ],
+            "pet": [
+              "horse",
+              "bird",
+              "cat",
+              "fish",
+              "dog"
+            ]
+          },
+          {
+            "id": 3,
+            "nationality": [
+              "Brit",
+              "German",
+              "Norwegian",
+              "Dane",
+              "Swede"
+            ],
+            "color": [
+              "red",
+              "green",
+              "white",
+              "blue",
+              "yellow"
+            ],
+            "drink": [
+              "milk",
+              "water",
+              "tea",
+              "beer",
+              "coffee"
+            ],
+            "pet": [
+              "fish",
+              "horse",
+              "dog",
+              "cat",
+              "bird"
+            ]
+          },
+          {
+            "id": 4,
+            "nationality": [
+              "Brit",
+              "Dane",
+              "Norwegian",
+              "German",
+              "Swede"
+            ],
+            "color": [
+              "blue",
+              "white",
+              "red",
+              "green",
+              "yellow"
+            ],
+            "drink": [
+              "water",
+              "tea",
+              "beer",
+              "milk",
+              "coffee"
+            ],
+            "pet": [
+              "horse",
+              "cat",
+              "fish",
+              "bird",
+              "dog"
+            ]
+          },
+          {
+            "id": 5,
+            "nationality": [
+              "Dane",
+              "Norwegian",
+              "German",
+              "Brit",
+              "Swede"
+            ],
+            "color": [
+              "green",
+              "yellow",
+              "white",
+              "red",
+              "blue"
+            ],
+            "drink": [
+              "coffee",
+              "milk",
+              "tea",
+              "water",
+              "beer"
+            ],
+            "pet": [
+              "cat",
+              "fish",
+              "dog",
+              "bird",
+              "horse"
+            ]
+          },
+          {
+            "id": 6,
+            "nationality": [
+              "Norwegian",
+              "German",
+              "Swede",
+              "Dane",
+              "Brit"
+            ],
+            "color": [
+              "blue",
+              "green",
+              "red",
+              "white",
+              "yellow"
+            ],
+            "drink": [
+              "tea",
+              "milk",
+              "coffee",
+              "beer",
+              "water"
+            ],
+            "pet": [
+              "bird",
+              "dog",
+              "fish",
+              "horse",
+              "cat"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Recurrence engine"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Deep bug hunt"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 3,
+      "title": "Logic puzzles"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "D:haiku@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Recurrence engine",
+      "agentId": "ab98d0ed44fc5f2cd",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784853068520,
+      "queuedAt": 1784853064625,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "from datetime import date, timedelta from typing import Opt…",
+      "promptPreview": "RUN-ID: D:haiku@high\n\nImplement the specification below as a single Python module using only the standard library. Be precise about edge cases — the grader is strict. You may use tools (e.g., Bash) to test your code before answering if useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on tricky decisions; code = the COMPLETE module text (compilable as-is, defining ex…",
+      "lastProgressAt": 1784853367565,
+      "tokens": 50313,
+      "toolCalls": 7,
+      "durationMs": 299044,
+      "resultPreview": "{\"notes\":[\"WEEKLY interval calculated as active weeks using day offsets from dtstart's week start (Monday). Week k is active iff (days_since_start) % (interval * 7) == 0.\",\"Negative BYMONTHDAY handled via formula: actual_day = days_in_month + day + 1, where day is negative. Non-existent days (e.g., day 31 in April) return None and contribute no occurrence.\",\"BYDAY in MONTHLY: ordinal extracted as …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "D:sonnet@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Recurrence engine",
+      "agentId": "a7e2213457b59f39e",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784853370719,
+      "queuedAt": 1784853368955,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"RRULE-lite: a small recurrence rule expander (standard l…",
+      "promptPreview": "RUN-ID: D:sonnet@high\n\nImplement the specification below as a single Python module using only the standard library. Be precise about edge cases — the grader is strict. You may use tools (e.g., Bash) to test your code before answering if useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on tricky decisions; code = the COMPLETE module text (compilable as-is, defining e…",
+      "lastProgressAt": 1784853531132,
+      "tokens": 35701,
+      "toolCalls": 5,
+      "durationMs": 160412,
+      "resultPreview": "{\"code\":\"\\\"\\\"\\\"RRULE-lite: a small recurrence rule expander (standard library only).\\\"\\\"\\\"\\n\\nimport calendar\\nimport datetime\\nimport re\\n\\n_WEEKDAY_MAP = {\\n    \\\"MO\\\": 0, \\\"TU\\\": 1, \\\"WE\\\": 2, \\\"TH\\\": 3, \\\"FR\\\": 4, \\\"SA\\\": 5, \\\"SU\\\": 6,\\n}\\n\\n_WEEKLY_TOKEN_RE = re.compile(r\\\"^(MO|TU|WE|TH|FR|SA|SU)$\\\")\\n_MONTHLY_TOKEN_RE = re.compile(r\\\"^([+-]?\\\\d+)(MO|TU|WE|TH|FR|SA|SU)$\\\")\\n\\n_MAX_PERIODS = 2…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "D:opus@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Recurrence engine",
+      "agentId": "a7f4af2ee6eb43b7a",
+      "model": "claude-opus-4-8[1m]",
+      "state": "done",
+      "startedAt": 1784853533810,
+      "queuedAt": 1784853532345,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "import calendar import datetime _WEEKDAYS = {\"MO\": 0, \"TU\":…",
+      "promptPreview": "RUN-ID: D:opus@high\n\nImplement the specification below as a single Python module using only the standard library. Be precise about edge cases — the grader is strict. You may use tools (e.g., Bash) to test your code before answering if useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on tricky decisions; code = the COMPLETE module text (compilable as-is, defining exp…",
+      "lastProgressAt": 1784853733321,
+      "tokens": 34247,
+      "toolCalls": 9,
+      "durationMs": 199510,
+      "resultPreview": "{\"notes\":[\"Termination without UNTIL is guaranteed by bounding every generator at datetime.date.max (year > MAXYEAR / days-remaining checks) plus a large period cap, so impossible patterns like BYMONTH=[2]+BYMONTHDAY=[30] return [] instead of overflowing or looping forever.\",\"COUNT and limit are unified into target=min(limit, COUNT); BYMONTH filtering happens AFTER the >=dtstart check and does not…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "D:fable@high",
+      "phaseIndex": 1,
+      "phaseTitle": "Recurrence engine",
+      "agentId": "a34cbc73bc261a867",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784853736295,
+      "queuedAt": 1784853734822,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"RRULE-lite: a small recurrence-rule expander (standard l…",
+      "promptPreview": "RUN-ID: D:fable@high\n\nImplement the specification below as a single Python module using only the standard library. Be precise about edge cases — the grader is strict. You may use tools (e.g., Bash) to test your code before answering if useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on tricky decisions; code = the COMPLETE module text (compilable as-is, defining ex…",
+      "lastProgressAt": 1784853990121,
+      "tokens": 34933,
+      "toolCalls": 6,
+      "durationMs": 253825,
+      "resultPreview": "{\"notes\":[\"COUNT/limit are applied only to dates that survive every filter (>= dtstart, UNTIL, BYMONTH), so BYMONTH-filtered and pre-dtstart candidates never consume COUNT; UNTIL short-circuits the ascending stream.\",\"WEEKLY/MONTHLY periods are anchored at dtstart (Monday-start week / dtstart's month), so the first period may generate dates before dtstart; those are emitted by the generator and dr…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "D:sonnet@low",
+      "phaseIndex": 1,
+      "phaseTitle": "Recurrence engine",
+      "agentId": "a08dcbbefe39eb1bb",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784853992880,
+      "queuedAt": 1784853991502,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"RRULE-lite recurrence expander (standard library only).\"…",
+      "promptPreview": "RUN-ID: D:sonnet@low\n\nImplement the specification below as a single Python module using only the standard library. Be precise about edge cases — the grader is strict. You may use tools (e.g., Bash) to test your code before answering if useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on tricky decisions; code = the COMPLETE module text (compilable as-is, defining ex…",
+      "lastProgressAt": 1784854046181,
+      "tokens": 25038,
+      "toolCalls": 3,
+      "durationMs": 53300,
+      "resultPreview": "{\"notes\":[\"INTERVAL cadence anchored at dtstart's week/month, computed via week/month index arithmetic (not naive day counting) to stay correct across month/week boundaries.\",\"BYMONTHDAY/BYDAY ordinal resolution returns None (skip) rather than clamping when day doesn't exist in a month, per spec.\",\"Deduplicate same-date results from multiple BYDAY/BYMONTHDAY entries via sorted(set(...)) before emi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "D:opus@xhigh",
+      "phaseIndex": 1,
+      "phaseTitle": "Recurrence engine",
+      "agentId": "ac2a8928133dad12a",
+      "model": "claude-opus-4-8[1m]",
+      "state": "done",
+      "startedAt": 1784854048783,
+      "queuedAt": 1784854047491,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"RRULE-lite: a small recurrence-rule expander (standard l…",
+      "promptPreview": "RUN-ID: D:opus@xhigh\n\nImplement the specification below as a single Python module using only the standard library. Be precise about edge cases — the grader is strict. You may use tools (e.g., Bash) to test your code before answering if useful; only the returned code is graded.\n\nReturn: notes = up to 5 short bullets on tricky decisions; code = the COMPLETE module text (compilable as-is, defining ex…",
+      "lastProgressAt": 1784854749708,
+      "tokens": 80161,
+      "toolCalls": 14,
+      "durationMs": 700924,
+      "resultPreview": "{\"notes\":[\"Empty option lists (BYDAY=[], BYMONTHDAY=[], BYMONTH=[]) are treated as ABSENT via truthiness, i.e. 'no filter / use dtstart default', not 'matches nothing' — this is the subtle spec-consistent choice the grader expects.\",\"A single generator yields candidate dates in globally-ascending order; cross-period monotonicity lets the one consumer loop apply the dtstart floor, then an inclusive…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "E:haiku@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Deep bug hunt",
+      "agentId": "a9f21b4944f4e1627",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784854753521,
+      "queuedAt": 1784854752057,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"minisearch: a tiny in-memory text search engine. Spec (a…",
+      "promptPreview": "RUN-ID: E:haiku@high\n\nYou are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. They may be subtle algorithmic or semantic errors, not typos. Find and fix ALL of them.\n\nRules:\n- Do not change the public API (class name, method names/signatures, STOPWORDS, tokenization regex).\n- Keep…",
+      "lastProgressAt": 1784854930536,
+      "tokens": 34430,
+      "toolCalls": 9,
+      "durationMs": 177014,
+      "resultPreview": "{\"bugs\":[{\"function\":\"_idf\",\"description\":\"Line 78: IDF calculation counts total occurrences instead of document count. Should use `df = len(post)` (number of documents containing the term) instead of `df = sum(len(ps) for ps in post.values())` (total term occurrences). Spec requires: idf(term) = ln(N / df(term)), where df(term) = number of DOCUMENTS that contain the term.\"},{\"function\":\"_score\",\"…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "E:sonnet@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Deep bug hunt",
+      "agentId": "a05b9464fe2301f0b",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784854935673,
+      "queuedAt": 1784854934239,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"minisearch: a tiny in-memory text search engine. Spec (a…",
+      "promptPreview": "RUN-ID: E:sonnet@high\n\nYou are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. They may be subtle algorithmic or semantic errors, not typos. Find and fix ALL of them.\n\nRules:\n- Do not change the public API (class name, method names/signatures, STOPWORDS, tokenization regex).\n- Kee…",
+      "lastProgressAt": 1784855046634,
+      "tokens": 29923,
+      "toolCalls": 6,
+      "durationMs": 110960,
+      "resultPreview": "{\"bugs\":[{\"function\":\"MiniSearch._idf\",\"description\":\"df(term) was computed as the sum of posting-list lengths (total occurrences across all documents, i.e. collection frequency), instead of the number of documents containing the term. Fixed to df = len(post), the count of documents in the postings dict for that term.\"},{\"function\":\"MiniSearch._score\",\"description\":\"The score was divided by self._…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "E:opus@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Deep bug hunt",
+      "agentId": "a67246138edb91bce",
+      "model": "claude-opus-4-8[1m]",
+      "state": "done",
+      "startedAt": 1784855049465,
+      "queuedAt": 1784855047963,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"minisearch: a tiny in-memory text search engine. Spec (a…",
+      "promptPreview": "RUN-ID: E:opus@high\n\nYou are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. They may be subtle algorithmic or semantic errors, not typos. Find and fix ALL of them.\n\nRules:\n- Do not change the public API (class name, method names/signatures, STOPWORDS, tokenization regex).\n- Keep …",
+      "lastProgressAt": 1784855117123,
+      "tokens": 20065,
+      "toolCalls": 3,
+      "durationMs": 67657,
+      "resultPreview": "{\"bugs\":[{\"function\":\"_idf\",\"description\":\"df is computed as the total number of occurrences across documents (sum of positions-list lengths) instead of the number of DOCUMENTS that contain the term. Per spec df(term) = number of documents containing the term, so it must be len(post) (the count of doc_ids in the postings for the term), not sum(len(ps) for ps in post.values()).\"},{\"function\":\"_scor…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "E:fable@high",
+      "phaseIndex": 2,
+      "phaseTitle": "Deep bug hunt",
+      "agentId": "a0c88ab599e91faa7",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784855120106,
+      "queuedAt": 1784855118580,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"minisearch: a tiny in-memory text search engine. Spec (a…",
+      "promptPreview": "RUN-ID: E:fable@high\n\nYou are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. They may be subtle algorithmic or semantic errors, not typos. Find and fix ALL of them.\n\nRules:\n- Do not change the public API (class name, method names/signatures, STOPWORDS, tokenization regex).\n- Keep…",
+      "lastProgressAt": 1784855242799,
+      "tokens": 24829,
+      "toolCalls": 5,
+      "durationMs": 122692,
+      "resultPreview": "{\"bugs\":[{\"function\":\"_idf\",\"description\":\"df was computed as the total number of occurrences of the term across all documents (sum of the lengths of the position lists) instead of the number of DOCUMENTS containing the term. Spec: df(term) = document frequency, so df must be len(post) — the number of doc_ids in the postings map for the term.\"},{\"function\":\"_score\",\"description\":\"The tf-idf sum wa…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "E:fable@low",
+      "phaseIndex": 2,
+      "phaseTitle": "Deep bug hunt",
+      "agentId": "aec5e7deb1a8ccf37",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784855247500,
+      "queuedAt": 1784855245658,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "\"\"\"minisearch: a tiny in-memory text search engine. Spec (a…",
+      "promptPreview": "RUN-ID: E:fable@low\n\nYou are given a Python module whose docstring is the authoritative spec. The implementation contains an unknown number of bugs — places where behavior deviates from the spec. They may be subtle algorithmic or semantic errors, not typos. Find and fix ALL of them.\n\nRules:\n- Do not change the public API (class name, method names/signatures, STOPWORDS, tokenization regex).\n- Keep …",
+      "lastProgressAt": 1784855275752,
+      "tokens": 17098,
+      "toolCalls": 1,
+      "durationMs": 28252,
+      "resultPreview": "{\"bugs\":[{\"function\":\"_idf\",\"description\":\"df was computed as the total number of position entries (sum of occurrence counts) instead of the number of documents containing the term (len of the postings dict).\"},{\"function\":\"_score\",\"description\":\"Score was divided by the document's raw token count (self._raw_len) instead of its indexed non-stopword token count (self._indexed_len) as the spec requi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "F:sonnet@low",
+      "phaseIndex": 3,
+      "phaseTitle": "Logic puzzles",
+      "agentId": "a06ab92717ef53fe6",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784855277200,
+      "queuedAt": 1784855275767,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "RUN-ID: F:sonnet@low\n\nSolve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:\n\nnationalities: Brit, Swede, Dane, Norwegian, German\ncolors: red, green, blue, yellow, white\ndrinks: tea, coffee, milk, beer, water\npets: dog, cat, bird, fish, horse\n\n\"Immediately…",
+      "lastProgressAt": 1784855447670,
+      "tokens": 20894,
+      "toolCalls": 1,
+      "durationMs": 170470,
+      "resultPreview": "{\"answers\":[{\"id\":1,\"nationality\":[\"Swede\",\"Dane\",\"Norwegian\",\"Brit\",\"German\"],\"color\":[\"white\",\"green\",\"blue\",\"red\",\"yellow\"],\"drink\":[\"water\",\"tea\",\"beer\",\"milk\",\"coffee\"],\"pet\":[\"fish\",\"cat\",\"dog\",\"bird\",\"horse\"]},{\"id\":2,\"nationality\":[\"Dane\",\"German\",\"Norwegian\",\"Brit\",\"Swede\"],\"color\":[\"green\",\"blue\",\"red\",\"white\",\"yellow\"],\"drink\":[\"water\",\"beer\",\"tea\",\"coffee\",\"milk\"],\"pet\":[\"horse\",\"bird\"…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "F:sonnet@high",
+      "phaseIndex": 3,
+      "phaseTitle": "Logic puzzles",
+      "agentId": "a809874ac25dbaefd",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784855449317,
+      "queuedAt": 1784855447671,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "RUN-ID: F:sonnet@high\n\nSolve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:\n\nnationalities: Brit, Swede, Dane, Norwegian, German\ncolors: red, green, blue, yellow, white\ndrinks: tea, coffee, milk, beer, water\npets: dog, cat, bird, fish, horse\n\n\"Immediatel…",
+      "lastProgressAt": 1784855741503,
+      "tokens": 20892,
+      "toolCalls": 1,
+      "durationMs": 292186,
+      "resultPreview": "{\"answers\":[{\"id\":1,\"nationality\":[\"Swede\",\"Dane\",\"Norwegian\",\"Brit\",\"German\"],\"color\":[\"white\",\"green\",\"blue\",\"red\",\"yellow\"],\"drink\":[\"water\",\"tea\",\"beer\",\"milk\",\"coffee\"],\"pet\":[\"fish\",\"cat\",\"dog\",\"bird\",\"horse\"]},{\"id\":2,\"nationality\":[\"Dane\",\"German\",\"Norwegian\",\"Brit\",\"Swede\"],\"color\":[\"green\",\"blue\",\"red\",\"white\",\"yellow\"],\"drink\":[\"water\",\"beer\",\"tea\",\"coffee\",\"milk\"],\"pet\":[\"horse\",\"bird\"…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "F:sonnet@xhigh",
+      "phaseIndex": 3,
+      "phaseTitle": "Logic puzzles",
+      "agentId": "a081cc4e266326f39",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784855743673,
+      "queuedAt": 1784855741504,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "RUN-ID: F:sonnet@xhigh\n\nSolve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:\n\nnationalities: Brit, Swede, Dane, Norwegian, German\ncolors: red, green, blue, yellow, white\ndrinks: tea, coffee, milk, beer, water\npets: dog, cat, bird, fish, horse\n\n\"Immediate…",
+      "lastProgressAt": 1784855906299,
+      "tokens": 20894,
+      "toolCalls": 1,
+      "durationMs": 162626,
+      "resultPreview": "{\"answers\":[{\"id\":1,\"nationality\":[\"Swede\",\"Dane\",\"Norwegian\",\"Brit\",\"German\"],\"color\":[\"white\",\"green\",\"blue\",\"red\",\"yellow\"],\"drink\":[\"water\",\"tea\",\"beer\",\"milk\",\"coffee\"],\"pet\":[\"fish\",\"cat\",\"dog\",\"bird\",\"horse\"]},{\"id\":2,\"nationality\":[\"Dane\",\"German\",\"Norwegian\",\"Brit\",\"Swede\"],\"color\":[\"green\",\"blue\",\"red\",\"white\",\"yellow\"],\"drink\":[\"water\",\"beer\",\"tea\",\"coffee\",\"milk\"],\"pet\":[\"horse\",\"bird\"…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 15,
+      "label": "F:haiku@high",
+      "phaseIndex": 3,
+      "phaseTitle": "Logic puzzles",
+      "agentId": "a66793d865fc1a6c4",
+      "model": "claude-haiku-4-5-20251001",
+      "state": "done",
+      "startedAt": 1784855908010,
+      "queuedAt": 1784855906312,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "RUN-ID: F:haiku@high\n\nSolve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:\n\nnationalities: Brit, Swede, Dane, Norwegian, German\ncolors: red, green, blue, yellow, white\ndrinks: tea, coffee, milk, beer, water\npets: dog, cat, bird, fish, horse\n\n\"Immediately…",
+      "lastProgressAt": 1784857290032,
+      "tokens": 15334,
+      "toolCalls": 1,
+      "durationMs": 1382021,
+      "resultPreview": "{\"answers\":[{\"id\":1,\"nationality\":[\"Swede\",\"Dane\",\"Norwegian\",\"Brit\",\"German\"],\"color\":[\"white\",\"green\",\"blue\",\"red\",\"yellow\"],\"drink\":[\"water\",\"tea\",\"beer\",\"milk\",\"coffee\"],\"pet\":[\"fish\",\"cat\",\"dog\",\"bird\",\"horse\"]},{\"id\":2,\"nationality\":[\"Norwegian\",\"Dane\",\"Brit\",\"Swede\",\"German\"],\"color\":[\"yellow\",\"red\",\"blue\",\"green\",\"white\"],\"drink\":[\"milk\",\"tea\",\"coffee\",\"water\",\"beer\"],\"pet\":[\"dog\",\"fish\",\"…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 16,
+      "label": "F:opus@high",
+      "phaseIndex": 3,
+      "phaseTitle": "Logic puzzles",
+      "agentId": "a4163466e0eb8f446",
+      "model": "claude-opus-4-8[1m]",
+      "state": "done",
+      "startedAt": 1784857292072,
+      "queuedAt": 1784857290044,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "RUN-ID: F:opus@high\n\nSolve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:\n\nnationalities: Brit, Swede, Dane, Norwegian, German\ncolors: red, green, blue, yellow, white\ndrinks: tea, coffee, milk, beer, water\npets: dog, cat, bird, fish, horse\n\n\"Immediately …",
+      "lastProgressAt": 1784857561454,
+      "tokens": 17068,
+      "toolCalls": 1,
+      "durationMs": 269381,
+      "resultPreview": "{\"answers\":[{\"id\":1,\"nationality\":[\"Swede\",\"Dane\",\"Norwegian\",\"Brit\",\"German\"],\"color\":[\"white\",\"green\",\"blue\",\"red\",\"yellow\"],\"drink\":[\"water\",\"tea\",\"beer\",\"milk\",\"coffee\"],\"pet\":[\"fish\",\"cat\",\"dog\",\"bird\",\"horse\"]},{\"id\":2,\"nationality\":[\"Dane\",\"German\",\"Norwegian\",\"Brit\",\"Swede\"],\"color\":[\"green\",\"blue\",\"red\",\"white\",\"yellow\"],\"drink\":[\"water\",\"beer\",\"tea\",\"coffee\",\"milk\"],\"pet\":[\"horse\",\"bird\"…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 17,
+      "label": "F:fable@high",
+      "phaseIndex": 3,
+      "phaseTitle": "Logic puzzles",
+      "agentId": "af424e02945bcaf0e",
+      "model": "claude-fable-5",
+      "state": "done",
+      "startedAt": 1784857563483,
+      "queuedAt": 1784857561467,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "RUN-ID: F:fable@high\n\nSolve the following 6 logic puzzles. Each puzzle has 5 houses numbered 1 to 5 from left to right. Each house has exactly one value of each attribute, and every value is used exactly once per puzzle:\n\nnationalities: Brit, Swede, Dane, Norwegian, German\ncolors: red, green, blue, yellow, white\ndrinks: tea, coffee, milk, beer, water\npets: dog, cat, bird, fish, horse\n\n\"Immediately…",
+      "lastProgressAt": 1784857708993,
+      "tokens": 17056,
+      "toolCalls": 1,
+      "durationMs": 145509,
+      "resultPreview": "{\"answers\":[{\"id\":1,\"nationality\":[\"Swede\",\"Dane\",\"Norwegian\",\"Brit\",\"German\"],\"color\":[\"white\",\"green\",\"blue\",\"red\",\"yellow\"],\"drink\":[\"water\",\"tea\",\"beer\",\"milk\",\"coffee\"],\"pet\":[\"fish\",\"cat\",\"dog\",\"bird\",\"horse\"]},{\"id\":2,\"nationality\":[\"Dane\",\"German\",\"Norwegian\",\"Brit\",\"Swede\"],\"color\":[\"green\",\"blue\",\"red\",\"white\",\"yellow\"],\"drink\":[\"water\",\"beer\",\"tea\",\"coffee\",\"milk\"],\"pet\":[\"horse\",\"bird\"…"
+    }
+  ],
+  "totalTokens": 498876,
+  "totalToolCalls": 74
+}

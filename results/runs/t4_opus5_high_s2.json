@@ -1,0 +1,18 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "high",
+ "sample": "s2",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-24",
+ "answer": {
+  "text": "Meanwhile modern systems lean on caching to hide slow disk reads. A well-tuned cache sits between the app and storage, holding hot rows in memory. Latency drops sharply, and the database survives traffic spikes that would otherwise crush it entirely.\n\nHowever a cache adds risk; stale data is the classic hazard. Writes must invalidate keys, or readers see ghosts of old rows. Teams pick policies carefully: write-through keeps the cache fresh but costs latency; write-behind is faster yet loses data during crashes. Sizing matters too, since a tiny cache thrashes and returns almost constant misses.\n\nAlong traffic paths, that fast RAM pool absorbs bulk load; without it, a big SQL farm grinds against disk again and again, burning capacity until timing counts drop off. Hot data stays put, so most apps gain a solid win.\n\nFinally measure everything: hit ratios, eviction rates, and cache lag. Tune slowly, verify results, and then your work is done."
+ },
+ "usage": null,
+ "duration_s": null,
+ "cost_usd": null,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": "replicate produced by an orchestration fault that re-ran the batch"
+}

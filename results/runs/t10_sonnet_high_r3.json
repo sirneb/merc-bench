@@ -1,0 +1,21 @@
+{
+ "task": "T10",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "high",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": "**Final State**\n\n**Robots:**\n- R1: x=1, y=3, carrying=1\n- R2: x=4, y=3, carrying=0\n- R3: x=3, y=3, carrying=0\n\n**Floor boxes (cells with \u22651 box):**\n- (2,4): 2\n- (0,3): 2\n- (4,3): 2\n- (5,4): 1\n\n**Trace summary:**\n- R1: E to (1,0), picked 2 (emptying that cell), moved N\u00d73 to (1,3), W to (0,3), dropped 1 (cell 0,3 goes 1\u21922, R1 now carrying 1), then E back to (1,3).\n- R2: picked 1 at (3,2) (emptying it), moved N,N,W to (2,4), picked 1 more (carrying 2, cell 2,4 goes 3\u21922), moved W to (1,4) (no box there, PICKs are no-ops), moved E\u00d73 to (4,4), then S to (4,3), dropped both boxes there (0\u21922), ending carrying 0.\n- R3: moved S, W to (4,4)\u2192 wait, actual path: S to (5,4), W to (4,4), then later S to (4,3), W to (3,3); DROP commands were no-ops since R3 never picked up a box (carrying stayed 0 throughout).\n\nNo MOVE commands were ever blocked by grid edges or robot collisions in this run \u2014 all moves succeeded as computed above.",
+ "usage": {
+  "input": 2,
+  "cache_write": 19542,
+  "cache_read": 0,
+  "output": 2960
+ },
+ "duration_s": 23.3,
+ "cost_usd": 0.1177,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

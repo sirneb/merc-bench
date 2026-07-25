@@ -1,0 +1,65 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+Solve these 3 logic puzzles. 5 houses numbered 1-5 left to right; each house has exactly one value of each attribute; every value used exactly once per puzzle.
+
+nationalities: Brit, Swede, Dane, Norwegian, German
+colors: red, green, blue, yellow, white
+drinks: tea, coffee, milk, beer, water
+pets: dog, cat, bird, fish, horse
+jobs: teacher, doctor, chef, pilot, artist
+
+"Immediately to the left of Y" means X's house = Y's house - 1. "Adjacent" = house numbers differ by 1. Each puzzle has exactly one solution.
+
+Return answers = one entry per puzzle: {id, nationality[5], color[5], drink[5], pet[5], job[5]} ordered by house 1..5.
+
+PUZZLE 1 (16 clues):
+1. The german is the milk drinker.
+2. The bird owner is the artist.
+3. The chef is immediately to the left of the milk drinker.
+4. The beer drinker is immediately to the left of the yellow house.
+5. The fish owner is immediately to the left of the Brit.
+6. The dane is the white house.
+7. The green house is the pilot.
+8. The white house and the cat owner are in adjacent houses.
+9. The coffee drinker is immediately to the left of the doctor.
+10. The red house is the milk drinker.
+11. The brit and the white house are in adjacent houses.
+12. The water drinker is immediately to the left of the blue house.
+13. The blue house and the doctor are in adjacent houses.
+14. The norwegian is the yellow house.
+15. The horse owner is the teacher.
+16. The horse owner is immediately to the left of the yellow house.
+
+PUZZLE 2 (16 clues):
+1. The swede and the doctor are in adjacent houses.
+2. The coffee drinker is immediately to the left of the German.
+3. The bird owner is immediately to the left of the German.
+4. The milk drinker is the cat owner.
+5. The german is the horse owner.
+6. The yellow house is immediately to the left of the Brit.
+7. The horse owner is immediately to the left of the blue house.
+8. The red house is the pilot.
+9. The bird owner and the doctor are in adjacent houses.
+10. The norwegian and the green house are in adjacent houses.
+11. The beer drinker is immediately to the left of the teacher.
+12. The norwegian is the cat owner.
+13. The red house and the beer drinker are in adjacent houses.
+14. The fish owner is the teacher.
+15. The fish owner and the artist are in adjacent houses.
+16. The tea drinker is the artist.
+
+PUZZLE 3 (14 clues):
+1. The brit is the dog owner.
+2. The doctor is immediately to the left of the water drinker.
+3. The horse owner is immediately to the left of the white house.
+4. The swede is the white house.
+5. The yellow house is immediately to the left of the coffee drinker.
+6. The green house is immediately to the left of the tea drinker.
+7. The beer drinker is the artist.
+8. The teacher is immediately to the left of the bird owner.
+9. The blue house and the teacher are in adjacent houses.
+10. The pilot is immediately to the left of the fish owner.
+11. The german is the teacher.
+12. The coffee drinker and the teacher are in adjacent houses.
+13. The norwegian is the coffee drinker.
+14. The blue house is the artist.

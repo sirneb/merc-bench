@@ -1,0 +1,20 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+Compute each item EXACTLY. Return answers = list of {id, value} where value is the exact number as a string (no thousands separators).
+
+1. 1201 * 580
+2. 2841 * 882
+3. 7436 * 244
+4. 1708 * 242
+5. 2842 * 648
+6. (-525) + (458) + (552) + (-714) + (-698) + (517) + (-932) + (357)
+7. (-875) + (-720) + (-526) + (98) + (500) + (-83) + (78) + (-155)
+8. (-580) + (215) + (-809) + (-758) + (-958) + (578) + (925) + (818)
+9. (-174) + (-300) + (-593) + (-578) + (-323) + (-197) + (-252) + (223)
+10. (4^11) mod 838   (i.e. 4 to the power 11, modulo 838)
+11. (4^14) mod 695   (i.e. 4 to the power 14, modulo 695)
+12. (8^8) mod 149   (i.e. 8 to the power 8, modulo 149)
+13. Increase 33578 by 25%, then decrease the result by 8%. Give the exact result as a decimal (no rounding).
+14. Increase 36720 by 15%, then decrease the result by 20%. Give the exact result as a decimal (no rounding).
+15. Increase 13980 by 12%, then decrease the result by 30%. Give the exact result as a decimal (no rounding).
+16. Increase 79629 by 40%, then decrease the result by 30%. Give the exact result as a decimal (no rounding).

@@ -1,0 +1,57 @@
+{
+ "type": "object",
+ "properties": {
+  "robots": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "x": {
+      "type": "integer"
+     },
+     "y": {
+      "type": "integer"
+     },
+     "carrying": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id",
+     "x",
+     "y",
+     "carrying"
+    ]
+   }
+  },
+  "floor_boxes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "x": {
+      "type": "integer"
+     },
+     "y": {
+      "type": "integer"
+     },
+     "count": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "x",
+     "y",
+     "count"
+    ]
+   }
+  }
+ },
+ "required": [
+  "robots",
+  "floor_boxes"
+ ]
+}

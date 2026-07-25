@@ -1,0 +1,48 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+Simulate this warehouse EXACTLY, command by command, and report the final state.
+
+Grid: 6x6 cells, coordinates (x, y) with x from 0 (west) to 5 (east) and y from 0 (south) to 5 (north). MOVE N means y+1, S means y-1, E means x+1, W means x-1.
+
+Robots (start position x,y and carrying count): R1 at (0,0) carrying 0; R2 at (3,2) carrying 0; R3 at (5,5) carrying 0. Carrying capacity: 2 boxes per robot.
+
+Boxes on the floor at start: (1,0): 2 boxes, (3,2): 1, (2,4): 3, (5,4): 1, (0,3): 1.
+
+Rules, applied per command in the exact order given:
+- MOVE: if the target cell is off-grid OR currently occupied by another robot, the command is IGNORED (robot stays).
+- PICK: if the robot's current cell has at least 1 floor box AND the robot carries fewer than 2, it picks one up (floor count -1, carrying +1); otherwise no-op.
+- DROP: if the robot carries at least 1 box, it drops one on its current cell (floor +1, carrying -1); otherwise no-op.
+
+Commands, in order:
+1. R1 MOVE E
+2. R1 PICK
+3. R1 PICK
+4. R1 PICK
+5. R2 PICK
+6. R2 MOVE N
+7. R2 MOVE N
+8. R2 MOVE W
+9. R2 PICK
+10. R3 MOVE S
+11. R3 MOVE W
+12. R1 MOVE N
+13. R1 MOVE N
+14. R1 MOVE N
+15. R1 MOVE W
+16. R1 DROP
+17. R2 MOVE W
+18. R2 PICK
+19. R2 PICK
+20. R2 PICK
+21. R3 MOVE S
+22. R3 MOVE W
+23. R3 DROP
+24. R1 MOVE E
+25. R2 MOVE E
+26. R2 MOVE E
+27. R2 MOVE E
+28. R2 MOVE S
+29. R2 DROP
+30. R2 DROP
+
+Return: robots = list of {id, x, y, carrying} for R1, R2, R3; floor_boxes = list of {x, y, count} for every cell with at least one box (any order).

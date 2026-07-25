@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "high",
+ "sample": "canonical",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-24",
+ "answer": {
+  "text": "Meanwhile, every database query carries hidden cost: disk seeks, lock waits, and repeated planning. A cache intercepts that cost by storing results near the reader, so cached rows answer later requests without touching storage; this idea shapes modern system design.\n\nHowever, correctness now becomes the hard part. Stale entries mislead readers, so teams pick a strategy: expire keys after a short window, or invalidate them the moment a write lands. Write-through designs update store and cache together, while write-behind buffers changes; both trade risk against speed. Measuring cache hit ratio guides every later tuning decision.\n\nAlong with gains, though, a shortcut brings tricky bugs. RAM stays small, so old data sits around too long, and a warm copy may drift far from what SQL truly holds. Split loading across many hosts, watch for churn, and log all faults.\n\nFinally, treat the cache as a load reducer, never as truth; measure, expire wisely, and your tuning work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15387,
+  "cache_read": 0,
+  "output": 4657
+ },
+ "duration_s": 48.5,
+ "cost_usd": 0.2126,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

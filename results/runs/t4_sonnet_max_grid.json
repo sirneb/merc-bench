@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "max",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile engineers rely on a cache to keep database queries fast; a well-tuned cache stores frequently accessed results in memory, reducing pressure on primary storage so applications respond quickly even as traffic grows across distributed systems and unpredictable user demand.\n\nHowever choosing an optimal eviction policy for a busy service is not trivial; LRU and LFU strategies each balance freshness against hit rate, while cache invalidation must track upstream changes so stale entries never mislead readers, and every cache miss sends a request back to the slower database layer, costing precious milliseconds users rarely forgive.\n\nAlong this road, a local copy of data sits handy in RAM, and holds crucial bits for any app; look-ups occur fast, without a slow disk visit. A slow disk stalls many programs, so cutting that cost is a win for us all.\n\nFinally a well-designed cache turns slow lookups into instant answers, letting engineers ship reliable products while background tasks get done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 19255,
+  "cache_read": 0,
+  "output": 33099
+ },
+ "duration_s": 276.9,
+ "cost_usd": 0.5687,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

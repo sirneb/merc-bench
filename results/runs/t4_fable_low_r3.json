@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "low",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": {
+  "text": "Meanwhile, modern web applications lean on database caching to keep latency low. A cache stores hot query results in memory, sparing the primary database repeated work. When traffic spikes, this layer absorbs reads and keeps response times steady for users.\n\nHowever, caching introduces hard problems. Stale data appears when the cache and the database disagree; invalidation logic must evict entries promptly. Teams choose among write-through, write-back, and write-around strategies, each trading consistency for speed. A cold cache after deployment can trigger a thundering herd; careful warming and request coalescing protect the backend from sudden overload.\n\nAlong with obvious wins, caching brings odd traps; RAM is not without cost, and blind copying of data can outstrip its worth. Admins must audit hit ratios, track drift, and cut stray rows quickly, or risk a slow, murky failing that no log plainly shows.\n\nFinally, treat the cache as an optimization, never as truth. Measure every cache hit, tune sizes, and call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15418,
+  "cache_read": 0,
+  "output": 3
+ },
+ "duration_s": 27.9,
+ "cost_usd": 0.1929,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": ""
+}

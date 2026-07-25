@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "max",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile every busy system leans on a cache sitting ahead of storage, because disk reads cost real time. A warm cache absorbs repeated lookups, trims latency, and spares the primary node from floods of identical queries during heavy traffic spikes.\n\nHowever fast disks become, a cache can still lie. Stale entries drift from the truth held in tables; readers then act on numbers that no longer hold. Invalidation is the tax paid for speed; write-through, write-behind, and plain expiry merely shift that burden, so pick a cache policy matched to the staleness your product tolerates.\n\nAlong that path, sizing is craft, not luck: staff watch hit ratios, RAM caps, and how many rows a warm pool can hold; a sharp fall in hits hints at thrash, so many shops shard hot rows across a group of small fast hosts.\n\nFinally measure before you cache anything, because guesses dressed as tuning waste hours. Numbers alone prove the work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15387,
+  "cache_read": 0,
+  "output": 9048
+ },
+ "duration_s": 94.7,
+ "cost_usd": 0.3224,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

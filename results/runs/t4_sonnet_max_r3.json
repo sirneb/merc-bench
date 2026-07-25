@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "max",
+ "sample": "r3",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-23",
+ "answer": {
+  "text": "Meanwhile engineers building modern web applications rely on cache layers to shrink latency; a well tuned cache can turn a slow disk lookup into a fast memory hit, letting servers answer thousands of requests every single second without much strain.\n\nHowever invalidation remains the hardest problem in any cache strategy; stale entries can silently corrupt results long after the underlying database changes, so teams often pair a cache with short expiration windows, event driven purges, or version tags that force a refresh whenever upstream records mutate, keeping every downstream reader honest, accurate, and fully consistent.\n\nAlong this path, admins should watch hit ratios, disk traffic, and RAM sizing, aligning capacity with actual workload growth without adding surplus cost or risking a slowdown. A small chunk of quick data, put in a fast spot, cuts most disk trips down to almost nothing.\n\nFinally teams should benchmark their cache regularly; small tweaks to eviction rules often deliver outsized wins once tuning is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 19253,
+  "cache_read": 0,
+  "output": 28825
+ },
+ "duration_s": 237.9,
+ "cost_usd": 0.5046,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

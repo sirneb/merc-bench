@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "xhigh",
+ "sample": "grid",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, every busy database reaches a point where disk reads become the bottleneck, and a cache begins to look less like luxury and more like oxygen; a warm cache absorbs the repeated queries that would otherwise crush your storage layer.\n\nHowever, correctness is the hard part. Any cached copy can drift from the truth, so teams must choose an invalidation strategy: expire by time, or evict on write; both trade freshness against load. Write-through keeps things tidy; read-through is simpler to reason about. Measure your hit ratio, because a cache with poor locality adds latency.\n\nAlong with hit ratios, watch RAM outlay: too many rows sitting in costly RAM will not pay off if most stay cold. Trim what you hold, back it by solid TTLs, and audit any stray copy nightly.\n\nFinally, treat the cache as an optimization you can explain, measure, and roll back safely, and your work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 15390,
+  "cache_read": 0,
+  "output": 6001
+ },
+ "duration_s": 65.4,
+ "cost_usd": 0.2462,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,26 @@
+{
+ "type": "object",
+ "properties": {
+  "answers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "integer"
+     },
+     "value": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "value"
+    ]
+   }
+  }
+ },
+ "required": [
+  "answers"
+ ]
+}

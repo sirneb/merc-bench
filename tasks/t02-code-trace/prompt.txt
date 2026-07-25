@@ -1,0 +1,64 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+For each snippet, predict the EXACT stdout of running it with Python 3.12 (every character, every line break). Return answers = list of {id, stdout}.
+
+SNIPPET 1:
+```python
+def f(x, acc=[]):
+    acc.append(x)
+    return acc
+print(f(1))
+print(f(2))
+print(f(3, []))
+```
+
+SNIPPET 2:
+```python
+fs = [lambda: i for i in range(3)]
+print([f() for f in fs])
+i = 99
+print(fs[0]())
+```
+
+SNIPPET 3:
+```python
+print(1 < 3 > 2, (1 < 3) > 2, False == False in [False])
+```
+
+SNIPPET 4:
+```python
+a = [[0]*2]*2
+a[0][0] = 7
+print(a)
+b = a[:]
+b[1] = [9, 9]
+print(a[1], b[0] is a[0])
+```
+
+SNIPPET 5:
+```python
+print(-7 // 2, -7 % 2, 7 // -2, 7 % -2)
+```
+
+SNIPPET 6:
+```python
+d = {1: 'a', True: 'b', 1.0: 'c'}
+print(d, len(d))
+```
+
+SNIPPET 7:
+```python
+def g():
+    try:
+        return 1
+    finally:
+        return 2
+print(g())
+```
+
+SNIPPET 8:
+```python
+g = (n for n in range(4))
+print(3 in g)
+print(list(g))
+```

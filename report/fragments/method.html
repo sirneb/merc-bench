@@ -1,0 +1,13 @@
+<div class="tablewrap">
+  <table>
+    <thead><tr><th>Control</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td>Ground truth first</td><td>Reference implementations cross-checked against independently-written oracles and fuzzing (which caught two harness bugs before any model ran); solver-verified unique puzzles; executed code snippets; generator-computed ledger and simulation answers. All ground truth ships in <code>tasks/*/</code>.</td></tr>
+      <tr><td>One variable at a time</td><td>Identical prompts per task across every configuration; only the model or its effort setting changes. Prompts ship verbatim in <code>tasks/*/prompt.txt</code>.</td></tr>
+      <tr><td>Grading recomputed</td><td>Nothing is trusted from stored records except raw answers. <code>runner/aggregate.py</code> regrades every answer through the shipped graders on every build; <code>make verify</code> is the audit path.</td></tr>
+      <tr><td>Cost accounting</td><td>Per-run dollars (input + cache writes + cache reads + output) at standard list prices from per-request logs. Records missing usage (a logging fault in two replicate batches) carry <code>cost_usd: null</code>; totals containing estimated cells are marked ≈.</td></tr>
+      <tr><td>Replication</td><td>Frontier configurations carry up to n=3 full-sweep samples plus repeated puzzle attempts; sample provenance is in each record's <code>sample</code> field.</td></tr>
+      <tr><td>No tools</td><td>Core tasks forbid tool use (tool access lets every tier self-verify to perfection, masking differences — measured in our archived rounds). The subtle-bugs task (E) permitted tools in its earliest runs; those records are flagged in <code>notes</code>.</td></tr>
+    </tbody>
+  </table>
+</div>

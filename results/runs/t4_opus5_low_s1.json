@@ -1,0 +1,18 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "low",
+ "sample": "s1",
+ "harness": "claude-code-workflow",
+ "date": "2026-07-24",
+ "answer": {
+  "text": "Meanwhile modern systems lean on a cache layer to avoid repeated disk reads; the database stays calm while hot rows sit in memory, ready instantly. A good cache turns slow queries into fast ones without rewriting a single application line.\n\nHowever correctness is harder than speed. Every cached value can drift from the truth stored on disk, so teams pick an invalidation rule: expire by time, evict by size, or delete on write; each choice trades freshness against load. A stale cache can break billing, so measure hit rates and watch what the cache misses.\n\nAlong with that, many shops map hot data into RAM at start up; though that trick works it risks stinky data if any row shifts without alarm, so audit which is truly known as an actual fact.\n\nFinally plan for failure: when that fast layer dies, traffic must still reach storage safely, or your weekend is done."
+ },
+ "usage": null,
+ "duration_s": null,
+ "cost_usd": null,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": "usage records shadowed by duplicated batch; canonical sample carries costs"
+}
