@@ -148,7 +148,11 @@ def grade(ans):
     with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False) as f:
         f.write(code)
         path = f.name
-    bugs, results = _main(path)
+    try:
+        bugs, results = _main(path)
+    except Exception as e:
+        os.unlink(path)
+        return 0, 7, {"load_error": f"fixed_code failed to import: {type(e).__name__}: {e}"[:160]}
     os.unlink(path)
     return bugs, 7, {k: v for k, v in results.items() if not v}
 

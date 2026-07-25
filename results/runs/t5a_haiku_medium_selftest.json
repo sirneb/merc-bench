@@ -1,0 +1,138 @@
+{
+ "task": "T5A",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "medium",
+ "sample": "selftest",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "nationality": [
+     "Swede",
+     "Dane",
+     "Brit",
+     "Norwegian",
+     "German"
+    ],
+    "color": [
+     "Green",
+     "White",
+     "Blue",
+     "Yellow",
+     "Red"
+    ],
+    "drink": [
+     "Coffee",
+     "Water",
+     "Beer",
+     "Tea",
+     "Milk"
+    ],
+    "pet": [
+     "Cat",
+     "Fish",
+     "Horse",
+     "Dog",
+     "Bird"
+    ],
+    "job": [
+     "Pilot",
+     "Doctor",
+     "Teacher",
+     "Chef",
+     "Artist"
+    ]
+   },
+   {
+    "id": 2,
+    "nationality": [
+     "Swede",
+     "German",
+     "Brit",
+     "Danish",
+     "Norwegian"
+    ],
+    "color": [
+     "Red",
+     "Yellow",
+     "Blue",
+     "Green",
+     "White"
+    ],
+    "drink": [
+     "Coffee",
+     "Beer",
+     "Water",
+     "Tea",
+     "Milk"
+    ],
+    "pet": [
+     "Bird",
+     "Horse",
+     "Fish",
+     "Dog",
+     "Cat"
+    ],
+    "job": [
+     "Pilot",
+     "Doctor",
+     "Teacher",
+     "Artist",
+     "Chef"
+    ]
+   },
+   {
+    "id": 3,
+    "nationality": [
+     "Brit",
+     "German",
+     "Norwegian",
+     "Danish",
+     "Swede"
+    ],
+    "color": [
+     "Blue",
+     "Yellow",
+     "Red",
+     "Green",
+     "White"
+    ],
+    "drink": [
+     "Beer",
+     "Milk",
+     "Coffee",
+     "Water",
+     "Tea"
+    ],
+    "pet": [
+     "Dog",
+     "Cat",
+     "Bird",
+     "Horse",
+     "Fish"
+    ],
+    "job": [
+     "Artist",
+     "Teacher",
+     "Doctor",
+     "Pilot",
+     "Chef"
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input": 20,
+  "cache_write": 6076,
+  "cache_read": 41482,
+  "output": 15971
+ },
+ "duration_s": 450.9,
+ "cost_usd": 0.0916,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

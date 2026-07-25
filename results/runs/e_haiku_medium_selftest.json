@@ -1,0 +1,45 @@
+{
+ "task": "E",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "medium",
+ "sample": "selftest",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "bugs": [
+   {
+    "function": "_idf",
+    "description": "df(term) should count documents containing the term, not total occurrences. Should use len(post) not sum(len(ps) for ps in post.values())"
+   },
+   {
+    "function": "_score",
+    "description": "Score denominator should be indexed length (non-stopword tokens), not raw length. Should divide by self._indexed_len[doc_id] not self._raw_len[doc_id]"
+   },
+   {
+    "function": "search",
+    "description": "Query terms not lowercased before stopword checking. Need to lowercase tok before checking if tok in STOPWORDS"
+   },
+   {
+    "function": "search",
+    "description": "AND/OR precedence reversed. Should split by OR first (lower precedence) then AND (higher precedence), not vice versa"
+   },
+   {
+    "function": "phrase",
+    "description": "Phrase matching checks for strictly increasing positions, not consecutive. Should verify (cur + 1) in ps, not just minimum position > cur"
+   }
+  ],
+  "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative \u2014 behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        parts = query.split()\n        terms = []\n        cleaned = []\n        for tok in parts:\n            if tok in (\"AND\", \"OR\"):\n                cleaned.append(tok)\n            else:\n                tok_lower = tok.lower()\n                if tok_lower in STOPWORDS:\n                    continue\n                cleaned.append(tok_lower)\n                terms.append(tok_lower)\n        if not terms:\n            return []\n\n        expr = \" \".join(cleaned)\n        result = set()\n        for or_group in expr.split(\" OR \"):\n            and_terms = or_group.split(\" AND \")\n            and_result = None\n            for term in and_terms:\n                term = term.strip()\n                if term:\n                    docs = self._docs_with(term)\n                    and_result = docs if and_result is None else (and_result & docs)\n            if and_result is not None:\n                result |= and_result\n        matched = result\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        out = []\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            for start in plists[0]:\n                cur = start\n                ok = True\n                for ps in plists[1:]:\n                    if (cur + 1) not in ps:\n                        ok = False\n                        break\n                    cur = cur + 1\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n\""
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 6710,
+  "cache_read": 17703,
+  "output": 20637
+ },
+ "duration_s": 132.5,
+ "cost_usd": 0.1134,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
