@@ -124,6 +124,7 @@ t3_haiku_medium_cc2.json,T3,haiku,medium,cc2,4,6,0.1883,False,273.0,26170,2026-0
 t3_haiku_medium_selftest.json,T3,haiku,medium,selftest,3,6,0.2885,False,388.0,46240,2026-07-25,claude-code
 t3_opus48_high_cc1.json,T3,opus48,high,cc1,6,6,1.7016,False,499.2,54188,2026-07-25,claude-code
 t3_opus48_low_cc1.json,T3,opus48,low,cc1,6,6,1.3483,False,397.9,40145,2026-07-25,claude-code
+t3_opus48_low_cc2.json,T3,opus48,low,cc2,3,6,0.6911,False,137.9,13743,2026-07-26,claude-code
 t3_opus48_xhigh_cc1.json,T3,opus48,xhigh,cc1,5,6,2.0698,False,632.4,68909,2026-07-25,claude-code
 t3_opus5_high_cc1.json,T3,opus5,high,cc1,6,6,1.8289,False,508.7,59028,2026-07-25,claude-code
 t3_opus5_low_cc1.json,T3,opus5,low,cc1,6,6,1.0259,False,242.4,26909,2026-07-25,claude-code
@@ -131,6 +132,7 @@ t3_opus5_max_cc1.json,T3,opus5,max,cc1,6,6,2.3128,False,676.7,79200,2026-07-26,c
 t3_opus5_medium_cc1.json,T3,opus5,medium,cc1,6,6,1.1461,False,278.4,31715,2026-07-25,claude-code
 t3_opus5_xhigh_cc1.json,T3,opus5,xhigh,cc1,6,6,2.4828,False,699.1,85191,2026-07-25,claude-code
 t3_sonnet_high_cc1.json,T3,sonnet,high,cc1,4,6,1.8159,False,634.6,84316,2026-07-25,claude-code
+t3_sonnet_high_cc2.json,T3,sonnet,high,cc2,5,6,1.0738,False,413.9,57376,2026-07-26,claude-code
 t3_sonnet_low_cc1.json,T3,sonnet,low,cc1,3,6,0.7596,False,278.2,36658,2026-07-25,claude-code
 t3_sonnet_low_cc2.json,T3,sonnet,low,cc2,4,6,0.5152,False,154.8,20200,2026-07-26,claude-code
 t3_sonnet_max_cc1.json,T3,sonnet,max,cc1,6,6,1.9003,False,773.6,112428,2026-07-26,claude-code
@@ -189,6 +191,7 @@ t5a_sonnet_low_cc1.json,T5A,sonnet,low,cc1,3,3,0.2663,False,121.0,15095,2026-07-
 t5a_sonnet_low_cc2.json,T5A,sonnet,low,cc2,3,3,0.3342,False,168.6,19455,2026-07-26,claude-code
 t5a_sonnet_max_cc1.json,T5A,sonnet,max,cc1,3,3,0.4352,False,224.2,26791,2026-07-26,claude-code
 t5a_sonnet_medium_cc1.json,T5A,sonnet,medium,cc1,3,3,0.2522,False,115.4,14131,2026-07-25,claude-code
+t5a_sonnet_medium_cc2.json,T5A,sonnet,medium,cc2,3,3,0.3093,False,148.8,17742,2026-07-26,claude-code
 t5a_sonnet_xhigh_cc1.json,T5A,sonnet,xhigh,cc1,3,3,0.3355,False,165.3,19469,2026-07-25,claude-code
 t5b_fable_high_cc1.json,T5B,fable,high,cc1,6,6,0.7065,False,120.4,12027,2026-07-25,claude-code
 t5b_fable_low_cc1.json,T5B,fable,low,cc1,5,6,0.7305,False,134.7,12507,2026-07-25,claude-code

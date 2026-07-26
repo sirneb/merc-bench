@@ -442,9 +442,9 @@
   },
   "T5A": {
    "total": 3,
-   "cost_usd": 0.2522,
-   "duration_s": 115.4,
-   "n": 1,
+   "cost_usd": 0.3093,
+   "duration_s": 148.8,
+   "n": 2,
    "score_min": 3,
    "score_max": 3
   },
@@ -526,9 +526,9 @@
    "total": 6,
    "cost_usd": 1.8159,
    "duration_s": 634.6,
-   "n": 1,
+   "n": 2,
    "score_min": 4,
-   "score_max": 4
+   "score_max": 5
   },
   "T4": {
    "total": 10,
@@ -820,8 +820,8 @@
    "total": 6,
    "cost_usd": 1.3483,
    "duration_s": 397.9,
-   "n": 1,
-   "score_min": 6,
+   "n": 2,
+   "score_min": 3,
    "score_max": 6
   },
   "T4": {

@@ -157,21 +157,21 @@ def build_scatter(sweep_stats, summary):
         return box
 
     def place_label(px, py, text):
-        w = len(text) * 6.2 + 4
+        w = len(text) * 5.3 + 3
         # candidates: above, below, right, left, then vertical nudges
-        cands = [(px - w / 2, py - 24, "middle", px),
-                 (px - w / 2, py + 12, "middle", px),
-                 (px + 12, py - 6, "start", px + 14),
-                 (px - w - 12, py - 6, "end", px - 14)]
+        cands = [(px - w / 2, py - 20, "middle", px),
+                 (px - w / 2, py + 9, "middle", px),
+                 (px + 9, py - 5, "start", px + 11),
+                 (px - w - 9, py - 5, "end", px - 11)]
         for dy in range(1, 12):
-            cands.append((px - w / 2, py - 24 - dy * 9, "middle", px))
-            cands.append((px - w / 2, py + 12 + dy * 9, "middle", px))
+            cands.append((px - w / 2, py - 20 - dy * 8, "middle", px))
+            cands.append((px - w / 2, py + 9 + dy * 8, "middle", px))
         for bx, by, anchor, tx in cands:
-            if bx < 2 or bx + w > 718 or by < 12 or by + 11 > 372:
+            if bx < 2 or bx + w > 718 or by < 12 or by + 10 > 372:
                 continue
-            if claim(bx, by, w, 11):
-                return tx, by + 9, anchor, by + 9
-        return px, py - 16, "middle", py - 16  # fallback: accept overlap
+            if claim(bx, by, w, 10):
+                return tx, by + 8, anchor, by + 8
+        return px, py - 13, "middle", py - 13  # fallback: accept overlap
 
     coords = []
     for cfg, cost, dur, avg_dropped, n_rep in pts:
