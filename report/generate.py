@@ -177,7 +177,7 @@ def build_scatter(sweep_stats, summary):
     for cfg, cost, dur, avg_dropped, n_rep in pts:
         x = sx(cost)
         y = sy(dur)
-        claim(x - 13, y - 13, 26, 26)  # reserve the disc area
+        claim(x - 9, y - 9, 18, 18)  # reserve the disc area
         coords.append((cfg, cost, dur, avg_dropped, n_rep, x, y))
 
     svg = ['<svg viewBox="0 0 720 400" role="img" aria-label="cost vs time">']
@@ -205,7 +205,9 @@ def build_scatter(sweep_stats, summary):
     for cfg, cost, dur, avg_dropped, n_rep, x, y in coords:
         fam = cfg.split("@")[0]
         color = model_meta(fam)["color"]
-        r = max(3.5, 11.0 - 1.15 * avg_dropped)
+        # exponential size decay: -1 pt barely shrinks, -5 pts halves,
+        # -10 pts is a bare dot; a couple of mistakes shouldn't dominate
+        r = max(1.3, 4.0 * 2 ** (-avg_dropped / 5.0))
         drop_txt = ("0" if avg_dropped < 0.005
                     else f"{avg_dropped:.1f}".rstrip("0").rstrip("."))
         stats = (f"${cost:.2f} · {dur:.0f} min · −{drop_txt} pts/sweep avg "

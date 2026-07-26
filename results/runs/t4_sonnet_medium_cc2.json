@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, database systems increasingly rely on caching layers to reduce latency and protect primary storage from repeated queries. A well-tuned cache absorbs bursts of traffic, smooths spikes, and keeps response times predictable even as applications scale across regions and grow.\n\nHowever, not every dataset benefits equally from caching; highly volatile records can grow stale within seconds, while static reference tables remain valid for days; choosing the right cache invalidation strategy therefore matters as much as choosing the cache size itself, since an oversized cache wastes memory while an undersized one causes constant evictions and misses.\n\nAlong with a fast RAM disk, a strong host can hold hot data in its local stock; smart admins put popular goods up front, and cut costly disk trips into small counts to boost output for all program logic that scans, sorts, and packs bits daily.\n\nFinally, once monitoring, tuning, and testing confirm the cache behaves reliably under real load, the migration to production is done."
+ },
+ "usage": {
+  "input": 6,
+  "cache_write": 16123,
+  "cache_read": 96195,
+  "output": 8018
+ },
+ "duration_s": 77.6,
+ "cost_usd": 0.2096,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

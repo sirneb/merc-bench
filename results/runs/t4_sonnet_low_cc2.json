@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, teams adopt a cache layer to speed frequent reads, since disk access remains slow under heavy load; a well-tuned cache cuts latency, letting applications always scale gracefully while databases handle only queries that truly require fresh, timely data results.\n\nHowever, not every cache strategy suits every workload, and choosing wisely between write-through and write-back cache designs matters greatly for consistency guarantees. Some systems favor eviction policies like recency-based tracking, while others rely on time-based expiry to keep memory bounded, ensuring stale entries never linger long enough to mislead downstream consumers accurate, timely results daily.\n\nAlong with fast RAM lookup, many hosts avoid slow disk input; apps gain quick wins without waiting on spinning disks. Data sits in hot rows, so output calls run fast, and this also cuts jobs, hosts gain a solid boost, plus routings stay fast for lookups all around, closing out that path.\n\nFinally, teams should monitor cache hit ratios closely; small tuning adjustments often yield outsized gains once rollout finally feels done."
+ },
+ "usage": {
+  "input": 4,
+  "cache_write": 15263,
+  "cache_read": 56102,
+  "output": 7370
+ },
+ "duration_s": 71.7,
+ "cost_usd": 0.1846,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
