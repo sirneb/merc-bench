@@ -1,34 +1,42 @@
 {
  "haiku@low": {
+  "E": {
+   "total": 5,
+   "cost_usd": 0.128,
+   "duration_s": 215.7,
+   "n": 1,
+   "score_min": 5,
+   "score_max": 5
+  },
   "T10": {
    "total": 7,
    "cost_usd": 0.0432,
    "duration_s": 38.8,
-   "n": 1,
+   "n": 2,
    "score_min": 4,
-   "score_max": 4
+   "score_max": 7
   },
   "T1": {
    "total": 16,
    "cost_usd": 0.1303,
    "duration_s": 178.2,
-   "n": 1,
-   "score_min": 16,
+   "n": 2,
+   "score_min": 15,
    "score_max": 16
   },
   "T2": {
    "total": 8,
-   "cost_usd": 0.0176,
+   "cost_usd": 0.0217,
    "duration_s": 33.2,
-   "n": 1,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   },
   "T3": {
    "total": 6,
-   "cost_usd": 0.191,
-   "duration_s": 221.4,
-   "n": 1,
+   "cost_usd": 0.2491,
+   "duration_s": 336.6,
+   "n": 2,
    "score_min": 4,
    "score_max": 4
   },
@@ -36,31 +44,39 @@
    "total": 10,
    "cost_usd": 0.1011,
    "duration_s": 135.3,
-   "n": 1,
+   "n": 2,
    "score_min": 8,
-   "score_max": 8
+   "score_max": 9
   },
   "T5A": {
    "total": 3,
    "cost_usd": 0.2002,
    "duration_s": 319.9,
-   "n": 1,
-   "score_min": 3,
+   "n": 2,
+   "score_min": 2,
    "score_max": 3
+  },
+  "T5B": {
+   "total": 6,
+   "cost_usd": 0.2251,
+   "duration_s": 367.2,
+   "n": 1,
+   "score_min": 6,
+   "score_max": 6
   },
   "T6": {
    "total": 13,
    "cost_usd": 0.0796,
    "duration_s": 96.5,
-   "n": 1,
-   "score_min": 13,
+   "n": 2,
+   "score_min": 7,
    "score_max": 13
   },
   "T7": {
    "total": 20,
    "cost_usd": 0.0211,
-   "duration_s": 6.4,
-   "n": 1,
+   "duration_s": 8.9,
+   "n": 2,
    "score_min": 20,
    "score_max": 20
   },
@@ -68,15 +84,15 @@
    "total": 8,
    "cost_usd": 0.1783,
    "duration_s": 294.9,
-   "n": 1,
+   "n": 2,
    "score_min": 7,
-   "score_max": 7
+   "score_max": 8
   },
   "T9": {
    "total": 7,
    "cost_usd": 0.0682,
    "duration_s": 86.3,
-   "n": 1,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   }
@@ -182,81 +198,81 @@
  "haiku@high": {
   "E": {
    "total": 5,
-   "cost_usd": null,
-   "duration_s": null,
-   "n": 1,
+   "cost_usd": 0.1042,
+   "duration_s": 170.0,
+   "n": 2,
    "score_min": 4,
    "score_max": 4
   },
   "T10": {
    "total": 7,
-   "cost_usd": 0.0177,
+   "cost_usd": 0.0429,
    "duration_s": 58.4,
-   "n": 1,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   },
   "T1": {
    "total": 16,
    "cost_usd": 0.0375,
-   "duration_s": 30.0,
-   "n": 1,
+   "duration_s": 42.6,
+   "n": 2,
    "score_min": 15,
-   "score_max": 15
+   "score_max": 16
   },
   "T2": {
    "total": 8,
-   "cost_usd": 0.0347,
-   "duration_s": 31.3,
-   "n": 1,
+   "cost_usd": 0.0408,
+   "duration_s": 54.2,
+   "n": 2,
    "score_min": 6,
-   "score_max": 6
+   "score_max": 7
   },
   "T3": {
    "total": 6,
-   "cost_usd": 0.1609,
-   "duration_s": 185.5,
-   "n": 1,
-   "score_min": 3,
+   "cost_usd": 0.2242,
+   "duration_s": 301.0,
+   "n": 2,
+   "score_min": 2,
    "score_max": 3
   },
   "T4": {
    "total": 10,
-   "cost_usd": 0.0699,
-   "duration_s": 85.3,
-   "n": 1,
+   "cost_usd": 0.1058,
+   "duration_s": 152.9,
+   "n": 2,
    "score_min": 9,
    "score_max": 9
   },
   "T5A": {
    "total": 3,
-   "cost_usd": 0.147,
-   "duration_s": 233.0,
-   "n": 1,
+   "cost_usd": 0.2821,
+   "duration_s": 466.6,
+   "n": 2,
    "score_min": 3,
    "score_max": 3
   },
   "T5B": {
    "total": 6,
-   "cost_usd": null,
-   "duration_s": null,
-   "n": 1,
+   "cost_usd": 0.4925,
+   "duration_s": 824.7,
+   "n": 2,
    "score_min": 2,
-   "score_max": 2
+   "score_max": 3
   },
   "T6": {
    "total": 13,
    "cost_usd": 0.0655,
-   "duration_s": 73.8,
-   "n": 1,
+   "duration_s": 83.1,
+   "n": 2,
    "score_min": 13,
    "score_max": 13
   },
   "T7": {
    "total": 20,
    "cost_usd": 0.0223,
-   "duration_s": 8.5,
-   "n": 1,
+   "duration_s": 15.8,
+   "n": 2,
    "score_min": 20,
    "score_max": 20
   },
@@ -264,15 +280,15 @@
    "total": 8,
    "cost_usd": 0.1226,
    "duration_s": 197.2,
-   "n": 1,
+   "n": 2,
    "score_min": 8,
    "score_max": 8
   },
   "T9": {
    "total": 7,
-   "cost_usd": 0.0549,
-   "duration_s": 65.5,
-   "n": 1,
+   "cost_usd": 0.0624,
+   "duration_s": 90.4,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   }

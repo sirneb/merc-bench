@@ -1,0 +1,48 @@
+{
+ "task": "T3",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "3766.62"
+   },
+   {
+    "id": 2,
+    "value": "62"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "897.70"
+   },
+   {
+    "id": 5,
+    "value": "infra"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 44555,
+  "cache_read": 17703,
+  "output": 33339
+ },
+ "duration_s": 301.0,
+ "cost_usd": 0.2242,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

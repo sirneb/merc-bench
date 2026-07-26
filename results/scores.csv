@@ -1,7 +1,9 @@
 file,task,family,effort,sample,score,total,cost_usd,cost_estimated,duration_s,output_tokens,date,harness
 e_fable_high_r2.json,E,fable,high,r2,5,5,,True,,,2026-07-23,claude-code-workflow
 e_fable_low_r2.json,E,fable,low,r2,5,5,,True,,,2026-07-23,claude-code-workflow
+e_haiku_high_cc1.json,E,haiku,high,cc1,4,5,0.1042,False,170.0,18709,2026-07-25,claude-code
 e_haiku_high_r2.json,E,haiku,high,r2,4,5,,True,,,2026-07-23,claude-code-workflow
+e_haiku_low_cc1.json,E,haiku,low,cc1,5,5,0.128,False,215.7,23502,2026-07-25,claude-code
 e_haiku_medium_selftest2.json,E,haiku,medium,selftest2,5,5,0.1271,False,217.0,23418,2026-07-25,claude-code
 e_haiku_medium_selftest2b.json,E,haiku,medium,selftest2b,3,5,0.0815,False,132.9,14309,2026-07-25,claude-code
 e_opus48_high_r2.json,E,opus48,high,r2,4,5,,True,,,2026-07-23,claude-code-workflow
@@ -20,7 +22,9 @@ t10_fable_low_r3.json,T10,fable,low,r3,7,7,0.2362,False,9.9,797,2026-07-23,claud
 t10_fable_max_grid.json,T10,fable,max,grid,7,7,0.3659,False,29.8,3391,2026-07-25,claude-code-workflow
 t10_fable_medium_grid.json,T10,fable,medium,grid,7,7,0.2403,False,9.4,878,2026-07-25,claude-code-workflow
 t10_fable_xhigh_grid.json,T10,fable,xhigh,grid,7,7,0.2694,False,13.6,1460,2026-07-25,claude-code-workflow
+t10_haiku_high_cc1.json,T10,haiku,high,cc1,7,7,0.0429,False,53.0,6676,2026-07-25,claude-code
 t10_haiku_high_r3.json,T10,haiku,high,r3,7,7,0.0177,True,58.4,4,2026-07-23,claude-code-workflow
+t10_haiku_low_cc1.json,T10,haiku,low,cc1,7,7,0.0321,False,34.8,4543,2026-07-25,claude-code
 t10_haiku_low_grid.json,T10,haiku,low,grid,4,7,0.0432,False,38.8,5095,2026-07-25,claude-code-workflow
 t10_haiku_medium_selftest.json,T10,haiku,medium,selftest,7,7,0.0,False,47.0,0,2026-07-25,claude-code
 t10_opus48_high_r3.json,T10,opus48,high,r3,7,7,0.1437,False,17.9,1818,2026-07-23,claude-code-workflow
@@ -45,7 +49,9 @@ t1_fable_low_r3.json,T1,fable,low,r3,16,16,0.2482,False,12.4,1060,2026-07-23,cla
 t1_fable_max_grid.json,T1,fable,max,grid,16,16,0.431,False,40.8,4714,2026-07-25,claude-code-workflow
 t1_fable_medium_grid.json,T1,fable,medium,grid,16,16,0.253,False,12.6,1154,2026-07-25,claude-code-workflow
 t1_fable_xhigh_grid.json,T1,fable,xhigh,grid,16,16,0.3397,False,27.6,2888,2026-07-25,claude-code-workflow
+t1_haiku_high_cc1.json,T1,haiku,high,cc1,16,16,0.031,False,42.6,5727,2026-07-25,claude-code
 t1_haiku_high_r3.json,T1,haiku,high,r3,15,16,0.0375,False,30.0,3971,2026-07-23,claude-code-workflow
+t1_haiku_low_cc1.json,T1,haiku,low,cc1,15,16,0.0316,False,35.7,4581,2026-07-25,claude-code
 t1_haiku_low_grid.json,T1,haiku,low,grid,16,16,0.1303,False,178.2,22537,2026-07-25,claude-code-workflow
 t1_haiku_medium_selftest.json,T1,haiku,medium,selftest,16,16,0.049,False,65.7,8095,2026-07-25,claude-code
 t1_opus48_high_r3.json,T1,opus48,high,r3,16,16,0.0977,True,23.8,2,2026-07-23,claude-code-workflow
@@ -72,7 +78,9 @@ t2_fable_low_r3.json,T2,fable,low,r3,8,8,0.222,False,7.3,544,2026-07-23,claude-c
 t2_fable_max_grid.json,T2,fable,max,grid,8,8,0.3461,False,30.2,3027,2026-07-25,claude-code-workflow
 t2_fable_medium_grid.json,T2,fable,medium,grid,8,8,0.2319,False,8.9,743,2026-07-25,claude-code-workflow
 t2_fable_xhigh_grid.json,T2,fable,xhigh,grid,8,8,0.3063,False,23.7,2229,2026-07-25,claude-code-workflow
+t2_haiku_high_cc1.json,T2,haiku,high,cc1,7,8,0.0408,False,54.2,6432,2026-07-25,claude-code
 t2_haiku_high_r3.json,T2,haiku,high,r3,6,8,0.0347,False,31.3,3424,2026-07-23,claude-code-workflow
+t2_haiku_low_cc1.json,T2,haiku,low,cc1,7,8,0.0217,False,23.8,2613,2026-07-25,claude-code
 t2_haiku_low_grid.json,T2,haiku,low,grid,7,8,0.0176,True,33.2,4,2026-07-25,claude-code-workflow
 t2_haiku_medium_selftest.json,T2,haiku,medium,selftest,8,8,0.0495,False,74.7,8197,2026-07-25,claude-code
 t2_opus48_high_r3.json,T2,opus48,high,r3,8,8,0.1354,False,16.6,1517,2026-07-23,claude-code-workflow
@@ -97,7 +105,9 @@ t3_fable_low_r3.json,T3,fable,low,r3,6,6,1.6964,False,179.3,20852,2026-07-23,cla
 t3_fable_max_grid.json,T3,fable,max,grid,6,6,6.9343,False,1067.0,125609,2026-07-25,claude-code-workflow
 t3_fable_medium_grid.json,T3,fable,medium,grid,6,6,1.8301,False,231.3,23525,2026-07-25,claude-code-workflow
 t3_fable_xhigh_grid.json,T3,fable,xhigh,grid,6,6,4.5454,False,646.1,77830,2026-07-25,claude-code-workflow
+t3_haiku_high_cc1.json,T3,haiku,high,cc1,2,6,0.2242,False,301.0,33339,2026-07-25,claude-code
 t3_haiku_high_r3.json,T3,haiku,high,r3,3,6,0.1609,False,185.5,21349,2026-07-23,claude-code-workflow
+t3_haiku_low_cc1.json,T3,haiku,low,cc1,4,6,0.2491,False,336.6,38328,2026-07-25,claude-code
 t3_haiku_low_grid.json,T3,haiku,low,grid,4,6,0.191,False,221.4,24928,2026-07-25,claude-code-workflow
 t3_haiku_medium_selftest.json,T3,haiku,medium,selftest,3,6,0.2885,False,388.0,46240,2026-07-25,claude-code
 t3_opus48_high_r3.json,T3,opus48,high,r3,5,6,1.4431,False,412.7,44645,2026-07-23,claude-code-workflow
@@ -122,7 +132,9 @@ t4_fable_low_r3.json,T4,fable,low,r3,10,10,0.1929,True,27.9,3,2026-07-23,claude-
 t4_fable_max_grid.json,T4,fable,max,grid,10,10,0.693,False,106.3,10004,2026-07-25,claude-code-workflow
 t4_fable_medium_grid.json,T4,fable,medium,grid,9,10,0.3366,False,38.3,2877,2026-07-25,claude-code-workflow
 t4_fable_xhigh_grid.json,T4,fable,xhigh,grid,10,10,0.4607,False,57.8,5358,2026-07-25,claude-code-workflow
+t4_haiku_high_cc1.json,T4,haiku,high,cc1,9,10,0.1058,False,152.9,19453,2026-07-25,claude-code
 t4_haiku_high_r3.json,T4,haiku,high,r3,9,10,0.0699,False,85.3,10494,2026-07-23,claude-code-workflow
+t4_haiku_low_cc1.json,T4,haiku,low,cc1,9,10,0.0845,False,126.9,15189,2026-07-25,claude-code
 t4_haiku_low_grid.json,T4,haiku,low,grid,8,10,0.1011,False,135.3,16735,2026-07-25,claude-code-workflow
 t4_haiku_medium_selftest.json,T4,haiku,medium,selftest,8,10,0.1227,False,176.0,22861,2026-07-25,claude-code
 t4_opus48_high_r3.json,T4,opus48,high,r3,10,10,0.2789,False,80.9,7300,2026-07-23,claude-code-workflow
@@ -151,7 +163,9 @@ t5a_fable_max_grid.json,T5A,fable,max,grid,3,3,0.2061,True,142.8,7,2026-07-25,cl
 t5a_fable_medium_grid.json,T5A,fable,medium,grid,3,3,0.6078,False,85.0,8040,2026-07-25,claude-code-workflow
 t5a_fable_xhigh_grid.json,T5A,fable,xhigh,grid,3,3,0.7685,False,108.6,11253,2026-07-25,claude-code-workflow
 t5a_fable_xhigh_r3.json,T5A,fable,xhigh,r3,3,3,1.1562,False,184.2,19009,2026-07-23,claude-code-workflow
+t5a_haiku_high_cc1.json,T5A,haiku,high,cc1,3,3,0.2821,False,466.6,54495,2026-07-25,claude-code
 t5a_haiku_high_r3.json,T5A,haiku,high,r3,3,3,0.147,False,233.0,25725,2026-07-23,claude-code-workflow
+t5a_haiku_low_cc1.json,T5A,haiku,low,cc1,2,3,0.1831,False,296.7,34703,2026-07-25,claude-code
 t5a_haiku_low_grid.json,T5A,haiku,low,grid,3,3,0.2002,False,319.9,36362,2026-07-25,claude-code-workflow
 t5a_haiku_medium_selftest.json,T5A,haiku,medium,selftest,1,3,0.0916,False,450.9,15971,2026-07-25,claude-code
 t5a_opus48_high_r3.json,T5A,opus48,high,r3,3,3,0.4154,False,133.6,12498,2026-07-23,claude-code-workflow
@@ -176,7 +190,9 @@ t5b_fable_high_r3-r1.json,T5B,fable,high,r3-r1,6,6,0.9641,False,152.3,15021,2026
 t5b_fable_high_r3-r2.json,T5B,fable,high,r3-r2,6,6,0.9964,False,153.5,15668,2026-07-23,claude-code-workflow
 t5b_fable_high_r3-r3.json,T5B,fable,high,r3-r3,5,6,0.941,False,147.3,14559,2026-07-23,claude-code-workflow
 t5b_fable_xhigh_r3-r1.json,T5B,fable,xhigh,r3-r1,6,6,1.1206,False,172.2,18150,2026-07-23,claude-code-workflow
+t5b_haiku_high_cc1.json,T5B,haiku,high,cc1,3,6,0.4925,False,824.7,95944,2026-07-25,claude-code
 t5b_haiku_high_r2.json,T5B,haiku,high,r2,2,6,,True,,,2026-07-23,claude-code-workflow
+t5b_haiku_low_cc1.json,T5B,haiku,low,cc1,6,6,0.2251,False,367.2,42970,2026-07-25,claude-code
 t5b_haiku_medium_selftest.json,T5B,haiku,medium,selftest,6,6,0.0,False,629.2,0,2026-07-25,claude-code
 t5b_opus48_high_r2.json,T5B,opus48,high,r2,6,6,,True,,,2026-07-23,claude-code-workflow
 t5b_opus48_high_r3-r1.json,T5B,opus48,high,r3-r1,6,6,0.6901,False,244.2,23341,2026-07-23,claude-code-workflow
@@ -199,7 +215,9 @@ t6_fable_low_r3.json,T6,fable,low,r3,13,13,0.2673,False,13.6,1205,2026-07-23,cla
 t6_fable_max_grid.json,T6,fable,max,grid,13,13,0.2073,True,52.2,5,2026-07-25,claude-code-workflow
 t6_fable_medium_grid.json,T6,fable,medium,grid,13,13,0.2937,False,17.3,1732,2026-07-25,claude-code-workflow
 t6_fable_xhigh_grid.json,T6,fable,xhigh,grid,13,13,0.3611,False,29.0,3079,2026-07-25,claude-code-workflow
+t6_haiku_high_cc1.json,T6,haiku,high,cc1,13,13,0.0619,False,83.1,10373,2026-07-25,claude-code
 t6_haiku_high_r3.json,T6,haiku,high,r3,13,13,0.0655,False,73.8,9377,2026-07-23,claude-code-workflow
+t6_haiku_low_cc1.json,T6,haiku,low,cc1,7,13,0.0564,False,74.0,9307,2026-07-25,claude-code
 t6_haiku_low_grid.json,T6,haiku,low,grid,13,13,0.0796,False,96.5,12204,2026-07-25,claude-code-workflow
 t6_haiku_medium_selftest.json,T6,haiku,medium,selftest,11,13,0.0554,False,55.4,9165,2026-07-25,claude-code
 t6_opus48_high_r3.json,T6,opus48,high,r3,13,13,0.1994,False,35.4,3831,2026-07-23,claude-code-workflow
@@ -224,7 +242,9 @@ t7_fable_low_r3.json,T7,fable,low,r3,20,20,0.2116,False,4.7,363,2026-07-23,claud
 t7_fable_max_grid.json,T7,fable,max,grid,20,20,0.1182,False,9.7,892,2026-07-25,claude-code-workflow
 t7_fable_medium_grid.json,T7,fable,medium,grid,20,20,0.0918,False,8.0,364,2026-07-25,claude-code-workflow
 t7_fable_xhigh_grid.json,T7,fable,xhigh,grid,20,20,0.1023,False,7.7,573,2026-07-25,claude-code-workflow
+t7_haiku_high_cc1.json,T7,haiku,high,cc1,20,20,0.0179,False,15.8,1794,2026-07-25,claude-code
 t7_haiku_high_r3.json,T7,haiku,high,r3,20,20,0.0223,False,8.5,978,2026-07-23,claude-code-workflow
+t7_haiku_low_cc1.json,T7,haiku,low,cc1,20,20,0.0137,False,8.9,992,2026-07-25,claude-code
 t7_haiku_low_grid.json,T7,haiku,low,grid,20,20,0.0211,False,6.4,733,2026-07-25,claude-code-workflow
 t7_haiku_medium_selftest.json,T7,haiku,medium,selftest,20,20,0.0119,False,4.3,684,2026-07-25,claude-code
 t7_opus48_high_r3.json,T7,opus48,high,r3,20,20,0.1121,False,7.6,611,2026-07-23,claude-code-workflow
@@ -249,7 +269,9 @@ t8_fable_low_r3.json,T8,fable,low,r3,8,8,0.2456,False,10.2,879,2026-07-23,claude
 t8_fable_max_grid.json,T8,fable,max,grid,8,8,0.5717,False,81.6,7402,2026-07-25,claude-code-workflow
 t8_fable_medium_grid.json,T8,fable,medium,grid,8,8,0.2754,False,17.9,1475,2026-07-25,claude-code-workflow
 t8_fable_xhigh_grid.json,T8,fable,xhigh,grid,8,8,0.4223,False,51.6,4413,2026-07-25,claude-code-workflow
+t8_haiku_high_cc1.json,T8,haiku,high,cc1,8,8,0.1107,False,187.1,20234,2026-07-25,claude-code
 t8_haiku_high_r3.json,T8,haiku,high,r3,8,8,0.1226,False,197.2,20899,2026-07-23,claude-code-workflow
+t8_haiku_low_cc1.json,T8,haiku,low,cc1,8,8,0.0918,False,153.7,16470,2026-07-25,claude-code
 t8_haiku_low_grid.json,T8,haiku,low,grid,7,8,0.1783,False,294.9,32053,2026-07-25,claude-code-workflow
 t8_haiku_medium_selftest.json,T8,haiku,medium,selftest,8,8,0.0,False,413.5,0,2026-07-25,claude-code
 t8_opus48_high_r3.json,T8,opus48,high,r3,8,8,0.315,False,82.2,6696,2026-07-23,claude-code-workflow
@@ -274,7 +296,9 @@ t9_fable_low_r3.json,T9,fable,low,r3,7,7,0.3099,False,20.5,2078,2026-07-23,claud
 t9_fable_max_grid.json,T9,fable,max,grid,7,7,0.5537,False,69.6,6953,2026-07-25,claude-code-workflow
 t9_fable_medium_grid.json,T9,fable,medium,grid,7,7,0.3393,False,32.0,2665,2026-07-25,claude-code-workflow
 t9_fable_xhigh_grid.json,T9,fable,xhigh,grid,7,7,0.4722,False,53.3,5322,2026-07-25,claude-code-workflow
+t9_haiku_high_cc1.json,T9,haiku,high,cc1,7,7,0.0624,False,90.4,10480,2026-07-25,claude-code
 t9_haiku_high_r3.json,T9,haiku,high,r3,7,7,0.0549,False,65.5,7280,2026-07-23,claude-code-workflow
+t9_haiku_low_cc1.json,T9,haiku,low,cc1,7,7,0.0524,False,73.8,8520,2026-07-25,claude-code
 t9_haiku_low_grid.json,T9,haiku,low,grid,7,7,0.0682,False,86.3,9954,2026-07-25,claude-code-workflow
 t9_haiku_medium_selftest.json,T9,haiku,medium,selftest,7,7,0.0656,False,72.7,11213,2026-07-25,claude-code
 t9_opus48_high_r3.json,T9,opus48,high,r3,7,7,0.2133,False,46.6,4407,2026-07-23,claude-code-workflow

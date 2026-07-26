@@ -1,0 +1,210 @@
+{
+ "task": "T5B",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "nationality": [
+     "swede",
+     "dane",
+     "norwegian",
+     "brit",
+     "german"
+    ],
+    "color": [
+     "white",
+     "green",
+     "blue",
+     "red",
+     "yellow"
+    ],
+    "drink": [
+     "water",
+     "tea",
+     "beer",
+     "milk",
+     "coffee"
+    ],
+    "pet": [
+     "fish",
+     "cat",
+     "dog",
+     "bird",
+     "horse"
+    ]
+   },
+   {
+    "id": 2,
+    "nationality": [
+     "dane",
+     "german",
+     "norwegian",
+     "brit",
+     "swede"
+    ],
+    "color": [
+     "green",
+     "blue",
+     "red",
+     "white",
+     "yellow"
+    ],
+    "drink": [
+     "water",
+     "beer",
+     "tea",
+     "coffee",
+     "milk"
+    ],
+    "pet": [
+     "horse",
+     "bird",
+     "cat",
+     "fish",
+     "dog"
+    ]
+   },
+   {
+    "id": 3,
+    "nationality": [
+     "brit",
+     "german",
+     "norwegian",
+     "dane",
+     "swede"
+    ],
+    "color": [
+     "red",
+     "green",
+     "white",
+     "blue",
+     "yellow"
+    ],
+    "drink": [
+     "milk",
+     "water",
+     "tea",
+     "beer",
+     "coffee"
+    ],
+    "pet": [
+     "fish",
+     "horse",
+     "dog",
+     "cat",
+     "bird"
+    ]
+   },
+   {
+    "id": 4,
+    "nationality": [
+     "norwegian",
+     "brit",
+     "german",
+     "dane",
+     "swede"
+    ],
+    "color": [
+     "white",
+     "green",
+     "red",
+     "blue",
+     "yellow"
+    ],
+    "drink": [
+     "tea",
+     "milk",
+     "coffee",
+     "water",
+     "beer"
+    ],
+    "pet": [
+     "bird",
+     "dog",
+     "horse",
+     "fish",
+     "cat"
+    ]
+   },
+   {
+    "id": 5,
+    "nationality": [
+     "brit",
+     "norwegian",
+     "dane",
+     "german",
+     "swede"
+    ],
+    "color": [
+     "white",
+     "blue",
+     "red",
+     "green",
+     "yellow"
+    ],
+    "drink": [
+     "water",
+     "beer",
+     "milk",
+     "coffee",
+     "tea"
+    ],
+    "pet": [
+     "cat",
+     "dog",
+     "fish",
+     "horse",
+     "bird"
+    ]
+   },
+   {
+    "id": 6,
+    "nationality": [
+     "norwegian",
+     "brit",
+     "dane",
+     "swede",
+     "german"
+    ],
+    "color": [
+     "green",
+     "white",
+     "red",
+     "blue",
+     "yellow"
+    ],
+    "drink": [
+     "tea",
+     "milk",
+     "beer",
+     "coffee",
+     "water"
+    ],
+    "pet": [
+     "dog",
+     "fish",
+     "cat",
+     "bird",
+     "horse"
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input": 20,
+  "cache_write": 6808,
+  "cache_read": 42164,
+  "output": 95944
+ },
+ "duration_s": 824.7,
+ "cost_usd": 0.4925,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
