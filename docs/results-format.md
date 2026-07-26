@@ -36,5 +36,13 @@ Rules of the road:
   samples of the same config are aggregated as min–max ranges automatically.
 - **Deviations go in `notes`**, not in silence: tool availability, retries,
   truncation, raised output limits.
+
+- **`invalid: true`** marks a record whose answer failed validation (e.g. the
+  response was truncated or unparseable even after the runner's retries). The
+  raw attempt is preserved for transparency, but graders and the report skip
+  invalid records — a transport failure is not a model score. The shipped
+  runner validates answers (JSON shape, required keys, and that any returned
+  code compiles) and retries up to 3 times with a corrective note before
+  marking a record invalid; retry token usage is included in `usage`.
 - New model families: add a display entry to `report/config.json` (name, color,
   price) — unknown families still render with defaults.

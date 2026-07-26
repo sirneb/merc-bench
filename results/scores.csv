@@ -2,7 +2,7 @@ file,task,family,effort,sample,score,total,cost_usd,cost_estimated,duration_s,ou
 e_fable_high_r2.json,E,fable,high,r2,5,5,,True,,,2026-07-23,claude-code-workflow
 e_fable_low_r2.json,E,fable,low,r2,5,5,,True,,,2026-07-23,claude-code-workflow
 e_haiku_high_r2.json,E,haiku,high,r2,4,5,,True,,,2026-07-23,claude-code-workflow
-e_haiku_medium_selftest.json,E,haiku,medium,selftest,0,5,0.1134,False,132.5,20637,2026-07-25,claude-code
+e_haiku_medium_selftest2.json,E,haiku,medium,selftest2,3,5,0.0815,False,132.9,14309,2026-07-25,claude-code
 e_opus48_high_r2.json,E,opus48,high,r2,4,5,,True,,,2026-07-23,claude-code-workflow
 e_opus48_xhigh_r2.json,E,opus48,xhigh,r2,5,5,,True,,,2026-07-23,claude-code-workflow
 e_opus5_high_canonical.json,E,opus5,high,canonical,5,5,0.2949,False,83.9,7430,2026-07-24,claude-code-workflow

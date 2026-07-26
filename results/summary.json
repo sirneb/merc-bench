@@ -84,11 +84,11 @@
  "haiku@medium": {
   "E": {
    "total": 5,
-   "cost_usd": 0.1134,
-   "duration_s": 132.5,
+   "cost_usd": 0.0815,
+   "duration_s": 132.9,
    "n": 1,
-   "score_min": 0,
-   "score_max": 0
+   "score_min": 3,
+   "score_max": 3
   },
   "T10": {
    "total": 7,

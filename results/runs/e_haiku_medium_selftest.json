@@ -41,5 +41,6 @@
  "cost_usd": 0.1134,
  "cost_basis": "standard list prices, USD/MTok",
  "cost_estimated": false,
- "notes": ""
+ "notes": "answer truncated mid-emission by the pre-fix headless harness (fixed_code has an unterminated string at line 150); raw answer preserved; superseded by sample selftest2 produced with validate-and-retry",
+ "invalid": true
 }

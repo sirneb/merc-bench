@@ -44,8 +44,12 @@ def grader(task):
 
 def main():
     rows = []
+    skipped = []
     for f in sorted(glob.glob(os.path.join(ROOT, "results", "runs", "*.json"))):
         rec = json.load(open(f))
+        if rec.get("invalid"):
+            skipped.append(os.path.basename(f))
+            continue
         ans = rec.get("answer")
         if isinstance(ans, str):
             try:
@@ -100,7 +104,8 @@ def main():
         EFFORT_ORDER.index(kv[0].split("@")[1]) if kv[0].split("@")[1] in EFFORT_ORDER else 99)))
     json.dump(ordered, open(os.path.join(ROOT, "results", "summary.json"), "w"),
               indent=1)
-    print(f"graded {len(rows)} runs -> results/scores.csv, results/summary.json")
+    print(f"graded {len(rows)} runs -> results/scores.csv, results/summary.json"
+          + (f" (skipped {len(skipped)} invalid: {', '.join(skipped)})" if skipped else ""))
 
 
 if __name__ == "__main__":

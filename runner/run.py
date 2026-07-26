@@ -129,6 +129,62 @@ def run_claude_code(model, effort, prompt, schema):
     return answer, usage, dur
 
 
+
+def validate_answer(answer, schema, reason=[]):
+    """Cheap structural validation + deep checks that catch truncation."""
+    del reason[:]
+    if not isinstance(answer, dict):
+        reason.append("no JSON object could be parsed from the response")
+        return False
+    for key in schema.get("required", []):
+        if key not in answer:
+            reason.append(f"missing required key '{key}'")
+            return False
+    for key, spec in schema.get("properties", {}).items():
+        if key in answer and spec.get("type") == "array" and \
+                not isinstance(answer[key], list):
+            reason.append(f"'{key}' is not an array")
+            return False
+    code = answer.get("fixed_code") or answer.get("code")
+    if isinstance(code, str) and code.strip():
+        try:
+            compile(code, "<answer>", "exec")
+        except SyntaxError as e:
+            reason.append(f"returned code does not parse: {e}")
+            return False
+    return True
+
+
+def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
+    """Run fn, validating the answer; retry with a corrective note on failure.
+    Returns (answer, usage_total, duration_total, attempts, fail_reason)."""
+    usage_total = None
+    dur_total = 0.0
+    reason = []
+    last_answer = None
+    for i in range(tries):
+        p = prompt if i == 0 else (
+            prompt + "\n\nIMPORTANT: your previous response was rejected ("
+            + "; ".join(reason) +
+            "). Respond again with ONLY the complete, valid JSON object.")
+        try:
+            answer, usage, dur = fn(model, effort, p, schema)
+        except Exception as e:
+            reason = [f"harness error: {e}"]
+            answer, usage, dur = None, None, 0.0
+        dur_total += dur
+        if usage:
+            if usage_total is None:
+                usage_total = dict(usage)
+            else:
+                for k in usage_total:
+                    usage_total[k] += usage.get(k, 0)
+        last_answer = answer if answer is not None else last_answer
+        if validate_answer(answer, schema, reason):
+            return answer, usage_total, dur_total, i + 1, None
+    return last_answer, usage_total, dur_total, tries, "; ".join(reason)
+
+
 def cost_usd(usage, family):
     if not usage or family not in DEFAULT_PRICES:
         return None
@@ -164,15 +220,9 @@ def main():
         prompt, schema = load_task(tid)
         print(f"[{tid}] running {args.model}@{args.effort} via {args.harness}...",
               flush=True)
-        try:
-            if args.harness == "api":
-                answer, usage, dur = run_api(args.model, args.effort, prompt, schema)
-            else:
-                answer, usage, dur = run_claude_code(args.model, args.effort,
-                                                     prompt, schema)
-        except Exception as e:
-            print(f"[{tid}] FAILED: {e}", file=sys.stderr)
-            continue
+        fn = run_api if args.harness == "api" else run_claude_code
+        answer, usage, dur, attempts, fail = attempt_with_retries(
+            fn, args.model, args.effort, prompt, schema)
         rec = {
             "task": tid, "model": args.model, "family": args.family,
             "effort": args.effort, "sample": args.sample,
@@ -181,8 +231,14 @@ def main():
             "usage": usage, "duration_s": round(dur, 1),
             "cost_usd": cost_usd(usage, args.family),
             "cost_basis": "standard list prices, USD/MTok",
-            "cost_estimated": usage is None, "notes": "",
+            "cost_estimated": usage is None,
+            "notes": (f"answer failed validation after {attempts} attempts: {fail}"
+                      if fail else
+                      (f"validated after {attempts} attempts (usage includes retries)"
+                       if attempts > 1 else "")),
         }
+        if fail:
+            rec["invalid"] = True
         fname = f"{tid.lower()}_{args.family}_{args.effort}_{args.sample}.json"
         path = os.path.join(outdir, fname)
         json.dump(rec, open(path, "w"), indent=1)
