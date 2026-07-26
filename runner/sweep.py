@@ -56,18 +56,56 @@ def run_config(family, model, effort, sample, harness):
     print(f"== {family}@{effort}: done ({len(left)} unrecorded)", flush=True)
 
 
+def next_auto_sample():
+    """Next ccN replicate tag: one past the highest ccN present anywhere."""
+    import re
+    top = 0
+    for f in glob.glob(os.path.join(ROOT, "results", "runs", "*_cc*.json")):
+        m = re.search(r"_cc(\d+)\.json$", f)
+        if m:
+            top = max(top, int(m.group(1)))
+    return f"cc{top + 1}"
+
+
+def clean_invalid(sample):
+    """Delete invalid records for this sample so a rerun can refill them."""
+    import json
+    removed = 0
+    for f in glob.glob(os.path.join(ROOT, "results", "runs",
+                                    f"*_{sample}.json")):
+        try:
+            if json.load(open(f)).get("invalid"):
+                os.remove(f)
+                removed += 1
+        except Exception:
+            pass
+    return removed
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sample", default="cc1")
+    ap.add_argument("--sample", default="cc1",
+                    help="record tag; 'auto' picks the next ccN replicate")
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--harness", default="claude-code")
+    ap.add_argument("--passes", type=int, default=3,
+                    help="max sweep passes; between passes, invalid records "
+                         "(transient transport/limit failures) are deleted and refilled")
     args = ap.parse_args()
+    sample = next_auto_sample() if args.sample == "auto" else args.sample
+    print(f"sample tag: {sample}", flush=True)
     jobs = [(f, m, e) for f, m, efforts in GRID for e in efforts]
-    with ThreadPoolExecutor(max_workers=args.workers) as ex:
-        futs = [ex.submit(run_config, f, m, e, args.sample, args.harness)
-                for f, m, e in jobs]
-        for fut in futs:
-            fut.result()
+    for p in range(args.passes):
+        with ThreadPoolExecutor(max_workers=args.workers) as ex:
+            futs = [ex.submit(run_config, f, m, e, sample, args.harness)
+                    for f, m, e in jobs]
+            for fut in futs:
+                fut.result()
+        bad = clean_invalid(sample)
+        if not bad:
+            break
+        print(f"pass {p + 1}: removed {bad} invalid records, refilling...",
+              flush=True)
     print("SWEEP COMPLETE", flush=True)
 
 

@@ -208,14 +208,31 @@ def build_scatter(sweep_stats, summary):
             leader = (f'<line class="leader" x1="{x:.0f}" y1="{y:.0f}" '
                       f'x2="{lx:.0f}" y2="{ey:.0f}"></line>')
         svg.append(
-            f'{leader}<g class="pt" data-stats="{html.escape(stats)}" '
-            f'data-cfg="{html.escape(cfg)}">'
+            f'<g class="pt" data-fam="{html.escape(fam)}" '
+            f'data-stats="{html.escape(stats)}" '
+            f'data-cfg="{html.escape(cfg)}">{leader}'
             f'<circle class="hit" cx="{x:.0f}" cy="{y:.0f}" r="14" fill="transparent"></circle>'
             f'{disc}{ring}'
             f'<text class="pt-label{" perf" if perfect else ""}" x="{lx:.0f}" y="{ly:.0f}" '
             f'text-anchor="{anchor}" fill="{color}">{html.escape(label)}</text></g>')
     svg.append("</svg>")
-    return "\n".join(svg)
+    fams_present = []
+    for cfg, *_ in pts:
+        f = cfg.split("@")[0]
+        if f not in fams_present:
+            fams_present.append(f)
+    fams_present.sort(key=lambda f: [m["family"] for m in CFG["models"]].index(f)
+                      if f in [m["family"] for m in CFG["models"]] else 99)
+    legend = ['<div class="famtoggle">'
+              '<span class="ft-hint">show:</span>']
+    for f in fams_present:
+        meta = model_meta(f)
+        legend.append(
+            f'<label style="color:{meta["color"]}">'
+            f'<input type="checkbox" checked data-famtoggle="{html.escape(f)}">'
+            f'{html.escape(meta["name"])}</label>')
+    legend.append('</div>')
+    return "\n".join(legend) + "\n" + "\n".join(svg)
 
 
 def build_cards():
