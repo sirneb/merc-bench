@@ -101,8 +101,17 @@
   .scatter text { font-family: var(--mono); font-size: 11px; fill: var(--ink); }
   .scatter .axis { fill: var(--muted); font-size: 11px; }
   .scatter .grid { stroke: var(--line); }
-  .scatter .pt-label { font-weight: 700; font-size: 10px; }
-  .scatter .sub { fill: var(--muted); font-size: 9px; }
+  .scatter .leader { stroke: var(--line); stroke-width: 1; }
+  .scatter .pt-label { font-weight: 500; font-size: 10px; opacity: .8; }
+  .scatter .pt-label.perf { font-weight: 800; opacity: 1; }
+  .scatter .pt { cursor: pointer; }
+  .scatter .pt:hover .dot { r: 8; }
+  .scatter .pt:hover .pt-label { opacity: 1; }
+  #tip { position: fixed; display: none; z-index: 10; pointer-events: none;
+    background: var(--ink); color: var(--paper); font-family: var(--mono);
+    font-size: 12px; padding: 6px 10px; border-radius: 5px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25); max-width: 280px; }
+  #tip b { display: block; }
   .cards2 { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
     gap: 14px; }
   .tcard { border: 1px solid var(--line); border-radius: 6px; background: var(--card);
@@ -145,33 +154,33 @@
         anywhere in this dataset — only cost, time, and occasional regressions.</div></div>
     </div>
     <div class="panel scatter" style="margin-top:16px">
-      <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · rings = perfect sweeps</div>
+      <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · ★ solid + ring = perfect sweep · hover/tap a point for stats</div>
       <svg viewBox="0 0 720 400" role="img" aria-label="cost vs time">
 <line class="grid" x1="60" y1="360" x2="700" y2="360"></line>
 <line class="grid" x1="60" y1="20" x2="60" y2="360"></line>
-<text class="axis" x="380" y="392" text-anchor="middle">total cost, 10 core tasks (USD)</text>
+<text class="axis" x="380" y="392" text-anchor="middle">total cost, 10 core tasks (USD) · hover a point for its stats</text>
 <text class="axis" x="18" y="190" transform="rotate(-90 18 190)" text-anchor="middle">total wall-clock (minutes)</text>
-<circle cx="103" cy="188" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="103" y="172" text-anchor="middle" fill="var(--haiku)">haiku@low</text><text class="sub" x="103" y="210" text-anchor="middle">$0.82 · 19m · −12 pts</text>
-<circle cx="112" cy="91" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="112" y="75" text-anchor="middle" fill="var(--haiku)">haiku@medium</text><text class="sub" x="112" y="113" text-anchor="middle">$0.98 · 30m · −11 pts</text>
-<circle cx="112" cy="146" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="112" y="130" text-anchor="middle" fill="var(--haiku)">haiku@high</text><text class="sub" x="112" y="168" text-anchor="middle">$0.98 · 24m · −6 pts</text>
-<circle cx="150" cy="273" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="150" y="257" text-anchor="middle" fill="var(--sonnet)">sonnet@low</text><text class="sub" x="150" y="295" text-anchor="middle">$1.70 · 10m · −4 pts</text>
-<circle cx="170" cy="248" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="170" y="232" text-anchor="middle" fill="var(--sonnet)">sonnet@medium</text><text class="sub" x="170" y="270" text-anchor="middle">$2.08 · 13m · −2 pts</text>
-<circle cx="240" cy="178" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="240" y="162" text-anchor="middle" fill="var(--sonnet)">sonnet@high</text><text class="sub" x="240" y="200" text-anchor="middle">$3.39 · 20m · −2 pts</text>
-<circle cx="232" cy="164" r="6" fill="var(--sonnet)" opacity="1"></circle><circle cx="232" cy="164" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label" x="232" y="148" text-anchor="middle" fill="var(--sonnet)">sonnet@xhigh</text><text class="sub" x="232" y="186" text-anchor="middle">$3.25 · 22m · perfect</text>
-<circle cx="292" cy="64" r="6" fill="var(--sonnet)" opacity="1"></circle><circle cx="292" cy="64" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label" x="292" y="48" text-anchor="middle" fill="var(--sonnet)">sonnet@max</text><text class="sub" x="292" y="86" text-anchor="middle">$4.38 · 33m · perfect</text>
-<circle cx="194" cy="255" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="194" cy="255" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="194" y="239" text-anchor="middle" fill="var(--opus)">opus48@low</text><text class="sub" x="194" y="277" text-anchor="middle">$2.53 · 12m · perfect</text>
-<circle cx="235" cy="214" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="235" cy="214" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="235" y="198" text-anchor="middle" fill="var(--opus)">opus48@high</text><text class="sub" x="235" y="236" text-anchor="middle">$3.29 · 16m · perfect</text>
-<circle cx="263" cy="185" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="263" y="169" text-anchor="middle" fill="var(--opus)">opus48@xhigh</text><text class="sub" x="263" y="207" text-anchor="middle">$3.83 · 20m · −2 pts</text>
-<circle cx="163" cy="298" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="163" y="282" text-anchor="middle" fill="var(--opus)">opus5@low</text><text class="sub" x="163" y="320" text-anchor="middle">$1.93 · 7m · −1 pts</text>
-<circle cx="174" cy="286" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="174" cy="286" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="174" y="270" text-anchor="middle" fill="var(--opus)">opus5@medium</text><text class="sub" x="174" y="308" text-anchor="middle">$2.15 · 8m · perfect</text>
-<circle cx="215" cy="247" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="215" cy="247" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="215" y="231" text-anchor="middle" fill="var(--opus)">opus5@high</text><text class="sub" x="215" y="269" text-anchor="middle">$2.92 · 13m · perfect</text>
-<circle cx="254" cy="214" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="254" cy="214" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="254" y="198" text-anchor="middle" fill="var(--opus)">opus5@xhigh</text><text class="sub" x="254" y="236" text-anchor="middle">$3.66 · 16m · perfect</text>
-<circle cx="253" cy="209" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="253" cy="209" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="253" y="193" text-anchor="middle" fill="var(--opus)">opus5@max</text><text class="sub" x="253" y="231" text-anchor="middle">$3.65 · 17m · perfect</text>
-<circle cx="256" cy="302" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="256" y="286" text-anchor="middle" fill="var(--fable)">fable@low</text><text class="sub" x="256" y="324" text-anchor="middle">$3.69 · 7m · −2 pts</text>
-<circle cx="289" cy="281" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="289" y="265" text-anchor="middle" fill="var(--fable)">fable@medium</text><text class="sub" x="289" y="303" text-anchor="middle">$4.33 · 9m · −1 pts</text>
-<circle cx="304" cy="270" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="304" y="254" text-anchor="middle" fill="var(--fable)">fable@high</text><text class="sub" x="304" y="292" text-anchor="middle">$4.61 · 10m · −1 pts</text>
-<circle cx="436" cy="216" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="436" cy="216" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="436" y="200" text-anchor="middle" fill="var(--fable)">fable@xhigh</text><text class="sub" x="436" y="238" text-anchor="middle">$7.09 · 16m · perfect</text>
-<circle cx="617" cy="127" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="617" cy="127" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="617" y="111" text-anchor="middle" fill="var(--fable)">fable@max</text><text class="sub" x="617" y="149" text-anchor="middle">$10.49 · 26m · perfect</text>
+<g class="pt" data-stats="$0.82 · 19 min · −12 pts" data-cfg="haiku@low"><circle class="hit" cx="103" cy="188" r="14" fill="transparent"></circle><circle class="dot" cx="103" cy="188" r="5.5" fill="var(--haiku)" fill-opacity=".18" stroke="var(--haiku)" stroke-width="1.4"></circle><text class="pt-label" x="103" y="173" text-anchor="middle" fill="var(--haiku)">haiku@low</text></g>
+<g class="pt" data-stats="$0.98 · 30 min · −11 pts" data-cfg="haiku@medium"><circle class="hit" cx="112" cy="91" r="14" fill="transparent"></circle><circle class="dot" cx="112" cy="91" r="5.5" fill="var(--haiku)" fill-opacity=".18" stroke="var(--haiku)" stroke-width="1.4"></circle><text class="pt-label" x="112" y="76" text-anchor="middle" fill="var(--haiku)">haiku@medium</text></g>
+<g class="pt" data-stats="$0.98 · 24 min · −6 pts" data-cfg="haiku@high"><circle class="hit" cx="112" cy="146" r="14" fill="transparent"></circle><circle class="dot" cx="112" cy="146" r="5.5" fill="var(--haiku)" fill-opacity=".18" stroke="var(--haiku)" stroke-width="1.4"></circle><text class="pt-label" x="112" y="131" text-anchor="middle" fill="var(--haiku)">haiku@high</text></g>
+<g class="pt" data-stats="$1.70 · 10 min · −4 pts" data-cfg="sonnet@low"><circle class="hit" cx="150" cy="273" r="14" fill="transparent"></circle><circle class="dot" cx="150" cy="273" r="5.5" fill="var(--sonnet)" fill-opacity=".18" stroke="var(--sonnet)" stroke-width="1.4"></circle><text class="pt-label" x="150" y="303" text-anchor="middle" fill="var(--sonnet)">sonnet@low</text></g>
+<g class="pt" data-stats="$2.08 · 13 min · −2 pts" data-cfg="sonnet@medium"><circle class="hit" cx="170" cy="248" r="14" fill="transparent"></circle><circle class="dot" cx="170" cy="248" r="5.5" fill="var(--sonnet)" fill-opacity=".18" stroke="var(--sonnet)" stroke-width="1.4"></circle><text class="pt-label" x="170" y="233" text-anchor="middle" fill="var(--sonnet)">sonnet@medium</text></g>
+<g class="pt" data-stats="$3.39 · 20 min · −2 pts" data-cfg="sonnet@high"><circle class="hit" cx="240" cy="178" r="14" fill="transparent"></circle><circle class="dot" cx="240" cy="178" r="5.5" fill="var(--sonnet)" fill-opacity=".18" stroke="var(--sonnet)" stroke-width="1.4"></circle><text class="pt-label" x="240" y="163" text-anchor="middle" fill="var(--sonnet)">sonnet@high</text></g>
+<g class="pt" data-stats="$3.25 · 22 min · perfect sweep" data-cfg="sonnet@xhigh"><circle class="hit" cx="232" cy="164" r="14" fill="transparent"></circle><circle class="dot" cx="232" cy="164" r="6" fill="var(--sonnet)"></circle><circle cx="232" cy="164" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label perf" x="232" y="149" text-anchor="middle" fill="var(--sonnet)">★ sonnet@xhigh</text></g>
+<g class="pt" data-stats="$4.38 · 33 min · perfect sweep" data-cfg="sonnet@max"><circle class="hit" cx="292" cy="64" r="14" fill="transparent"></circle><circle class="dot" cx="292" cy="64" r="6" fill="var(--sonnet)"></circle><circle cx="292" cy="64" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label perf" x="292" y="49" text-anchor="middle" fill="var(--sonnet)">★ sonnet@max</text></g>
+<line class="leader" x1="194" y1="255" x2="194" y2="312"></line><g class="pt" data-stats="$2.53 · 12 min · perfect sweep" data-cfg="opus48@low"><circle class="hit" cx="194" cy="255" r="14" fill="transparent"></circle><circle class="dot" cx="194" cy="255" r="6" fill="var(--opus)"></circle><circle cx="194" cy="255" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label perf" x="194" y="321" text-anchor="middle" fill="var(--opus)">★ opus48@low</text></g>
+<line class="leader" x1="235" y1="214" x2="235" y2="138"></line><g class="pt" data-stats="$3.29 · 16 min · perfect sweep" data-cfg="opus48@high"><circle class="hit" cx="235" cy="214" r="14" fill="transparent"></circle><circle class="dot" cx="235" cy="214" r="6" fill="var(--opus)"></circle><circle cx="235" cy="214" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label perf" x="235" y="136" text-anchor="middle" fill="var(--opus)">★ opus48@high</text></g>
+<g class="pt" data-stats="$3.83 · 20 min · −2 pts" data-cfg="opus48@xhigh"><circle class="hit" cx="263" cy="185" r="14" fill="transparent"></circle><circle class="dot" cx="263" cy="185" r="5.5" fill="var(--opus)" fill-opacity=".18" stroke="var(--opus)" stroke-width="1.4"></circle><text class="pt-label" x="277" y="188" text-anchor="start" fill="var(--opus)">opus48@xhigh</text></g>
+<line class="leader" x1="163" y1="298" x2="163" y2="328"></line><g class="pt" data-stats="$1.93 · 7 min · −1 pts" data-cfg="opus5@low"><circle class="hit" cx="163" cy="298" r="14" fill="transparent"></circle><circle class="dot" cx="163" cy="298" r="5.5" fill="var(--opus)" fill-opacity=".18" stroke="var(--opus)" stroke-width="1.4"></circle><text class="pt-label" x="163" y="337" text-anchor="middle" fill="var(--opus)">opus5@low</text></g>
+<line class="leader" x1="174" y1="286" x2="174" y2="343"></line><g class="pt" data-stats="$2.15 · 8 min · perfect sweep" data-cfg="opus5@medium"><circle class="hit" cx="174" cy="286" r="14" fill="transparent"></circle><circle class="dot" cx="174" cy="286" r="6" fill="var(--opus)"></circle><circle cx="174" cy="286" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label perf" x="174" y="352" text-anchor="middle" fill="var(--opus)">★ opus5@medium</text></g>
+<g class="pt" data-stats="$2.92 · 13 min · perfect sweep" data-cfg="opus5@high"><circle class="hit" cx="215" cy="247" r="14" fill="transparent"></circle><circle class="dot" cx="215" cy="247" r="6" fill="var(--opus)"></circle><circle cx="215" cy="247" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label perf" x="229" y="250" text-anchor="start" fill="var(--opus)">★ opus5@high</text></g>
+<g class="pt" data-stats="$3.66 · 16 min · perfect sweep" data-cfg="opus5@xhigh"><circle class="hit" cx="254" cy="214" r="14" fill="transparent"></circle><circle class="dot" cx="254" cy="214" r="6" fill="var(--opus)"></circle><circle cx="254" cy="214" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label perf" x="268" y="217" text-anchor="start" fill="var(--opus)">★ opus5@xhigh</text></g>
+<line class="leader" x1="253" y1="209" x2="253" y2="257"></line><g class="pt" data-stats="$3.65 · 17 min · perfect sweep" data-cfg="opus5@max"><circle class="hit" cx="253" cy="209" r="14" fill="transparent"></circle><circle class="dot" cx="253" cy="209" r="6" fill="var(--opus)"></circle><circle cx="253" cy="209" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label perf" x="253" y="266" text-anchor="middle" fill="var(--opus)">★ opus5@max</text></g>
+<line class="leader" x1="256" y1="302" x2="256" y2="332"></line><g class="pt" data-stats="$3.69 · 7 min · −2 pts" data-cfg="fable@low"><circle class="hit" cx="256" cy="302" r="14" fill="transparent"></circle><circle class="dot" cx="256" cy="302" r="5.5" fill="var(--fable)" fill-opacity=".18" stroke="var(--fable)" stroke-width="1.4"></circle><text class="pt-label" x="256" y="341" text-anchor="middle" fill="var(--fable)">fable@low</text></g>
+<line class="leader" x1="289" y1="281" x2="289" y2="320"></line><g class="pt" data-stats="$4.33 · 9 min · −1 pts" data-cfg="fable@medium"><circle class="hit" cx="289" cy="281" r="14" fill="transparent"></circle><circle class="dot" cx="289" cy="281" r="5.5" fill="var(--fable)" fill-opacity=".18" stroke="var(--fable)" stroke-width="1.4"></circle><text class="pt-label" x="289" y="329" text-anchor="middle" fill="var(--fable)">fable@medium</text></g>
+<g class="pt" data-stats="$4.61 · 10 min · −1 pts" data-cfg="fable@high"><circle class="hit" cx="304" cy="270" r="14" fill="transparent"></circle><circle class="dot" cx="304" cy="270" r="5.5" fill="var(--fable)" fill-opacity=".18" stroke="var(--fable)" stroke-width="1.4"></circle><text class="pt-label" x="318" y="273" text-anchor="start" fill="var(--fable)">fable@high</text></g>
+<g class="pt" data-stats="$7.09 · 16 min · perfect sweep" data-cfg="fable@xhigh"><circle class="hit" cx="436" cy="216" r="14" fill="transparent"></circle><circle class="dot" cx="436" cy="216" r="6" fill="var(--fable)"></circle><circle cx="436" cy="216" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label perf" x="436" y="201" text-anchor="middle" fill="var(--fable)">★ fable@xhigh</text></g>
+<g class="pt" data-stats="$10.49 · 26 min · perfect sweep" data-cfg="fable@max"><circle class="hit" cx="617" cy="127" r="14" fill="transparent"></circle><circle class="dot" cx="617" cy="127" r="6" fill="var(--fable)"></circle><circle cx="617" cy="127" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label perf" x="617" y="112" text-anchor="middle" fill="var(--fable)">★ fable@max</text></g>
 </svg>
     </div>
   </section>
@@ -404,5 +413,32 @@
   <div class="footer">MERC · generated by report/generate.py from results/runs ·
   add your own runs and rebuild: see docs/adding-a-model.md</div>
 </div>
+<div id="tip"></div>
+<script>
+(function () {
+  var tip = document.getElementById("tip");
+  function show(g, ev) {
+    tip.innerHTML = "<b>" + g.dataset.cfg + "</b>" + g.dataset.stats;
+    tip.style.display = "block";
+    move(ev);
+  }
+  function move(ev) {
+    var pad = 14;
+    var x = ev.clientX + pad, y = ev.clientY + pad;
+    var r = tip.getBoundingClientRect();
+    if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - pad;
+    if (y + r.height > window.innerHeight - 8) y = ev.clientY - r.height - pad;
+    tip.style.left = x + "px";
+    tip.style.top = y + "px";
+  }
+  document.querySelectorAll(".scatter .pt").forEach(function (g) {
+    g.addEventListener("mouseenter", function (ev) { show(g, ev); });
+    g.addEventListener("mousemove", move);
+    g.addEventListener("mouseleave", function () { tip.style.display = "none"; });
+    g.addEventListener("click", function (ev) { show(g, ev); ev.stopPropagation(); });
+  });
+  document.addEventListener("click", function () { tip.style.display = "none"; });
+})();
+</script>
 </body>
 </html>

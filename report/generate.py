@@ -118,28 +118,75 @@ def build_scatter(sweep_stats, summary):
         pts.append((cfg, cost, dur, dropped, failed, cfg in sweep_stats))
     max_c = max(p[1] for p in pts) * 1.15 or 1
     max_d = max(p[2] for p in pts) * 1.15 or 1
+
+    placed = []  # (x0, y0, x1, y1) of claimed label boxes + point discs
+
+    def claim(x, y, w, h):
+        box = (x, y, x + w, y + h)
+        for b in placed:
+            if box[0] < b[2] and box[2] > b[0] and box[1] < b[3] and box[3] > b[1]:
+                return None
+        placed.append(box)
+        return box
+
+    def place_label(px, py, text):
+        w = len(text) * 6.2 + 4
+        # candidates: above, below, right, left, then vertical nudges
+        cands = [(px - w / 2, py - 24, "middle", px),
+                 (px - w / 2, py + 12, "middle", px),
+                 (px + 12, py - 6, "start", px + 14),
+                 (px - w - 12, py - 6, "end", px - 14)]
+        for dy in range(1, 12):
+            cands.append((px - w / 2, py - 24 - dy * 9, "middle", px))
+            cands.append((px - w / 2, py + 12 + dy * 9, "middle", px))
+        for bx, by, anchor, tx in cands:
+            if bx < 2 or bx + w > 718 or by < 12 or by + 11 > 372:
+                continue
+            if claim(bx, by, w, 11):
+                return tx, by + 9, anchor, by + 9
+        return px, py - 16, "middle", py - 16  # fallback: accept overlap
+
+    coords = []
+    for cfg, cost, dur, dropped, failed, perfect in pts:
+        x = 60 + (cost / max_c) * 640
+        y = 360 - (dur / max_d) * 340
+        claim(x - 13, y - 13, 26, 26)  # reserve the disc + ring area
+        coords.append((cfg, cost, dur, dropped, failed, perfect, x, y))
+
     svg = ['<svg viewBox="0 0 720 400" role="img" aria-label="cost vs time">']
     svg.append('<line class="grid" x1="60" y1="360" x2="700" y2="360"></line>')
     svg.append('<line class="grid" x1="60" y1="20" x2="60" y2="360"></line>')
     svg.append(f'<text class="axis" x="380" y="392" text-anchor="middle">'
-               f'total cost, {len(CORE)} core tasks (USD)</text>')
+               f'total cost, {len(CORE)} core tasks (USD) · hover a point for its stats</text>')
     svg.append('<text class="axis" x="18" y="190" transform="rotate(-90 18 190)" '
                'text-anchor="middle">total wall-clock (minutes)</text>')
-    for cfg, cost, dur, dropped, failed, perfect in pts:
+    for cfg, cost, dur, dropped, failed, perfect, x, y in coords:
         fam = cfg.split("@")[0]
         color = model_meta(fam)["color"]
-        x = 60 + (cost / max_c) * 640
-        y = 360 - (dur / max_d) * 340
+        note = "perfect sweep" if perfect else (f"−{dropped} pts" if not failed
+                                               else "incl. failure")
+        stats = f"${cost:.2f} · {dur:.0f} min · {note}"
+        label = f"★ {cfg}" if perfect else cfg
+        lx, ly, anchor, _ = place_label(x, y, label)
         ring = (f'<circle cx="{x:.0f}" cy="{y:.0f}" r="11" fill="none" '
                 f'stroke="{color}" stroke-width="1.5"></circle>') if perfect else ""
-        note = "perfect" if perfect else (f"−{dropped} pts" if not failed
-                                          else "incl. failure")
-        svg.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="6" fill="{color}" '
-                   f'opacity="{1 if perfect else .45}"></circle>{ring}'
-                   f'<text class="pt-label" x="{x:.0f}" y="{y-16:.0f}" '
-                   f'text-anchor="middle" fill="{color}">{html.escape(cfg)}</text>'
-                   f'<text class="sub" x="{x:.0f}" y="{y+22:.0f}" text-anchor="middle">'
-                   f'${cost:.2f} · {dur:.0f}m · {note}</text>')
+        disc = (f'<circle class="dot" cx="{x:.0f}" cy="{y:.0f}" r="6" '
+                f'fill="{color}"></circle>' if perfect else
+                f'<circle class="dot" cx="{x:.0f}" cy="{y:.0f}" r="5.5" '
+                f'fill="{color}" fill-opacity=".18" stroke="{color}" '
+                f'stroke-width="1.4"></circle>')
+        leader = ""
+        if abs(ly - y) > 30:
+            ey = ly + 2 if ly < y else ly - 9
+            leader = (f'<line class="leader" x1="{x:.0f}" y1="{y:.0f}" '
+                      f'x2="{lx:.0f}" y2="{ey:.0f}"></line>')
+        svg.append(
+            f'{leader}<g class="pt" data-stats="{html.escape(stats)}" '
+            f'data-cfg="{html.escape(cfg)}">'
+            f'<circle class="hit" cx="{x:.0f}" cy="{y:.0f}" r="14" fill="transparent"></circle>'
+            f'{disc}{ring}'
+            f'<text class="pt-label{" perf" if perfect else ""}" x="{lx:.0f}" y="{ly:.0f}" '
+            f'text-anchor="{anchor}" fill="{color}">{html.escape(label)}</text></g>')
     svg.append("</svg>")
     return "\n".join(svg)
 
