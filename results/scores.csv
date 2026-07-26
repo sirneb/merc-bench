@@ -50,8 +50,11 @@ t1_fable_max_cc1.json,T1,fable,max,cc1,16,16,0.3344,False,36.6,4048,2026-07-26,c
 t1_fable_medium_cc1.json,T1,fable,medium,cc1,16,16,0.188,False,13.2,1120,2026-07-25,claude-code
 t1_fable_xhigh_cc1.json,T1,fable,xhigh,cc1,16,16,0.2454,False,22.5,2270,2026-07-25,claude-code
 t1_haiku_high_cc1.json,T1,haiku,high,cc1,16,16,0.031,False,42.6,5727,2026-07-25,claude-code
+t1_haiku_high_cc2.json,T1,haiku,high,cc2,16,16,0.0483,False,60.8,7936,2026-07-26,claude-code
 t1_haiku_low_cc1.json,T1,haiku,low,cc1,15,16,0.0316,False,35.7,4581,2026-07-25,claude-code
+t1_haiku_low_cc2.json,T1,haiku,low,cc2,16,16,0.0476,False,58.0,7781,2026-07-26,claude-code
 t1_haiku_medium_cc1.json,T1,haiku,medium,cc1,16,16,0.0395,False,46.3,6170,2026-07-25,claude-code
+t1_haiku_medium_cc2.json,T1,haiku,medium,cc2,15,16,0.0406,False,47.5,6395,2026-07-26,claude-code
 t1_haiku_medium_selftest.json,T1,haiku,medium,selftest,16,16,0.049,False,65.7,8095,2026-07-25,claude-code
 t1_opus48_high_cc1.json,T1,opus48,high,cc1,16,16,0.107,False,21.8,1993,2026-07-25,claude-code
 t1_opus48_low_cc1.json,T1,opus48,low,cc1,16,16,0.0892,False,18.2,1363,2026-07-25,claude-code
@@ -72,7 +75,9 @@ t2_fable_max_cc1.json,T2,fable,max,cc1,8,8,0.2248,False,19.6,1866,2026-07-26,cla
 t2_fable_medium_cc1.json,T2,fable,medium,cc1,8,8,0.1668,False,14.1,707,2026-07-25,claude-code
 t2_fable_xhigh_cc1.json,T2,fable,xhigh,cc1,8,8,0.2119,False,18.4,1609,2026-07-25,claude-code
 t2_haiku_high_cc1.json,T2,haiku,high,cc1,7,8,0.0408,False,54.2,6432,2026-07-25,claude-code
+t2_haiku_high_cc2.json,T2,haiku,high,cc2,8,8,0.0644,False,97.4,11145,2026-07-26,claude-code
 t2_haiku_low_cc1.json,T2,haiku,low,cc1,7,8,0.0217,False,23.8,2613,2026-07-25,claude-code
+t2_haiku_low_cc2.json,T2,haiku,low,cc2,7,8,0.026,False,29.7,3458,2026-07-26,claude-code
 t2_haiku_medium_cc1.json,T2,haiku,medium,cc1,7,8,0.0208,False,21.7,2420,2026-07-25,claude-code
 t2_haiku_medium_selftest.json,T2,haiku,medium,selftest,8,8,0.0495,False,74.7,8197,2026-07-25,claude-code
 t2_opus48_high_cc1.json,T2,opus48,high,cc1,8,8,0.094,False,16.9,1471,2026-07-25,claude-code

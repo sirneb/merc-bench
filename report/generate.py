@@ -103,7 +103,21 @@ def build_map(summary):
 
 
 def build_scatter(sweep_stats, summary):
-    """Scatter of full-coverage configs: x=cost of 10 core batteries, y=time."""
+    """Scatter of full-coverage configs: x=cost, y=time, size=reliability.
+
+    Reliability = average points dropped per 10-task sweep across every
+    sample of that config (0 drops -> the biggest circle). Replicated
+    configs (n>=2 on all core tasks) render solid; single-sample render
+    outlined. A continuous encoding: no binary perfect/imperfect flag.
+    """
+    import csv as _csv
+    by_cell = {}
+    with open(os.path.join(ROOT, "results", "scores.csv")) as f:
+        for r in _csv.DictReader(f):
+            if r["task"] in CORE:
+                by_cell.setdefault(
+                    (f"{r['family']}@{r['effort']}", r["task"]),
+                    []).append(int(r["score"]))
     pts = []
     for cfg in sorted(summary.keys(), key=config_sort_key):
         tasks = summary[cfg]
@@ -112,10 +126,11 @@ def build_scatter(sweep_stats, summary):
             continue
         cost = sum((tasks[t]["cost_usd"] or 0) for t in covered)
         dur = sum((tasks[t]["duration_s"] or 0) for t in covered) / 60
-        dropped = sum(TOTALS[t] - tasks[t]["score_min"] for t in covered
-                      if tasks[t]["score_min"] >= 0)
-        failed = any(tasks[t]["score_min"] < 0 for t in covered)
-        pts.append((cfg, cost, dur, dropped, failed, cfg in sweep_stats))
+        avg_dropped = sum(
+            TOTALS[t] - (sum(by_cell[(cfg, t)]) / len(by_cell[(cfg, t)]))
+            for t in covered)
+        n_rep = min(len(by_cell[(cfg, t)]) for t in covered)
+        pts.append((cfg, cost, dur, avg_dropped, n_rep))
     import math
     # log scale on both axes: spreads the congested low-cost/low-time cluster
     min_c = min(p[1] for p in pts) / 1.25
@@ -159,11 +174,11 @@ def build_scatter(sweep_stats, summary):
         return px, py - 16, "middle", py - 16  # fallback: accept overlap
 
     coords = []
-    for cfg, cost, dur, dropped, failed, perfect in pts:
+    for cfg, cost, dur, avg_dropped, n_rep in pts:
         x = sx(cost)
         y = sy(dur)
-        claim(x - 13, y - 13, 26, 26)  # reserve the disc + ring area
-        coords.append((cfg, cost, dur, dropped, failed, perfect, x, y))
+        claim(x - 13, y - 13, 26, 26)  # reserve the disc area
+        coords.append((cfg, cost, dur, avg_dropped, n_rep, x, y))
 
     svg = ['<svg viewBox="0 0 720 400" role="img" aria-label="cost vs time">']
     for v in [0.5, 1, 2, 3, 5, 7, 10, 15]:
@@ -187,20 +202,20 @@ def build_scatter(sweep_stats, summary):
                f'hover a point for its stats</text>')
     svg.append('<text class="axis" x="14" y="190" transform="rotate(-90 14 190)" '
                'text-anchor="middle">total wall-clock (minutes, log scale)</text>')
-    for cfg, cost, dur, dropped, failed, perfect, x, y in coords:
+    for cfg, cost, dur, avg_dropped, n_rep, x, y in coords:
         fam = cfg.split("@")[0]
         color = model_meta(fam)["color"]
-        note = "perfect sweep" if perfect else (f"−{dropped} pts" if not failed
-                                               else "incl. failure")
-        stats = f"${cost:.2f} · {dur:.0f} min · {note}"
-        label = f"★ {cfg}" if perfect else cfg
-        lx, ly, anchor, _ = place_label(x, y, label)
-        ring = (f'<circle cx="{x:.0f}" cy="{y:.0f}" r="11" fill="none" '
-                f'stroke="{color}" stroke-width="1.5"></circle>') if perfect else ""
-        disc = (f'<circle class="dot" cx="{x:.0f}" cy="{y:.0f}" r="6" '
-                f'fill="{color}"></circle>' if perfect else
-                f'<circle class="dot" cx="{x:.0f}" cy="{y:.0f}" r="5.5" '
-                f'fill="{color}" fill-opacity=".18" stroke="{color}" '
+        r = max(3.5, 11.0 - 1.15 * avg_dropped)
+        drop_txt = ("0" if avg_dropped < 0.005
+                    else f"{avg_dropped:.1f}".rstrip("0").rstrip("."))
+        stats = (f"${cost:.2f} · {dur:.0f} min · −{drop_txt} pts/sweep avg "
+                 f"· n={n_rep}")
+        replicated = n_rep >= 2
+        lx, ly, anchor, _ = place_label(x, y, cfg)
+        disc = (f'<circle class="dot" cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" '
+                f'fill="{color}"></circle>' if replicated else
+                f'<circle class="dot" cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" '
+                f'fill="{color}" fill-opacity=".22" stroke="{color}" '
                 f'stroke-width="1.4"></circle>')
         leader = ""
         if abs(ly - y) > 30:
@@ -212,9 +227,9 @@ def build_scatter(sweep_stats, summary):
             f'data-stats="{html.escape(stats)}" '
             f'data-cfg="{html.escape(cfg)}">{leader}'
             f'<circle class="hit" cx="{x:.0f}" cy="{y:.0f}" r="14" fill="transparent"></circle>'
-            f'{disc}{ring}'
-            f'<text class="pt-label{" perf" if perfect else ""}" x="{lx:.0f}" y="{ly:.0f}" '
-            f'text-anchor="{anchor}" fill="{color}">{html.escape(label)}</text></g>')
+            f'{disc}'
+            f'<text class="pt-label" x="{lx:.0f}" y="{ly:.0f}" '
+            f'text-anchor="{anchor}" fill="{color}">{html.escape(cfg)}</text></g>')
     svg.append("</svg>")
     fams_present = []
     for cfg, *_ in pts:

@@ -106,7 +106,7 @@
   .scatter .pt-label { font-weight: 500; font-size: 10px; opacity: .8; }
   .scatter .pt-label.perf { font-weight: 800; opacity: 1; }
   .scatter .pt { cursor: pointer; }
-  .scatter .pt:hover .dot { r: 8; }
+  .scatter .pt:hover .dot { stroke: var(--ink); stroke-width: 1.6; }
   .scatter .pt:hover .pt-label { opacity: 1; }
   .famtoggle { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center;
     font-family: var(--mono); font-size: 12.5px; font-weight: 700;
@@ -163,7 +163,7 @@
         anywhere in this dataset — only cost, time, and occasional regressions.</div></div>
     </div>
     <div class="panel scatter" style="margin-top:16px">
-      <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · ★ solid + ring = perfect sweep · hover/tap a point for stats</div>
+      <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · circle size = reliability (avg points dropped per sweep; bigger = fewer) · solid = replicated n≥2 · hover/tap for stats</div>
       {{SCATTER}}
     </div>
   </section>

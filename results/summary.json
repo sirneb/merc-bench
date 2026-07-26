@@ -18,17 +18,17 @@
   },
   "T1": {
    "total": 16,
-   "cost_usd": 0.0316,
-   "duration_s": 35.7,
-   "n": 1,
+   "cost_usd": 0.0476,
+   "duration_s": 58.0,
+   "n": 2,
    "score_min": 15,
-   "score_max": 15
+   "score_max": 16
   },
   "T2": {
    "total": 8,
-   "cost_usd": 0.0217,
-   "duration_s": 23.8,
-   "n": 1,
+   "cost_usd": 0.026,
+   "duration_s": 29.7,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   },
@@ -116,10 +116,10 @@
   },
   "T1": {
    "total": 16,
-   "cost_usd": 0.049,
-   "duration_s": 65.7,
-   "n": 2,
-   "score_min": 16,
+   "cost_usd": 0.0406,
+   "duration_s": 47.5,
+   "n": 3,
+   "score_min": 15,
    "score_max": 16
   },
   "T2": {
@@ -214,19 +214,19 @@
   },
   "T1": {
    "total": 16,
-   "cost_usd": 0.031,
-   "duration_s": 42.6,
-   "n": 1,
+   "cost_usd": 0.0483,
+   "duration_s": 60.8,
+   "n": 2,
    "score_min": 16,
    "score_max": 16
   },
   "T2": {
    "total": 8,
-   "cost_usd": 0.0408,
-   "duration_s": 54.2,
-   "n": 1,
+   "cost_usd": 0.0644,
+   "duration_s": 97.4,
+   "n": 2,
    "score_min": 7,
-   "score_max": 7
+   "score_max": 8
   },
   "T3": {
    "total": 6,
