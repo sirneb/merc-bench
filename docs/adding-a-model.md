@@ -34,6 +34,12 @@ Uses your local `claude` login via `claude -p`. Structured answers are requested
 as JSON-only output and parsed tolerantly; usage/cost fields are captured when
 the CLI reports them (otherwise the record is marked `cost_estimated`).
 
+Caveat: this path asks for JSON as plain text, which is fragile for small
+models on long-output tasks (E's answer is a ~150-line module serialized as a
+single JSON string — our haiku@medium self-test truncated mid-emission and
+honestly scored 0). For E and other long-answer tasks, prefer the API runner's
+forced-tool path, or rerun truncated attempts as fresh samples.
+
 ## Path 3 — any other harness (Codex, Cursor, OpenAI, local models, humans…)
 
 You don't need our runner at all:
