@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern applications lean on database caching to keep latency low. A cache stores hot rows in memory; thus repeated reads skip the disk entirely. When traffic spikes, this cache absorbs load and shields the primary database from heavy pressure.\n\nHowever cached data can drift from the source of truth. Invalidation is the hard part; engineers must decide when entries expire, how writes propagate, and what staleness users will tolerate. A cache that returns outdated values can be worse than a slow query, because wrong answers erode user trust far faster than delays ever could.\n\nAlong with big gains, risks abound. RAM is costly, and hot data can vanish if a host crash occurs; cold starts hit hard until popular rows warm up again. Watching hit ratios, sizing pools, and tuning TTL knobs is constant work, but such vigilant tuning pays off.\n\nFinally treat your cache as an optimization, not a source of truth, and verify its behavior before calling work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9180,
+  "cache_read": 15476,
+  "output": 11019
+ },
+ "duration_s": 115.8,
+ "cost_usd": 0.6812,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

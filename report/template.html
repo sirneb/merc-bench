@@ -155,12 +155,14 @@
       <div class="kpi"><div class="big">Most tasks saturate</div>
         <div class="cap">the majority of tasks are solved by every tier at every
         effort — there, the cheapest configuration strictly wins.</div></div>
-      <div class="kpi"><div class="big">The perfection floor</div>
-        <div class="cap">each tier's cheapest perfect sweep of the 10 core tasks:
-        {{FLOORS}}. Tier buys a cheaper, faster floor — not exclusive capability.</div></div>
-      <div class="kpi"><div class="big">Effort ≠ accuracy</div>
-        <div class="cap">above each tier's floor, added effort bought zero accuracy
-        anywhere in this dataset — only cost, time, and occasional regressions.</div></div>
+      <div class="kpi"><div class="big">The reliability floor</div>
+        <div class="cap">cheapest config clean in every replicate of the 10 core
+        tasks: {{FLOORS}}. Opus 5 reaches it at medium; Sonnet and Fable only at
+        max; Opus 4.8 and Haiku never did.</div></div>
+      <div class="kpi"><div class="big">The last point is the expensive one</div>
+        <div class="cap">below its floor a config drops one stubborn point, not
+        many; buying that point with effort costs 2–3× (Fable low→max: $3.91→$10.66).
+        The cheap route to zero-defect is Opus 5 @ medium, not max effort.</div></div>
     </div>
     <div class="panel scatter" style="margin-top:16px">
       <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · circle size = reliability (avg points dropped per sweep; bigger = fewer) · solid = replicated n≥2 · hover/tap for stats</div>
@@ -178,7 +180,7 @@
     <p class="lede">Every configuration in the dataset (models in tier order, effort
     ascending within each) against all tasks, with per-row totals over the 10 core
     tasks. Green = full marks; amber = dropped points; outlined = severe or failed.
-    ★ = perfect sweep; bold $ = that tier's cheapest sweep (its "perfection floor").</p>
+    ★ = clean in every replicate; bold $ = that family's reliability floor (cheapest replicated-clean config).</p>
     <div class="panel">
       <div class="heatwrap">
         <div class="heat">

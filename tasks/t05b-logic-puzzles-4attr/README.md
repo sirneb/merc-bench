@@ -12,4 +12,4 @@ Pure deduction with irreducible clue sets. Used for reliability replicates: same
 
 ## What we found
 
-Separates by effort direction, not tier: Haiku solves all 6 at low and medium but collapses at high (replicated in both study generations); every other config is perfect except one Fable@low sample (5/6).
+Separates Haiku from everyone: every non-Haiku config solved all 6 in both replicates (one Fable@low sample: 5/6). Haiku@high spans 3-6/6 across samples — a wide variance band where the first generation of this study saw a crisp collapse.

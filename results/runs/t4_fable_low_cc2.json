@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, database caching remains a simple idea: keep hot data close to the application so repeated reads avoid slow disk trips. A cache stores recent query results in memory; when the same request arrives again, the answer returns almost instantly.\n\nHowever, caching brings real problems. Stale data is the classic risk; an updated row may linger in old form until the copy expires. Teams choose between write-through and write-back designs, tune eviction rules, and watch hit ratios closely. A cache that is sized poorly wastes memory, and invalidation logic can grow tangled quickly over time.\n\nAlong with that, a smart in-RAM layout aids scaling; fast lookups of hot rows cut lag and lift throughput. Admins watch hit ratios, adjust limits, and flush old data at fitting points, always avoiding stagnant info.\n\nFinally, treat your cache as a tool, not magic. Measure real workloads, invalidate carefully, and the design work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8904,
+  "cache_read": 15476,
+  "output": 2462
+ },
+ "duration_s": 30.5,
+ "cost_usd": 0.2499,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

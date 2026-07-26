@@ -12,4 +12,4 @@ Instruction-following under load: exact word counts, an e-free paragraph, exact 
 
 ## What we found
 
-Near-saturated (a published correction: the original "Sonnet 3/10 to 10/10 effort ladder" was a grading artifact from scoring JSON-wrapped text). Every tier above Haiku scores 9-10/10; Fable persistently dropped the same single constraint below xhigh; Haiku drops 1-2.
+Near-saturated (a published correction: the original "Sonnet 3/10 to 10/10 effort ladder" was a grading artifact from scoring JSON-wrapped text). Every tier above Haiku scores 9-10/10; Fable persistently dropped the same single constraint at every effort below max, in both replicates; Haiku drops 1-2.

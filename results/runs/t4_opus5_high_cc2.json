@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, every busy database leans on a cache to survive traffic spikes. A cache stores hot rows in memory, so repeated reads skip disk entirely. The gain is latency measured in microseconds rather than the milliseconds a raw query demands.\n\nHowever, correctness now becomes the hard part. Stale entries mislead users; invalid entries waste memory. Teams pick a policy: write through, write behind, or simply expire keys after a fixed interval. Each choice trades freshness against load, and every cache eventually forces one blunt question: what may safely lag? A good cache answers that clearly.\n\nAlong with that, sizing calls for caution: RAM is costly, so buy only what pays off. Watch hit ratios daily; a low ratio signals a faulty layout. Log all faults, avoid churn, and drop stray null slots.\n\nFinally, measure before you tune; a profiler beats a hunch. Treat the cache as plumbing, and consider your work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8583,
+  "cache_read": 15493,
+  "output": 4554
+ },
+ "duration_s": 48.6,
+ "cost_usd": 0.1753,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

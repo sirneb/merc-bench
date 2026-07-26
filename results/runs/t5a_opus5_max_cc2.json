@@ -1,0 +1,138 @@
+{
+ "task": "T5A",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "nationality": [
+     "Swede",
+     "Dane",
+     "Brit",
+     "Norwegian",
+     "German"
+    ],
+    "color": [
+     "green",
+     "white",
+     "blue",
+     "yellow",
+     "red"
+    ],
+    "drink": [
+     "coffee",
+     "water",
+     "beer",
+     "tea",
+     "milk"
+    ],
+    "pet": [
+     "cat",
+     "fish",
+     "horse",
+     "dog",
+     "bird"
+    ],
+    "job": [
+     "pilot",
+     "doctor",
+     "teacher",
+     "chef",
+     "artist"
+    ]
+   },
+   {
+    "id": 2,
+    "nationality": [
+     "Swede",
+     "German",
+     "Brit",
+     "Dane",
+     "Norwegian"
+    ],
+    "color": [
+     "red",
+     "yellow",
+     "blue",
+     "green",
+     "white"
+    ],
+    "drink": [
+     "coffee",
+     "beer",
+     "water",
+     "tea",
+     "milk"
+    ],
+    "pet": [
+     "bird",
+     "horse",
+     "fish",
+     "dog",
+     "cat"
+    ],
+    "job": [
+     "pilot",
+     "doctor",
+     "teacher",
+     "artist",
+     "chef"
+    ]
+   },
+   {
+    "id": 3,
+    "nationality": [
+     "Brit",
+     "German",
+     "Norwegian",
+     "Dane",
+     "Swede"
+    ],
+    "color": [
+     "blue",
+     "yellow",
+     "red",
+     "green",
+     "white"
+    ],
+    "drink": [
+     "beer",
+     "milk",
+     "coffee",
+     "water",
+     "tea"
+    ],
+    "pet": [
+     "dog",
+     "cat",
+     "bird",
+     "horse",
+     "fish"
+    ],
+    "job": [
+     "artist",
+     "teacher",
+     "doctor",
+     "pilot",
+     "chef"
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 6283,
+  "cache_read": 19082,
+  "output": 11069
+ },
+ "duration_s": 104.3,
+ "cost_usd": 0.3255,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

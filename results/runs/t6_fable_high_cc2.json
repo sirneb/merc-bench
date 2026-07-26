@@ -1,0 +1,23 @@
+{
+ "task": "T6",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "csv": "id,owner,category,qty,date,note\nA31,Ana Obrien,boards,0,2026-03-18,priority\nA85,Carla Patel,boards,0,2026-07-16,priority\nX12,Dev Reyes,boards,0,2026-08-28,priority\nA89,Gina Patel,boards,0,2026-06-21,ok\nX70,Bob Patel,cables,0,2026-11-25,\"check, later\"\nX26,Erin Patel,cables,0,2026-03-05,\nA88,Bob Novak,sensors,0,2026-04-02,ok\nX78,Dev Kim,tools,234,2026-01-03,ok\nA21,Ana Kim,tools,0,2026-12-02,\"check, later\"\nX53,Ana Obrien,tools,0,2026-12-15,\"check, later\"\nX68,Gina Stone,tools,0,2026-04-06,priority\nX16,Hugo Obrien,tools,0,2026-07-06,\"check, later\""
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10310,
+  "cache_read": 15476,
+  "output": 2170
+ },
+ "duration_s": 23.8,
+ "cost_usd": 0.2529,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

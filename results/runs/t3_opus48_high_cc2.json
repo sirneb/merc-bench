@@ -1,0 +1,48 @@
+{
+ "task": "T3",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "2979.97"
+   },
+   {
+    "id": 2,
+    "value": "63"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "899.37"
+   },
+   {
+    "id": 5,
+    "value": "misc"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 53497,
+  "cache_read": 15465,
+  "output": 42915
+ },
+ "duration_s": 396.6,
+ "cost_usd": 1.415,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

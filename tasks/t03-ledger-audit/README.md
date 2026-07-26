@@ -12,4 +12,4 @@ Precision aggregation at scale: balances, filtered counts, running-threshold det
 
 ## What we found
 
-The wall battery — the dataset's lone hard separator. Perfect-sweep floors: Opus 5@medium, Opus 4.8@low, Sonnet@xhigh, Fable@xhigh; Haiku never crosses and its score falls as effort rises. The biggest token grinds live here.
+The wall battery — the dataset's lone hard separator, and the noisiest cell in the grid: Opus 4.8 spans 3-6/6 across replicates at every effort, Haiku 2-5/6. Only Opus 5 (medium up), Sonnet@max and Fable@max held 6/6 in both replicates. The biggest token grinds live here.

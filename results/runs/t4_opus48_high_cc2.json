@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, database caching keeps frequently read data close to the application, so the cache can serve repeated queries without touching disk; a well tuned cache reduces latency, cuts load, and helps systems scale far beyond database throughput under heavy demand.\n\nHowever, caching adds real complexity, because stale data can mislead users when underlying rows change without any warning. Engineers pick an eviction policy, such as least recently used, and set sensible expiry times so a cache entry stays fresh; a write through cache updates storage immediately, trading raw speed for stronger safety and lasting correctness.\n\nAlong with rapid lookups, a high traffic application must hold hot data in fast RAM, thus avoiding costly disk scans and slow SQL joins; that solid approach boosts throughput, cuts lag, and grants sturdy gains for many busy days.\n\nFinally, a good cache turns a slow application into a fast service, so measure, tune, verify, and consider it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 6751,
+  "cache_read": 15465,
+  "output": 6972
+ },
+ "duration_s": 81.5,
+ "cost_usd": 0.2242,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, a database cache stores frequently accessed rows in fast memory, so repeated queries avoid slow disk reads; this cache layer boosts throughput dramatically, trims latency, and lets applications scale gracefully under heavy traffic without hammering the primary storage backend.\n\nHowever, cache invalidation remains notoriously tricky, because stale entries can silently return outdated results to users. Engineers adopt strategies like write-through, write-back, and time-based expiration; each approach balances freshness against speed differently. A well-tuned cache dramatically reduces database load, yet a poorly managed one introduces subtle bugs that frustrate developers and confuse downstream analytics teams.\n\nAlong with RAM, a fast lookup pool holds hot data, cutting down on costly disk hits. Many library toolkits ship such logic, allowing rapid data drawn from RAM without asking your primary SQL host again and again for common rows.\n\nFinally, monitor your cache hit ratio; measure evictions, tune expiration windows, and validate correctness before declaring the optimization work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 7866,
+  "cache_read": 15465,
+  "output": 7786
+ },
+ "duration_s": 83.0,
+ "cost_usd": 0.2516,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

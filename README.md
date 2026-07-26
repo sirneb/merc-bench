@@ -7,19 +7,19 @@ every grader, every prompt, and every dollar figure shipped in this repository.
 The headline result: **most tasks saturate** (every tier solves them — buy the
 cheapest config), and the tasks that don't define each tier's **perfection floor**:
 
-| Tier | Cheapest perfect sweep (10 core tasks) | Cost | Wall-clock |
+| Tier | Cheapest replicated-clean config (10 core tasks, n=2) | Cost | Wall-clock |
 |---|---|---|---|
-| Haiku 4.5 | never | $0.82–0.98/sweep | 19–30 min |
-| Sonnet 5 | `@xhigh` | $3.25 | 22 min |
-| **Opus 4.8** | **`@low`** | **$2.53** | **12 min** |
-| **Opus 5** | **`@medium`** | **$2.15** | **8 min** |
-| Fable 5 | `@xhigh` | $7.09 | 16 min |
+| Haiku 4.5 | never | $0.86–1.14/sweep | 25–29 min |
+| Sonnet 5 | `@max` | $4.79 | 33 min |
+| Opus 4.8 | never | $2.64–4.30/sweep | 13–22 min |
+| **Opus 5** | **`@medium`** | **$2.25** | **9 min** |
+| Fable 5 | `@max` | $10.66 | 27 min |
 
-The floors follow neither the price list nor the generation order — they're
-empirical properties of each model. Above each floor, added effort bought
-**zero accuracy anywhere** — only cost and time — and three replicated effort
-*inversions* show more thinking measurably hurting (Haiku's ledger and deep
-puzzles, Opus 4.8@xhigh). Full findings: open
+"Clean" means zero points dropped in **every** replicate. The floors follow
+neither the price list nor the generation order; four of the grid's seven
+replicated-clean configs belong to Opus 5. Replication killed three of our own
+single-sample headlines (Opus 4.8@low's sweep, Sonnet@xhigh's crossing, "max
+never wins") — the full story is in the report. Full findings: open
 [`site/report.html`](site/report.html) (or regenerate it, below).
 
 ## What's in the box
@@ -80,7 +80,7 @@ way; the correction is documented, not hidden).
 
 ## Provenance
 
-Active dataset: 265 graded runs measured 2026-07-25 → 2026-07-26 across
+Active dataset: 517 graded runs (two replicates per config) measured 2026-07-25 → 2026-07-26 across
 `claude-haiku-4-5`, `claude-sonnet-5`, `claude-opus-4-8`, `claude-opus-5` and
 `claude-fable-5` at effort levels low → max — every record produced through the
 shipped runner (`runner/sweep.py` reruns the whole grid). The study's

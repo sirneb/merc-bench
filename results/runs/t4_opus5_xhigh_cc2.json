@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile every database faces the same tension: disks are slow, memory is fast, and users are impatient; a cache bridges that gap by holding hot rows near the query path, trimming latency from milliseconds down to microseconds for repeated reads.\n\nHowever a cache introduces a second copy of truth, and copies drift. Writes must invalidate or refresh entries, or readers will see stale answers; teams pick between write-through, write-behind, and simple expiry windows. Each choice trades freshness against throughput, and the wrong default turns a fast cache into a confident liar. Cache invalidation stays hardest.\n\nAlong with that, watch out for hot spots: a tiny group of rows can absorb most traffic, and if a burst of null lookups hits at that instant, all of it slams onto our SQL host; adding random gaps to timing, plus a lock on that path, will stop such a spiral.\n\nFinally measure before tuning: track hit ratio, latency, and memory pressure, then trust a cache only when measurement is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8834,
+  "cache_read": 15493,
+  "output": 6084
+ },
+ "duration_s": 67.8,
+ "cost_usd": 0.2151,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile a well-tuned cache sits between the application and the database, quietly absorbing repeated reads; it stores hot values in fast memory, shrinking latency, reducing load on backend disks, and letting busy services respond quickly within milliseconds during traffic spikes.\n\nHowever not every workload benefits equally; a poorly sized cache can thrash, evicting useful entries before they are reused, while a well-designed cache layer, paired with sensible expiration policies, keeps hit ratios high; it trims tail latency, prevents popular keys from overwhelming shared database connections during sudden traffic spikes, and leaves room for future growth.\n\nAlong with rapid RAM, a quick lookup layout brings big gains for many apps, cutting costs and cutting slow disk trips down to almost nil for common inputs, plus it aids busy hosts running many jobs during rush spans of high traffic.\n\nFinally teams that monitor cache metrics, tune expiration rules, and warm the cache before launches keep systems fast and done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8684,
+  "cache_read": 23909,
+  "output": 17044
+ },
+ "duration_s": 135.8,
+ "cost_usd": 0.2954,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

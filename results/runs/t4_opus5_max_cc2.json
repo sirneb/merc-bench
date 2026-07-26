@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern systems lean on a cache to shorten the distance between a query and its answer. Rather than hitting disk again, the server returns a stored result, trading a small risk of staleness for enormous speed. Latency drops sharply.\n\nHowever each cache introduces a second copy of the truth, and second copies drift. Engineers therefore pick an invalidation policy: write through, write behind, or simply expire keys after a fixed window; each choice trades freshness against load. A well tuned cache absorbs read bursts, yet a cold cache under load can stampede the database.\n\nAlong with that gain, a group must watch how many hits land against how many miss; a low hit ratio brings all cost and no gain. Small data pools spoil fast, so pick a policy, log it, and know what your RAM can hold.\n\nFinally measure before you cache; guessing wastes money and trust, so profile the real workload first, then call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8839,
+  "cache_read": 15493,
+  "output": 5434
+ },
+ "duration_s": 58.5,
+ "cost_usd": 0.1989,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

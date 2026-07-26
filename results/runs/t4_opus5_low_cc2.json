@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile databases grow busy, and every query costs time; a cache stores hot results close to the application, trimming latency sharply. Read traffic usually dominates, so repeated lookups are the natural target for any team chasing faster response under load.\n\nHowever correctness matters more than speed, because a stale cache lies quietly to users. Teams pick expiry windows, write through updates, or explicit purging when rows change; each option trades freshness against effort. Invalidation is hard because one row may feed many cached views, and tracking that fan out across a large system resists rules.\n\nAlong with capacity limits, a sound plan must pick victims wisely; most shops drop old data first, as rank is mostly a proxy for what traffic will ask about soon. Cost rations buy actual gains.\n\nFinally measure hit ratios before trusting any cache layer, because an unmeasured cache hides waste rather than work truly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 7803,
+  "cache_read": 15493,
+  "output": 1932
+ },
+ "duration_s": 22.2,
+ "cost_usd": 0.1048,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

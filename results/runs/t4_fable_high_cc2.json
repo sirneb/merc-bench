@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern applications lean on database caching to keep response times low. A cache stores frequently requested rows in memory; when a query repeats, the system answers from the cache instead of touching disk, saving both latency and raw compute.\n\nHowever caching introduces the problem of staleness. When the underlying table changes, any cached copy becomes wrong until it is refreshed or evicted. Teams handle this with time-to-live values, write-through updates, or explicit invalidation; each strategy trades freshness against throughput. Choosing poorly means users see outdated data, while choosing strictly means the cache rarely helps.\n\nAlong with such traps, capacity limits loom; RAM is costly, so admins must pick what data stays hot. Good monitoring shows hit ratios, and a low ratio hints that a config is off. Tuning it brings big wins for busy apps.\n\nFinally treat your cache as an optimization, not a source of truth, and measure carefully before declaring the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9164,
+  "cache_read": 15476,
+  "output": 5160
+ },
+ "duration_s": 55.0,
+ "cost_usd": 0.388,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

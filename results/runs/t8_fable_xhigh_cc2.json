@@ -1,0 +1,56 @@
+{
+ "task": "T8",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "pattern": "(1|01*0)+"
+   },
+   {
+    "id": 2,
+    "pattern": "([01]\\d|2[0-3]):[0-5]\\d"
+   },
+   {
+    "id": 3,
+    "pattern": "[A-Za-z_][A-Za-z0-9_]*"
+   },
+   {
+    "id": 4,
+    "pattern": "[+-]?(0|[1-9]\\d*)\\.\\d+"
+   },
+   {
+    "id": 5,
+    "pattern": "\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])"
+   },
+   {
+    "id": 6,
+    "pattern": "(b|ab)*"
+   },
+   {
+    "id": 7,
+    "pattern": "\\([2-9]\\d\\d\\) \\d{3}-\\d{4}"
+   },
+   {
+    "id": 8,
+    "pattern": "\"(\\\\.|[^\"\\\\])*\""
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 5959,
+  "cache_read": 19408,
+  "output": 3852
+ },
+ "duration_s": 46.1,
+ "cost_usd": 0.2865,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, modern applications rely on database caching to reduce latency and load. A cache stores frequently accessed query results in memory; subsequent requests read those copies instead of touching disk. This pattern speeds up responses dramatically while keeping servers healthy.\n\nHowever, caching introduces hard problems around consistency and correctness. When underlying rows change, stale copies linger unless systems invalidate them promptly; engineers choose between write-through updates, expiration timers, and explicit purges. Each strategy trades freshness against complexity, and a poorly tuned cache can serve wrong answers even faster than a slow database serves right ones.\n\nAlong with rapid lookups, this approach cuts load on primary hosts; admins should watch hit ratios, apply invalidation logic, and avoid stagnant data by using short TTL bounds. Solid monitoring tools plot such stats hourly, allowing rapid alarms if hit counts drop.\n\nFinally, teams should treat the cache as an optimization, never a source of truth, and testing proves the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9188,
+  "cache_read": 15476,
+  "output": 5665
+ },
+ "duration_s": 60.9,
+ "cost_usd": 0.4136,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

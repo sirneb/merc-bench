@@ -1,0 +1,48 @@
+{
+ "task": "T3",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "2965.25"
+   },
+   {
+    "id": 2,
+    "value": "64"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "899.37"
+   },
+   {
+    "id": 5,
+    "value": "payroll"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 55295,
+  "cache_read": 15476,
+  "output": 20605
+ },
+ "duration_s": 195.2,
+ "cost_usd": 1.7369,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

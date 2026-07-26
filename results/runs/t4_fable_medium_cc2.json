@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, modern applications lean heavily on database caching to reduce load. A cache stores frequently requested rows in memory, so repeated queries return quickly. When traffic spikes, the cache absorbs pressure that would otherwise overwhelm the busy primary database server.\n\nHowever, keeping cached data correct is famously difficult. Invalidation bugs let stale values linger long after the underlying rows change; users then see outdated balances or vanished records. Teams choose among write-through, write-back, and expiration strategies, each trading freshness for speed. A good design treats the cache as disposable, never as the source of truth.\n\nAlong with such risks, a caching plan must fit its workload. Small, hot data sits in RAM; big, cold data stays on disk. Monitoring hit ratios daily brings insight, and swift audits stop bad config from harming production.\n\nFinally, remember that caching rewards discipline; measure real workloads, invalidate carefully, and trust the cache only after testing is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9036,
+  "cache_read": 15476,
+  "output": 3660
+ },
+ "duration_s": 41.5,
+ "cost_usd": 0.3114,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
