@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile most modern applications rely on a cache to shrink latency between users and distant databases; a well-tuned cache absorbs repeated reads, letting only fresh writes travel further, so throughput rises even as request volume grows across busy service tiers.\n\nHowever caching strategies vary across teams; some choose write-through caches that save every update at once, while others favor write-back caches that batch changes for a later flush, trading durability for speed. Choosing a sound eviction policy matters just as much, since a poor policy can quietly erase gains that developers worked hard to build.\n\nAlong this track, an app avoids slow disk trips and pulls input from a quick local stash, cutting lag and costs. A small stash holds hot bits, not all facts, so odds of a miss stay low, and load stays calm.\n\nFinally teams should monitor cache hit rates continuously; small tuning adjustments compound over months, and the migration work is done."
+ },
+ "usage": {
+  "input": 4,
+  "cache_write": 20423,
+  "cache_read": 55416,
+  "output": 13194
+ },
+ "duration_s": 117.8,
+ "cost_usd": 0.2911,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

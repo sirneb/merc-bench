@@ -244,10 +244,12 @@ def build_scatter(sweep_stats, summary):
               '<span class="ft-hint">show:</span>']
     for f in fams_present:
         meta = model_meta(f)
+        checked = "" if meta.get("prior_generation") else " checked"
+        suffix = " (prior gen)" if meta.get("prior_generation") else ""
         legend.append(
             f'<label style="color:{meta["color"]}">'
-            f'<input type="checkbox" checked data-famtoggle="{html.escape(f)}">'
-            f'{html.escape(meta["name"])}</label>')
+            f'<input type="checkbox"{checked} data-famtoggle="{html.escape(f)}">'
+            f'{html.escape(meta["name"] + suffix)}</label>')
     legend.append('</div>')
     return "\n".join(legend) + "\n" + "\n".join(svg)
 

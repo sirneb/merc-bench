@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile, database caching stores frequent query results in a fast cache layer, so applications avoid repeated disk reads. A warm cache cuts latency dramatically; users notice snappier pages, and backend servers handle far more traffic without buckling under sudden load.\n\nHowever, a cache introduces hard tradeoffs around freshness and correctness. Stale entries can serve outdated values, so engineers pick eviction policies, expiration windows, and invalidation rules with care. Write-through and write-back strategies balance speed against durability; a poorly tuned cache may return wrong data, frustrate users, and quietly erode trust in the whole system today.\n\nAlong with a compact RAM pool, our stack quickly stocks its most-vital data, dropping load on aging disks. Fast lookups avoid costly SQL round trips; a solid ratio for hits brings continuous gains, so backing units stay light and calm throughout.\n\nFinally, treat every cache as a helpful assistant, not a lasting source of truth, so measure, tune, verify, iterate, done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 6797,
+  "cache_read": 15465,
+  "output": 5244
+ },
+ "duration_s": 61.4,
+ "cost_usd": 0.1813,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

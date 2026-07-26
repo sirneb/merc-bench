@@ -263,14 +263,16 @@
   });
   document.addEventListener("click", function () { tip.style.display = "none"; });
   document.querySelectorAll("[data-famtoggle]").forEach(function (cb) {
-    cb.addEventListener("change", function () {
+    function apply() {
       document.querySelectorAll(
         '.scatter .pt[data-fam="' + cb.dataset.famtoggle + '"]'
       ).forEach(function (g) {
         g.style.display = cb.checked ? "" : "none";
       });
       tip.style.display = "none";
-    });
+    }
+    cb.addEventListener("change", apply);
+    if (!cb.checked) apply();
   });
 })();
 </script>

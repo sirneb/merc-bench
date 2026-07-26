@@ -21,7 +21,8 @@
       "name": "Opus 4.8",
       "model_id": "claude-opus-4-8",
       "color": "var(--opus48)",
-      "price": "$5/$25 \u00b7 prior generation"
+      "price": "$5/$25 \u00b7 prior generation",
+      "prior_generation": true
     },
     {
       "family": "opus5",
