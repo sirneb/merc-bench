@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, modern applications lean heavily on database caching to keep response times low. A cache stores frequently requested rows in memory, sparing the disk from repeated reads; this simple idea underpins the speed of nearly every busy web service today.\n\nHowever, caching introduces real complexity that teams often underestimate at first. When underlying tables change, stale copies linger unless the cache is invalidated promptly; users may then see outdated balances, prices, or counts. Choosing what to store, how long to keep it, and when to evict entries demands quite careful thought and honest measurement always.\n\nAlong with quick wins, storing hot rows in RAM cuts I/O to disk; admins must think about invalidation, dirty data, and warm-up costs. A good TTL config can limit risk, and monitoring hit ratios shows if this tactic is paying off at all.\n\nFinally, treat your cache as a tool, not magic: measure hit rates, tune sizes, verify wins before calling optimization done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9116,
+  "cache_read": 15476,
+  "output": 3773
+ },
+ "duration_s": 45.1,
+ "cost_usd": 0.3181,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

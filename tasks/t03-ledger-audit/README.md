@@ -12,4 +12,4 @@ Precision aggregation at scale: balances, filtered counts, running-threshold det
 
 ## What we found
 
-The wall battery: scores 3/6 to 6/6 by config; effort floors differ per tier (Sonnet crosses only at xhigh via a 256k-token grind; Opus 5 at medium; Fable at low). Verbosity events and output-ceiling failures live here.
+The wall battery — the dataset's lone hard separator. Perfect-sweep floors: Opus 5@medium, Opus 4.8@low, Sonnet@xhigh, Fable@xhigh; Haiku never crosses and its score falls as effort rises. The biggest token grinds live here.

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, database caching stores frequently accessed data in fast memory, reducing query times; this strategy improves application performance by decreasing database load. Caching layers sit between applications and databases, serving repeated requests instantly without hitting the primary storage system directly.\n\nHowever, implementing an effective modern system requires careful consideration of many important factors in practice. Systems must decide what specific data to store, how long to retain it, and when to invalidate stale content. Popular strategies include LRU approaches and time-based expiration; these approaches help balance memory usage against data freshness requirements in production environments.\n\nAlong with main RAM and disk, caching boosts throughput continually. Allocating data smartly across caching groups allows programs to run rapidly, cutting wait duration significantly. Sound tactics bring optimal output.\n\nFinally, applying smart cache concepts in production database systems significantly improves overall performance; optimization always remains forever important once done."
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 5454,
+  "cache_read": 17703,
+  "output": 17497
+ },
+ "duration_s": 138.4,
+ "cost_usd": 0.0961,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

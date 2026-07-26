@@ -1,0 +1,138 @@
+{
+ "task": "T5A",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "nationality": [
+     "swede",
+     "dane",
+     "brit",
+     "norwegian",
+     "german"
+    ],
+    "color": [
+     "green",
+     "white",
+     "blue",
+     "yellow",
+     "red"
+    ],
+    "drink": [
+     "coffee",
+     "water",
+     "beer",
+     "tea",
+     "milk"
+    ],
+    "pet": [
+     "cat",
+     "fish",
+     "horse",
+     "dog",
+     "bird"
+    ],
+    "job": [
+     "pilot",
+     "doctor",
+     "teacher",
+     "chef",
+     "artist"
+    ]
+   },
+   {
+    "id": 2,
+    "nationality": [
+     "swede",
+     "german",
+     "brit",
+     "dane",
+     "norwegian"
+    ],
+    "color": [
+     "red",
+     "yellow",
+     "blue",
+     "green",
+     "white"
+    ],
+    "drink": [
+     "coffee",
+     "beer",
+     "water",
+     "tea",
+     "milk"
+    ],
+    "pet": [
+     "bird",
+     "horse",
+     "fish",
+     "dog",
+     "cat"
+    ],
+    "job": [
+     "pilot",
+     "doctor",
+     "teacher",
+     "artist",
+     "chef"
+    ]
+   },
+   {
+    "id": 3,
+    "nationality": [
+     "brit",
+     "german",
+     "norwegian",
+     "dane",
+     "swede"
+    ],
+    "color": [
+     "blue",
+     "yellow",
+     "red",
+     "green",
+     "white"
+    ],
+    "drink": [
+     "beer",
+     "milk",
+     "coffee",
+     "water",
+     "tea"
+    ],
+    "pet": [
+     "dog",
+     "cat",
+     "bird",
+     "horse",
+     "fish"
+    ],
+    "job": [
+     "artist",
+     "teacher",
+     "doctor",
+     "pilot",
+     "chef"
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9664,
+  "cache_read": 23909,
+  "output": 19469
+ },
+ "duration_s": 165.3,
+ "cost_usd": 0.3355,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

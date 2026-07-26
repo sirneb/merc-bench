@@ -1,0 +1,49 @@
+{
+ "task": "T9",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "bugs": [
+   {
+    "function": "SlidingWindowLimiter._prune",
+    "description": "Used `now - t <= self.window`, which keeps events exactly `window` seconds old. Spec says only timestamps with `clock() - t < window` are in-window; changed to `<`."
+   },
+   {
+    "function": "SlidingWindowLimiter.allow",
+    "description": "Denied only when `len(q) > self.limit`, allowing limit+1 events per window. Spec: allow only if FEWER than `limit` events are in-window, so it must deny when `len(q) >= self.limit`."
+   },
+   {
+    "function": "SlidingWindowLimiter.retry_after",
+    "description": "Computed the wait from `max(q)` (newest event). Spec requires the OLDEST in-window event: `(min(q) + window) - clock()`."
+   },
+   {
+    "function": "TokenBucket.__init__",
+    "description": "Mutable default argument `buckets={}` is shared across all TokenBucket instances, so separate limiters leak token state into each other. Now defaults to None and creates a fresh dict per instance."
+   },
+   {
+    "function": "TokenBucket._refill",
+    "description": "`elapsed = int(now - b[1])` truncated elapsed time to whole seconds, discarding fractional accrual. Spec requires continuous/fractional refill; use the float elapsed."
+   },
+   {
+    "function": "TokenBucket._refill",
+    "description": "Clamped to capacity BEFORE adding the accrued tokens, so the bucket could exceed capacity without bound. Clamp must be applied after adding: `min(capacity, tokens + elapsed * rate)`."
+   }
+  ],
+  "fixed_code": "\"\"\"ratelimiter: sliding-window and token-bucket rate limiting.\n\nSpec (authoritative \u2014 behavior must match exactly):\n\nSlidingWindowLimiter(limit, window, clock)\n- Allows at most `limit` events per rolling `window` seconds, per key.\n- allow(key) -> bool: records the event and returns True if, at call\n  time, FEWER than `limit` events for that key occurred within the last\n  `window` seconds. An event exactly `window` seconds old is OUTSIDE the\n  window (expired): only timestamps t with clock() - t < window count.\n- If the call is denied, the event is NOT recorded.\n- retry_after(key) -> float: seconds until the OLDEST in-window event\n  expires (i.e., when one slot frees up): (oldest_ts + window) - clock().\n  Returns 0.0 if the key is currently under the limit.\n\nTokenBucket(capacity, rate, clock)\n- A bucket holds at most `capacity` tokens (float), starts full, and\n  refills continuously at `rate` tokens/second (fractional accrual\n  counts: after 0.5s at rate 1, 0.5 tokens have accrued).\n- take(key, n=1) -> bool: refills the key's bucket based on elapsed\n  time since its last refill (clamped so the bucket never exceeds\n  `capacity`), then removes n tokens and returns True if at least n\n  tokens are available; otherwise removes nothing and returns False.\n- Each key has its OWN independent bucket, created full on first use.\n- tokens(key) -> float: current token count after refilling.\n\nAll time comes from the injected `clock` (zero-arg callable, seconds).\n\"\"\"\nimport time\n\n\nclass SlidingWindowLimiter:\n    def __init__(self, limit, window, clock=time.monotonic):\n        if limit < 1 or window <= 0:\n            raise ValueError(\"bad limit/window\")\n        self.limit = limit\n        self.window = window\n        self.clock = clock\n        self._events = {}\n\n    def _prune(self, key):\n        now = self.clock()\n        q = self._events.get(key, [])\n        q = [t for t in q if now - t < self.window]\n        self._events[key] = q\n        return q\n\n    def allow(self, key):\n        q = self._prune(key)\n        if len(q) >= self.limit:\n            return False\n        q.append(self.clock())\n        return True\n\n    def retry_after(self, key):\n        q = self._prune(key)\n        if len(q) < self.limit:\n            return 0.0\n        oldest = min(q)\n        return (oldest + self.window) - self.clock()\n\n\nclass TokenBucket:\n    def __init__(self, capacity, rate, clock=time.monotonic,\n                 buckets=None):\n        if capacity <= 0 or rate <= 0:\n            raise ValueError(\"bad capacity/rate\")\n        self.capacity = capacity\n        self.rate = rate\n        self.clock = clock\n        self._buckets = {} if buckets is None else buckets  # key -> [tokens, last_refill_ts]\n\n    def _refill(self, key):\n        now = self.clock()\n        if key not in self._buckets:\n            self._buckets[key] = [float(self.capacity), now]\n            return self._buckets[key]\n        b = self._buckets[key]\n        elapsed = now - b[1]\n        b[0] = min(b[0] + elapsed * self.rate, self.capacity)\n        b[1] = now\n        return b\n\n    def take(self, key, n=1):\n        b = self._refill(key)\n        if b[0] >= n:\n            b[0] -= n\n            return True\n        return False\n\n    def tokens(self, key):\n        return self._refill(key)[0]\n"
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 6310,
+  "cache_read": 19023,
+  "output": 2212
+ },
+ "duration_s": 22.9,
+ "cost_usd": 0.1043,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

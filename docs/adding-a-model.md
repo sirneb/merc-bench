@@ -72,6 +72,7 @@ python tasks/t03-ledger-audit/grade.py results/runs/t3_opus5_medium_yours.json
 
 ## Removing our data
 
-Every original record lives in `results/runs/` with sample tags from the study
-(`r3`, `s1`, `s2`, `canonical`, `esc`, `probe`, `grid`, `r2`). Delete any subset;
-`make report` rebuilds from whatever remains.
+Every active record lives in `results/runs/` (sample tags `cc1` and
+`selftest*`); the retired first-generation workflow-harness records are in
+`archive/workflow-runs/`. Delete any subset of `results/runs/`; `make report`
+rebuilds from whatever remains.

@@ -12,4 +12,4 @@ Tests exact arithmetic under load: 4-digit products, signed sums, modular expone
 
 ## What we found
 
-Near-saturated: only Haiku@high missed one item (a mod-pow). Effort spent up to 4.3x tokens for identical scores. 2026 frontier and mid-tier models simply do arithmetic.
+Near-saturated: only Haiku drops an item (n=1 cells). Effort spends multiples of tokens for identical scores. 2026 models simply do arithmetic.

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, the database groans under repeated queries, so we add a cache; a small fast store that answers before the disk wakes. A cache trades freshness for speed, and that trade is the whole art of tuning. Nothing matters more.\n\nHowever, caches lie. Stale rows outlive their truth, and a cache that never expires becomes a quiet source of bugs; invalidation remains the hardest naming problem we have. Use short lifetimes for volatile data; use longer ones for facts that rarely shift. Measure the hit ratio, watch the tail latency, and size the cache honestly.\n\nAlong with rapid gains, warm data blocks bring risks: a null hit storm can drown thy origin, so many shops rely on locks or lag limits during a mass drop, and unusual traffic warrants caution always.\n\nFinally, treat this layer as an optimization, not a crutch: measure first, tune later, and know when work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8794,
+  "cache_read": 15493,
+  "output": 1989
+ },
+ "duration_s": 26.0,
+ "cost_usd": 0.1124,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

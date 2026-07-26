@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, database caching stores frequently accessed query results in a fast cache layer, reducing load on the backend. A well-tuned cache returns data quickly, cutting latency dramatically and letting applications scale gracefully under heavy traffic without hitting the slower disk.\n\nHowever, caches can serve stale data; invalidation remains one of computing's genuinely hardest problems. When the underlying records change, the cache must update or expire entries, otherwise users see outdated results. Engineers choose strategies like write-through, write-back, or time-based expiry; each balances freshness against speed, and picking wisely keeps your cache both fast and trustworthy.\n\nAlong with quick RAM lookups, many hot rows sit in a nippy front vault; our apps grab that data in a flash, avoiding costly disk trips, so throughput stays high and cloud outlay drops.\n\nFinally, thoughtful caching turns sluggish systems into responsive ones, so measure carefully, tune often, and consider your job nearly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 7831,
+  "cache_read": 15465,
+  "output": 7022
+ },
+ "duration_s": 81.2,
+ "cost_usd": 0.2322,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

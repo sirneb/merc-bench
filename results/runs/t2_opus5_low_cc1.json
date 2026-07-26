@@ -1,0 +1,56 @@
+{
+ "task": "T2",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "stdout": "[1]\n[1, 2]\n[3]\n"
+   },
+   {
+    "id": 2,
+    "stdout": "[2, 2, 2]\n2\n"
+   },
+   {
+    "id": 3,
+    "stdout": "True False True\n"
+   },
+   {
+    "id": 4,
+    "stdout": "[[7, 0], [7, 0]]\n[7, 0] True\n"
+   },
+   {
+    "id": 5,
+    "stdout": "-4 1 -4 -1\n"
+   },
+   {
+    "id": 6,
+    "stdout": "{1: 'c'} 1\n"
+   },
+   {
+    "id": 7,
+    "stdout": "2\n"
+   },
+   {
+    "id": 8,
+    "stdout": "True\n[]\n"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8956,
+  "cache_read": 15493,
+  "output": 506
+ },
+ "duration_s": 8.3,
+ "cost_usd": 0.0764,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

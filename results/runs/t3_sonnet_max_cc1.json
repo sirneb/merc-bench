@@ -1,0 +1,48 @@
+{
+ "task": "T3",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "2965.25"
+   },
+   {
+    "id": 2,
+    "value": "64"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "899.37"
+   },
+   {
+    "id": 5,
+    "value": "payroll"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 55121,
+  "cache_read": 23909,
+  "output": 112428
+ },
+ "duration_s": 773.6,
+ "cost_usd": 1.9003,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

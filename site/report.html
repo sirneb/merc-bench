@@ -118,7 +118,7 @@
 <body>
 <div class="sheet">
   <header class="masthead">
-    <div class="eyebrow">MERC · findings report · measured 2026-07-23 → 2026-07-25</div>
+    <div class="eyebrow">MERC · findings report · measured 2026-07-25 → 2026-07-26</div>
     <h1>Model <span class="dim">×</span> Effort<br>Reliability &amp; Cost, Measured</h1>
     <p class="standfirst">Controlled experiments across Claude models at every effort
     level that mattered — identical prompts, one variable at a time, ground truth
@@ -126,7 +126,7 @@
     number regenerates from the run records in this repository; grading is
     recomputed from raw answers on every build.</p>
     <div class="meta">
-      <span>297 GRADED RUNS · ≈$111 INFERENCE</span>
+      <span>265 GRADED RUNS · ≈$93 INFERENCE</span>
       <span>12 TASKS · TRACKED: SCORE · $ · TOKENS · DURATION</span>
     </div>
   </header>
@@ -139,7 +139,7 @@
         effort — there, the cheapest configuration strictly wins.</div></div>
       <div class="kpi"><div class="big">The perfection floor</div>
         <div class="cap">each tier's cheapest perfect sweep of the 10 core tasks:
-        <b>Sonnet 5</b> xhigh ($6.61/51m) · <b>Opus 4.8</b> xhigh ($2.94/24m) · <b>Opus 5</b> medium ($2.42/8m) · <b>Fable 5</b> low ($4.19/6m). Tier buys a cheaper, faster floor — not exclusive capability.</div></div>
+        <b>Sonnet 5</b> xhigh ($3.25/22m) · <b>Opus 4.8</b> low ($2.53/12m) · <b>Opus 5</b> medium ($2.15/8m) · <b>Fable 5</b> xhigh ($7.09/16m). Tier buys a cheaper, faster floor — not exclusive capability.</div></div>
       <div class="kpi"><div class="big">Effort ≠ accuracy</div>
         <div class="cap">above each tier's floor, added effort bought zero accuracy
         anywhere in this dataset — only cost, time, and occasional regressions.</div></div>
@@ -151,26 +151,27 @@
 <line class="grid" x1="60" y1="20" x2="60" y2="360"></line>
 <text class="axis" x="380" y="392" text-anchor="middle">total cost, 10 core tasks (USD)</text>
 <text class="axis" x="18" y="190" transform="rotate(-90 18 190)" text-anchor="middle">total wall-clock (minutes)</text>
-<circle cx="115" cy="223" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="115" y="207" text-anchor="middle" fill="var(--haiku)">haiku@low</text><text class="sub" x="115" y="245" text-anchor="middle">$1.03 · 24m · −9 pts</text>
-<circle cx="99" cy="190" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="99" y="174" text-anchor="middle" fill="var(--haiku)">haiku@medium</text><text class="sub" x="99" y="212" text-anchor="middle">$0.73 · 29m · −9 pts</text>
-<circle cx="99" cy="266" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="99" y="250" text-anchor="middle" fill="var(--haiku)">haiku@high</text><text class="sub" x="99" y="288" text-anchor="middle">$0.73 · 16m · −7 pts</text>
-<circle cx="149" cy="314" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="149" y="298" text-anchor="middle" fill="var(--sonnet)">sonnet@low</text><text class="sub" x="149" y="336" text-anchor="middle">$1.67 · 8m · −1 pts</text>
-<circle cx="176" cy="198" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="176" y="182" text-anchor="middle" fill="var(--sonnet)">sonnet@medium</text><text class="sub" x="176" y="220" text-anchor="middle">$2.18 · 28m · −5 pts</text>
-<circle cx="323" cy="186" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="323" y="170" text-anchor="middle" fill="var(--sonnet)">sonnet@high</text><text class="sub" x="323" y="208" text-anchor="middle">$4.93 · 30m · −1 pts</text>
-<circle cx="413" cy="64" r="6" fill="var(--sonnet)" opacity="1"></circle><circle cx="413" cy="64" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label" x="413" y="48" text-anchor="middle" fill="var(--sonnet)">sonnet@xhigh</text><text class="sub" x="413" y="86" text-anchor="middle">$6.61 · 51m · perfect</text>
-<circle cx="179" cy="314" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="179" y="298" text-anchor="middle" fill="var(--opus)">opus48@low</text><text class="sub" x="179" y="336" text-anchor="middle">$2.23 · 8m · −1 pts</text>
-<circle cx="239" cy="277" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="239" y="261" text-anchor="middle" fill="var(--opus)">opus48@high</text><text class="sub" x="239" y="299" text-anchor="middle">$3.35 · 14m · −1 pts</text>
-<circle cx="217" cy="221" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="217" cy="221" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="217" y="205" text-anchor="middle" fill="var(--opus)">opus48@xhigh</text><text class="sub" x="217" y="243" text-anchor="middle">$2.94 · 24m · perfect</text>
-<circle cx="177" cy="324" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="177" y="308" text-anchor="middle" fill="var(--opus)">opus5@low</text><text class="sub" x="177" y="346" text-anchor="middle">$2.19 · 6m · −5 pts</text>
-<circle cx="189" cy="312" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="189" cy="312" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="189" y="296" text-anchor="middle" fill="var(--opus)">opus5@medium</text><text class="sub" x="189" y="334" text-anchor="middle">$2.42 · 8m · perfect</text>
-<circle cx="221" cy="289" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="221" cy="289" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="221" y="273" text-anchor="middle" fill="var(--opus)">opus5@high</text><text class="sub" x="221" y="311" text-anchor="middle">$3.02 · 12m · perfect</text>
-<circle cx="331" cy="241" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="331" cy="241" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="331" y="225" text-anchor="middle" fill="var(--opus)">opus5@xhigh</text><text class="sub" x="331" y="263" text-anchor="middle">$5.07 · 20m · perfect</text>
-<circle cx="294" cy="250" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="294" y="234" text-anchor="middle" fill="var(--opus)">opus5@max</text><text class="sub" x="294" y="272" text-anchor="middle">$4.38 · 19m · −1 pts</text>
-<circle cx="283" cy="325" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="283" cy="325" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="283" y="309" text-anchor="middle" fill="var(--fable)">fable@low</text><text class="sub" x="283" y="347" text-anchor="middle">$4.19 · 6m · perfect</text>
-<circle cx="300" cy="315" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="300" y="299" text-anchor="middle" fill="var(--fable)">fable@medium</text><text class="sub" x="300" y="337" text-anchor="middle">$4.50 · 8m · −1 pts</text>
-<circle cx="434" cy="279" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="434" cy="279" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="434" y="263" text-anchor="middle" fill="var(--fable)">fable@high</text><text class="sub" x="434" y="301" text-anchor="middle">$7.01 · 14m · perfect</text>
-<circle cx="510" cy="254" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="510" cy="254" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="510" y="238" text-anchor="middle" fill="var(--fable)">fable@xhigh</text><text class="sub" x="510" y="276" text-anchor="middle">$8.44 · 18m · perfect</text>
-<circle cx="617" cy="202" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="617" cy="202" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="617" y="186" text-anchor="middle" fill="var(--fable)">fable@max</text><text class="sub" x="617" y="224" text-anchor="middle">$10.43 · 27m · perfect</text>
+<circle cx="103" cy="188" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="103" y="172" text-anchor="middle" fill="var(--haiku)">haiku@low</text><text class="sub" x="103" y="210" text-anchor="middle">$0.82 · 19m · −12 pts</text>
+<circle cx="112" cy="91" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="112" y="75" text-anchor="middle" fill="var(--haiku)">haiku@medium</text><text class="sub" x="112" y="113" text-anchor="middle">$0.98 · 30m · −11 pts</text>
+<circle cx="112" cy="146" r="6" fill="var(--haiku)" opacity="0.45"></circle><text class="pt-label" x="112" y="130" text-anchor="middle" fill="var(--haiku)">haiku@high</text><text class="sub" x="112" y="168" text-anchor="middle">$0.98 · 24m · −6 pts</text>
+<circle cx="150" cy="273" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="150" y="257" text-anchor="middle" fill="var(--sonnet)">sonnet@low</text><text class="sub" x="150" y="295" text-anchor="middle">$1.70 · 10m · −4 pts</text>
+<circle cx="170" cy="248" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="170" y="232" text-anchor="middle" fill="var(--sonnet)">sonnet@medium</text><text class="sub" x="170" y="270" text-anchor="middle">$2.08 · 13m · −2 pts</text>
+<circle cx="240" cy="178" r="6" fill="var(--sonnet)" opacity="0.45"></circle><text class="pt-label" x="240" y="162" text-anchor="middle" fill="var(--sonnet)">sonnet@high</text><text class="sub" x="240" y="200" text-anchor="middle">$3.39 · 20m · −2 pts</text>
+<circle cx="232" cy="164" r="6" fill="var(--sonnet)" opacity="1"></circle><circle cx="232" cy="164" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label" x="232" y="148" text-anchor="middle" fill="var(--sonnet)">sonnet@xhigh</text><text class="sub" x="232" y="186" text-anchor="middle">$3.25 · 22m · perfect</text>
+<circle cx="292" cy="64" r="6" fill="var(--sonnet)" opacity="1"></circle><circle cx="292" cy="64" r="11" fill="none" stroke="var(--sonnet)" stroke-width="1.5"></circle><text class="pt-label" x="292" y="48" text-anchor="middle" fill="var(--sonnet)">sonnet@max</text><text class="sub" x="292" y="86" text-anchor="middle">$4.38 · 33m · perfect</text>
+<circle cx="194" cy="255" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="194" cy="255" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="194" y="239" text-anchor="middle" fill="var(--opus)">opus48@low</text><text class="sub" x="194" y="277" text-anchor="middle">$2.53 · 12m · perfect</text>
+<circle cx="235" cy="214" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="235" cy="214" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="235" y="198" text-anchor="middle" fill="var(--opus)">opus48@high</text><text class="sub" x="235" y="236" text-anchor="middle">$3.29 · 16m · perfect</text>
+<circle cx="263" cy="185" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="263" y="169" text-anchor="middle" fill="var(--opus)">opus48@xhigh</text><text class="sub" x="263" y="207" text-anchor="middle">$3.83 · 20m · −2 pts</text>
+<circle cx="163" cy="298" r="6" fill="var(--opus)" opacity="0.45"></circle><text class="pt-label" x="163" y="282" text-anchor="middle" fill="var(--opus)">opus5@low</text><text class="sub" x="163" y="320" text-anchor="middle">$1.93 · 7m · −1 pts</text>
+<circle cx="174" cy="286" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="174" cy="286" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="174" y="270" text-anchor="middle" fill="var(--opus)">opus5@medium</text><text class="sub" x="174" y="308" text-anchor="middle">$2.15 · 8m · perfect</text>
+<circle cx="215" cy="247" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="215" cy="247" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="215" y="231" text-anchor="middle" fill="var(--opus)">opus5@high</text><text class="sub" x="215" y="269" text-anchor="middle">$2.92 · 13m · perfect</text>
+<circle cx="254" cy="214" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="254" cy="214" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="254" y="198" text-anchor="middle" fill="var(--opus)">opus5@xhigh</text><text class="sub" x="254" y="236" text-anchor="middle">$3.66 · 16m · perfect</text>
+<circle cx="253" cy="209" r="6" fill="var(--opus)" opacity="1"></circle><circle cx="253" cy="209" r="11" fill="none" stroke="var(--opus)" stroke-width="1.5"></circle><text class="pt-label" x="253" y="193" text-anchor="middle" fill="var(--opus)">opus5@max</text><text class="sub" x="253" y="231" text-anchor="middle">$3.65 · 17m · perfect</text>
+<circle cx="256" cy="302" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="256" y="286" text-anchor="middle" fill="var(--fable)">fable@low</text><text class="sub" x="256" y="324" text-anchor="middle">$3.69 · 7m · −2 pts</text>
+<circle cx="289" cy="281" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="289" y="265" text-anchor="middle" fill="var(--fable)">fable@medium</text><text class="sub" x="289" y="303" text-anchor="middle">$4.33 · 9m · −1 pts</text>
+<circle cx="304" cy="270" r="6" fill="var(--fable)" opacity="0.45"></circle><text class="pt-label" x="304" y="254" text-anchor="middle" fill="var(--fable)">fable@high</text><text class="sub" x="304" y="292" text-anchor="middle">$4.61 · 10m · −1 pts</text>
+<circle cx="436" cy="216" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="436" cy="216" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="436" y="200" text-anchor="middle" fill="var(--fable)">fable@xhigh</text><text class="sub" x="436" y="238" text-anchor="middle">$7.09 · 16m · perfect</text>
+<circle cx="617" cy="127" r="6" fill="var(--fable)" opacity="1"></circle><circle cx="617" cy="127" r="11" fill="none" stroke="var(--fable)" stroke-width="1.5"></circle><text class="pt-label" x="617" y="111" text-anchor="middle" fill="var(--fable)">fable@max</text><text class="sub" x="617" y="149" text-anchor="middle">$10.49 · 26m · perfect</text>
 </svg>
     </div>
   </section>
@@ -181,12 +182,12 @@
   <table>
     <thead><tr><th>Control</th><th>How</th></tr></thead>
     <tbody>
+      <tr><td>Reproducible harness</td><td>Every active record came through the shipped runner (<code>runner/run.py</code>, Claude Code headless path) with answer validation and up to 3 corrective retries; transport failures are quarantined as <code>invalid</code>, never scored. One command reruns any cell; <code>runner/sweep.py</code> reruns the whole grid.</td></tr>
       <tr><td>Ground truth first</td><td>Reference implementations cross-checked against independently-written oracles and fuzzing (which caught two harness bugs before any model ran); solver-verified unique puzzles; executed code snippets; generator-computed ledger and simulation answers. All ground truth ships in <code>tasks/*/</code>.</td></tr>
       <tr><td>One variable at a time</td><td>Identical prompts per task across every configuration; only the model or its effort setting changes. Prompts ship verbatim in <code>tasks/*/prompt.txt</code>.</td></tr>
       <tr><td>Grading recomputed</td><td>Nothing is trusted from stored records except raw answers. <code>runner/aggregate.py</code> regrades every answer through the shipped graders on every build; <code>make verify</code> is the audit path.</td></tr>
-      <tr><td>Cost accounting</td><td>Per-run dollars (input + cache writes + cache reads + output) at standard list prices from per-request logs. Records missing usage (a logging fault in two replicate batches) carry <code>cost_usd: null</code>; totals containing estimated cells are marked ≈.</td></tr>
-      <tr><td>Replication</td><td>Frontier configurations carry up to n=3 full-sweep samples plus repeated puzzle attempts; sample provenance is in each record's <code>sample</code> field.</td></tr>
-      <tr><td>No tools</td><td>Core tasks forbid tool use (tool access lets every tier self-verify to perfection, masking differences — measured in our archived rounds). The subtle-bugs task (E) permitted tools in its earliest runs; those records are flagged in <code>notes</code>.</td></tr>
+      <tr><td>Cost accounting</td><td>Per-run dollars (input + cache writes + cache reads + output, including retries) from the CLI's per-run usage report, priced at standard list rates. Subscription serving — costs are imputed, not billed.</td></tr>
+      <tr><td>No tools</td><td>Tasks forbid tool use (tool access lets every tier self-verify to perfection, masking differences — measured in the archived tool-enabled rounds).</td></tr>
     </tbody>
   </table>
 </div>
@@ -211,31 +212,31 @@
           <div class="hh">E<br>/5</div><div class="hh">T5B<br>/6</div>
           <div class="hh">core $</div><div class="hh">time</div>
           <div class="rl grp" style="color:var(--haiku)">Haiku 4.5 · $1/$5 per MTok</div>
-<div class="rl">@low</div><div class="cell">16</div><div class="cell miss">7</div><div class="cell miss">4</div><div class="cell miss">8</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell miss">7</div><div class="cell">7</div><div class="cell bad">4</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">1.03</div><div class="cell stat">24m</div>
-<div class="rl">@medium</div><div class="cell">16</div><div class="cell">8</div><div class="cell bad">3</div><div class="cell miss">8</div><div class="cell bad">1</div><div class="cell miss">11</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell bad">3–5</div><div class="cell">6</div><div class="cell stat">0.73</div><div class="cell stat">29m</div>
-<div class="rl">@high</div><div class="cell miss">15</div><div class="cell miss">6</div><div class="cell bad">3</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell bad">2</div><div class="cell stat">0.73</div><div class="cell stat">16m</div>
+<div class="rl">@low</div><div class="cell miss">15</div><div class="cell miss">7</div><div class="cell miss">4</div><div class="cell miss">9</div><div class="cell miss">2</div><div class="cell bad">7</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">0.82</div><div class="cell stat">19m</div>
+<div class="rl">@medium <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell miss">7–8</div><div class="cell bad">3–4</div><div class="cell miss">8–9</div><div class="cell bad">1–3</div><div class="cell miss">11</div><div class="cell">20</div><div class="cell miss">7–8</div><div class="cell">7</div><div class="cell">7</div><div class="cell bad">3–5</div><div class="cell">6</div><div class="cell stat">0.98</div><div class="cell stat">30m</div>
+<div class="rl">@high</div><div class="cell">16</div><div class="cell miss">7</div><div class="cell bad">2</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell bad">3</div><div class="cell stat">0.98</div><div class="cell stat">24m</div>
 <div class="rl grp" style="color:var(--sonnet)">Sonnet 5 · $3/$15</div>
-<div class="rl">@low</div><div class="cell">16</div><div class="cell">8</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell">6</div><div class="cell stat">1.67</div><div class="cell stat">8m</div>
-<div class="rl">@medium</div><div class="cell">16</div><div class="cell miss">7</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell bad">4</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">2.18</div><div class="cell stat">28m</div>
-<div class="rl">@high</div><div class="cell">16</div><div class="cell">8</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell">6</div><div class="cell stat">4.93</div><div class="cell stat">30m</div>
-<div class="rl"><b>@xhigh ★</b> <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat win">6.61</div><div class="cell stat">51m</div>
-<div class="rl">@max <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell na">—</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">—</div><div class="cell stat">—</div>
+<div class="rl">@low</div><div class="cell">16</div><div class="cell miss">7</div><div class="cell bad">3</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell">6</div><div class="cell stat">1.70</div><div class="cell stat">10m</div>
+<div class="rl">@medium</div><div class="cell">16</div><div class="cell miss">7</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell">6</div><div class="cell stat">2.08</div><div class="cell stat">13m</div>
+<div class="rl">@high</div><div class="cell">16</div><div class="cell">8</div><div class="cell miss">4</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">3.39</div><div class="cell stat">20m</div>
+<div class="rl"><b>@xhigh ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat win">3.25</div><div class="cell stat">22m</div>
+<div class="rl"><b>@max ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">4.38</div><div class="cell stat">33m</div>
 <div class="rl grp" style="color:var(--opus)">Opus 4.8 · $5/$25 · prior generation</div>
-<div class="rl">@low</div><div class="cell">16</div><div class="cell">8</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">2.23</div><div class="cell stat">8m</div>
-<div class="rl">@high</div><div class="cell">16</div><div class="cell">8</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell">6</div><div class="cell stat">3.35</div><div class="cell stat">14m</div>
-<div class="rl"><b>@xhigh ★</b> <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell na">—</div><div class="cell stat win">2.94</div><div class="cell stat">24m</div>
+<div class="rl"><b>@low ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell">6</div><div class="cell stat win">2.53</div><div class="cell stat">12m</div>
+<div class="rl"><b>@high ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell miss">4</div><div class="cell">6</div><div class="cell stat">3.29</div><div class="cell stat">16m</div>
+<div class="rl">@xhigh</div><div class="cell">16</div><div class="cell miss">7</div><div class="cell miss">5</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">3.83</div><div class="cell stat">20m</div>
 <div class="rl grp" style="color:var(--opus)">Opus 5 · $5/$25</div>
-<div class="rl">@low <span style="color:var(--muted)">(n≤3)</span></div><div class="cell">16</div><div class="cell miss">7–8</div><div class="cell miss">5–6</div><div class="cell miss">9–10</div><div class="cell miss">2–3</div><div class="cell miss">12–13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell na">—</div><div class="cell stat">2.19</div><div class="cell stat">6m</div>
-<div class="rl"><b>@medium ★</b> <span style="color:var(--muted)">(n≤3)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat win">2.42</div><div class="cell stat">8m</div>
-<div class="rl"><b>@high ★</b> <span style="color:var(--muted)">(n≤3)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">3.02</div><div class="cell stat">12m</div>
-<div class="rl"><b>@xhigh ★</b> <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell">6</div><div class="cell stat">5.07</div><div class="cell stat">20m</div>
-<div class="rl">@max <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell miss">9–10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">4.38</div><div class="cell stat">19m</div>
+<div class="rl">@low</div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">1.93</div><div class="cell stat">7m</div>
+<div class="rl"><b>@medium ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat win">2.15</div><div class="cell stat">8m</div>
+<div class="rl"><b>@high ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">2.92</div><div class="cell stat">13m</div>
+<div class="rl"><b>@xhigh ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">3.66</div><div class="cell stat">16m</div>
+<div class="rl"><b>@max ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">3.65</div><div class="cell stat">17m</div>
 <div class="rl grp" style="color:var(--fable)">Fable 5 · $10/$50</div>
-<div class="rl"><b>@low ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell na">—</div><div class="cell stat win">4.19</div><div class="cell stat">6m</div>
-<div class="rl">@medium</div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">4.50</div><div class="cell stat">8m</div>
-<div class="rl"><b>@high ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell miss">5–6</div><div class="cell stat">7.01</div><div class="cell stat">14m</div>
-<div class="rl"><b>@xhigh ★</b> <span style="color:var(--muted)">(n≤2)</span></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell">6</div><div class="cell stat">8.44</div><div class="cell stat">18m</div>
-<div class="rl"><b>@max ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell na">—</div><div class="cell na">—</div><div class="cell stat">10.43</div><div class="cell stat">27m</div>
+<div class="rl">@low</div><div class="cell">16</div><div class="cell">8</div><div class="cell miss">5</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell miss">5</div><div class="cell stat">3.69</div><div class="cell stat">7m</div>
+<div class="rl">@medium</div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">4.33</div><div class="cell stat">9m</div>
+<div class="rl">@high</div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell miss">9</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">4.61</div><div class="cell stat">10m</div>
+<div class="rl"><b>@xhigh ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat win">7.09</div><div class="cell stat">16m</div>
+<div class="rl"><b>@max ★</b></div><div class="cell">16</div><div class="cell">8</div><div class="cell">6</div><div class="cell">10</div><div class="cell">3</div><div class="cell">13</div><div class="cell">20</div><div class="cell">8</div><div class="cell">7</div><div class="cell">7</div><div class="cell">5</div><div class="cell">6</div><div class="cell stat">10.49</div><div class="cell stat">26m</div>
         </div>
       </div>
       <div class="legend">
@@ -252,31 +253,31 @@
 
   <section id="findings">
     <h2><span class="no">§4</span>Findings</h2>
-    <p class="lede">Editorial synthesis of the graded data (charts and map above regenerate automatically; this prose is curated — see §8 for the correction history).</p>
+    <p class="lede">Editorial synthesis of the graded data (charts and map regenerate automatically; this prose is curated). The active dataset is fully reproducible: every run came through the shipped runner, and the retired first-generation dataset (a non-reproducible orchestration harness) is preserved in <code>archive/workflow-runs/</code> for comparison.</p>
 
 <h3>F1 · Most tasks saturate — then the cheapest config strictly wins</h3>
-<p>Eight of twelve tasks (math, code trace above Haiku, 5-attribute puzzles, CSV normalization, knowledge recall, regex writing, classic-bug review, state simulation — and, after the grading correction, the constraint gauntlet) are solved by essentially every configuration. Same-score price spreads run 5–30×. For transforms, extraction, lookups, format work and classic review: buy the cheapest configuration that has ever passed the task for you.</p>
+<p>Eight of twelve tasks (math, knowledge recall, regex, classic-bug review, state simulation, CSV, 5-attribute puzzles, and — within a one-point noise band — code trace and the constraint gauntlet) are solved by essentially every configuration. Same-score price spreads run 5–13×. For transforms, extraction, lookups, format work and classic review: buy the cheapest configuration that has ever passed the task for you.</p>
 
-<h3>F2 · The walls are precision walls, and they set each tier's effort floor</h3>
-<p>Three tasks separate hard: the ledger audit (exact aggregation over 1,400 rows), the minimal-clue logic puzzles, and the subtle semantic bugs. They define effort floors, not ceilings: Sonnet crosses the ledger only at xhigh — via a 256,000-token, $4.60, 29-minute grind on that one answer — while Opus 5 crosses at medium ($1.10, 4 min) and Fable at low. Haiku never crosses. Walls track frontier tier, not generation (Sonnet 5 shares Opus 5's generation and needs three more effort steps): what tier buys is a cheap, fast floor.</p>
+<h3>F2 · One wall separates the field, and each config crosses it at a different price</h3>
+<p>The ledger audit (exact aggregation over 1,400 rows, no tools) is the dataset's lone hard separator. Perfect-sweep floors: Opus 5 at medium ($2.15, 8 min), Opus 4.8 at low ($2.53, 12 min), Sonnet at xhigh ($3.25, 22 min), Fable at xhigh ($7.09, 16 min); Haiku never crosses at any effort. The floors don't follow the price list or the generation order — they're empirical properties of each model, and the only way to know yours is to measure.</p>
 
-<h3>F3 · "Big model, low effort" is the value pattern — with a variance tax</h3>
-<p>Fable@low swept everything in its sample, fastest overall. Opus 5@low crossed both knowledge walls at half Fable's price but dropped ~1 point per 10-task sweep in an unpredictable place (n=3); one effort step to medium bought back a perfect, replicated sweep at ≈$2.50/8 min — the cheapest perfection in the dataset.</p>
+<h3>F3 · Opus 5 is the value frontier</h3>
+<p>Perfect from medium through max; at low it drops exactly one gauntlet point while still solving the deep puzzles 6/6 and the subtle bugs 5/5 — the two knowledge-walls that stall other tiers. Its floor is the cheapest and nearly the fastest in the dataset. If you run one configuration for everything hard, Opus 5 @ medium is the measured answer.</p>
 
-<h3>F4 · Effort climbs to the floor, then only burns</h3>
-<p>Above each tier's floor, no added effort improved any score in this dataset. Above-floor sweeps cost 1.2–2.6× their tier's floor for identical results. Max effort never won once, and destroyed value twice: Sonnet@max spent 512k tokens/$8.44/57 min on the ledger before exceeding the model's own 128k-per-response output ceiling (that cell cannot complete at any setting), and Opus 5@max regressed the constraint gauntlet in one of two samples. Escalate exactly one step when a configuration fails; never buy max.</p>
+<h3>F4 · Effort climbs to each config's floor, then only burns — and sometimes inverts</h3>
+<p>Above a config's floor, added effort bought zero accuracy anywhere; max completed everywhere but was strictly dominated (Fable@max: $10.49 and 26 min for the same scores as $7.09/16m). Three effort <i>inversions</i> replicated: Haiku's ledger score falls as effort rises, Haiku's deep puzzles collapse at high (6/6 at low and medium, 3/6 at high — replicated in both study generations), and Opus 4.8@xhigh drops ledger and trace points its own low effort doesn't. Escalate one step when a config fails; never assume more effort is safe, and never buy max.</p>
 
-<h3>F5 · Reliability at the top is model-specific</h3>
-<p>On the six-puzzle set, mid-effort Fable failed the same puzzle by the same two cells in 2 of 4 attempts (a last-mile verification skip — it also spent the fewest top-tier tokens there); Sonnet@low, Opus 4.8@high and Opus 5 were perfect on every attempt (Opus 5: 8 for 8). Don't assume the priciest model at its default is the safest; push Fable to xhigh for quick verification-heavy logic, or use the tiers that measured stable.</p>
+<h3>F5 · Replication humbles single-sample crowns</h3>
+<p>The first-generation dataset crowned Fable@low the only zero-defect sweep. Re-measured through the reproducible harness, Fable drops a point at low, medium and high (the same gauntlet constraint each time) and is perfect only from xhigh — while remaining the fastest tier at every effort. Single-run cells move by a point or two between honest re-measurements; treat one-sample gaps as directional and cross-task patterns as the findings.</p>
 
-<h3>F6 · Cheap per token ≠ cheap per task ≠ fast</h3>
-<p>At its capability edge Haiku grinds long and still fails: 6.5× the cost per solved puzzle of Sonnet@low, and the longest wall-clock in several tasks despite the lowest sticker price. Route to Haiku only inside the saturated zone.</p>
+<h3>F6 · Cheap per token ≠ capable, but it is genuinely cheap</h3>
+<p>Haiku never produced a perfect sweep and walls hard on the ledger, yet a full 10-task pass costs $0.82–0.98 — a fifth of the nearest floor — and inside the saturated zone it matches every tier. Route mechanical work there at low effort (its effort dial only ever hurt it), and never route precision aggregation or deep deduction there.</p>
 
-<h3>F7 · Token volume is the bill; walls tax the smallest capable model hardest</h3>
-<p>The ledger's effort ladder on Sonnet is the definitive verbosity curve: 13.7k → 58.6k → 186.8k → 256k → 512k output tokens as effort rises, with exactly one score improvement along the way and a ceiling-death at the end. Crossing a wall by effort on a mid tier costs more than jumping tiers ($4.60/29 min vs $1.10/4 min for the same answer). Harnesses that limit response length will convert the biggest grinds into hard failures — keep grind-prone precision work at the frontier tier's floor, or give the model tools (tool access saturates these tasks entirely).</p>
+<h3>F7 · The bill is verbosity: effort multiplies tokens for flat scores</h3>
+<p>Within every family, sweep cost rises 1.2–2.8× from low to max for identical or worse results (Sonnet $1.70→$4.38; Opus 5 $1.93→$3.65; Fable $3.69→$10.49). Time behaves the same (Opus 5: 7→17 min; Sonnet: 10→33 min). Grind-prone precision work belongs at the frontier tier's floor — or give the model tools: in the archived tool-enabled rounds, execution access saturated these tasks for every tier.</p>
 
-<h3>F8 · Same-price generation upgrades are free quality</h3>
-<p>Opus 5 matches or beats Opus 4.8 at the same list price on every task measured, usually at a lower effort setting (subtle bugs: 5/5 at low vs 4/5 at high; ledger floor: medium vs xhigh). Take same-price upgrades immediately and re-find your floor one or two effort steps lower than before.</p>
+<h3>F8 · The generation gap lives in novel semantics, not classic patterns</h3>
+<p>Opus 4.8 matches Opus 5's sweeps at startlingly low cost (its low-effort sweep is the #2 value in the dataset) — but on the subtle semantic bugs it stalls at 4/5 until xhigh, in both study generations, while Opus 5 and Fable find 5/5 at every effort. Classic-pattern review (T9) saturates for everyone. Route novelty — unfamiliar semantics, first-of-kind review — to the newest generation; route familiar patterns to whatever is cheapest.</p>
 
   </section>
 
@@ -285,16 +286,16 @@
     <p class="lede">One card per task: design, rationale, and verdict. Full prompts,
     schemas and self-contained graders live in <code>tasks/</code>.</p>
     <div class="cards2">
-      <div class="tcard"><div class="tname">Subtle semantic bugs (E)</div><p><b>Design</b>5 planted conceptual bugs in a search index</p><p><b>Why</b>Novel semantic defects (document-frequency semantics, operator precedence, case asymmetry, phrase adjacency, normalization denominator) that resist pattern-matching review.</p><p><b>Found</b>The knowledge wall: 4.x-generation models stall at 4/5 at high effort (xhigh fixes them); 5th-generation frontier finds 5/5 even at low effort for a tenth of the escalation cost.</p></div>
-<div class="tcard"><div class="tname">Mental math (T1)</div><p><b>Design</b>16 exact computations, no tools</p><p><b>Why</b>Tests exact arithmetic under load: 4-digit products, signed sums, modular exponentiation, compound percentages. Hypothesis: tier gaps and effort gains on raw computation.</p><p><b>Found</b>Near-saturated: only Haiku@high missed one item (a mod-pow). Effort spent up to 4.3x tokens for identical scores. 2026 frontier and mid-tier models simply do arithmetic.</p></div>
-<div class="tcard"><div class="tname">Code trace (T2)</div><p><b>Design</b>predict exact stdout of 8 Python snippets</p><p><b>Why</b>Python semantics traps (mutable defaults, closure late binding, dict key collapse, try/finally returns, generator exhaustion). Ground truth produced by executing the snippets.</p><p><b>Found</b>Walls Haiku only (6/8 at high, 7/8 at low). Everything Sonnet@low and up is perfect, with rare one-point slips at frontier low effort.</p></div>
-<div class="tcard"><div class="tname">Ledger audit (T3)</div><p><b>Design</b>6 exact aggregates over 1,400 transaction rows, no tools</p><p><b>Why</b>Precision aggregation at scale: balances, filtered counts, running-threshold detection, maxima, group sums, busiest-day counts. The strongest separator in the study.</p><p><b>Found</b>The wall battery: scores 3/6 to 6/6 by config; effort floors differ per tier (Sonnet crosses only at xhigh via a 256k-token grind; Opus 5 at medium; Fable at low). Verbosity events and output-ceiling failures live here.</p></div>
-<div class="tcard"><div class="tname">Constraint gauntlet (T4)</div><p><b>Design</b>one essay satisfying 10 mechanical constraints</p><p><b>Why</b>Instruction-following under load: exact word counts, an e-free paragraph, exact substring counts, ordered first words, length caps -- all machine-checkable.</p><p><b>Found</b>The cleanest effort ladder: Sonnet 3/10 at low to 10/10 at high. Haiku walls (2-8/10). Frontier low effort slips here in some samples; max regressed once (the e-free rule).</p></div>
-<div class="tcard"><div class="tname">Logic puzzles (5-attribute) (T5A)</div><p><b>Design</b>3 zebra puzzles, 25 cells each, solver-verified unique, no tools</p><p><b>Why</b>Deduction with a bigger grid. Hypothesis: scale deepens the reasoning wall.</p><p><b>Found</b>Hypothesis rejected -- saturated for every config (richer clue sets propagate more easily; difficulty is clue minimality, not grid size). One frontier-low sample dropped 2 cells, the only miss recorded.</p></div>
-<div class="tcard"><div class="tname">Logic puzzles (4-attribute, minimal clues) (T5B)</div><p><b>Design</b>6 zebra puzzles with minimized clue sets, no tools</p><p><b>Why</b>Pure deduction with irreducible clue sets. Used for reliability replicates: same set, repeated attempts per config.</p><p><b>Found</b>Separates hard: Haiku 2/6; Sonnet@low perfect on all attempts; mid-effort Fable failed the same puzzle by the same 2 cells in 2 of 4 attempts (a last-mile verification skip); Opus 5 clean on 8 attempts.</p></div>
+      <div class="tcard"><div class="tname">Subtle semantic bugs (E)</div><p><b>Design</b>5 planted conceptual bugs in a search index</p><p><b>Why</b>Novel semantic defects (document-frequency semantics, operator precedence, case asymmetry, phrase adjacency, normalization denominator) that resist pattern-matching review.</p><p><b>Found</b>The generation wall: Opus 4.8 stalls at 4/5 below xhigh in both study generations; Opus 5 and Fable find 5/5 at every effort. Sonnet crosses at high; Haiku is noisy (3-5/5).</p></div>
+<div class="tcard"><div class="tname">Mental math (T1)</div><p><b>Design</b>16 exact computations, no tools</p><p><b>Why</b>Tests exact arithmetic under load: 4-digit products, signed sums, modular exponentiation, compound percentages. Hypothesis: tier gaps and effort gains on raw computation.</p><p><b>Found</b>Near-saturated: only Haiku drops an item (n=1 cells). Effort spends multiples of tokens for identical scores. 2026 models simply do arithmetic.</p></div>
+<div class="tcard"><div class="tname">Code trace (T2)</div><p><b>Design</b>predict exact stdout of 8 Python snippets</p><p><b>Why</b>Python semantics traps (mutable defaults, closure late binding, dict key collapse, try/finally returns, generator exhaustion). Ground truth produced by executing the snippets.</p><p><b>Found</b>A one-point noise band: scattered single misses across Haiku (all efforts), Sonnet low/medium and Opus 4.8@xhigh; perfect elsewhere. No config missed two.</p></div>
+<div class="tcard"><div class="tname">Ledger audit (T3)</div><p><b>Design</b>6 exact aggregates over 1,400 transaction rows, no tools</p><p><b>Why</b>Precision aggregation at scale: balances, filtered counts, running-threshold detection, maxima, group sums, busiest-day counts. The strongest separator in the study.</p><p><b>Found</b>The wall battery — the dataset&#x27;s lone hard separator. Perfect-sweep floors: Opus 5@medium, Opus 4.8@low, Sonnet@xhigh, Fable@xhigh; Haiku never crosses and its score falls as effort rises. The biggest token grinds live here.</p></div>
+<div class="tcard"><div class="tname">Constraint gauntlet (T4)</div><p><b>Design</b>one essay satisfying 10 mechanical constraints</p><p><b>Why</b>Instruction-following under load: exact word counts, an e-free paragraph, exact substring counts, ordered first words, length caps -- all machine-checkable.</p><p><b>Found</b>Near-saturated (a published correction: the original &quot;Sonnet 3/10 to 10/10 effort ladder&quot; was a grading artifact from scoring JSON-wrapped text). Every tier above Haiku scores 9-10/10; Fable persistently dropped the same single constraint below xhigh; Haiku drops 1-2.</p></div>
+<div class="tcard"><div class="tname">Logic puzzles (5-attribute) (T5A)</div><p><b>Design</b>3 zebra puzzles, 25 cells each, solver-verified unique, no tools</p><p><b>Why</b>Deduction with a bigger grid. Hypothesis: scale deepens the reasoning wall.</p><p><b>Found</b>Hypothesis rejected -- saturated for every config above Haiku (richer clue sets propagate more easily; difficulty is clue minimality, not grid size). Haiku@medium dropped cells on two puzzles, the only miss recorded.</p></div>
+<div class="tcard"><div class="tname">Logic puzzles (4-attribute, minimal clues) (T5B)</div><p><b>Design</b>6 zebra puzzles with minimized clue sets, no tools</p><p><b>Why</b>Pure deduction with irreducible clue sets. Used for reliability replicates: same set, repeated attempts per config.</p><p><b>Found</b>Separates by effort direction, not tier: Haiku solves all 6 at low and medium but collapses at high (replicated in both study generations); every other config is perfect except one Fable@low sample (5/6).</p></div>
 <div class="tcard"><div class="tname">Strict CSV normalization (T6)</div><p><b>Design</b>messy records to exact canonical CSV under 9 interacting rules</p><p><b>Why</b>Attention-to-detail transform: date normalization, dedupe-by-latest, conditional quoting, multi-key sort, invalid-row filtering. Exact line-by-line grading.</p><p><b>Found</b>Saturated at every tier and effort (rare frontier-low one-line slips). Rules-following transforms are safe on the cheapest configs.</p></div>
 <div class="tcard"><div class="tname">Knowledge recall (T7)</div><p><b>Design</b>20 unambiguous technical facts, no tools or web</p><p><b>Why</b>Parametric knowledge floor: chemistry symbols, ports, encodings, RFCs, Roman numerals. Hypothesis: bigger models know more.</p><p><b>Found</b>Fully saturated -- 20/20 for every config and sample. Common technical knowledge has no tier gradient in 2026.</p></div>
-<div class="tcard"><div class="tname">Regex writing without testing (T8)</div><p><b>Design</b>8 fullmatch patterns against trap sets, graded by execution</p><p><b>Why</b>Write-only correctness: the model cannot test its patterns; the grader executes them against must-match / must-not-match sets.</p><p><b>Found</b>Saturated on score (8/8 everywhere) with a large efficiency tell: Haiku took 20x the wall-clock of frontier-low for the same result.</p></div>
+<div class="tcard"><div class="tname">Regex writing without testing (T8)</div><p><b>Design</b>8 fullmatch patterns against trap sets, graded by execution</p><p><b>Why</b>Write-only correctness: the model cannot test its patterns; the grader executes them against must-match / must-not-match sets.</p><p><b>Found</b>Saturated on score (8/8 everywhere, one Haiku@low 7/8) with a large efficiency tell: cost and wall-clock vary by an order of magnitude for the same result.</p></div>
 <div class="tcard"><div class="tname">Bug review without tools (T9)</div><p><b>Design</b>7 planted classic bugs in a rate limiter, pure code review</p><p><b>Why</b>Review with no execution: boundary conditions, off-by-ones, mutable default sharing, clamp ordering, fractional truncation. Behavioral grading of the returned fixed module.</p><p><b>Found</b>Saturated -- every config found all 7. Classic-pattern bugs are within every tier&#x27;s reach; only novel semantic bugs (see e-subtle-bugs) separate.</p></div>
 <div class="tcard"><div class="tname">State simulation (T10)</div><p><b>Design</b>30 sequential warehouse-robot commands, exact final state</p><p><b>Why</b>Sustained state tracking with conflict rules (walls, collisions, capacity, no-ops). Simulator-generated ground truth.</p><p><b>Found</b>Saturated for every config on exact state (two mid-effort samples dropped robot cells). Short-horizon state tracking is solved.</p></div>
     </div>
@@ -310,47 +311,47 @@
       <tr><td>Mechanical edits, extraction, ETL, formatting</td>
         <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku @ low</span></td>
         <td class="alt">—</td><td class="alt">Sonnet @ low</td>
-        <td class="alt">F1: deep in the saturated zone (T6, T7)</td></tr>
+        <td class="alt">F1/F6: saturated zone (T6, T7, T8); keep Haiku at low — effort only hurt it</td></tr>
       <tr><td>Well-specified implementation (testable)</td>
         <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low–med</span></td>
-        <td class="alt">Haiku @ high</td><td class="alt">Sonnet @ high</td>
+        <td class="alt">Haiku @ low</td><td class="alt">Opus 5 @ medium</td>
         <td class="alt">archived tool-enabled rounds: every tier self-verifies to perfect</td></tr>
       <tr><td>Everyday features, tests, routine review</td>
-        <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ high</span> or <span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ medium</span></td>
-        <td class="alt">Sonnet @ medium</td><td class="alt">Opus 5 @ high</td>
-        <td class="alt">F1/F8; classic-pattern review saturates (T9)</td></tr>
+        <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ medium</span> or <span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 4.8 @ low</span></td>
+        <td class="alt">Sonnet @ low</td><td class="alt">Opus 5 @ medium</td>
+        <td class="alt">F1/F8; classic-pattern review saturates (T9); Opus 4.8@low is the budget perfect sweep</td></tr>
       <tr><td>Subtle/novel-semantics review, security reads</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ low–med</span></td>
-        <td class="alt">—</td><td class="alt">Fable @ low</td>
-        <td class="alt">E: the knowledge wall; 5/5 at low for $0.13 vs 4.x-gen needing xhigh; key on bug novelty (T9 saturates)</td></tr>
+        <td class="alt">—</td><td class="alt">Fable @ xhigh</td>
+        <td class="alt">E: Opus 5 and Fable 5/5 at every effort; Opus 4.8 stalls at 4/5 until xhigh (both generations); key on bug novelty — T9 saturates</td></tr>
       <tr><td>Exact analysis over big inputs (logs, ledgers, audits)</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ medium</span> — or any tier + tools</td>
-        <td class="alt">Opus 5 @ low (slip risk)</td><td class="alt">Fable @ low; avoid mid tiers ≥ high</td>
-        <td class="alt">T3/F7: floors and the verbosity trap</td></tr>
+        <td class="alt">Opus 4.8 @ low</td><td class="alt">avoid Haiku entirely; avoid mid tiers below xhigh</td>
+        <td class="alt">T3/F2: the wall and its floors</td></tr>
       <tr><td>Hard debugging, unknown root cause</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ high</span></td>
-        <td class="alt">Opus 5 @ medium</td><td class="alt">Fable @ low–xhigh</td>
-        <td class="alt">extrapolated from E/T3 walls: "didn't know → tier"</td></tr>
+        <td class="alt">Opus 5 @ medium</td><td class="alt">Fable @ xhigh</td>
+        <td class="alt">extrapolated from E/T3 walls: "didn't know → tier/generation"</td></tr>
       <tr><td>Quick logic checks, invariants, scheduling math</td>
         <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low</span></td>
-        <td class="alt">—</td><td class="alt">Opus 5 @ high · Fable @ xhigh (not high)</td>
-        <td class="alt">F5: T5B attempt records</td></tr>
+        <td class="alt">Haiku @ low (not high)</td><td class="alt">Opus 5 @ any</td>
+        <td class="alt">F4/T5B: Haiku solves the set at low–medium and collapses at high; Opus 5 perfect at every effort</td></tr>
       <tr><td>Long-horizon autonomy, large migrations</td>
-        <td><span class="chip" style="color:var(--fable);background:var(--good-bg)">Fable @ high–xhigh</span></td>
+        <td><span class="chip" style="color:var(--fable);background:var(--good-bg)">Fable @ xhigh</span></td>
         <td class="alt">Opus 5 @ high</td><td class="alt">—</td>
-        <td class="alt"><span class="verdict unk">NOT MEASURED HERE</span> longest run 57 min</td></tr>
+        <td class="alt"><span class="verdict unk">NOT MEASURED HERE</span> Fable is fastest per task; its sub-xhigh slip pattern argues for xhigh when unsupervised</td></tr>
       <tr><td>Quick factual Q&amp;A, lookups, summaries, everyday writing</td>
-        <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku</span> / <span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low–med</span></td>
-        <td class="alt">—</td><td class="alt">Sonnet @ high</td>
+        <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku @ low</span> / <span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low</span></td>
+        <td class="alt">—</td><td class="alt">Sonnet @ medium</td>
         <td class="alt">T7 fully saturated; free-form prose showed no walls</td></tr>
       <tr><td>Precise numeric work from documents</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ medium</span> — or any model + calculator</td>
-        <td class="alt">—</td><td class="alt">Fable @ low</td>
+        <td class="alt">Opus 4.8 @ low</td><td class="alt">—</td>
         <td class="alt">T1 saturates; T3-scale exactness doesn't</td></tr>
       <tr><td>Real-time / customer-facing chat</td>
         <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku @ low</span></td>
         <td class="alt">—</td><td class="alt">Sonnet @ low</td>
-        <td class="alt">duration data: 3–11s short-task latency</td></tr>
+        <td class="alt">duration data: shortest latencies in the grid at low effort</td></tr>
     </tbody>
   </table>
 </div>
@@ -359,32 +360,32 @@
 
   <section id="scoreboard">
     <h2><span class="no">§7</span>External-claims scoreboard</h2>
-    <p class="lede">Vendor and press claims graded against this dataset.</p>
+    <p class="lede">Vendor and press claims graded against the reproducible dataset.</p>
 <div class="tablewrap">
   <table>
     <thead><tr><th>Claim</th><th>Verdict</th><th>Evidence here</th></tr></thead>
     <tbody>
       <tr><td>"A newer tier at low effort beats the older tier at max" (system cards)</td>
-        <td><span class="verdict yes">CORROBORATED — with a variance footnote</span></td>
-        <td class="alt">Opus 5@low 5/5 subtle bugs at $0.13 vs Opus 4.8 needing xhigh; frontier low effort carries a ~1-point-per-sweep slip risk; full reliability starts one step up</td></tr>
+        <td><span class="verdict yes">DIRECTIONALLY CORROBORATED</span></td>
+        <td class="alt">Opus 5@low solves both knowledge walls (deep puzzles 6/6, subtle bugs 5/5) that Opus 4.8 can't fully cross below xhigh — but 4.8's low-effort sweep is perfect on the core tasks, so "beats" holds for novel semantics, not across the board</td></tr>
       <tr><td>"max is prone to overthinking; test before adopting" (Claude Code docs)</td>
-        <td><span class="verdict yes">CORROBORATED, STRONGLY</span></td>
-        <td class="alt">zero max wins anywhere; one regression; one 512k-token ceiling death at $8.44</td></tr>
+        <td><span class="verdict yes">CORROBORATED</span></td>
+        <td class="alt">max completed everywhere but won nothing, at up to 2.8× the floor's cost (Fable@max $10.49 vs $7.09); and three effort inversions show more thinking measurably hurting Haiku and Opus 4.8</td></tr>
       <tr><td>"Effort is often a better lever than switching models" (docs)</td>
-        <td><span class="verdict no">TRUE BELOW WALLS, A TRAP AT THEM</span></td>
-        <td class="alt">at every measured wall, the tier jump beat effort escalation on price and time ($1.10/4min vs $4.60/29min on the ledger)</td></tr>
+        <td><span class="verdict no">A TRAP AT THE WALL</span></td>
+        <td class="alt">crossing the ledger by effort costs Sonnet $3.25/22m; the tier jump (Opus 5@medium) does it for $2.15/8m and the generation jump (Opus 4.8@low) for $2.53/12m — switching beat escalating on both axes, again</td></tr>
       <tr><td>"Opus 5: nearly all of Fable 5's intelligence at half the cost" (press)</td>
-        <td><span class="verdict yes">LARGELY CORROBORATED</span></td>
-        <td class="alt">both knowledge walls crossed at half price from medium effort; 8/8 puzzle stability; low-effort variance and a high-effort grind trap are the residual gaps</td></tr>
+        <td><span class="verdict yes">UNDERSOLD — Opus 5 wins outright here</span></td>
+        <td class="alt">perfect from medium at $2.15 vs Fable needing xhigh at $7.09; equal on both knowledge walls at every effort; Fable's only measured edge is wall-clock speed</td></tr>
       <tr><td>"Fable verifies its own work more than smaller models" (docs)</td>
-        <td><span class="verdict no">CONTRADICTED at high effort on quick logic</span></td>
-        <td class="alt">same puzzle failed 2 of 4 attempts by one unchecked clue; stable at xhigh</td></tr>
+        <td><span class="verdict no">NOT BELOW XHIGH</span></td>
+        <td class="alt">a one-point gauntlet drop persisted at low, medium and high — the same unverified constraint each time; clean only from xhigh</td></tr>
       <tr><td>"Haiku: near-frontier intelligence" (announcement)</td>
         <td><span class="verdict no">NOT AT PRECISION WALLS</span></td>
-        <td class="alt">never crossed the ledger or deep-puzzle walls; fully equivalent inside the saturated zone</td></tr>
+        <td class="alt">never a perfect sweep; ledger worsens as effort rises; deep puzzles collapse at high — yet fully equivalent inside the saturated zone at a fifth of the price</td></tr>
       <tr><td>Headline benchmark gaps between tiers</td>
         <td><span class="verdict unk">NOT TESTED HERE</span></td>
-        <td class="alt">our data says tier gaps live at precision walls, which aggregate benchmarks bundle invisibly</td></tr>
+        <td class="alt">our data says tier gaps live at one precision wall and one novelty wall, which aggregate benchmarks bundle invisibly</td></tr>
     </tbody>
   </table>
 </div>
@@ -393,10 +394,10 @@
 
   <section id="limits">
     <h2><span class="no">§8</span>Method corrections &amp; honest limits</h2>
-    <h3>Corrections</h3>
-<p>This dataset supersedes two earlier grading decisions, both found by re-auditing and both correctable by anyone from the shipped raw answers: (1) <b>constraint-gauntlet (T4) scores were initially under-graded</b> for runs that returned JSON-wrapped text — the wrapper was scored as content, producing an apparent "effort ladder" (3/10→10/10 on Sonnet) that disappears when the unwrapped essays are graded; T4 is in fact near-saturated for every tier above Haiku. (2) A small number of answer-format deviations (prose instead of schema JSON) are parsed tolerantly and graded on content, with format non-compliance noted rather than punished. The graders in <code>tasks/</code> implement the corrected policy; <code>make verify</code> reproduces every published number from raw answers.</p>
+    <h3>Dataset generations & corrections</h3>
+<p>This is the study's second-generation dataset: every active record was produced through the shipped, reproducible runner (Claude Code headless path with answer validation and retry), re-measuring the full grid that the first-generation study ran through a session-bound orchestration harness. The first-generation records are preserved in <code>archive/workflow-runs/</code>; headline agreements (the Opus 5@medium floor, the Sonnet xhigh ledger crossing, Haiku's deep-puzzle collapse at high effort, Opus 4.8's subtle-bugs stall) and disagreements (Fable@low's zero-defect sweep did not replicate; Opus 4.8@low swept perfect here) are discussed in the findings. Two grading corrections from the first generation carry forward: JSON-wrapped answers are graded on content (the original T4 "effort ladder" was an artifact of scoring the wrapper), and transport failures are quarantined as <code>invalid</code> rather than scored.</p>
 <h3>Limits</h3>
-<p>Most cells are n=1; frontier configurations carry n≤3 plus repeated puzzle attempts — treat single-cell gaps as directional and cross-task patterns as the findings. Tasks are synthetic, single-shot, ≤60 minutes, without repository context; long-horizon autonomy and agentic orchestration are not measured here, which is exactly where the priciest configurations claim their value. A minority of records lack usage data (a logging fault in two replicate batches); their costs are null and excluded from totals, and totals containing estimated cells are marked ≈. Costs use standard list prices (Sonnet's introductory pricing would flatten ~⅓ off its rows through 2026-08-31). All original runs came from one account over three days via Claude Code subagents; serving stacks change — rerun before trusting fine margins.</p>
+<p>Every active cell is n=1 (haiku@medium n=2 on several tasks) from a single account over two days on subscription serving; costs are imputed from measured tokens at standard list prices. Tasks are synthetic, single-shot, ≤35 minutes, without repository context; long-horizon autonomy and agentic orchestration are not measured. Response-length headroom was raised to the models' own output ceilings; harnesses with tighter caps will fail the biggest grinds. Rerun before trusting fine margins — one command per config reruns any cell.</p>
 
   </section>
 

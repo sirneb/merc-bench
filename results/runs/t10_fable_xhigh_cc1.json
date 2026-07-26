@@ -1,0 +1,64 @@
+{
+ "task": "T10",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "robots": [
+   {
+    "id": "R1",
+    "x": 1,
+    "y": 3,
+    "carrying": 1
+   },
+   {
+    "id": "R2",
+    "x": 4,
+    "y": 3,
+    "carrying": 0
+   },
+   {
+    "id": "R3",
+    "x": 3,
+    "y": 3,
+    "carrying": 0
+   }
+  ],
+  "floor_boxes": [
+   {
+    "x": 2,
+    "y": 4,
+    "count": 2
+   },
+   {
+    "x": 5,
+    "y": 4,
+    "count": 1
+   },
+   {
+    "x": 0,
+    "y": 3,
+    "count": 2
+   },
+   {
+    "x": 4,
+    "y": 3,
+    "count": 2
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 5847,
+  "cache_read": 19349,
+  "output": 1364
+ },
+ "duration_s": 13.3,
+ "cost_usd": 0.1607,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

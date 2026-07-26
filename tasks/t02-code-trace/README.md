@@ -12,4 +12,4 @@ Python semantics traps (mutable defaults, closure late binding, dict key collaps
 
 ## What we found
 
-Walls Haiku only (6/8 at high, 7/8 at low). Everything Sonnet@low and up is perfect, with rare one-point slips at frontier low effort.
+A one-point noise band: scattered single misses across Haiku (all efforts), Sonnet low/medium and Opus 4.8@xhigh; perfect elsewhere. No config missed two.

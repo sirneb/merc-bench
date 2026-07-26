@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern databases face relentless read traffic, and a cache offers relief. By keeping popular results in memory, the cache answers repeated queries fast; the primary store handles fewer calls, latency drops, and applications feel snappier under very heavy load.\n\nHowever caching brings real dangers alongside its speed. Stale entries can mislead users when the underlying tables change; invalidation logic must therefore be precise. A cache stampede may crush the database when many clients miss at once, so teams add locks or request coalescing. Choosing what the cache stores demands careful thought about access patterns.\n\nAlong this path, caching stands as a solid ally. It holds hot rows in a rapid spot; lookups avoid disk trips, cutting lag. Still, staff must watch quotas, or old data may stick around and harm accuracy.\n\nFinally teams should treat the cache as a tool, not magic. Measure hit rates, tune sizes, and call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9125,
+  "cache_read": 15476,
+  "output": 6128
+ },
+ "duration_s": 68.4,
+ "cost_usd": 0.436,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

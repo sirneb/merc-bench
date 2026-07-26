@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, database caching means storing frequent query results in a fast cache, so applications skip repeated disk reads; a warm cache returns data instantly, and each cache hit trims latency while easing pressure on the primary store under heavy load.\n\nHowever, every cache must handle staleness, because underlying data changes over time and outdated entries mislead users; engineers therefore adopt expiration policies, invalidation hooks, and eviction rules that balance freshness against speed, deciding which items to keep, which to drop, and how long stored copies remain trustworthy before the system refreshes them from the source.\n\nAlong similar paths, many apps map hot rows onto fast RAM, using compact hash maps and small shards, thus a lookup avoids costly disk trips and hands back data in a flash, gaining swift throughput without straining our main SQL vault.\n\nFinally, a well-tuned cache transforms sluggish databases into snappy responsive services; measure hit rates, iterate, and call your tuning done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 7808,
+  "cache_read": 15465,
+  "output": 9267
+ },
+ "duration_s": 102.0,
+ "cost_usd": 0.2882,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

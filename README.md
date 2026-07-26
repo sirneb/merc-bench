@@ -9,15 +9,17 @@ cheapest config), and the tasks that don't define each tier's **perfection floor
 
 | Tier | Cheapest perfect sweep (10 core tasks) | Cost | Wall-clock |
 |---|---|---|---|
-| Sonnet 5 | `@xhigh` | $6.54 | 52 min |
-| Opus 4.8 | `@xhigh` | ≈$4.90 | 24 min |
-| **Opus 5** | **`@medium`** | **≈$2.50** | **8 min** |
-| Fable 5 | `@low` | $4.31 | 6 min |
+| Haiku 4.5 | never | $0.82–0.98/sweep | 19–30 min |
+| Sonnet 5 | `@xhigh` | $3.25 | 22 min |
+| **Opus 4.8** | **`@low`** | **$2.53** | **12 min** |
+| **Opus 5** | **`@medium`** | **$2.15** | **8 min** |
+| Fable 5 | `@xhigh` | $7.09 | 16 min |
 
-The floors invert the price list: the cheapest-per-token model has the costliest,
-slowest path to perfection, because precision walls tax it in tokens. Above each
-floor, added effort bought **zero accuracy anywhere in 284 graded runs** — only
-cost, time, and occasional regressions. Full findings: open
+The floors follow neither the price list nor the generation order — they're
+empirical properties of each model. Above each floor, added effort bought
+**zero accuracy anywhere** — only cost and time — and three replicated effort
+*inversions* show more thinking measurably hurting (Haiku's ledger and deep
+puzzles, Opus 4.8@xhigh). Full findings: open
 [`site/report.html`](site/report.html) (or regenerate it, below).
 
 ## What's in the box
@@ -38,7 +40,7 @@ archive/     earlier tool-enabled experiment rounds (different conditions; kept 
 ## Quickstart
 
 ```bash
-make report          # regrade all 284 shipped runs from raw answers, rebuild site/report.html
+make report          # regrade all shipped runs from raw answers, rebuild site/report.html
 make verify          # same, plus fail loudly if any grade disagrees with results/scores.csv
 open site/report.html
 ```
@@ -78,8 +80,11 @@ way; the correction is documented, not hidden).
 
 ## Provenance
 
-Original dataset: 284 graded runs, ~$131 of inference, measured 2026-07-23 →
-2026-07-25 across `claude-haiku-4-5`, `claude-sonnet-5`, `claude-opus-4-8`,
-`claude-opus-5` (from its release day), and `claude-fable-5`, at effort levels
-low → max. Model identities were pinned to exact IDs and verified from request
-logs. MIT licensed — data, tasks, and code alike.
+Active dataset: 265 graded runs measured 2026-07-25 → 2026-07-26 across
+`claude-haiku-4-5`, `claude-sonnet-5`, `claude-opus-4-8`, `claude-opus-5` and
+`claude-fable-5` at effort levels low → max — every record produced through the
+shipped runner (`runner/sweep.py` reruns the whole grid). The study's
+first-generation dataset (284 runs, ~$131, produced through a session-bound
+orchestration harness nobody can reproduce from this repo) is preserved in
+`archive/workflow-runs/` for provenance and comparison. MIT licensed — data,
+tasks, and code alike.

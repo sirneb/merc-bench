@@ -12,4 +12,4 @@ Write-only correctness: the model cannot test its patterns; the grader executes 
 
 ## What we found
 
-Saturated on score (8/8 everywhere) with a large efficiency tell: Haiku took 20x the wall-clock of frontier-low for the same result.
+Saturated on score (8/8 everywhere, one Haiku@low 7/8) with a large efficiency tell: cost and wall-clock vary by an order of magnitude for the same result.

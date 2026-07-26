@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern databases lean hard on memory. A cache sits between the application and disk, holding hot rows so repeated reads never touch storage. That single layer often decides whether a service feels instant or painfully slow for real users.\n\nHowever fast the hardware becomes, a cache remains a bet about the future; every cached row risks going stale the moment someone writes. Teams answer with expiry times, explicit invalidation, or write-through updates that refresh the cache immediately; each choice trades freshness against speed, and none removes the hard question of what belongs in memory.\n\nAlong with RAM, a distinct data pool can sit on fast local disks, cutting far past origin lag; a good policy will drop old bits first, holding what most work asks for again and again. Actual traffic, not intuition, must form that policy.\n\nFinally measure hit rates before tuning anything, because a cache you cannot observe is guesswork rather than real engineering done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8782,
+  "cache_read": 15493,
+  "output": 6780
+ },
+ "duration_s": 72.9,
+ "cost_usd": 0.2321,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

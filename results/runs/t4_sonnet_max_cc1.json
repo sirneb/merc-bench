@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern applications increasingly rely on a cache layer to shield databases from repeated, expensive queries. This cache sits between the application and storage, holding frequently requested results so response times shrink and overall system throughput improves for demanding workloads.\n\nHowever caching introduces challenges of its own; stale data can linger after an underlying record changes, forcing engineers to design careful invalidation rules. Popular eviction policies, such as recency-based removal or time-based expiration, help keep the cache fresh; without such rules, memory fills with outdated entries, and every later query then risks returning wrong results.\n\nAlong with slow disks, fast RAM now holds hot data so busy apps can avoid costly disk I/O. A high hit ratio brings quick wins, but cold, missing data still prompts slow lookups. Good sizing, plus a smart layout, thus stops most slowdowns during rush-hour traffic.\n\nFinally teams monitor cache hit rates and tune the cache; small tweaks keep performance steady, so the rollout is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8639,
+  "cache_read": 23909,
+  "output": 28031
+ },
+ "duration_s": 236.3,
+ "cost_usd": 0.46,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

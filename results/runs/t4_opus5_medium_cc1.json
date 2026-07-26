@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, modern systems lean on the cache to hide slow disk reads; a warm cache turns a costly query into a quick lookup, and users notice the difference right away, even when traffic spikes beyond what planners had first predicted.\n\nHowever, every cache invites a hard question: when does the copy stop matching truth? Stale caches quietly serve yesterday's numbers; teams answer with expiry timers, version tags, or explicit purges after each write. Choosing badly costs money, since a cached row that lies can be worse than a slow but honest answer given much later.\n\nAlong with that risk sits a solid payoff: high hit ratios cut disk work by a lot, drop lag, and allow small hosts to support big traffic; good data layouts, plus a strict count of hot rows, do just as much.\n\nFinally, measure hit rates, watch stale reads, and tune expiry with real traffic data until the work feels truly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8786,
+  "cache_read": 15493,
+  "output": 2511
+ },
+ "duration_s": 32.2,
+ "cost_usd": 0.1254,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

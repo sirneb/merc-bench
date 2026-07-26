@@ -12,4 +12,4 @@ Novel semantic defects (document-frequency semantics, operator precedence, case 
 
 ## What we found
 
-The knowledge wall: 4.x-generation models stall at 4/5 at high effort (xhigh fixes them); 5th-generation frontier finds 5/5 even at low effort for a tenth of the escalation cost.
+The generation wall: Opus 4.8 stalls at 4/5 below xhigh in both study generations; Opus 5 and Fable find 5/5 at every effort. Sonnet crosses at high; Haiku is noisy (3-5/5).

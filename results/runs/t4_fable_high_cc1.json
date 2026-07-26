@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, database systems keep growing, and engineers turn to caching for relief. A cache stores hot rows near the application; repeated reads skip the disk entirely. This simple idea cuts latency sharply and shields the busy primary store from load.\n\nHowever, a cache is never free. Stale data haunts every cached answer, because the source of truth can change while the copy lingers. Teams must choose eviction rules, set expiry windows, and decide how failures behave; a cache miss storm can crush a database that had grown accustomed to light traffic during long quiet periods.\n\nAlong with rapid gains, risks lurk: stall points, cold starts, and RAM limits. Smart adoption calls for tracking hit ratios, drawing graphs, and running drills. A pragmatic squad avoids blind faith, opting for gradual rollout, constant audits, and swift rollback if latency climbs or costs balloon.\n\nFinally, treat the cache as a tool, not a cure; measure results honestly, keep designs simple, and call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9118,
+  "cache_read": 15476,
+  "output": 3704
+ },
+ "duration_s": 44.1,
+ "cost_usd": 0.3147,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

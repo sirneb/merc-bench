@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile engineering teams keep tuning cache layers so busy applications respond quickly under heavy load; every millisecond saved compounds across millions of requests, and a well-tuned cache lets databases breathe instead of collapsing when unexpected traffic spikes during peak hours.\n\nHowever not every workload benefits from a cache, because access patterns vary widely across services; some datasets are read constantly while others change every second, so engineers measure hit ratios before trusting a cache, and they combine memory pools with eviction policies, replication, and monitoring dashboards to stop stale data from corrupting decisions across systems.\n\nAlong with fast RAM, a hot stash of data can avoid slow disk lookups for apps that ask again and again. Small pulls stay local; big loads adapt as traffic grows, and risk stays low if a shop plans it right.\n\nFinally a well-designed cache strategy balances speed, cost, and consistency so teams can trust their systems and call it done."
+ },
+ "usage": {
+  "input": 4,
+  "cache_write": 29163,
+  "cache_read": 56454,
+  "output": 20992
+ },
+ "duration_s": 179.0,
+ "cost_usd": 0.4412,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -12,4 +12,4 @@ Instruction-following under load: exact word counts, an e-free paragraph, exact 
 
 ## What we found
 
-The cleanest effort ladder: Sonnet 3/10 at low to 10/10 at high. Haiku walls (2-8/10). Frontier low effort slips here in some samples; max regressed once (the e-free rule).
+Near-saturated (a published correction: the original "Sonnet 3/10 to 10/10 effort ladder" was a grading artifact from scoring JSON-wrapped text). Every tier above Haiku scores 9-10/10; Fable persistently dropped the same single constraint below xhigh; Haiku drops 1-2.

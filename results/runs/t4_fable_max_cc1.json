@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-26",
+ "answer": {
+  "text": "Meanwhile modern applications lean heavily on database caching to keep latency low. A cache stores hot rows in memory, sparing the disk from repeated reads. When traffic spikes, the cache absorbs pressure and shields the primary database from sudden overload.\n\nHowever caching introduces real complexity. Stale data is the classic hazard; a cached value can drift from truth whenever writes land. Teams must pick an invalidation strategy, tune expiration windows, and decide how much staleness users tolerate. When policies are wrong, the cache quietly serves lies, corrupting reports, dashboards, and every downstream decision that follows.\n\nAlong with big wins, caching adds cost: RAM is not without limit, and admins must watch hit ratios; if data churns rapidly, a caching layout may thrash, hurting throughput and adding lag.\n\nFinally treat your cache as a tool, not magic; measure results, expire wisely, and then the hard work gets done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9121,
+  "cache_read": 15476,
+  "output": 10960
+ },
+ "duration_s": 112.5,
+ "cost_usd": 0.6775,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

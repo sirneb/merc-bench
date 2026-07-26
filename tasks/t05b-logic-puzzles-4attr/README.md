@@ -12,4 +12,4 @@ Pure deduction with irreducible clue sets. Used for reliability replicates: same
 
 ## What we found
 
-Separates hard: Haiku 2/6; Sonnet@low perfect on all attempts; mid-effort Fable failed the same puzzle by the same 2 cells in 2 of 4 attempts (a last-mile verification skip); Opus 5 clean on 8 attempts.
+Separates by effort direction, not tier: Haiku solves all 6 at low and medium but collapses at high (replicated in both study generations); every other config is perfect except one Fable@low sample (5/6).

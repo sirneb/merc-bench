@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile database systems rely on caching to keep hot rows near the query engine. A memory cache answers repeated reads quickly; disk trips shrink dramatically. Teams tune eviction policies carefully, watching hit ratios climb as workloads settle into steady patterns.\n\nHowever caching introduces hard problems that every team eventually faces. Stale data can linger after writes land, so invalidation logic must run promptly; otherwise users see old values and trust erodes. A cache stampede happens when many clients miss together and hammer the database at once. Careful locking and staggered expiry protect the backing store.\n\nAlong this path, admins watch how much RAM a caching tool can claim; hot data stays in fast slots, cold rows fall away. Right sizing avoids high costs, and swift lookups stay common. Monitoring graphs show hit counts climbing daily, and staff act if ratios drop.\n\nFinally remember that a cache is a tool, not a truth source. Measure results, tune policies, and call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9117,
+  "cache_read": 15476,
+  "output": 2428
+ },
+ "duration_s": 28.9,
+ "cost_usd": 0.2509,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, every database groans under repeated reads of the same rows; a cache absorbs that load, holding hot results in memory so queries return in microseconds rather than milliseconds. Good cache design begins with knowing which data repeats most often.\n\nHowever, stale data is the price of speed. Every cache must answer two questions: when to refresh, and what to evict. Write-through updates keep things current at some cost; lazy loading is cheaper but risks serving old rows. Tune expiry windows to match how fast the underlying tables actually change, and measure cache hit rates.\n\nAlong with RAM pools, many shops add local disk mirrors or in-app maps; such stacks cut traffic to primary hosts by a big ratio, and that also drops running cost. Watch out for stray null look-ups, a common flaw.\n\nFinally, treat the cache as an optimization, never as truth: verify results against the database, then declare the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 8775,
+  "cache_read": 15493,
+  "output": 3552
+ },
+ "duration_s": 40.3,
+ "cost_usd": 0.1514,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

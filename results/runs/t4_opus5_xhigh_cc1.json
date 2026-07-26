@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "text": "Meanwhile, every database faces a hard limit: disks are slow, and repeated queries waste time. A cache stores hot rows in memory; later requests hit that cache instead of the disk, cutting latency dramatically and sparing the server real work.\n\nHowever, correctness now becomes the hard part. Stale entries mislead users, so teams pick an invalidation strategy: write through, write behind, or simple expiry. Each choice trades freshness against speed; none is free. Monitor the hit ratio closely; a cache that misses often adds latency rather than removing it, and a cold cache hurts badly.\n\nAlong many stacks, a fast local pool of hot data absorbs most traffic. Try LRU or LFU: both drop cold rows fast, and both avoid costly disk scans. Nightly audits track a hit ratio, and any drop signals a wrong policy or too small a pool.\n\nFinally, treat the cache as a tuned tool, not magic. Measure, tune, retest, and only then call the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 5250,
+  "cache_read": 19013,
+  "output": 4418
+ },
+ "duration_s": 50.0,
+ "cost_usd": 0.1528,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,104 @@
+{
+ "task": "T7",
+ "model": "claude-opus-4-8",
+ "family": "opus48",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-07-25",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "W"
+   },
+   {
+    "id": 2,
+    "value": "79"
+   },
+   {
+    "id": 3,
+    "value": "I'm a teapot"
+   },
+   {
+    "id": 4,
+    "value": "443"
+   },
+   {
+    "id": 5,
+    "value": "65"
+   },
+   {
+    "id": 6,
+    "value": "1970"
+   },
+   {
+    "id": 7,
+    "value": "127.0.0.1"
+   },
+   {
+    "id": 8,
+    "value": "PEP 484"
+   },
+   {
+    "id": 9,
+    "value": "blob, tree, commit, tag"
+   },
+   {
+    "id": 10,
+    "value": "GET"
+   },
+   {
+    "id": 11,
+    "value": "128"
+   },
+   {
+    "id": 12,
+    "value": "nano"
+   },
+   {
+    "id": 13,
+    "value": "FF"
+   },
+   {
+    "id": 14,
+    "value": "22"
+   },
+   {
+    "id": 15,
+    "value": "K"
+   },
+   {
+    "id": 16,
+    "value": "16"
+   },
+   {
+    "id": 17,
+    "value": "A"
+   },
+   {
+    "id": 18,
+    "value": "RFC 2616"
+   },
+   {
+    "id": 19,
+    "value": "MCMXCIV"
+   },
+   {
+    "id": 20,
+    "value": "53"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 5305,
+  "cache_read": 18023,
+  "output": 720
+ },
+ "duration_s": 9.2,
+ "cost_usd": 0.0602,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
