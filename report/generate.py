@@ -116,8 +116,20 @@ def build_scatter(sweep_stats, summary):
                       if tasks[t]["score_min"] >= 0)
         failed = any(tasks[t]["score_min"] < 0 for t in covered)
         pts.append((cfg, cost, dur, dropped, failed, cfg in sweep_stats))
-    max_c = max(p[1] for p in pts) * 1.15 or 1
-    max_d = max(p[2] for p in pts) * 1.15 or 1
+    import math
+    # log scale on both axes: spreads the congested low-cost/low-time cluster
+    min_c = min(p[1] for p in pts) / 1.25
+    max_c = max(p[1] for p in pts) * 1.25
+    min_d = min(p[2] for p in pts) / 1.25
+    max_d = max(p[2] for p in pts) * 1.25
+
+    def sx(cost):
+        return 60 + (math.log(cost) - math.log(min_c)) / \
+            (math.log(max_c) - math.log(min_c)) * 640
+
+    def sy(dur):
+        return 360 - (math.log(dur) - math.log(min_d)) / \
+            (math.log(max_d) - math.log(min_d)) * 340
 
     placed = []  # (x0, y0, x1, y1) of claimed label boxes + point discs
 
@@ -148,18 +160,33 @@ def build_scatter(sweep_stats, summary):
 
     coords = []
     for cfg, cost, dur, dropped, failed, perfect in pts:
-        x = 60 + (cost / max_c) * 640
-        y = 360 - (dur / max_d) * 340
+        x = sx(cost)
+        y = sy(dur)
         claim(x - 13, y - 13, 26, 26)  # reserve the disc + ring area
         coords.append((cfg, cost, dur, dropped, failed, perfect, x, y))
 
     svg = ['<svg viewBox="0 0 720 400" role="img" aria-label="cost vs time">']
+    for v in [0.5, 1, 2, 3, 5, 7, 10, 15]:
+        if min_c <= v <= max_c:
+            gx = sx(v)
+            svg.append(f'<line class="grid" x1="{gx:.0f}" y1="20" x2="{gx:.0f}" '
+                       f'y2="360" opacity=".5"></line>'
+                       f'<text class="axis" x="{gx:.0f}" y="374" '
+                       f'text-anchor="middle">${v:g}</text>')
+    for v in [5, 10, 15, 20, 30, 45]:
+        if min_d <= v <= max_d:
+            gy = sy(v)
+            svg.append(f'<line class="grid" x1="60" y1="{gy:.0f}" x2="700" '
+                       f'y2="{gy:.0f}" opacity=".5"></line>'
+                       f'<text class="axis" x="54" y="{gy+3:.0f}" '
+                       f'text-anchor="end">{v}m</text>')
     svg.append('<line class="grid" x1="60" y1="360" x2="700" y2="360"></line>')
     svg.append('<line class="grid" x1="60" y1="20" x2="60" y2="360"></line>')
     svg.append(f'<text class="axis" x="380" y="392" text-anchor="middle">'
-               f'total cost, {len(CORE)} core tasks (USD) · hover a point for its stats</text>')
-    svg.append('<text class="axis" x="18" y="190" transform="rotate(-90 18 190)" '
-               'text-anchor="middle">total wall-clock (minutes)</text>')
+               f'total cost, {len(CORE)} core tasks (USD, log scale) · '
+               f'hover a point for its stats</text>')
+    svg.append('<text class="axis" x="14" y="190" transform="rotate(-90 14 190)" '
+               'text-anchor="middle">total wall-clock (minutes, log scale)</text>')
     for cfg, cost, dur, dropped, failed, perfect, x, y in coords:
         fam = cfg.split("@")[0]
         color = model_meta(fam)["color"]
