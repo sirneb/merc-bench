@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-02",
+ "answer": {
+  "text": "Meanwhile, every busy application eventually discovers that its database cannot answer the same question a million times without slowing down. A cache sits between the code and the disk, holding recent answers in memory so repeated reads return almost instantly.\n\nHowever, caching introduces a problem: stale data. When a row changes in the database, the cached copy must be refreshed or removed; otherwise users see old values. Teams choose expiry windows, write-through updates, or explicit invalidation. Each strategy trades freshness against simplicity; none is free. A cache needs a policy for eviction when memory fills.\n\nAlong with all this, a good lookup layout counts hits and miss ratios daily. Tracking such stats shows if RAM is doing its job or if most calls still go to disk. A high hit ratio is a win, and a low ratio hints at bad sizing or short TTL windows. Monitoring is not optional.\n\nFinally, remember that a cache is a tool, not a cure; measure real traffic, tune carefully, and call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10478,
+  "cache_read": 10232,
+  "output": 3375
+ },
+ "duration_s": 37.3,
+ "cost_usd": 0.3023,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

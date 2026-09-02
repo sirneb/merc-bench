@@ -26,7 +26,7 @@ TASK_DIR = {
     "T9": "t09-bug-review", "T10": "t10-state-simulation", "E": "e-subtle-bugs",
 }
 EFFORT_ORDER = ["none", "low", "medium", "high", "xhigh", "max"]
-FAMILY_ORDER = ["haiku", "sonnet", "opus48", "opus5", "fable"]
+FAMILY_ORDER = ["haiku", "sonnet", "opus48", "opus5", "fable", "fable51"]
 
 _graders = {}
 

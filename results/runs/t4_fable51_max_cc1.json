@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-01",
+ "answer": {
+  "text": "Meanwhile database caching remains one of the simplest ways to speed up an application. By keeping frequently requested rows in memory, a cache answers repeated queries without touching disk; the database itself handles fewer requests and stays responsive under load.\n\nHowever hard teams try, caching introduces a problem: keeping cached data consistent with the source of truth. When a row changes, every stale copy must be invalidated or refreshed; otherwise users see outdated values. Engineers usually pick a time-to-live, a write-through policy, or explicit invalidation hooks, and each choice trades freshness against complexity and cost.\n\nAlong with this, caching hot rows in RAM cuts lookup cost and disk load; waiting on disk drops away, so that a busy app can pull popular data quickly, without any long round trip to a distant origin host.\n\nFinally measure cache hit rates, size every cache honestly, and evict stale cache entries before you call the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10304,
+  "cache_read": 10232,
+  "output": 10452
+ },
+ "duration_s": 105.1,
+ "cost_usd": 0.654,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

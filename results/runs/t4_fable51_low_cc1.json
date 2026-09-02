@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-01",
+ "answer": {
+  "text": "Meanwhile, most web applications spend far more time reading data than writing it, so a cache placed in front of the database can absorb repeated queries and return answers in microseconds instead of waiting on disk seeks; the savings compound.\n\nHowever, a cache is useful when its contents stay correct. Stale cached entries can serve outdated prices or vanished records, and invalidation logic is notoriously hard to get right; teams must decide between time-based expiry, explicit purges on write, or event streams that propagate every change. Each option trades freshness against complexity and operational cost.\n\nAlong this path, a fast RAM ring holds hot rows so that traffic stays off primary disks. Hit ratios climb as popular rows stay warm, and any miss falls through to disk; admins watch this constantly and adjust limits.\n\nFinally, measure cache hit rates before buying hardware, because a well tuned cache makes costly database upgrades unnecessary. Job done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9559,
+  "cache_read": 10232,
+  "output": 2453
+ },
+ "duration_s": 29.7,
+ "cost_usd": 0.2447,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

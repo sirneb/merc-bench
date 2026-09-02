@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-02",
+ "answer": {
+  "text": "Meanwhile database caching remains one of the most effective ways to reduce latency and load. A cache stores frequently requested rows or query results in memory; subsequent reads skip the disk entirely, and applications respond much faster under heavy traffic.\n\nHowever caches introduce a hard problem: invalidation. When the underlying data changes, stale entries must be evicted or refreshed, otherwise users see outdated values. Common strategies include time-to-live expiration, write-through updates, and explicit purges triggered by application events; each approach trades consistency against simplicity, and teams usually combine several of them in real production practice.\n\nAlong with invalidation, sizing a caching pool is a constant worry. A small pool churns and hit ratios drop; a giant pool costs a lot of RAM for diminishing gains. Good tooling tracks hit ratio, churn, and lag so admins can adjust limits by watching facts, not by hunch.\n\nFinally treat the cache as an optimization, never the truth itself. Measure cache hits, audit cached rows, and you're done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10475,
+  "cache_read": 10232,
+  "output": 6603
+ },
+ "duration_s": 69.7,
+ "cost_usd": 0.4637,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
