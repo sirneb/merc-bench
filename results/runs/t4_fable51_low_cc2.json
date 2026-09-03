@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-02",
+ "answer": {
+  "text": "Meanwhile, most production systems place a cache between the application and the database; this layer stores hot rows in memory so repeated reads never touch disk. Latency drops sharply, and the database handles far fewer queries during peak traffic hours.\n\nHowever, caching introduces the hard problem of invalidation. When a row changes, every cached copy becomes stale; serving stale data can corrupt user trust. Teams choose between time based expiry, write through updates, or explicit cache deletion on each write; none is perfect. A cache needs eviction rules, since memory is finite and keys shift.\n\nAlong with this, monitoring is vital. Track hit ratios, lag, and RAM growth daily. If hit ratios drop, look at your TTL policy or your data layout. A small tuning pass can cut load a lot without adding cost or risk.\n\nFinally, treat this layer as an optimization, not as truth. Measure gains, plan for misses, and call the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10481,
+  "cache_read": 10232,
+  "output": 2447
+ },
+ "duration_s": 30.2,
+ "cost_usd": 0.2559,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

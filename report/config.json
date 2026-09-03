@@ -1,5 +1,5 @@
 {
-  "dates": "2026-07-25 \u2192 2026-07-26",
+  "dates": "2026-07-25 \u2192 2026-07-26 (Fable 5.1: 2026-09-01 \u2192 2026-09-02)",
   "models": [
     {
       "family": "haiku",
@@ -36,6 +36,13 @@
       "name": "Fable 5",
       "model_id": "claude-fable-5",
       "color": "var(--fable)",
+      "price": "$10/$50"
+    },
+    {
+      "family": "fable51",
+      "name": "Fable 5.1",
+      "model_id": "claude-fable-5-1",
+      "color": "var(--fable51)",
       "price": "$10/$50"
     }
   ]

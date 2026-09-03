@@ -34,6 +34,8 @@ DEFAULT_PRICES = {  # $/MTok: input, cache_write, cache_read, output
     "haiku": (1.0, 1.25, 0.1, 5.0), "sonnet": (3.0, 3.75, 0.3, 15.0),
     "opus48": (5.0, 6.25, 0.5, 25.0), "opus5": (5.0, 6.25, 0.5, 25.0),
     "fable": (10.0, 12.5, 1.0, 50.0),
+    # Fable 5.1: same $10/$50 list price as Fable 5; cache reads are $0.25/MTok
+    "fable51": (10.0, 12.5, 0.25, 50.0),
 }
 
 

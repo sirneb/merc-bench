@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-01",
+ "answer": {
+  "text": "Meanwhile database engineers keep asking the same question: how do we serve hot data without hammering disks? A cache answers that by holding frequently read rows in memory; requests hit the cache first, and only the misses travel to disk.\n\nHowever cached data goes stale the moment the source row changes, so invalidation becomes the hard part. Teams pick time-based expiry, explicit purges on write, or versioned keys; each choice trades freshness against simplicity. A cache that lies confidently is worse than no cache at all, because applications trust it without ever verifying the answer.\n\nAlong with invalidation, sizing is a big topic. Too small a caching pool will thrash, dropping hot rows constantly; too big a pool burns RAM and cash. Admins should track hit ratios daily, adjusting limits as traffic shifts, and warm cold pools prior to launch so first visitors avoid paying full disk costs.\n\nFinally remember that caching is a tool, not a cure. Measure real workloads before tuning anything, and stop when done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10329,
+  "cache_read": 10232,
+  "output": 7437
+ },
+ "duration_s": 79.3,
+ "cost_usd": 0.5035,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

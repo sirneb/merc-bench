@@ -24,13 +24,16 @@ GRID = [
     ("opus48", "claude-opus-4-8", ["low", "high"]),
     ("opus5", "claude-opus-5", ["low", "medium", "high"]),
     ("fable", "claude-fable-5", ["low", "medium", "high"]),
+    ("fable51", "claude-fable-5-1", ["low", "medium", "high"]),
     ("sonnet", "claude-sonnet-5", ["xhigh"]),
     ("opus48", "claude-opus-4-8", ["xhigh"]),
     ("opus5", "claude-opus-5", ["xhigh"]),
     ("fable", "claude-fable-5", ["xhigh"]),
+    ("fable51", "claude-fable-5-1", ["xhigh"]),
     ("sonnet", "claude-sonnet-5", ["max"]),
     ("opus5", "claude-opus-5", ["max"]),
     ("fable", "claude-fable-5", ["max"]),
+    ("fable51", "claude-fable-5-1", ["max"]),
 ]
 
 
@@ -88,13 +91,17 @@ def main():
                     help="record tag; 'auto' picks the next ccN replicate")
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--harness", default="claude-code")
+    ap.add_argument("--families", default="",
+                    help="comma list of families to run (default: whole grid)")
     ap.add_argument("--passes", type=int, default=3,
                     help="max sweep passes; between passes, invalid records "
                          "(transient transport/limit failures) are deleted and refilled")
     args = ap.parse_args()
     sample = next_auto_sample() if args.sample == "auto" else args.sample
     print(f"sample tag: {sample}", flush=True)
-    jobs = [(f, m, e) for f, m, efforts in GRID for e in efforts]
+    fams = {f for f in args.families.split(",") if f}
+    jobs = [(f, m, e) for f, m, efforts in GRID for e in efforts
+            if not fams or f in fams]
     for p in range(args.passes):
         with ThreadPoolExecutor(max_workers=args.workers) as ex:
             futs = [ex.submit(run_config, f, m, e, sample, args.harness)

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-01",
+ "answer": {
+  "text": "Meanwhile, every application eventually discovers that its database cannot answer the same question thousands of times per second without strain. A cache sits between the code and the storage layer, holding recent results in memory so repeated reads return quickly.\n\nHowever, caching introduces a hard problem: stale data. When a row changes, any cached copy becomes wrong until it expires or is invalidated; choosing between short time-to-live values and explicit invalidation is a real engineering tradeoff. Teams often start with simple expiry, then add targeted eviction once they understand which queries matter most for correctness.\n\nAlong with that, a lookup tool must stay small and fast; storing too much in RAM can hurt, so most shops cap growth and drop old rows first. Monitoring hit ratios daily shows if this plan is working or falling short.\n\nFinally, a well-tuned cache pays for itself many times over; measure carefully, invalidate deliberately, and the caching work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9671,
+  "cache_read": 10232,
+  "output": 2265
+ },
+ "duration_s": 31.0,
+ "cost_usd": 0.2367,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

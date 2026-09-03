@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-01",
+ "answer": {
+  "text": "Meanwhile, most database teams discover that a cache sits between the application and the storage layer; it stores recently read rows in memory so repeated queries return quickly. This idea lowers latency, reduces load, and keeps systems responsive under pressure.\n\nHowever, a cache introduces a problem: stale data. When a row changes in the database, any cached copy becomes wrong until it is refreshed or evicted; choosing a time to live limits the damage, but invalidation logic needs careful design. Engineers measure the hit rate to decide whether the cache is earning its memory cost.\n\nAlong with that, a smart admin plans for cold starts, warming hot rows prior to high load; a burst of traffic hitting a cold pool can swamp a primary swiftly. Monitoring stats around hits, drops, and churn stays a daily task, not an occasional audit.\n\nFinally, treat the cache as an optimization, not a source of truth, and then the design work is basically done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 9603,
+  "cache_read": 10232,
+  "output": 3585
+ },
+ "duration_s": 39.5,
+ "cost_usd": 0.3019,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

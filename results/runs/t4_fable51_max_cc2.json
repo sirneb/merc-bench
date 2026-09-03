@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-02",
+ "answer": {
+  "text": "Meanwhile database caching remains one of the most effective ways to reduce latency and load. A cache stores frequently requested results in fast memory, so repeated queries avoid hitting disk; applications feel faster, and servers handle far more concurrent traffic.\n\nHowever caching introduces the problem of consistency. When underlying rows change, cached copies become stale unless the system invalidates or refreshes them promptly. Teams typically choose between time-based expiration, explicit invalidation on writes, or write-through strategies that update the cache and the database together; each approach trades simplicity against freshness, and none is universally correct.\n\nAlong with all that, a good plan is to hold only hot rows in RAM, so lookups skip disk trips and cut lag. Stubborn old data may stay around if a flush is slow; watching hit ratios shows how much your policy actually pays off. Tuning limits and warming up on startup avoid cold starts.\n\nFinally measure before you cache anything, because a badly tuned cache hides bugs rather than fixing them. Now we're done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 6076,
+  "cache_read": 14630,
+  "output": 8659
+ },
+ "duration_s": 90.9,
+ "cost_usd": 0.5126,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

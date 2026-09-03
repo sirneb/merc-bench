@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-02",
+ "answer": {
+  "text": "Meanwhile, every database team eventually discovers that identical queries waste effort; the same rows get read repeatedly while disks and network links stay busy. A cache sits between the application and storage, holding recent results so common requests return quickly.\n\nHowever, a cache introduces its own hazards. Stale entries can serve outdated values after rows change, and invalidation logic grows tangled over time; a cached price that lags behind a real update can cost money. Teams must decide how long each entry lives, which keys to evict, and how to warm the cache after restarts.\n\nAlong with such risks, a good plan pays off. Hot data stays in RAM; cold data waits on disk until a call asks for it. Timing limits and LRU policy work as a pair, and monitoring hit ratios shows which parts of an app profit most from this approach.\n\nFinally, treat the cache as a tool rather than a cure. Measure carefully, invalidate promptly, and call the work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10481,
+  "cache_read": 10232,
+  "output": 3490
+ },
+ "duration_s": 39.5,
+ "cost_usd": 0.3081,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
