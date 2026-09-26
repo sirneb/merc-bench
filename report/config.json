@@ -1,5 +1,5 @@
 {
-  "dates": "2026-07-25 \u2192 2026-07-26 (Fable 5.1: 2026-09-01 \u2192 2026-09-02)",
+  "dates": "2026-07-25 → 2026-07-26 (Fable 5.1: 2026-09-01 → 2026-09-02; Opus 5.5: 2026-09-26)",
   "models": [
     {
       "family": "haiku",
@@ -21,7 +21,7 @@
       "name": "Opus 4.8",
       "model_id": "claude-opus-4-8",
       "color": "var(--opus48)",
-      "price": "$5/$25 \u00b7 prior generation",
+      "price": "$5/$25 · prior generation",
       "prior_generation": true
     },
     {
@@ -30,6 +30,13 @@
       "model_id": "claude-opus-5",
       "color": "var(--opus)",
       "price": "$5/$25"
+    },
+    {
+      "family": "opus55",
+      "name": "Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "color": "var(--opus55)",
+      "price": "$4/$20"
     },
     {
       "family": "fable",

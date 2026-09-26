@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile busy applications often ask the same database questions thousands of times each hour. A cache keeps recent answers in fast memory; repeated requests skip slow disk reads. A well tuned cache lowers latency, reduces load, and keeps users happy.\n\nHowever well built, every cache eventually faces staleness. When a row changes in the database, the stored copy may no longer match reality. Teams handle this with expiration timers, explicit invalidation, or write through strategies; each choice trades freshness against speed. Good cache design considers how often data changes and how much delay users tolerate.\n\nAlong with this, many firms put a small, fast pool of RAM in front of a main SQL box. Hot rows sit in that pool, so most lookups finish quickly without disk trips. Still, a wary admin monitors hit ratios, adjusts TTL limits, and plans for a crash.\n\nFinally remember that measurement beats guessing; a cache nobody hits wastes memory, so profile queries first and call it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12731,
+  "cache_read": 11320,
+  "output": 11025
+ },
+ "duration_s": 91.5,
+ "cost_usd": 0.2864,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

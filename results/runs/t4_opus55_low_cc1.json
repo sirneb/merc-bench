@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile, busy applications often suffer when every request travels to the primary database; a cache placed in front can absorb repeated reads. Popular rows stay in fast memory, so response times drop sharply and the database gains room to breathe.\n\nHowever, caching introduces hard questions about freshness; stale entries can mislead users after the underlying data changes. Teams choose between strategies such as write-through, write-behind, and time-based expiry. Each approach trades consistency against speed in a different way. Invalidation remains tricky, because a cache must learn about every update reliably, and without overwhelming the system.\n\nAlong with raw data, a good plan also holds costly calculations, such as totals and joins; this cuts CPU work and trims bills. Monitoring hit ratios shows how much traffic avoids slow disk calls, guiding tuning of sizing and TTL policy.\n\nFinally, measure each cache, tune every cache layer, and remember that a cache strategy is never truly and permanently done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 11787,
+  "cache_read": 11320,
+  "output": 2049
+ },
+ "duration_s": 21.3,
+ "cost_usd": 0.1022,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

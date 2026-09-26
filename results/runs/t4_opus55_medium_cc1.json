@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile, busy applications often query the same rows again and again, wasting time and server resources. A cache stores recent results in fast memory; later requests can read them quickly without touching the slower disk. This idea shapes system design.\n\nHowever, caching brings real challenges that engineers must handle with care. When the underlying data changes, the cached copy can become stale; readers might then see outdated values. Teams choose expiration times, write-through policies, or explicit invalidation to keep the cache honest. Each approach trades freshness against speed, and no single choice fits every workload.\n\nAlong with good timing, a smart in-RAM copy also cuts traffic to a main data host. Popular items stay in RAM, so lookups finish in a flash. This boost is vital for shopping sites, social apps, and banking tools during rush hours.\n\nFinally, measure hit rates; a well-tuned cache pays for itself, while a neglected cache causes trouble. Then work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 11900,
+  "cache_read": 11320,
+  "output": 2378
+ },
+ "duration_s": 23.2,
+ "cost_usd": 0.1093,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

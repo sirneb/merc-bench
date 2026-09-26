@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile, busy applications keep asking databases for identical rows, wasting precious time on repeated queries; a cache solves this by storing popular results in fast memory. When requests arrive, the cache answers first, sparing slower disks from work and delay.\n\nHowever, a cache introduces its own problems that engineers must handle. Stale data appears whenever the underlying table changes but the cached copy does not; users then see outdated values. Teams choose expiration times, invalidation hooks, or write-through strategies to keep everything consistent. Each approach trades freshness against speed, and no answer fits every workload.\n\nAlong with timing, good copy planning calls for watching hit ratios and warm data. A small, quick pool in RAM can absorb most traffic; without it, a primary SQL box would stall during high load, and clients would wait far too long.\n\nFinally, measure results often, tune the cache as traffic evolves, and remember that performance work is never finished or done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12734,
+  "cache_read": 11320,
+  "output": 2614
+ },
+ "duration_s": 25.3,
+ "cost_usd": 0.1182,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile, every busy application eventually discovers that its database cannot answer every request quickly; a cache placed in front of it stores popular results in memory, so repeated reads skip slow disk lookups and expensive joins, which greatly lowers latency.\n\nHowever, keeping cached data fresh is notoriously hard; when an underlying row changes, stale copies may linger and mislead users. Teams choose between strategies such as write-through, where every update refreshes the cache immediately, and time-based expiry, where entries simply age out. Each approach trades consistency against speed, and no single answer fits every workload.\n\nAlong with that, a smart group of admins will track hit ratios, watch RAM growth, and avoid a burst of slow calls; good monitoring shows which data is hot, which is cold, and how many lookups fall through to disk.\n\nFinally, measure before and after adding a cache, tune eviction policies, and remember that a cache is never truly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12738,
+  "cache_read": 11320,
+  "output": 1990
+ },
+ "duration_s": 21.4,
+ "cost_usd": 0.1058,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

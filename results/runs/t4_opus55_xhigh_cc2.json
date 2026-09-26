@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile every application eventually discovers that its database cannot answer every query quickly. A cache sits between the program and storage, holding recent results in fast memory; this simple layer can cut latency dramatically and reduce load on expensive servers.\n\nHowever tempting speed is, it brings new problems. When the underlying rows change, the cache may return stale values, so teams must choose an invalidation strategy. Some expire entries after a fixed time; others update the cache whenever a write occurs. A badly tuned cache can waste memory, hide bugs, and create errors for users.\n\nAlong this path, smart staff must track hit ratios, watch how much RAM is in play, and pick a fitting policy for popping old data out of its pool; LRU is a common and solid option that many apps adopt.\n\nFinally measure results before and after adding a cache, because only real numbers prove whether the work is truly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12729,
+  "cache_read": 11320,
+  "output": 5094
+ },
+ "duration_s": 46.1,
+ "cost_usd": 0.1678,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

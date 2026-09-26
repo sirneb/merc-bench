@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile databases struggle under heavy read traffic, so engineers place a cache in front of them; this layer stores frequently requested rows in memory. A good cache reduces latency, lowers load on disks, and lets applications serve many more users.\n\nHowever fast a cache seems, it introduces a hard problem: keeping copies consistent with the source of truth. When a row changes, stale entries must be invalidated or refreshed; otherwise users see outdated values. Common strategies include write-through, write-behind, and time-based expiration, and each cache policy trades freshness against speed and complexity in different ways.\n\nAlong with its obvious gains, caching brings a thorny duty: tracking which rows sit in RAM, wiping out old data on a strict clock, and blocking a frantic flood of lookups that could swamp a primary disk array during busy hours; watchful tuning is vital.\n\nFinally teams must measure hit rates, size each cache wisely, and watch evictions closely before calling the tuning work done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12740,
+  "cache_read": 11320,
+  "output": 13646
+ },
+ "duration_s": 113.3,
+ "cost_usd": 0.3389,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
