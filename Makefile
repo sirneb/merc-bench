@@ -1,4 +1,4 @@
-.PHONY: report verify grade clean
+.PHONY: report verify lint-prose grade clean
 
 # Regrade every run from raw answers and rebuild the report
 report:
@@ -12,6 +12,10 @@ verify:
 	git diff --exit-code -- results/scores.csv results/summary.json \
 	  && echo "VERIFY OK: regraded scores match the committed baseline" \
 	  || (echo "VERIFY FAILED: regraded scores differ from committed baseline"; exit 1)
+
+# Warn when a model family in the grid is missing from the hand-written prose
+lint-prose:
+	python3 report/lint_prose.py
 
 # Grade a single record: make grade REC=results/runs/t3_opus5_medium_canonical.json
 grade:
