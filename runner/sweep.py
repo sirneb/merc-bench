@@ -15,7 +15,8 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TASKS = ["T1", "T2", "T3", "T4", "T5A", "T5B", "T6", "T7", "T8", "T9", "T10", "E"]
+TASKS = ["T1", "T2", "T3", "T4", "T5A", "T5B", "T6", "T7", "T8", "T9", "T10", "E",
+         "T13", "T14", "T15"]  # hard tier
 
 # (family, model id, efforts) — cheap/fast configs first, grinds last
 GRID = [

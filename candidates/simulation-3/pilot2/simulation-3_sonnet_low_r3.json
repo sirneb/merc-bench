@@ -1,0 +1,195 @@
+{
+ "task": "simulation-3",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "low",
+ "sample": "r3",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 40,
+     "backorders": 0,
+     "in_transit": 43
+    },
+    "B": {
+     "on_hand": 22,
+     "backorders": 0,
+     "in_transit": 12
+    },
+    "C": {
+     "on_hand": 18,
+     "backorders": 0,
+     "in_transit": 9
+    },
+    "D": {
+     "on_hand": 30,
+     "backorders": 0,
+     "in_transit": 25
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 45,
+     "backorders": 0,
+     "in_transit": 30
+    },
+    "B": {
+     "on_hand": 20,
+     "backorders": 0,
+     "in_transit": 10
+    },
+    "C": {
+     "on_hand": 16,
+     "backorders": 0,
+     "in_transit": 10
+    },
+    "D": {
+     "on_hand": 30,
+     "backorders": 0,
+     "in_transit": 20
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 40,
+     "backorders": 0,
+     "in_transit": 40
+    },
+    "B": {
+     "on_hand": 22,
+     "backorders": 0,
+     "in_transit": 9
+    },
+    "C": {
+     "on_hand": 16,
+     "backorders": 0,
+     "in_transit": 10
+    },
+    "D": {
+     "on_hand": 25,
+     "backorders": 0,
+     "in_transit": 25
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 10,
+    "stockout_days": 3,
+    "units_received": 330
+   },
+   "B": {
+    "total_expired": 5,
+    "stockout_days": 1,
+    "units_received": 200
+   },
+   "C": {
+    "total_expired": 5,
+    "stockout_days": 0,
+    "units_received": 130
+   },
+   "D": {
+    "total_expired": 8,
+    "stockout_days": 3,
+    "units_received": 350
+   }
+  },
+  "central": {
+   "final_on_hand": 400,
+   "total_cancelled": 50,
+   "total_expired": 100
+  },
+  "same_day_served": 960,
+  "total_demand": 1006,
+  "fill_rate": 0.9543
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10520,
+  "cache_read": 3966,
+  "output": 954
+ },
+ "duration_s": 9.9,
+ "cost_usd": 0.0524,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 423,
+    "total_cost_usd": 0.0524172
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5"
+  ],
+  "total_cost_usd": 0.0524
+ },
+ "score": 3,
+ "total": 60,
+ "grade_detail": {
+  "checkpoints": {
+   "15": "2/12",
+   "22": "0/12",
+   "30": "0/12"
+  },
+  "depots": {
+   "A": "0/3",
+   "B": "0/3",
+   "C": "0/3",
+   "D": "0/3"
+  },
+  "central": {
+   "final_on_hand": "want 19 got 400",
+   "total_cancelled": "want 599 got 50",
+   "total_expired": "want 109 got 100"
+  },
+  "network": {
+   "same_day_served": "want 744 got 960",
+   "total_demand": "ok",
+   "fill_rate": "want 0.7396 got 0.9543",
+   "fill_rate_consistent": true
+  },
+  "first_checkpoint_with_error": 15,
+  "depots_fully_correct_final": 0,
+  "wrong_fields": [
+   "ck15.A.in_transit: want 0 got 43",
+   "ck15.B.on_hand/backorders: want 7/0 got 22/0",
+   "ck15.B.in_transit: want 28 got 12",
+   "ck15.C.on_hand/backorders: want 11/0 got 18/0",
+   "ck15.C.in_transit: want 16 got 9",
+   "ck15.D.on_hand/backorders: want 29/0 got 30/0",
+   "ck15.D.in_transit: want 0 got 25",
+   "ck22.A.on_hand/backorders: want 0/11 got 45/0",
+   "ck22.A.in_transit: want 52 got 30",
+   "ck22.B.on_hand/backorders: want 0/21 got 20/0",
+   "ck22.B.in_transit: want 56 got 10",
+   "ck22.C.on_hand/backorders: want 0/8 got 16/0",
+   "ck22.C.in_transit: want 0 got 10",
+   "ck22.D.on_hand/backorders: want 0/25 got 30/0",
+   "ck22.D.in_transit: want 73 got 20",
+   "ck30.A.on_hand/backorders: want 14/0 got 40/0",
+   "ck30.A.in_transit: want 63 got 40",
+   "ck30.B.on_hand/backorders: want 26/0 got 22/0",
+   "ck30.B.in_transit: want 0 got 9",
+   "ck30.C.on_hand/backorders: want 15/0 got 16/0",
+   "ck30.C.in_transit: want 0 got 10",
+   "ck30.D.on_hand/backorders: want 5/0 got 25/0",
+   "ck30.D.in_transit: want 50 got 25",
+   "depots.A.total_expired: want 103 got 10"
+  ],
+  "chance_floor": 5,
+  "floor_adjusted": 0.0,
+  "format_deviation": null
+ }
+}

@@ -16,6 +16,22 @@
    "score_min": 7,
    "score_max": 7
   },
+  "T13": {
+   "total": 80,
+   "cost_usd": 0.2446,
+   "duration_s": 305.2,
+   "n": 3,
+   "score_min": 4.17,
+   "score_max": 5.33
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.1984,
+   "duration_s": 267.9,
+   "n": 3,
+   "score_min": 6,
+   "score_max": 9
+  },
   "T1": {
    "total": 16,
    "cost_usd": 0.0517,
@@ -310,6 +326,30 @@
    "score_min": 7,
    "score_max": 7
   },
+  "T13": {
+   "total": 80,
+   "cost_usd": 0.0259,
+   "duration_s": 7.4,
+   "n": 3,
+   "score_min": 2.67,
+   "score_max": 3.33
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.0525,
+   "duration_s": 10.3,
+   "n": 3,
+   "score_min": 3,
+   "score_max": 3
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 0.0735,
+   "duration_s": 21.8,
+   "n": 3,
+   "score_min": 5,
+   "score_max": 21
+  },
   "T1": {
    "total": 16,
    "cost_usd": 0.051,
@@ -407,6 +447,30 @@
    "n": 2,
    "score_min": 7,
    "score_max": 7
+  },
+  "T13": {
+   "total": 80,
+   "cost_usd": 0.3277,
+   "duration_s": 238.7,
+   "n": 3,
+   "score_min": 44.83,
+   "score_max": 80
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.1416,
+   "duration_s": 107.0,
+   "n": 3,
+   "score_min": 18,
+   "score_max": 60
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 0.5201,
+   "duration_s": 329.2,
+   "n": 3,
+   "score_min": 404,
+   "score_max": 1000
   },
   "T1": {
    "total": 16,
@@ -1094,6 +1158,30 @@
    "score_min": 7,
    "score_max": 7
   },
+  "T13": {
+   "total": 80,
+   "cost_usd": 1.0604,
+   "duration_s": 377.9,
+   "n": 3,
+   "score_min": 53,
+   "score_max": 77
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.341,
+   "duration_s": 120.3,
+   "n": 3,
+   "score_min": 12,
+   "score_max": 60
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 1.3309,
+   "duration_s": 422.3,
+   "n": 3,
+   "score_min": 988,
+   "score_max": 1000
+  },
   "T1": {
    "total": 16,
    "cost_usd": 0.1218,
@@ -1191,6 +1279,30 @@
    "n": 2,
    "score_min": 7,
    "score_max": 7
+  },
+  "T13": {
+   "total": 80,
+   "cost_usd": 1.3648,
+   "duration_s": 468.0,
+   "n": 3,
+   "score_min": 44.83,
+   "score_max": 53
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.5811,
+   "duration_s": 164.4,
+   "n": 3,
+   "score_min": 25,
+   "score_max": 60
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 1.6065,
+   "duration_s": 506.3,
+   "n": 3,
+   "score_min": 297,
+   "score_max": 1000
   },
   "T1": {
    "total": 16,
@@ -1584,6 +1696,30 @@
    "score_min": 7,
    "score_max": 7
   },
+  "T13": {
+   "total": 80,
+   "cost_usd": 0.3986,
+   "duration_s": 161.4,
+   "n": 3,
+   "score_min": 55.83,
+   "score_max": 78
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.2195,
+   "duration_s": 64.1,
+   "n": 3,
+   "score_min": 24,
+   "score_max": 28
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 0.808,
+   "duration_s": 271.7,
+   "n": 3,
+   "score_min": 428,
+   "score_max": 1000
+  },
   "T1": {
    "total": 16,
    "cost_usd": 0.124,
@@ -1681,6 +1817,30 @@
    "n": 2,
    "score_min": 7,
    "score_max": 7
+  },
+  "T13": {
+   "total": 80,
+   "cost_usd": 0.6354,
+   "duration_s": 231.4,
+   "n": 3,
+   "score_min": 80,
+   "score_max": 80
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.2041,
+   "duration_s": 82.6,
+   "n": 3,
+   "score_min": 59,
+   "score_max": 60
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 0.9156,
+   "duration_s": 305.9,
+   "n": 3,
+   "score_min": 382,
+   "score_max": 1000
   },
   "T1": {
    "total": 16,
@@ -2564,6 +2724,30 @@
    "score_min": 7,
    "score_max": 7
   },
+  "T13": {
+   "total": 80,
+   "cost_usd": 2.0155,
+   "duration_s": 347.6,
+   "n": 3,
+   "score_min": 61.5,
+   "score_max": 78
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.5554,
+   "duration_s": 101.5,
+   "n": 3,
+   "score_min": 21,
+   "score_max": 24
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 2.8533,
+   "duration_s": 472.8,
+   "n": 3,
+   "score_min": 243,
+   "score_max": 1000
+  },
   "T1": {
    "total": 16,
    "cost_usd": 0.2605,
@@ -2661,6 +2845,30 @@
    "n": 2,
    "score_min": 7,
    "score_max": 7
+  },
+  "T13": {
+   "total": 80,
+   "cost_usd": 3.157,
+   "duration_s": 551.8,
+   "n": 3,
+   "score_min": 78,
+   "score_max": 80
+  },
+  "T14": {
+   "total": 60,
+   "cost_usd": 0.6799,
+   "duration_s": 122.5,
+   "n": 3,
+   "score_min": 21,
+   "score_max": 60
+  },
+  "T15": {
+   "total": 1000,
+   "cost_usd": 3.2562,
+   "duration_s": 511.6,
+   "n": 3,
+   "score_min": 1000,
+   "score_max": 1000
   },
   "T1": {
    "total": 16,

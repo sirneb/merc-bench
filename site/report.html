@@ -92,6 +92,11 @@
   .heat .cell.bad { background: var(--warn-bg); color: var(--warn);
     outline: 2px solid var(--warn); outline-offset: -2px; }
   .heat .cell.na { background: var(--wash); color: var(--muted); font-weight: 400; }
+  table.hard td.cell { border-radius: 4px; text-align: center; font-family: var(--mono); font-weight: 700; background: var(--good-bg); color: var(--good); }
+  table.hard td.cell.miss { background: var(--warn-bg); color: var(--warn); }
+  table.hard td.cell.bad { background: var(--warn-bg); color: var(--warn); outline: 1px solid var(--warn); }
+  table.hard td.grp { font-family: var(--mono); font-size: 11px; font-weight: 700; padding-top: 12px; }
+  table.hard th { font-size: 11px; }
   .heat .cell.stat { background: var(--wash); color: var(--muted); font-weight: 600; }
   .heat .cell.stat.win { color: var(--ink); font-weight: 700; }
   .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px;
@@ -144,7 +149,7 @@
     number regenerates from the run records in this repository; grading is
     recomputed from raw answers on every build.</p>
     <div class="meta">
-      <span>757 GRADED RUNS · ≈$338 INFERENCE</span>
+      <span>835 GRADED RUNS · ≈$408 INFERENCE</span>
       <span>12 TASKS · TRACKED: SCORE · $ · TOKENS · DURATION</span>
     </div>
   </header>
@@ -315,6 +320,35 @@
     </div>
   </section>
 
+  <section id="hard">
+    <h2><span class="no">§3b</span>The hard tier</h2>
+    <p class="lede">Three tasks added in September 2026 because the original twelve had
+    saturated: every frontier tier scored 98–100 on the core set and could not be told
+    apart. These are long exact simulations where a single slip cascades, so they are
+    reported on <b>mean % of points</b>, the min–max spread and the share of clean
+    replicates rather than the binary floor used above. They do not enter the 10-task
+    reliability floors.</p>
+    <div class="panel">
+      <div class="tablewrap"><table class="hard"><thead><tr><th>config</th><th colspan="4">TALLY-12 · T13 /80</th><th colspan="4">Cold-chain · T14 /60</th><th colspan="4">Quarry Duel · T15 /1000</th></tr><tr><th></th><th>mean %</th><th>min–max</th><th>P(clean)</th><th>$ · time</th><th>mean %</th><th>min–max</th><th>P(clean)</th><th>$ · time</th><th>mean %</th><th>min–max</th><th>P(clean)</th><th>$ · time</th></tr></thead><tbody><tr><td colspan="13" class="grp" style="color:var(--haiku)">Haiku 4.5</td></tr>
+<tr><td><b>low</b></td><td class="cell bad">6</td><td class="alt">5–7 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.24 · 5m</td><td class="cell bad">13</td><td class="alt">10–15 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.20 · 4m</td><td class="alt">—</td><td class="alt">—</td><td class="alt">—</td><td class="alt">—</td></tr>
+<tr><td colspan="13" class="grp" style="color:var(--sonnet)">Sonnet 5</td></tr>
+<tr><td><b>low</b></td><td class="cell bad">4</td><td class="alt">3–4 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.03 · 0m</td><td class="cell bad">5</td><td class="alt">5–5 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.05 · 0m</td><td class="cell bad">1</td><td class="alt">0–2 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.07 · 0m</td></tr>
+<tr><td><b>medium</b></td><td class="cell miss">81</td><td class="alt">56–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.33 · 4m</td><td class="cell miss">75</td><td class="alt">30–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.14 · 2m</td><td class="cell miss">79</td><td class="alt">40–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.52 · 5m</td></tr>
+<tr><td colspan="13" class="grp" style="color:var(--opus)">Opus 5</td></tr>
+<tr><td><b>low</b></td><td class="cell miss">83</td><td class="alt">66–96 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$1.06 · 6m</td><td class="cell bad">49</td><td class="alt">20–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.34 · 2m</td><td class="cell">100</td><td class="alt">99–100 <span class="dim">n=3</span></td><td class="alt">0.67</td><td class="alt">$1.33 · 7m</td></tr>
+<tr><td><b>medium</b></td><td class="cell miss">62</td><td class="alt">56–66 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$1.36 · 8m</td><td class="cell miss">62</td><td class="alt">42–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.58 · 3m</td><td class="cell miss">77</td><td class="alt">30–100 <span class="dim">n=3</span></td><td class="alt">0.67</td><td class="alt">$1.61 · 8m</td></tr>
+<tr><td colspan="13" class="grp" style="color:var(--opus55)">Opus 5.5</td></tr>
+<tr><td><b>low</b></td><td class="cell miss">80</td><td class="alt">70–98 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.40 · 3m</td><td class="cell bad">44</td><td class="alt">40–47 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.22 · 1m</td><td class="cell miss">71</td><td class="alt">43–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.81 · 5m</td></tr>
+<tr><td><b>medium</b></td><td class="cell">100</td><td class="alt">100–100 <span class="dim">n=3</span></td><td class="alt">1.00</td><td class="alt">$0.64 · 4m</td><td class="cell miss">99</td><td class="alt">98–100 <span class="dim">n=3</span></td><td class="alt">0.67</td><td class="alt">$0.20 · 1m</td><td class="cell miss">79</td><td class="alt">38–100 <span class="dim">n=3</span></td><td class="alt">0.67</td><td class="alt">$0.92 · 5m</td></tr>
+<tr><td colspan="13" class="grp" style="color:var(--fable51)">Fable 5.1</td></tr>
+<tr><td><b>low</b></td><td class="cell miss">89</td><td class="alt">77–98 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$2.02 · 6m</td><td class="cell bad">37</td><td class="alt">35–40 <span class="dim">n=3</span></td><td class="alt">0.00</td><td class="alt">$0.56 · 2m</td><td class="cell bad">53</td><td class="alt">24–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$2.85 · 8m</td></tr>
+<tr><td><b>medium</b></td><td class="cell miss">99</td><td class="alt">98–100 <span class="dim">n=3</span></td><td class="alt">0.67</td><td class="alt">$3.16 · 9m</td><td class="cell bad">57</td><td class="alt">35–100 <span class="dim">n=3</span></td><td class="alt">0.33</td><td class="alt">$0.68 · 2m</td><td class="cell">100</td><td class="alt">100–100 <span class="dim">n=3</span></td><td class="alt">1.00</td><td class="alt">$3.26 · 9m</td></tr></tbody></table></div>
+      <p class="note">Runs made with tools disabled (<code>claude -p --tools ""</code>);
+      n = replicates per cell; P(clean) = share of replicates at full marks. Costs at
+      list price with 1-hour cache writes.</p>
+    </div>
+    
+  </section>
   <section id="findings">
     <h2><span class="no">§4</span>Findings</h2>
     <p class="lede">Editorial synthesis of the graded data (charts and map regenerate automatically; this prose is curated). Every configuration now carries two full replicates through the reproducible runner; the retired first-generation dataset (a non-reproducible orchestration harness) is preserved in <code>archive/workflow-runs/</code>.</p>
@@ -362,6 +396,34 @@
 <div class="tcard"><div class="tname">Regex writing without testing (T8)</div><p><b>Design</b>8 fullmatch patterns against trap sets, graded by execution</p><p><b>Why</b>Write-only correctness: the model cannot test its patterns; the grader executes them against must-match / must-not-match sets.</p><p><b>Found</b>Saturated on score (8/8 everywhere; one Haiku@low and one Fable 5.1@low sample 7/8) with a large efficiency tell: cost and wall-clock vary by an order of magnitude for the same result.</p></div>
 <div class="tcard"><div class="tname">Bug review without tools (T9)</div><p><b>Design</b>7 planted classic bugs in a rate limiter, pure code review</p><p><b>Why</b>Review with no execution: boundary conditions, off-by-ones, mutable default sharing, clamp ordering, fractional truncation. Behavioral grading of the returned fixed module.</p><p><b>Found</b>Saturated -- every config found all 7. Classic-pattern bugs are within every tier&#x27;s reach; only novel semantic bugs (see e-subtle-bugs) separate.</p></div>
 <div class="tcard"><div class="tname">State simulation (T10)</div><p><b>Design</b>30 sequential warehouse-robot commands, exact final state</p><p><b>Why</b>Sustained state tracking with conflict rules (walls, collisions, capacity, no-ops). Simulator-generated ground truth.</p><p><b>Found</b>Saturated for every config on exact state (two mid-effort samples dropped robot cells). Short-horizon state tracking is solved.</p></div>
+<div class="tcard"><div class="tname">TALLY-12: two programs on an invented 12-bit register machine (T13)</div><p><b>Design</b>Execute 390 + 1072 steps of a made-up VM with saturating SUB, signed-only JLT and DIV-by-zero = 4095, and report the exact output stream, registers and memory, no tools. Shipped at the `hard` preset (the tournament&#x27;s recommended canonical rung).</p><p><b>Why</b>Sustained, strictly sequential exact arithmetic under semantics that cannot be
+recalled, only read. TALLY-12 has 8 twelve-bit registers, 16 memory cells and
+16 opcodes; most arithmetic wraps mod 4096 but SUB saturates at 0, DIV by zero
+writes 4095, JLT is the only signed comparison, ROT rotates inside 12 bits and
+LD/ST index memory by register value mod 16. Both programs are built around a
+12-bit LCG (`MUL` by a large odd constant, `ADDI` a large odd constant) whose
+state drives data-dependent `JLT` branches, memory scrambling, and an inner
+loop whose trip count is `(state AND mask) + 1` (mask 1 in Program A, mask 7
+in Program B). There is no closed form and nothing to pattern-match: every OUT
+value depends on every earlier step.</p><p><b>Found</b></p></div>
+<div class="tcard"><div class="tname">Cold-chain depot network (T14)</div><p><b>Design</b>30-day, 5-node perishable-inventory simulation from a written operating manual: lead times, FEFO lot expiry with per-delivery shelf lives, backorders, (s, S) ordering and ratio-based central rationing with cancel-not-backlog; 60 points over 51 independently graded items.</p><p><b>Why</b>The model receives a ~14.8 KB operating manual, a day-0 state (lots with expiry days at
+CENTRAL and four depots, plus one shipment already in transit), a nine-line supplier
+delivery schedule (each delivery with its own expiry day) and a 30 x 4 demand table, and
+must run the network day by day through five fixed phases (receive, expire, serve,
+review/order, allocate/ship). It reports depot state at days 15/22/30, per-depot horizon
+totals, CENTRAL totals, and the network&#x27;s same-day served units, total demand and fill rate.</p><p><b>Found</b></p></div>
+<div class="tcard"><div class="tname">Quarry Duel (T15)</div><p><b>Design</b>200 turns (`hard` preset, the default) of a fully deterministic two-player card-and-track game,
+played from a rulebook rendered out of the simulator&#x27;s own constants; report the card played on
+every turn, 19 checkpoints and a final block, no tools. The prompt prints the complete game state
+after turn 50, so turns 51-200 are earned independently of any slip in turns 1-50.</p><p><b>Why</b>Sustained multi-entity state tracking where nothing can be chunked. Every turn depends on the exact
+hand, deck pointer, discard order, positions, coins and stockpiles left by all previous turns:
+draw (with a deterministic reversed-discard reshuffle at turns 53, 98, 139 and 174 on the shipped
+seed, the third one triggered mid-turn by a WELL draw), pick a card by a fixed policy that reads
+the whole hand (one player: highest card of the most-held suit with a suit-order tie-break; the
+other: highest card that lands on a MINE else lowest card), move on a 12-space circular track,
+capture (steal the opponent&#x27;s lowest card), then one of six space effects (MINE, TOLL, FORGE,
+SWAP, QUARRY, WELL), discard, and hand-limit enforcement. That is 200 turns x 6-8 dependent rule
+checks (~1,400 state updates), not decomposable into independent partial sums.</p><p><b>Found</b></p></div>
     </div>
   </section>
 

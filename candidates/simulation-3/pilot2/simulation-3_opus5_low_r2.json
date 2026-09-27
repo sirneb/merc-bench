@@ -1,0 +1,195 @@
+{
+ "task": "simulation-3",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "low",
+ "sample": "r2",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 53,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 7,
+     "backorders": 0,
+     "in_transit": 28
+    },
+    "C": {
+     "on_hand": 21,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 51,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 10,
+     "in_transit": 45
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 7,
+     "in_transit": 29
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 18,
+     "in_transit": 73
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 63
+    },
+    "B": {
+     "on_hand": 26,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 15,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 14,
+     "in_transit": 48
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 105,
+    "stockout_days": 6,
+    "units_received": 385
+   },
+   "B": {
+    "total_expired": 51,
+    "stockout_days": 6,
+    "units_received": 250
+   },
+   "C": {
+    "total_expired": 35,
+    "stockout_days": 12,
+    "units_received": 161
+   },
+   "D": {
+    "total_expired": 84,
+    "stockout_days": 6,
+    "units_received": 371
+   }
+  },
+  "central": {
+   "final_on_hand": 18,
+   "total_cancelled": 756,
+   "total_expired": 123
+  },
+  "same_day_served": 737,
+  "total_demand": 1006,
+  "fill_rate": 0.7326
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 0,
+  "cache_read": 15743,
+  "output": 11856
+ },
+ "duration_s": 116.9,
+ "cost_usd": 0.3043,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-opus-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 11325,
+    "total_cost_usd": 0.3042815
+   }
+  ],
+  "served_models": [
+   "claude-opus-5"
+  ],
+  "total_cost_usd": 0.3043
+ },
+ "score": 17,
+ "total": 60,
+ "grade_detail": {
+  "checkpoints": {
+   "15": "5/12",
+   "22": "1/12",
+   "30": "9/12"
+  },
+  "depots": {
+   "A": "0/3",
+   "B": "0/3",
+   "C": "0/3",
+   "D": "1/3"
+  },
+  "central": {
+   "final_on_hand": "want 19 got 18",
+   "total_cancelled": "want 599 got 756",
+   "total_expired": "want 109 got 123"
+  },
+  "network": {
+   "same_day_served": "want 744 got 737",
+   "total_demand": "ok",
+   "fill_rate": "want 0.7396 got 0.7326",
+   "fill_rate_consistent": true
+  },
+  "first_checkpoint_with_error": 15,
+  "depots_fully_correct_final": 0,
+  "wrong_fields": [
+   "ck15.A.on_hand/backorders: want 40/0 got 53/0",
+   "ck15.C.on_hand/backorders: want 11/0 got 21/0",
+   "ck15.C.in_transit: want 16 got 0",
+   "ck15.D.on_hand/backorders: want 29/0 got 51/0",
+   "ck22.A.on_hand/backorders: want 0/11 got 0/0",
+   "ck22.A.in_transit: want 52 got 0",
+   "ck22.B.on_hand/backorders: want 0/21 got 0/10",
+   "ck22.B.in_transit: want 56 got 45",
+   "ck22.C.on_hand/backorders: want 0/8 got 0/7",
+   "ck22.C.in_transit: want 0 got 29",
+   "ck22.D.on_hand/backorders: want 0/25 got 0/18",
+   "ck30.D.on_hand/backorders: want 5/0 got 0/14",
+   "ck30.D.in_transit: want 50 got 48",
+   "depots.A.total_expired: want 103 got 105",
+   "depots.A.stockout_days: want 7 got 6",
+   "depots.A.units_received: want 383 got 385",
+   "depots.B.total_expired: want 79 got 51",
+   "depots.B.stockout_days: want 8 got 6",
+   "depots.B.units_received: want 278 got 250",
+   "depots.C.total_expired: want 52 got 35",
+   "depots.C.stockout_days: want 13 got 12",
+   "depots.C.units_received: want 178 got 161",
+   "depots.D.total_expired: want 102 got 84",
+   "depots.D.units_received: want 408 got 371"
+  ],
+  "chance_floor": 5,
+  "floor_adjusted": 0.2182,
+  "format_deviation": null
+ }
+}

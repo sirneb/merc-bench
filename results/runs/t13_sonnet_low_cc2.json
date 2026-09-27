@@ -1,0 +1,106 @@
+{
+ "task": "T13",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [],
+   "final_registers": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "final_memory": [
+    2746,
+    971,
+    3836,
+    571,
+    782,
+    2362,
+    1491,
+    3945,
+    4040,
+    3083,
+    282,
+    1510,
+    1561,
+    582,
+    2633,
+    1343
+   ],
+   "steps_executed": 0,
+   "halted": false
+  },
+  "program_b": {
+   "out_stream": [],
+   "final_registers": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3401,
+    2986,
+    2750,
+    1315,
+    1774,
+    2228,
+    1664,
+    3607,
+    1709,
+    2015,
+    1812,
+    882,
+    1894,
+    1169
+   ],
+   "steps_executed": 0,
+   "halted": false
+  }
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 5215,
+  "cache_read": 3966,
+  "output": 623
+ },
+ "duration_s": 8.8,
+ "cost_usd": 0.0279,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 365,
+    "total_cost_usd": 0.0278872
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5"
+  ],
+  "total_cost_usd": 0.0279
+ }
+}

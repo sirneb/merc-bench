@@ -20,7 +20,7 @@ lint-prose:
 
 # Grade a single record: make grade REC=results/runs/t3_opus5_medium_canonical.json
 grade:
-	@python3 tasks/$$(python3 -c "import json,sys;d={'T1':'t01-mental-math','T2':'t02-code-trace','T3':'t03-ledger-audit','T4':'t04-constraint-gauntlet','T5A':'t05-logic-puzzles-5attr','T5B':'t05b-logic-puzzles-4attr','T6':'t06-strict-csv','T7':'t07-knowledge-recall','T8':'t08-regex-writing','T9':'t09-bug-review','T10':'t10-state-simulation','E':'e-subtle-bugs'};print(d[json.load(open('$(REC)'))['task']])")/grade.py $(REC)
+	@python3 tasks/$$(python3 -c "import json,sys;d={'T1':'t01-mental-math','T2':'t02-code-trace','T3':'t03-ledger-audit','T4':'t04-constraint-gauntlet','T5A':'t05-logic-puzzles-5attr','T5B':'t05b-logic-puzzles-4attr','T6':'t06-strict-csv','T7':'t07-knowledge-recall','T8':'t08-regex-writing','T9':'t09-bug-review','T10':'t10-state-simulation','E':'e-subtle-bugs','T13':'t13-tally12-register-machine','T14':'t14-cold-chain-depots','T15':'t15-quarry-duel'};print(d[json.load(open('$(REC)'))['task']])")/grade.py $(REC)
 
 clean:
 	rm -f results/scores.csv results/summary.json site/report.html

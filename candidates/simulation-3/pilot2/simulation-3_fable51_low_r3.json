@@ -1,0 +1,195 @@
+{
+ "task": "simulation-3",
+ "model": "claude-fable-5-1",
+ "family": "fable51",
+ "effort": "low",
+ "sample": "r3",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 40,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 7,
+     "backorders": 0,
+     "in_transit": 28
+    },
+    "C": {
+     "on_hand": 11,
+     "backorders": 0,
+     "in_transit": 19
+    },
+    "D": {
+     "on_hand": 80,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 11,
+     "in_transit": 52
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 16,
+     "in_transit": 44
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 7,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 30,
+     "in_transit": 85
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 63
+    },
+    "B": {
+     "on_hand": 19,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 15,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 41
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 103,
+    "stockout_days": 7,
+    "units_received": 383
+   },
+   "B": {
+    "total_expired": 57,
+    "stockout_days": 7,
+    "units_received": 249
+   },
+   "C": {
+    "total_expired": 58,
+    "stockout_days": 12,
+    "units_received": 184
+   },
+   "D": {
+    "total_expired": 140,
+    "stockout_days": 7,
+    "units_received": 455
+   }
+  },
+  "central": {
+   "final_on_hand": 27,
+   "total_cancelled": 544,
+   "total_expired": 86
+  },
+  "same_day_served": 745,
+  "total_demand": 1006,
+  "fill_rate": 0.7406
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 0,
+  "cache_read": 16602,
+  "output": 9977
+ },
+ "duration_s": 101.5,
+ "cost_usd": 0.503,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-fable-5-1"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 9446,
+    "total_cost_usd": 0.5030205
+   }
+  ],
+  "served_models": [
+   "claude-fable-5-1"
+  ],
+  "total_cost_usd": 0.503
+ },
+ "score": 24,
+ "total": 60,
+ "grade_detail": {
+  "checkpoints": {
+   "15": "9/12",
+   "22": "4/12",
+   "30": "7/12"
+  },
+  "depots": {
+   "A": "3/3",
+   "B": "0/3",
+   "C": "0/3",
+   "D": "0/3"
+  },
+  "central": {
+   "final_on_hand": "want 19 got 27",
+   "total_cancelled": "want 599 got 544",
+   "total_expired": "want 109 got 86"
+  },
+  "network": {
+   "same_day_served": "want 744 got 745",
+   "total_demand": "ok",
+   "fill_rate": "want 0.7396 got 0.7406",
+   "fill_rate_consistent": true
+  },
+  "first_checkpoint_with_error": 15,
+  "depots_fully_correct_final": 1,
+  "wrong_fields": [
+   "ck15.C.in_transit: want 16 got 19",
+   "ck15.D.on_hand/backorders: want 29/0 got 80/0",
+   "ck22.B.on_hand/backorders: want 0/21 got 0/16",
+   "ck22.B.in_transit: want 56 got 44",
+   "ck22.C.on_hand/backorders: want 0/8 got 0/7",
+   "ck22.D.on_hand/backorders: want 0/25 got 0/30",
+   "ck22.D.in_transit: want 73 got 85",
+   "ck30.B.on_hand/backorders: want 26/0 got 19/0",
+   "ck30.D.on_hand/backorders: want 5/0 got 14/0",
+   "ck30.D.in_transit: want 50 got 41",
+   "depots.B.total_expired: want 79 got 57",
+   "depots.B.stockout_days: want 8 got 7",
+   "depots.B.units_received: want 278 got 249",
+   "depots.C.total_expired: want 52 got 58",
+   "depots.C.stockout_days: want 13 got 12",
+   "depots.C.units_received: want 178 got 184",
+   "depots.D.total_expired: want 102 got 140",
+   "depots.D.stockout_days: want 6 got 7",
+   "depots.D.units_received: want 408 got 455",
+   "central.final_on_hand: want 19 got 27",
+   "central.total_cancelled: want 599 got 544",
+   "central.total_expired: want 109 got 86",
+   "same_day_served: want 744 got 745",
+   "fill_rate: want 0.7396 got 0.7406"
+  ],
+  "chance_floor": 5,
+  "floor_adjusted": 0.3455,
+  "format_deviation": null
+ }
+}

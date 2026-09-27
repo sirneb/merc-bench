@@ -1,0 +1,17 @@
+{
+ "task": "T15",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": null,
+ "usage": null,
+ "duration_s": 0.0,
+ "cost_usd": null,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": "answer failed validation after 3 attempts: no JSON object could be parsed from the response",
+ "invalid": true
+}

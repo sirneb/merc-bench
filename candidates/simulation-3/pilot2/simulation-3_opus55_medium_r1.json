@@ -1,0 +1,170 @@
+{
+ "task": "simulation-3",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "medium",
+ "sample": "r1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 40,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 7,
+     "backorders": 0,
+     "in_transit": 28
+    },
+    "C": {
+     "on_hand": 11,
+     "backorders": 0,
+     "in_transit": 16
+    },
+    "D": {
+     "on_hand": 29,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 11,
+     "in_transit": 52
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 21,
+     "in_transit": 56
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 8,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 25,
+     "in_transit": 73
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 63
+    },
+    "B": {
+     "on_hand": 26,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 15,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 5,
+     "backorders": 0,
+     "in_transit": 50
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 103,
+    "stockout_days": 7,
+    "units_received": 383
+   },
+   "B": {
+    "total_expired": 79,
+    "stockout_days": 8,
+    "units_received": 278
+   },
+   "C": {
+    "total_expired": 52,
+    "stockout_days": 13,
+    "units_received": 178
+   },
+   "D": {
+    "total_expired": 102,
+    "stockout_days": 6,
+    "units_received": 408
+   }
+  },
+  "central": {
+   "final_on_hand": 19,
+   "total_cancelled": 599,
+   "total_expired": 109
+  },
+  "same_day_served": 744,
+  "total_demand": 1006,
+  "fill_rate": 0.7396
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10671,
+  "cache_read": 4072,
+  "output": 15672
+ },
+ "duration_s": 125.3,
+ "cost_usd": 0.3996,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-opus-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 15141,
+    "total_cost_usd": 0.39963039999999994
+   }
+  ],
+  "served_models": [
+   "claude-opus-5-5"
+  ],
+  "total_cost_usd": 0.3996
+ },
+ "score": 60,
+ "total": 60,
+ "grade_detail": {
+  "checkpoints": {
+   "15": "12/12",
+   "22": "12/12",
+   "30": "12/12"
+  },
+  "depots": {
+   "A": "3/3",
+   "B": "3/3",
+   "C": "3/3",
+   "D": "3/3"
+  },
+  "central": {
+   "final_on_hand": "ok",
+   "total_cancelled": "ok",
+   "total_expired": "ok"
+  },
+  "network": {
+   "same_day_served": "ok",
+   "total_demand": "ok",
+   "fill_rate": "ok",
+   "fill_rate_consistent": true
+  },
+  "first_checkpoint_with_error": null,
+  "depots_fully_correct_final": 4,
+  "wrong_fields": [],
+  "chance_floor": 5,
+  "floor_adjusted": 1.0,
+  "format_deviation": null
+ }
+}

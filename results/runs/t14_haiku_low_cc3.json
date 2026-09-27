@@ -1,0 +1,138 @@
+{
+ "task": "T14",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "cc3",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 41,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 5,
+     "in_transit": 29
+    },
+    "C": {
+     "on_hand": 22,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 39,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 44,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 21,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 37,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 15,
+     "in_transit": 76
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 10,
+     "in_transit": 45
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 5,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 24,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 56,
+    "stockout_days": 2,
+    "units_received": 263
+   },
+   "B": {
+    "total_expired": 73,
+    "stockout_days": 8,
+    "units_received": 211
+   },
+   "C": {
+    "total_expired": 38,
+    "stockout_days": 7,
+    "units_received": 134
+   },
+   "D": {
+    "total_expired": 66,
+    "stockout_days": 1,
+    "units_received": 288
+   }
+  },
+  "central": {
+   "final_on_hand": 340,
+   "total_cancelled": 0,
+   "total_expired": 31
+  },
+  "same_day_served": 823,
+  "total_demand": 1006,
+  "fill_rate": 0.8177
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 0,
+  "cache_read": 13876,
+  "output": 46006
+ },
+ "duration_s": 294.5,
+ "cost_usd": 0.2314,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-4-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 45270,
+    "total_cost_usd": 0.23142759999999998
+   }
+  ],
+  "served_models": [
+   "claude-haiku-4-5"
+  ],
+  "total_cost_usd": 0.2314
+ }
+}

@@ -92,6 +92,11 @@
   .heat .cell.bad { background: var(--warn-bg); color: var(--warn);
     outline: 2px solid var(--warn); outline-offset: -2px; }
   .heat .cell.na { background: var(--wash); color: var(--muted); font-weight: 400; }
+  table.hard td.cell { border-radius: 4px; text-align: center; font-family: var(--mono); font-weight: 700; background: var(--good-bg); color: var(--good); }
+  table.hard td.cell.miss { background: var(--warn-bg); color: var(--warn); }
+  table.hard td.cell.bad { background: var(--warn-bg); color: var(--warn); outline: 1px solid var(--warn); }
+  table.hard td.grp { font-family: var(--mono); font-size: 11px; font-weight: 700; padding-top: 12px; }
+  table.hard th { font-size: 11px; }
   .heat .cell.stat { background: var(--wash); color: var(--muted); font-weight: 600; }
   .heat .cell.stat.win { color: var(--ink); font-weight: 700; }
   .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px;
@@ -208,6 +213,22 @@
     </div>
   </section>
 
+  <section id="hard">
+    <h2><span class="no">§3b</span>The hard tier</h2>
+    <p class="lede">Three tasks added in September 2026 because the original twelve had
+    saturated: every frontier tier scored 98–100 on the core set and could not be told
+    apart. These are long exact simulations where a single slip cascades, so they are
+    reported on <b>mean % of points</b>, the min–max spread and the share of clean
+    replicates rather than the binary floor used above. They do not enter the 10-task
+    reliability floors.</p>
+    <div class="panel">
+      {{HARD}}
+      <p class="note">Runs made with tools disabled (<code>claude -p --tools ""</code>);
+      n = replicates per cell; P(clean) = share of replicates at full marks. Costs at
+      list price with 1-hour cache writes.</p>
+    </div>
+    {{HARD_PROSE}}
+  </section>
   <section id="findings">
     <h2><span class="no">§4</span>Findings</h2>
     {{FINDINGS}}

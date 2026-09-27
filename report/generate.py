@@ -23,8 +23,13 @@ FRAG = os.path.join(ROOT, "report", "fragments")
 CFG = json.load(open(os.path.join(ROOT, "report", "config.json")))
 CORE = ["T1", "T2", "T3", "T4", "T5A", "T6", "T7", "T8", "T9", "T10"]
 EXTRA = ["E", "T5B"]
+# Hard tier: reported in its own section on mean score / spread / P(clean);
+# deliberately NOT part of CORE, so the 10-task reliability floors are unchanged.
+HARD = ["T13", "T14", "T15"]
+HARD_NAMES = {"T13": "TALLY-12", "T14": "Cold-chain", "T15": "Quarry Duel"}
 TOTALS = {"T1": 16, "T2": 8, "T3": 6, "T4": 10, "T5A": 3, "T6": 13, "T7": 20,
-          "T8": 8, "T9": 7, "T10": 7, "E": 5, "T5B": 6}
+          "T8": 8, "T9": 7, "T10": 7, "E": 5, "T5B": 6,
+          "T13": 80, "T14": 60, "T15": 1000}
 EFFORT_ORDER = ["none", "low", "medium", "high", "xhigh", "max"]
 
 
@@ -272,6 +277,55 @@ def build_cards():
     return "\n".join(cards)
 
 
+def build_hard():
+    """Hard-tier table: one row per config with any hard-task data; per task
+    the mean % of points, min–max %, n, P(clean) and median cost / time."""
+    import csv as _csv
+    import statistics as _st
+    cells = {}
+    with open(os.path.join(ROOT, "results", "scores.csv")) as f:
+        for r in _csv.DictReader(f):
+            if r["task"] in HARD and r["total"] not in ("", "0"):
+                c = cells.setdefault((f"{r['family']}@{r['effort']}", r["task"]),
+                                     {"pct": [], "cost": [], "dur": []})
+                c["pct"].append(100 * float(r["score"]) / float(r["total"]))
+                if r["cost_usd"]:
+                    c["cost"].append(float(r["cost_usd"]))
+                if r["duration_s"]:
+                    c["dur"].append(float(r["duration_s"]))
+    cfgs = sorted({k[0] for k in cells}, key=config_sort_key)
+    if not cfgs:
+        return "<p class=\"note\">No hard-tier runs yet.</p>"
+    head = "".join(f'<th colspan="4">{html.escape(HARD_NAMES[t])} · {t} /{TOTALS[t]}</th>' for t in HARD)
+    sub = "".join("<th>mean %</th><th>min–max</th><th>P(clean)</th><th>$ · time</th>" for _ in HARD)
+    rows = []
+    last_fam = None
+    for cfg in cfgs:
+        fam, eff = cfg.split("@")
+        if fam != last_fam:
+            rows.append(f'<tr><td colspan="{1 + 4 * len(HARD)}" class="grp" '
+                        f'style="color:{model_meta(fam)["color"]}">{html.escape(model_meta(fam)["name"])}</td></tr>')
+            last_fam = fam
+        tds = [f"<td><b>{html.escape(eff)}</b></td>"]
+        for t in HARD:
+            c = cells.get((cfg, t))
+            if not c:
+                tds.append('<td class="alt">—</td>' * 4)
+                continue
+            n = len(c["pct"])
+            mean = _st.mean(c["pct"])
+            clean = sum(1 for p in c["pct"] if p >= 99.999) / n
+            klass = "" if mean >= 99.5 else (" miss" if mean >= 60 else " bad")
+            cost = f"${_st.median(c['cost']):.2f}" if c["cost"] else "—"
+            dur = f"{_st.median(c['dur'])/60:.0f}m" if c["dur"] else "—"
+            tds.append(f'<td class="cell{klass}">{mean:.0f}</td>'
+                       f'<td class="alt">{min(c["pct"]):.0f}–{max(c["pct"]):.0f} <span class="dim">n={n}</span></td>'
+                       f'<td class="alt">{clean:.2f}</td><td class="alt">{cost} · {dur}</td>')
+        rows.append("<tr>" + "".join(tds) + "</tr>")
+    return ('<div class="tablewrap"><table class="hard"><thead><tr><th>config</th>' + head +
+            "</tr><tr><th></th>" + sub + "</tr></thead><tbody>" + "\n".join(rows) + "</tbody></table></div>")
+
+
 def main():
     summary = json.load(open(os.path.join(ROOT, "results", "summary.json")))
     scores = open(os.path.join(ROOT, "results", "scores.csv")).read().count("\n") - 1
@@ -303,6 +357,8 @@ def main():
            .replace("{{SCATTER}}", scatter)
            .replace("{{MAP}}", map_html)
            .replace("{{CARDS}}", cards)
+           .replace("{{HARD}}", build_hard())
+           .replace("{{HARD_PROSE}}", frag("hard.html"))
            .replace("{{FINDINGS}}", frag("findings.html"))
            .replace("{{METHOD}}", frag("method.html"))
            .replace("{{DECISIONS}}", frag("decisions.html"))

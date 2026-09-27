@@ -1,0 +1,148 @@
+{
+ "task": "T13",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [
+    3122,
+    2862,
+    257,
+    3148,
+    2167,
+    2199,
+    2201,
+    2202,
+    2203,
+    2204,
+    2205,
+    2206,
+    2207,
+    2208,
+    2209,
+    2210,
+    2211,
+    2212,
+    2213,
+    2214
+   ],
+   "final_registers": [
+    0,
+    0,
+    2407,
+    193,
+    1,
+    0,
+    2214,
+    0
+   ],
+   "final_memory": [
+    2746,
+    2456,
+    3836,
+    571,
+    782,
+    2362,
+    1914,
+    257,
+    4040,
+    3083,
+    282,
+    1228,
+    2862,
+    257,
+    2955,
+    1343
+   ],
+   "steps_executed": 527,
+   "halted": true
+  },
+  "program_b": {
+   "out_stream": [
+    3925,
+    2824,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024,
+    2024
+   ],
+   "final_registers": [
+    2024,
+    2024,
+    2024,
+    7,
+    758,
+    0,
+    0,
+    4067
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3401,
+    2986,
+    2750,
+    1315,
+    1774,
+    2228,
+    1664,
+    3607,
+    1709,
+    2015,
+    1812,
+    882,
+    1894,
+    1169
+   ],
+   "steps_executed": 482,
+   "halted": true
+  }
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 4575,
+  "cache_read": 5132,
+  "output": 46995
+ },
+ "duration_s": 305.2,
+ "cost_usd": 0.2446,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-4-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 46582,
+    "total_cost_usd": 0.2446482
+   }
+  ],
+  "served_models": [
+   "claude-haiku-4-5"
+  ],
+  "total_cost_usd": 0.2446
+ }
+}
