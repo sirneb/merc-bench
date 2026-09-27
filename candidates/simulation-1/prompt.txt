@@ -1,0 +1,82 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself. Do not skip, batch or estimate turns: every turn depends on the exact state left by all previous turns.
+
+QUARRY DUEL is a two-player card-and-track game with NO decisions and NO randomness: both players follow fixed policies, so the whole game is determined by the rules below. Play the game for exactly 100 turns and report the requested state.
+
+== COMPONENTS ==
+- A circular track of 12 spaces numbered 0-11. Moving forward from space 11 continues at space 0. Each space has an effect:
+  space  0: PLAIN   (start)
+  space  1: TOLL
+  space  2: PLAIN
+  space  3: TOLL
+  space  4: QUARRY
+  space  5: MINE
+  space  6: WELL
+  space  7: MINE
+  space  8: FORGE
+  space  9: QUARRY
+  space 10: SWAP
+  space 11: PLAIN
+- A deck of 48 cards. Each card has a suit (one of Ore, Wood, Grain, Gem) and a value from 1 to 9; several cards can be identical. The deck is listed below from top (card 1) to bottom (card 48). It is never shuffled randomly.
+- Two players, P1 and P2. Each has a position on the track, a number of coins, a hand of cards, and a stockpile (a count of banked cards per suit).
+- One shared discard pile (ordered: the most recently discarded card is on top).
+
+== SUIT ORDER ==
+For every tie-break in this game the suit order is: Wood < Grain < Ore < Gem  (Wood is the earliest/lowest suit, Gem the latest/highest).
+Comparing two cards: the card with the higher value is the higher card; if the values are equal, the card whose suit comes later in the suit order is higher. "Lowest card" and "highest card" always use this comparison. Two cards with the same suit and value are interchangeable.
+
+== SETUP ==
+- Both players start on space 0 with 5 coins each and an empty stockpile.
+- P1 takes the top 4 cards of the deck (cards 1-4: Wood-6, Ore-9, Ore-2, Grain-1) into hand; P2 takes the next 4 (cards 5-8: Gem-1, Wood-7, Ore-1, Gem-2). Card 9 is now the top of the deck. The discard pile is empty.
+
+== TURN SEQUENCE ==
+Turns are numbered 1 to 100. P1 takes every odd-numbered turn and P2 every even-numbered turn. The player taking the turn is "you"; the other player is "your opponent". Each turn consists of these steps, strictly in this order:
+
+1. DRAW PHASE. Draw the top card of the deck into your hand, repeating until you hold 5 cards, but never drawing more than 2 cards in this phase. If you already hold 5 or more cards you draw nothing.
+   RESHUFFLE RULE (applies to every draw in the game): if you must draw a card and the deck is empty, the whole discard pile becomes the new deck in REVERSED order — the most recently discarded card becomes the top of the new deck and the oldest discarded card becomes its bottom. The discard pile is then empty. If the discard pile is also empty, the draw simply does not happen.
+2. PLAY PHASE. If your hand is empty, skip steps 2-6. Otherwise select ONE card from your hand as dictated by your policy (see POLICIES) and remove it from your hand; it is the "played card". Move forward along the track by the played card's value: new position = (old position + value) mod 12.
+3. CAPTURE. If your new position is the same space your opponent occupies AND your opponent holds at least one card, take your opponent's LOWEST card into your hand. This counts as one capture. (Captures are checked before the space effect; a SWAP in step 4 never causes a capture.)
+4. SPACE EFFECT. Apply the effect of the space you now occupy:
+  - PLAIN: nothing happens.
+  - MINE: you gain coins equal to the value of the played card.
+  - TOLL: you pay 2 coins to your opponent. If you hold fewer than 2 coins you pay everything you have (possibly 0). Every coin paid this way counts towards total_tolls_paid.
+  - FORGE: if your stockpile holds at least one card: take the suit of which your stockpile holds the MOST cards (ties: the earliest such suit in the suit order); remove one card of that suit from your stockpile and add one card of the NEXT suit in the suit order (the suit after the last one wraps around to the first). If your stockpile is empty, nothing happens.
+  - SWAP: you and your opponent exchange positions. Nothing else is triggered by this (no capture, no effect of the space either player now stands on).
+  - QUARRY: the played card is placed into your stockpile (add 1 to your count of its suit). It does NOT go to the discard pile.
+  - WELL: you draw one card from the deck (reshuffle rule applies), even if you already hold 5 or more cards.
+5. DISCARD. Unless the played card went to your stockpile (QUARRY), place it on top of the discard pile.
+6. HAND LIMIT. If you now hold more than 5 cards, discard your LOWEST card onto the top of the discard pile; repeat until you hold exactly 5. (Only the player whose turn it is checks the hand limit.)
+
+== POLICIES ==
+- P1 (odd turns): count the cards of each suit in your hand. Let S be the suit you hold the most cards of; if several suits tie for the most, S is the earliest of them in the suit order. Play the HIGHEST card of suit S.
+- P2 (even turns): a card in your hand is a "candidate" if playing it would move you (from your current position, after the draw phase) onto a MINE space. If you have at least one candidate, play the HIGHEST candidate. Otherwise play the LOWEST card in your hand.
+
+== END OF GAME AND SCORING ==
+The game ends after turn 100. Each player's final score = coins + 3 x (total number of cards in their stockpile). The player with the higher score wins ("P1" or "P2"; report "draw" if equal).
+
+== DECK ORDER (card 1 is the top) ==
+   1:Wood-6     2:Ore-9      3:Ore-2      4:Grain-1    5:Gem-1      6:Wood-7     7:Ore-1      8:Gem-2
+   9:Grain-4   10:Grain-6   11:Ore-1     12:Gem-9     13:Ore-5     14:Grain-8   15:Grain-2   16:Wood-5
+  17:Gem-5     18:Grain-5   19:Ore-6     20:Ore-7     21:Wood-4    22:Wood-2    23:Gem-9     24:Gem-7
+  25:Ore-4     26:Ore-3     27:Ore-8     28:Wood-4    29:Gem-2     30:Grain-1   31:Wood-9    32:Grain-8
+  33:Gem-4     34:Gem-4     35:Grain-9   36:Wood-3    37:Wood-7    38:Ore-9     39:Grain-3   40:Wood-1
+  41:Gem-6     42:Grain-9   43:Ore-8     44:Gem-3     45:Wood-8    46:Wood-9    47:Grain-7   48:Gem-8
+
+== WORKED EXAMPLE: TURN 1 ==
+P1 holds Wood-6, Ore-9, Ore-2, Grain-1 (4 cards), so the draw phase draws Grain-4 (now 5 cards).
+P1's policy selects Grain-4; P1 moves from space 0 to space 4 (QUARRY). P2 is on space 0, so there is no capture.
+QUARRY: Grain-4 goes into P1's stockpile (Grain: 1); the discard pile stays empty.
+State after turn 1: P1 on space 4 with 5 coins, hand Grain-1, Ore-2, Wood-6, Ore-9 (hand_size 4, hand_total 18), stockpile {"Ore": 0, "Wood": 0, "Grain": 1, "Gem": 0}; P2 unchanged; deck has 39 cards; discard pile has 0 card(s).
+
+== WHAT TO REPORT ==
+Checkpoints: the state of BOTH players immediately after the end (step 6) of turns 20, 40, 60, 80, 100. For each player report: position, coins, hand_size (number of cards in hand), hand_total (sum of the values of the cards in hand), and stockpile counts for every suit (Ore, Wood, Grain, Gem — always all four keys, 0 if none).
+Final block (after turn 100): winner ("P1", "P2" or "draw"), p1_score, p2_score, total_captures (number of captures in the whole game), total_tolls_paid (total coins transferred by TOLL effects in the whole game), discard_pile_size (cards in the discard pile at the end), deck_remaining (cards left in the deck at the end).
+
+== OUTPUT FORMAT ==
+Return ONLY a single JSON object, no prose before or after, no markdown fences, exactly this shape (all numbers are integers):
+{
+  "checkpoints": [
+    {"turn": T, "P1": {"position": 0, "coins": 0, "hand_size": 0, "hand_total": 0, "stockpile": {"Ore": 0, "Wood": 0, "Grain": 0, "Gem": 0}}, "P2": {...same fields...}},
+    ... one object per checkpoint turn, in order: 20, 40, 60, 80, 100
+  ],
+  "final": {"winner": "P1", "p1_score": 0, "p2_score": 0, "total_captures": 0, "total_tolls_paid": 0, "discard_pile_size": 0, "deck_remaining": 0}
+}

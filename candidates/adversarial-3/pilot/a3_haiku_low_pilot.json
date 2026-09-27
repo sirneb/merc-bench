@@ -1,0 +1,191 @@
+{
+ "task": "A3",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "pilot",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "standings": [
+   {
+    "rank": 1,
+    "player_id": "P13",
+    "points": 7.5,
+    "buchholz": 41.0,
+    "sonneborn_berger": 31.0,
+    "wins": 6
+   },
+   {
+    "rank": 2,
+    "player_id": "P04",
+    "points": 7.5,
+    "buchholz": 40.0,
+    "sonneborn_berger": 31.5,
+    "wins": 6
+   },
+   {
+    "rank": 3,
+    "player_id": "P16",
+    "points": 5.0,
+    "buchholz": 42.5,
+    "sonneborn_berger": 23.25,
+    "wins": 2
+   },
+   {
+    "rank": 4,
+    "player_id": "P01",
+    "points": 5.0,
+    "buchholz": 42.0,
+    "sonneborn_berger": 20.75,
+    "wins": 4
+   },
+   {
+    "rank": 5,
+    "player_id": "P11",
+    "points": 5.0,
+    "buchholz": 41.5,
+    "sonneborn_berger": 21.0,
+    "wins": 3
+   },
+   {
+    "rank": 6,
+    "player_id": "P20",
+    "points": 5.0,
+    "buchholz": 37.0,
+    "sonneborn_berger": 27.5,
+    "wins": 3
+   },
+   {
+    "rank": 7,
+    "player_id": "P06",
+    "points": 4.5,
+    "buchholz": 45.5,
+    "sonneborn_berger": 23.75,
+    "wins": 4
+   },
+   {
+    "rank": 8,
+    "player_id": "P10",
+    "points": 4.5,
+    "buchholz": 45.0,
+    "sonneborn_berger": 18.25,
+    "wins": 2
+   },
+   {
+    "rank": 9,
+    "player_id": "P03",
+    "points": 4.5,
+    "buchholz": 43.5,
+    "sonneborn_berger": 21.25,
+    "wins": 1
+   },
+   {
+    "rank": 10,
+    "player_id": "P15",
+    "points": 4.5,
+    "buchholz": 41.5,
+    "sonneborn_berger": 12.75,
+    "wins": 1
+   },
+   {
+    "rank": 11,
+    "player_id": "P19",
+    "points": 4.5,
+    "buchholz": 40.0,
+    "sonneborn_berger": 19.5,
+    "wins": 3
+   },
+   {
+    "rank": 12,
+    "player_id": "P12",
+    "points": 4.5,
+    "buchholz": 34.5,
+    "sonneborn_berger": 17.5,
+    "wins": 2
+   },
+   {
+    "rank": 13,
+    "player_id": "P08",
+    "points": 4.0,
+    "buchholz": 39.5,
+    "sonneborn_berger": 18.5,
+    "wins": 2
+   },
+   {
+    "rank": 14,
+    "player_id": "P07",
+    "points": 3.5,
+    "buchholz": 46.0,
+    "sonneborn_berger": 16.75,
+    "wins": 2
+   },
+   {
+    "rank": 15,
+    "player_id": "P05",
+    "points": 3.5,
+    "buchholz": 36.0,
+    "sonneborn_berger": 15.5,
+    "wins": 1
+   },
+   {
+    "rank": 16,
+    "player_id": "P18",
+    "points": 3.5,
+    "buchholz": 35.5,
+    "sonneborn_berger": 18.75,
+    "wins": 0
+   },
+   {
+    "rank": 17,
+    "player_id": "P17",
+    "points": 3.0,
+    "buchholz": 45.5,
+    "sonneborn_berger": 12.0,
+    "wins": 3
+   },
+   {
+    "rank": 18,
+    "player_id": "P02",
+    "points": 3.0,
+    "buchholz": 38.0,
+    "sonneborn_berger": 12.0,
+    "wins": 0
+   },
+   {
+    "rank": 19,
+    "player_id": "P14",
+    "points": 2.5,
+    "buchholz": 41.0,
+    "sonneborn_berger": 9.25,
+    "wins": 1
+   },
+   {
+    "rank": 20,
+    "player_id": "P09",
+    "points": 2.5,
+    "buchholz": 37.5,
+    "sonneborn_berger": 11.25,
+    "wins": 1
+   }
+  ],
+  "answers": {
+   "champion": "P13",
+   "third_place": "P16",
+   "total_forfeits": 5,
+   "most_points_lost": "P09",
+   "withdrawn_player_points": 3.5
+  }
+ },
+ "usage": {
+  "input": 20,
+  "cache_write": 78877,
+  "cache_read": 44584,
+  "output": 65377
+ },
+ "duration_s": 428.1,
+ "cost_usd": 0.43,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

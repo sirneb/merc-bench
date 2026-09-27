@@ -1,0 +1,132 @@
+IMPORTANT: Solve without any tools - no Bash, no Python, no code execution, no files, no web. Work it out yourself, step by step.
+
+You are given the complete specification of TALLY-12, a small register machine that does not exist anywhere else, and two programs written for it. Execute both programs EXACTLY as the machine would and report the results as one JSON object.
+
+=== THE MACHINE ===
+
+- 8 registers r0..r7. Every register holds a 12-bit UNSIGNED integer, 0..4095. All registers start at 0.
+- 16 memory cells mem[0]..mem[15], each also a 12-bit unsigned integer. The initial contents are given with each program.
+- A program counter pc, starting at 0. Instructions are numbered from 0 in the listing; jump targets are instruction numbers.
+- An output stream, initially empty.
+- Arithmetic is modulo 4096 (results are reduced to their low 12 bits) EXCEPT where the opcode table says otherwise: SUB saturates at 0 and DIV by zero yields 4095. JLT is the only instruction that reads values as signed.
+- Execution: fetch the instruction at pc, execute it, then pc = pc + 1 unless the instruction set pc itself (a taken jump). Every executed instruction counts as one step, including jumps that are not taken and the final HLT.
+- The machine stops when it executes HLT (halted = true). If it has executed 5000 steps without HLT, or pc ever leaves the listing, it stops with halted = false. (Both given programs are known to halt well before 5000 steps.)
+
+=== OPCODES (all 16) ===
+
+In the syntax column rd is the destination register, ra/rb/rs are source registers, imm and k are constants, L is an instruction number.
+
+  HLT                Stop the machine. halted = true. HLT itself counts as one executed step.
+  SET rd, imm        rd = imm  (imm is a constant 0..4095).
+  ADD rd, ra, rb     rd = (ra + rb) mod 4096  (wraps around).
+  ADDI rd, ra, imm   rd = (ra + imm) mod 4096  (wraps around; e.g. ADDI r1, r1, 4095 decrements r1 by one, and 0 + 4095 = 4095).
+  SUB rd, ra, rb     rd = ra - rb if ra >= rb, otherwise rd = 0.  SATURATES at 0; it never wraps.
+  MUL rd, ra, rb     rd = (ra * rb) mod 4096  (only the low 12 bits of the product are kept).
+  DIV rd, ra, rb     rd = floor(ra / rb) if rb != 0.  If rb == 0, rd = 4095.
+  AND rd, ra, rb     rd = ra AND rb  (bitwise).
+  XOR rd, ra, rb     rd = ra XOR rb  (bitwise).
+  ROT rd, ra, k      rd = ra rotated LEFT by k bit positions inside a 12-bit word (0 <= k <= 11): bits pushed out past bit 11 re-enter at bit 0.  Formally rd = ((ra << k) | (ra >> (12 - k))) AND 4095.
+  LD rd, ra          rd = mem[ra mod 16]  (the cell index is the value of ra reduced mod 16).
+  ST rs, ra          mem[ra mod 16] = rs  (the value of the FIRST operand is stored into the cell selected by the SECOND operand mod 16).
+  OUT ra             Append the current value of ra to the output stream.  Registers and memory are unchanged.
+  JMP L              pc = L.
+  JLT ra, rb, L      SIGNED compare.  Interpret ra and rb as 12-bit two's complement: a value v in 2048..4095 stands for v - 4096 (so 4095 means -1, 2048 means -2048; 0..2047 are themselves).  If signed(ra) < signed(rb) then pc = L, otherwise pc = pc + 1.  This is the ONLY instruction that treats values as signed.
+  JNZ ra, L          If ra != 0 then pc = L, otherwise pc = pc + 1.
+
+=== THE PROGRAMS ===
+
+Program A  (25 instructions)
+Initial memory mem[0..15] = [2267, 3471, 3561, 326, 308, 1525, 2000, 2505, 145, 2042, 2410, 1421, 2715, 2172, 891, 1336]
+Listing:
+ 0: SET r0, 20
+ 1: SET r7, 261
+ 2: SET r6, 4081
+ 3: SET r5, 1
+ 4: SET r1, 345
+ 5: SET r2, 20
+ 6: SET r4, 592
+ 7: MUL r7, r7, r6
+ 8: ADDI r7, r7, 203
+ 9: MUL r1, r1, r7
+10: LD r2, r2
+11: ADD r4, r4, r2
+12: ST r4, r7
+13: JLT r1, r7, 17
+14: AND r1, r7, r2
+15: SUB r1, r1, r7
+16: JMP 18
+17: DIV r1, r7, r1
+18: XOR r4, r4, r2
+19: ROT r2, r7, 1
+20: XOR r4, r4, r1
+21: OUT r2
+22: ADDI r0, r0, 4095
+23: JNZ r0, 7
+24: HLT
+
+Program B  (45 instructions)
+Initial memory mem[0..15] = [3151, 521, 2791, 1888, 2980, 3905, 1933, 1965, 1523, 1060, 626, 1564, 1407, 3983, 1835, 1574]
+Listing:
+ 0: SET r2, 20
+ 1: SET r7, 2237
+ 2: SET r0, 2589
+ 3: SET r5, 7
+ 4: SET r4, 3019
+ 5: SET r6, 501
+ 6: SET r3, 2055
+ 7: MUL r7, r7, r0
+ 8: ADDI r7, r7, 1269
+ 9: OUT r3
+10: LD r6, r7
+11: ADD r3, r3, r6
+12: ST r6, r6
+13: OUT r6
+14: ROT r6, r3, 3
+15: ADDI r4, r4, 2434
+16: JLT r4, r3, 20
+17: ROT r3, r7, 4
+18: XOR r6, r7, r6
+19: JMP 22
+20: MUL r4, r4, r7
+21: ROT r4, r3, 2
+22: SUB r4, r6, r4
+23: AND r3, r3, r7
+24: JLT r4, r7, 27
+25: ADDI r4, r4, 971
+26: JMP 29
+27: ROT r6, r3, 3
+28: MUL r3, r4, r3
+29: XOR r3, r4, r3
+30: LD r6, r4
+31: SUB r3, r3, r6
+32: ST r6, r6
+33: DIV r4, r4, r7
+34: SUB r4, r6, r7
+35: DIV r3, r7, r4
+36: AND r1, r7, r5
+37: ADDI r1, r1, 1
+38: MUL r3, r3, r6
+39: ADD r6, r6, r4
+40: ADDI r1, r1, 4095
+41: JNZ r1, 38
+42: ADDI r2, r2, 4095
+43: JNZ r2, 7
+44: HLT
+
+=== WHAT TO REPORT ===
+
+For each program, report the state at the moment the machine stopped:
+- out_stream: every value passed to OUT, in order (Program A emits 20 values, Program B emits 40).
+- final_registers: [r0, r1, r2, r3, r4, r5, r6, r7] - exactly 8 integers in that order.
+- final_memory: [mem[0], ..., mem[15]] - exactly 16 integers in that order.
+- steps_executed: the total number of instructions executed, including the HLT.
+- halted: true if the machine stopped on HLT.
+
+Scoring note: out_stream is scored by its longest correct PREFIX, so an exact partial stream earns more than a complete but drifted one. Registers and memory are scored per element. Do not skip loop iterations or estimate - every value depends on every earlier step.
+
+=== OUTPUT FORMAT ===
+
+Respond with ONLY this JSON object and nothing else - no prose, no markdown fences, no working:
+
+{"program_a": {"out_stream": [<ints>], "final_registers": [<8 ints>], "final_memory": [<16 ints>], "steps_executed": <int>, "halted": <true|false>},
+ "program_b": {"out_stream": [<ints>], "final_registers": [<8 ints>], "final_memory": [<16 ints>], "steps_executed": <int>, "halted": <true|false>}}

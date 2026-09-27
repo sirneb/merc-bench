@@ -1,0 +1,13 @@
+[A3] running claude-haiku-4-5@low via claude-code...
+[A3] haiku_low: dur=428s usage={'input': 20, 'cache_write': 78877, 'cache_read': 44584, 'output': 65377} cost=0.43 fail=None
+[A3] grade: {"task": "A3", "score": 53.5, "total": 126.0, "detail": {"sub_scores": {"points": 24.0, "rank": 6.5, "buchholz": 0.0, "sonneborn_berger": 3.0, "wins": 7.0, "questions": 13.0}, "players_parsed": 20, "p
+[A3] running claude-sonnet-5@medium via claude-code...
+[A3] sonnet_medium: dur=95s usage={'input': 2, 'cache_write': 22893, 'cache_read': 11423, 'output': 14551} cost=0.3075 fail=None
+[A3] grade: {"task": "A3", "score": 126.0, "total": 126.0, "detail": {"sub_scores": {"points": 40.0, "rank": 20.0, "buchholz": 20.0, "sonneborn_berger": 20.0, "wins": 10.0, "questions": 16.0}, "players_parsed": 2
+[A3] running claude-opus-5-5@medium via claude-code...
+[A3] opus55_medium: dur=78s usage={'input': 2, 'cache_write': 23714, 'cache_read': 11320, 'output': 10644} cost=0.3337 fail=None
+[A3] grade: {"task": "A3", "score": 125.0, "total": 126.0, "detail": {"sub_scores": {"points": 40.0, "rank": 20.0, "buchholz": 20.0, "sonneborn_berger": 19.0, "wins": 10.0, "questions": 16.0}, "players_parsed": 2
+[A3] running claude-fable-5-1@medium via claude-code...
+[A3] fable51_medium: dur=107s usage={'input': 2, 'cache_write': 23673, 'cache_read': 13179, 'output': 11809} cost=0.8897 fail=None
+[A3] grade: {"task": "A3", "score": 126.0, "total": 126.0, "detail": {"sub_scores": {"points": 40.0, "rank": 20.0, "buchholz": 20.0, "sonneborn_berger": 20.0, "wins": 10.0, "questions": 16.0}, "players_parsed": 2
+PILOT DONE

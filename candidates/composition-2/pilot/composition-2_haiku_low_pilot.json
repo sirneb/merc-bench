@@ -1,0 +1,435 @@
+{
+ "task": "composition-2",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "pilot",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "routes": [
+   {
+    "id": "S01",
+    "path": [
+     "Halcott",
+     "Xenia",
+     "Thirsk",
+     "Yarm",
+     "Ventnor",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 439
+   },
+   {
+    "id": "S02",
+    "path": [
+     "Garston",
+     "Ilford",
+     "Ashford",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 331
+   },
+   {
+    "id": "S03",
+    "path": [
+     "Naseby",
+     "Dunmore",
+     "Radlett",
+     "Lindale",
+     "Morley",
+     "Ilford",
+     "Quorn"
+    ],
+    "km": 448
+   },
+   {
+    "id": "S04",
+    "path": [
+     "Lindale",
+     "Morley",
+     "Ilford",
+     "Ashford",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 466
+   },
+   {
+    "id": "S05",
+    "path": [
+     "Garston",
+     "Ilford",
+     "Morley",
+     "Lindale",
+     "Radlett",
+     "Dunmore",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 639
+   },
+   {
+    "id": "S06",
+    "path": [
+     "Corwen",
+     "Halcott",
+     "Xenia",
+     "Thirsk",
+     "Yarm",
+     "Ventnor",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 499
+   },
+   {
+    "id": "S07",
+    "path": [
+     "Dunmore",
+     "Radlett",
+     "Lindale",
+     "Morley",
+     "Fairlie",
+     "Belmont",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 417
+   },
+   {
+    "id": "S08",
+    "path": [
+     "Uppingham",
+     "Dunmore",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 373
+   },
+   {
+    "id": "S09",
+    "path": [
+     "Kelso",
+     "Naseby",
+     "Dunmore",
+     "Radlett",
+     "Lindale",
+     "Morley",
+     "Ilford",
+     "Quorn"
+    ],
+    "km": 500
+   },
+   {
+    "id": "S10",
+    "path": [
+     "Uppingham",
+     "Radlett",
+     "Lindale",
+     "Morley",
+     "Fairlie",
+     "Belmont",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 427
+   },
+   {
+    "id": "S11",
+    "path": [
+     "Fairlie",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 368
+   },
+   {
+    "id": "S12",
+    "path": [
+     "Ilford",
+     "Morley",
+     "Lindale",
+     "Radlett",
+     "Dunmore",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 603
+   },
+   {
+    "id": "S13",
+    "path": [
+     "Elsmere",
+     "Ventnor",
+     "Selby",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 608
+   },
+   {
+    "id": "S14",
+    "path": [
+     "Yarm",
+     "Ventnor",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 216
+   }
+  ],
+  "arrivals": [
+   {
+    "id": "S01",
+    "arrival": "2026-10-05T17:59",
+    "rests": 1
+   },
+   {
+    "id": "S02",
+    "arrival": "2026-10-06T01:40",
+    "rests": 0
+   },
+   {
+    "id": "S03",
+    "arrival": "2026-10-05T17:34",
+    "rests": 0
+   },
+   {
+    "id": "S04",
+    "arrival": "2026-10-06T08:03",
+    "rests": 1
+   },
+   {
+    "id": "S05",
+    "arrival": "2026-10-06T16:12",
+    "rests": 1
+   },
+   {
+    "id": "S06",
+    "arrival": "2026-10-05T17:59",
+    "rests": 1
+   },
+   {
+    "id": "S07",
+    "arrival": "2026-10-06T04:33",
+    "rests": 0
+   },
+   {
+    "id": "S08",
+    "arrival": "2026-10-06T13:12",
+    "rests": 0
+   },
+   {
+    "id": "S09",
+    "arrival": "2026-10-05T17:46",
+    "rests": 1
+   },
+   {
+    "id": "S10",
+    "arrival": "2026-10-06T07:07",
+    "rests": 1
+   },
+   {
+    "id": "S11",
+    "arrival": "2026-10-06T13:31",
+    "rests": 0
+   },
+   {
+    "id": "S12",
+    "arrival": "2026-10-06T16:47",
+    "rests": 1
+   },
+   {
+    "id": "S13",
+    "arrival": "2026-10-06T15:01",
+    "rests": 1
+   },
+   {
+    "id": "S14",
+    "arrival": "2026-10-05T18:46",
+    "rests": 0
+   }
+  ],
+  "docks": [
+   {
+    "id": "S01",
+    "dock_start": "2026-10-05T19:34",
+    "wait_minutes": 95
+   },
+   {
+    "id": "S02",
+    "dock_start": "2026-10-06T01:40",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S03",
+    "dock_start": "2026-10-05T17:34",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S04",
+    "dock_start": "2026-10-06T08:03",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S05",
+    "dock_start": "2026-10-06T16:12",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S06",
+    "dock_start": "2026-10-05T20:34",
+    "wait_minutes": 155
+   },
+   {
+    "id": "S07",
+    "dock_start": "2026-10-06T04:33",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S08",
+    "dock_start": "2026-10-06T13:12",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S09",
+    "dock_start": "2026-10-05T17:46",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S10",
+    "dock_start": "2026-10-06T07:07",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S11",
+    "dock_start": "2026-10-06T13:31",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S12",
+    "dock_start": "2026-10-06T19:01",
+    "wait_minutes": 134
+   },
+   {
+    "id": "S13",
+    "dock_start": "2026-10-06T15:01",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S14",
+    "dock_start": "2026-10-05T21:16",
+    "wait_minutes": 150
+   }
+  ],
+  "billing": {
+   "per_shipment": [
+    {
+     "id": "S01",
+     "fee": 85
+    },
+    {
+     "id": "S02",
+     "fee": 0
+    },
+    {
+     "id": "S03",
+     "fee": 0
+    },
+    {
+     "id": "S04",
+     "fee": 0
+    },
+    {
+     "id": "S05",
+     "fee": 0
+    },
+    {
+     "id": "S06",
+     "fee": 510
+    },
+    {
+     "id": "S07",
+     "fee": 0
+    },
+    {
+     "id": "S08",
+     "fee": 0
+    },
+    {
+     "id": "S09",
+     "fee": 0
+    },
+    {
+     "id": "S10",
+     "fee": 0
+    },
+    {
+     "id": "S11",
+     "fee": 0
+    },
+    {
+     "id": "S12",
+     "fee": 340
+    },
+    {
+     "id": "S13",
+     "fee": 0
+    },
+    {
+     "id": "S14",
+     "fee": 170
+    }
+   ],
+   "per_customer": [
+    {
+     "customer": "CU-01",
+     "total": 170
+    },
+    {
+     "customer": "CU-02",
+     "total": 510
+    },
+    {
+     "customer": "CU-03",
+     "total": 85
+    },
+    {
+     "customer": "CU-04",
+     "total": 0
+    },
+    {
+     "customer": "CU-05",
+     "total": 340
+    }
+   ],
+   "grand_total": 1105
+  }
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 8636,
+  "cache_read": 14880,
+  "output": 44170
+ },
+ "duration_s": 341.0,
+ "cost_usd": 0.2331,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

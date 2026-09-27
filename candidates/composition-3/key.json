@@ -1,0 +1,190 @@
+{
+ "task": "C3",
+ "config": {
+  "seed": 20260926,
+  "difficulty": "hard",
+  "n_words": 9,
+  "self_modifying": 1,
+  "cipher_len": 74,
+  "interval": 50
+ },
+ "machine_words": [
+  "1100",
+  "222F",
+  "1009",
+  "222E",
+  "1300",
+  "222D",
+  "7229",
+  "8001",
+  "422A",
+  "2229",
+  "122D",
+  "6007",
+  "3032",
+  "2230",
+  "1430",
+  "722A",
+  "9002",
+  "222A",
+  "122B",
+  "422D",
+  "7231",
+  "222B",
+  "122C",
+  "5229",
+  "D101",
+  "70FE",
+  "322B",
+  "222C",
+  "722A",
+  "242F",
+  "122F",
+  "3001",
+  "222F",
+  "1204",
+  "3001",
+  "2204",
+  "122E",
+  "5001",
+  "222E",
+  "C0DC",
+  "0000",
+  "F907",
+  "6734",
+  "190B",
+  "666E",
+  "0000",
+  "0000",
+  "0000",
+  "0000",
+  "FFC0",
+  "2C0F",
+  "B8AE",
+  "56F6",
+  "5218",
+  "A9F0",
+  "E646",
+  "EE37",
+  "25E8"
+ ],
+ "critical_word_addresses": [
+  0,
+  4,
+  12,
+  24,
+  39
+ ],
+ "labels": {
+  "start": 0,
+  "again": 4,
+  "grab": 4,
+  "over": 26,
+  "acc0": 41,
+  "acc1": 42,
+  "acc2": 43,
+  "acc3": 44,
+  "tmp": 45,
+  "left": 46,
+  "dst": 47,
+  "sel": 48,
+  "mask1": 49,
+  "tbl": 50,
+  "data": 256
+ },
+ "listing": "        .org 0x000\nstart:  LDA #data\n        STA dst\n        LDA #9\n        STA left\nagain:  \ngrab:   LDA data          ; operand is patched at runtime\n        STA tmp\n        XOR acc0\n        ROL #1\n        ADC acc1\n        STA acc0\n        LDA tmp\n        AND #7\n        ADD #tbl\n        STA sel\n        LDA [sel]\n        XOR acc1\n        ROR #2\n        STA acc1\n        LDA acc2\n        ADC tmp\n        XOR mask1\n        STA acc2\n        LDA acc3\n        SUB acc0\n        JC over\n        XOR #0x0FE\nover:   ADD acc2\n        STA acc3\n        XOR acc1\n        STA [dst]\n        LDA dst\n        ADD #1\n        STA dst\n        LDA grab\n        ADD #1\n        STA grab\n        LDA left\n        SUB #1\n        STA left\n        JNZ again\n        HLT\nacc0:   .word 0xF907\nacc1:   .word 0x6734\nacc2:   .word 0x190B\nacc3:   .word 0x666E\ntmp:    .word 0\nleft:   .word 0\ndst:    .word 0\nsel:    .word 0\nmask1:  .word 0xFFC0\ntbl:    .word 0x2C0F, 0xB8AE, 0x56F6, 0x5218, 0xA9F0, 0xE646, 0xEE37, 0x25E8\n        .org 0x100\ndata:   .word 0x36, 0x8E, 0x66, 0x8C, 0xE5, 0x10, 0x4E, 0x35, 0xC3\n",
+ "input_block": [
+  "0036",
+  "008E",
+  "0066",
+  "008C",
+  "00E5",
+  "0010",
+  "004E",
+  "0035",
+  "00C3"
+ ],
+ "execution": {
+  "checkpoints": [
+   {
+    "step": 50,
+    "pc": "00E",
+    "acc": "0038",
+    "c": 0,
+    "z": 0
+   },
+   {
+    "step": 100,
+    "pc": "01C",
+    "acc": "63A5",
+    "c": 1,
+    "z": 0
+   },
+   {
+    "step": 150,
+    "pc": "007",
+    "acc": "9639",
+    "c": 0,
+    "z": 0
+   },
+   {
+    "step": 200,
+    "pc": "015",
+    "acc": "193A",
+    "c": 0,
+    "z": 0
+   },
+   {
+    "step": 250,
+    "pc": "024",
+    "acc": "1307",
+    "c": 0,
+    "z": 0
+   },
+   {
+    "step": 300,
+    "pc": "00F",
+    "acc": "5218",
+    "c": 0,
+    "z": 0
+   },
+   {
+    "step": 325,
+    "pc": "029",
+    "acc": "0000",
+    "c": 0,
+    "z": 1
+   }
+  ],
+  "digest": [
+   "CCB0",
+   "9B44",
+   "E541",
+   "9E8F"
+  ],
+  "instruction_count": 325,
+  "data_block": [
+   "50EB",
+   "2485",
+   "7CEF",
+   "C8A0",
+   "4207",
+   "2566",
+   "2832",
+   "BAF7",
+   "05CB"
+  ]
+ },
+ "keystream_shifts": [
+  4,
+  5,
+  3
+ ],
+ "ciphertext": "E1 E7 A7 F7 DB 06 84 50 01 A7 2C 5C 6A BC C8 83 93 B0 A3 7B D6 69 62 01 F8 91 AE 4F BF 30 42 23 85 04 3A 00 E7 F9 FB 50 DA E0 05 F2 39 4D 5E C0 27 AF 77 70 2F 28 E7 77 F6 70 02 FD 22 82 B5 E0 C5 90 E4 CC 16 95 C9 A5 C2 5D",
+ "plaintext": "Address of the largest final input word (lowest if tied), as 4 hex digits?",
+ "question": {
+  "type": "argmax",
+  "params": []
+ },
+ "final_answer": "0103"
+}
