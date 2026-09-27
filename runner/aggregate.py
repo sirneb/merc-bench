@@ -7,7 +7,10 @@ Writes results/scores.csv       (one graded row per run)
        results/summary.json     (per family@effort per task: scores, cost, time)
 
 Grading is recomputed from raw answers every time — nothing is trusted from
-the stored records except the answers themselves. This is the verification
+the stored records except the answers themselves. Cost is likewise recomputed
+from the stored token usage at the current price table (runner/run.py
+DEFAULT_PRICES, harness-aware cache-write rate), so a price correction
+re-prices the whole dataset on the next build. This is the verification
 path: if you doubt our numbers, delete scores.csv and run this.
 """
 import csv
@@ -18,6 +21,8 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "runner"))
+from run import cost_usd  # noqa: E402  (price table lives with the runner)
 TASK_DIR = {
     "T1": "t01-mental-math", "T2": "t02-code-trace", "T3": "t03-ledger-audit",
     "T4": "t04-constraint-gauntlet", "T5A": "t05-logic-puzzles-5attr",
@@ -66,7 +71,9 @@ def main():
             "file": os.path.basename(f), "task": rec["task"],
             "family": rec["family"], "effort": rec["effort"],
             "sample": rec["sample"], "score": score, "total": total,
-            "cost_usd": rec.get("cost_usd"),
+            "cost_usd": (cost_usd(rec.get("usage"), rec["family"],
+                                  rec.get("harness", "api"))
+                         if rec.get("usage") else rec.get("cost_usd")),
             "cost_estimated": rec.get("cost_estimated"),
             "duration_s": rec.get("duration_s"),
             "output_tokens": (rec.get("usage") or {}).get("output"),

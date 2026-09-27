@@ -96,8 +96,12 @@ generator only warns (`make lint-prose`), it cannot write the conclusions.
 ### 1. Register the family
 
 - [ ] `runner/run.py` → `DEFAULT_PRICES[family]` = `(input, cache_write, cache_read, output)` in $/MTok.
-      Cache write is 1.25× input for 5-minute caches. Say in a comment where the
-      prices came from (pricing page, or derived from the CLI's list-basis `costUSD`).
+      The table's cache_write column is the 5-minute rate (1.25× input); the
+      runner multiplies input by `CACHE_WRITE_MULT[harness]` instead (2× for
+      `claude-code`, which writes 1-hour caches). Verify the whole row against the
+      CLI: run `claude -p --model <id> --output-format json 'Reply OK'` and check
+      that your prices reproduce `modelUsage.<id>.costUSD` (costBasis "list")
+      exactly. Say in a comment where the prices came from.
 - [ ] `runner/sweep.py` → `GRID`: one row per effort *band*, placed next to the
       tier it belongs to (the grid runs cheap/fast bands first, `max` last).
 - [ ] `runner/aggregate.py` → `FAMILY_ORDER`: insert in tier order. This fixes

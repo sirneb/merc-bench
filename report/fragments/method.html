@@ -6,7 +6,7 @@
       <tr><td>Ground truth first</td><td>Reference implementations cross-checked against independently-written oracles and fuzzing (which caught two harness bugs before any model ran); solver-verified unique puzzles; executed code snippets; generator-computed ledger and simulation answers. All ground truth ships in <code>tasks/*/</code>.</td></tr>
       <tr><td>One variable at a time</td><td>Identical prompts per task across every configuration; only the model or its effort setting changes. Prompts ship verbatim in <code>tasks/*/prompt.txt</code>.</td></tr>
       <tr><td>Grading recomputed</td><td>Nothing is trusted from stored records except raw answers. <code>runner/aggregate.py</code> regrades every answer through the shipped graders on every build; <code>make verify</code> is the audit path.</td></tr>
-      <tr><td>Cost accounting</td><td>Per-run dollars (input + cache writes + cache reads + output, including retries) from the CLI's per-run usage report, priced at standard list rates. Subscription serving — costs are imputed, not billed.</td></tr>
+      <tr><td>Cost accounting</td><td>Per-run dollars (input + cache writes + cache reads + output, including retries) from the CLI's per-run usage report, priced at standard list rates, with cache writes at the harness's TTL rate (1-hour, 2× input, under Claude Code) and every price row verified against the CLI's list-basis cost fields. Costs are recomputed from stored token usage on every build. Subscription serving — costs are imputed, not billed.</td></tr>
       <tr><td>No tools</td><td>Tasks forbid tool use (tool access lets every tier self-verify to perfection, masking differences — measured in the archived tool-enabled rounds).</td></tr>
     </tbody>
   </table>

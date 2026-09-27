@@ -30,8 +30,11 @@ TASK_DIR = {
     "T7": "t07-knowledge-recall", "T8": "t08-regex-writing",
     "T9": "t09-bug-review", "T10": "t10-state-simulation", "E": "e-subtle-bugs",
 }
-DEFAULT_PRICES = {  # $/MTok: input, cache_write, cache_read, output
-    "haiku": (1.0, 1.25, 0.1, 5.0), "sonnet": (3.0, 3.75, 0.3, 15.0),
+DEFAULT_PRICES = {  # $/MTok: input, cache_write (5-minute cache), cache_read, output
+    "haiku": (1.0, 1.25, 0.1, 5.0),
+    # Sonnet 5 lists at $2/$10 (verified 2026-09-27 against the CLI's list-basis
+    # costUSD; the $3/$15 used before that date overstated every Sonnet cost ~1.5x)
+    "sonnet": (2.0, 2.5, 0.2, 10.0),
     "opus48": (5.0, 6.25, 0.5, 25.0), "opus5": (5.0, 6.25, 0.5, 25.0),
     "fable": (10.0, 12.5, 1.0, 50.0),
     # Fable 5.1: same $10/$50 list price as Fable 5; cache reads are $0.25/MTok
@@ -39,6 +42,9 @@ DEFAULT_PRICES = {  # $/MTok: input, cache_write, cache_read, output
     # Opus 5.5: $4/$20 list; cache reads $0.20/MTok (derived from Claude Code list-basis costUSD)
     "opus55": (4.0, 5.0, 0.2, 20.0),
 }
+# `claude -p` writes 1-hour caches, billed at 2x input rather than the 5-minute
+# 1.25x above. Verified for every family against the CLI's own costUSD.
+CACHE_WRITE_MULT = {"api": 1.25, "claude-code": 2.0}
 
 
 def load_task(tid):
@@ -130,7 +136,23 @@ def run_claude_code(model, effort, prompt, schema):
                  "cache_write": u.get("cache_creation_input_tokens", 0) or 0,
                  "cache_read": u.get("cache_read_input_tokens", 0) or 0,
                  "output": u.get("output_tokens", 0)}
+    # Provenance the CLI reports per attempt. `served` is the set of models that
+    # actually produced tokens: Claude Code silently falls back to another model
+    # after a safety-classifier refusal, and that answer must not be scored as
+    # the requested model.
+    mu = out.get("modelUsage") or {}
+    CLI_ATTEMPTS.append({
+        "served": sorted(mu.keys()),
+        "stop_reason": out.get("stop_reason"),
+        "num_turns": out.get("num_turns"),
+        "thinking_tokens": ((u.get("output_tokens_details") or {})
+                            .get("thinking_tokens")),
+        "total_cost_usd": out.get("total_cost_usd"),
+    })
     return answer, usage, dur
+
+
+CLI_ATTEMPTS = []  # reset per record in main(); appended by run_claude_code
 
 
 
@@ -189,11 +211,15 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
     return last_answer, usage_total, dur_total, tries, "; ".join(reason)
 
 
-def cost_usd(usage, family):
+def cost_usd(usage, family, harness="api"):
+    """List-price cost of a run. cache_write is billed at the harness's cache
+    TTL rate: the API runner writes 5-minute caches (the table's 1.25x), while
+    `claude -p` writes 1-hour caches (2x input)."""
     if not usage or family not in DEFAULT_PRICES:
         return None
     p = DEFAULT_PRICES[family]
-    return round((usage["input"] * p[0] + usage["cache_write"] * p[1]
+    cw = p[0] * CACHE_WRITE_MULT.get(harness, 1.25)
+    return round((usage["input"] * p[0] + usage["cache_write"] * cw
                   + usage["cache_read"] * p[2] + usage["output"] * p[3]) / 1e6, 4)
 
 
@@ -225,24 +251,47 @@ def main():
         print(f"[{tid}] running {args.model}@{args.effort} via {args.harness}...",
               flush=True)
         fn = run_api if args.harness == "api" else run_claude_code
+        del CLI_ATTEMPTS[:]
         answer, usage, dur, attempts, fail = attempt_with_retries(
             fn, args.model, args.effort, prompt, schema)
+        notes = []
+        if fail:
+            notes.append(f"answer failed validation after {attempts} attempts: {fail}")
+        elif attempts > 1:
+            notes.append(f"validated after {attempts} attempts (usage includes retries)")
         rec = {
             "task": tid, "model": args.model, "family": args.family,
             "effort": args.effort, "sample": args.sample,
             "harness": args.harness, "date": time.strftime("%Y-%m-%d"),
             "answer": answer,
             "usage": usage, "duration_s": round(dur, 1),
-            "cost_usd": cost_usd(usage, args.family),
+            "cost_usd": cost_usd(usage, args.family, args.harness),
             "cost_basis": "standard list prices, USD/MTok",
             "cost_estimated": usage is None,
-            "notes": (f"answer failed validation after {attempts} attempts: {fail}"
-                      if fail else
-                      (f"validated after {attempts} attempts (usage includes retries)"
-                       if attempts > 1 else "")),
+            "notes": "",
         }
         if fail:
             rec["invalid"] = True
+        if CLI_ATTEMPTS:
+            served = sorted({m for a in CLI_ATTEMPTS for m in a["served"]})
+            rec["cli"] = {
+                "attempts": CLI_ATTEMPTS[:],
+                "served_models": served,
+                "total_cost_usd": round(sum(a["total_cost_usd"] or 0
+                                            for a in CLI_ATTEMPTS), 4),
+            }
+            refusals = [a for a in CLI_ATTEMPTS if a["stop_reason"] == "refusal"]
+            if refusals:
+                notes.append(f"{len(refusals)} attempt(s) ended with stop_reason=refusal")
+            if any(a["num_turns"] and a["num_turns"] > 1 for a in CLI_ATTEMPTS):
+                notes.append("multi-turn continuation (output cap hit)")
+            wrong = [m for m in served if m != args.model]
+            if wrong:
+                # Claude Code's model_refusal_fallback answered with another model
+                rec["invalid"] = True
+                notes.append(f"served by {','.join(wrong)} instead of {args.model}"
+                             " (harness fallback); not a score for this model")
+        rec["notes"] = "; ".join(notes)
         fname = f"{tid.lower()}_{args.family}_{args.effort}_{args.sample}.json"
         path = os.path.join(outdir, fname)
         json.dump(rec, open(path, "w"), indent=1)
