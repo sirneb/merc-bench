@@ -97,6 +97,10 @@ def main():
     ap.add_argument("--harness", default="claude-code")
     ap.add_argument("--families", default="",
                     help="comma list of families to run (default: whole grid)")
+    ap.add_argument("--max-configs", type=int, default=0,
+                    help="run at most N configs that still have missing tasks, "
+                         "cheapest bands first (0 = all). For pacing a sweep "
+                         "over days without exhausting a usage window.")
     ap.add_argument("--passes", type=int, default=3,
                     help="max sweep passes; between passes, invalid records "
                          "(transient transport/limit failures) are deleted and refilled")
@@ -106,6 +110,10 @@ def main():
     fams = {f for f in args.families.split(",") if f}
     jobs = [(f, m, e) for f, m, efforts in GRID for e in efforts
             if not fams or f in fams]
+    if args.max_configs:
+        jobs = [j for j in jobs if missing_tasks(j[0], j[2], sample)][:args.max_configs]
+        print(f"pacing: {len(jobs)} config(s) this run: "
+              + ", ".join(f"{f}@{e}" for f, m, e in jobs), flush=True)
     for p in range(args.passes):
         with ThreadPoolExecutor(max_workers=args.workers) as ex:
             futs = [ex.submit(run_config, f, m, e, sample, args.harness)
