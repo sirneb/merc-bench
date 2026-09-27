@@ -12,4 +12,4 @@ Write-only correctness: the model cannot test its patterns; the grader executes 
 
 ## What we found
 
-Saturated on score (8/8 everywhere, one Haiku@low 7/8) with a large efficiency tell: cost and wall-clock vary by an order of magnitude for the same result.
+Saturated on score (8/8 everywhere; one Haiku@low and one Fable 5.1@low sample 7/8) with a large efficiency tell: cost and wall-clock vary by an order of magnitude for the same result.

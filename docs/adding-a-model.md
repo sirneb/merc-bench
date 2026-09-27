@@ -169,9 +169,10 @@ contradict this sentence?* Ranked by how often a new model has broken them:
 
 ### 6. Verify and ship
 
-- [ ] `make lint-prose` — fails if a family in `config.json` is missing from
-      the findings, the decision chart, or the README headline table. Passing
-      it is necessary, not sufficient; it cannot check that what you wrote is right.
+- [ ] `make lint-prose` (also run by `make verify`) — fails if a family in
+      `config.json` is missing from the findings, the decision chart, or the
+      README headline table. Passing it is necessary, not sufficient; it cannot
+      check that what you wrote is right.
 - [ ] Commit data and prose together, then `make verify` → `VERIFY OK`
       (verify compares against the committed baseline, so run it after the commit).
 - [ ] PR description: the per-effort table (cost, time, clean?), the floor,

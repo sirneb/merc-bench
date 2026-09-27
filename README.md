@@ -19,8 +19,10 @@ cheapest config), and the tasks that don't define each tier's **perfection floor
 
 "Clean" means zero points dropped in **every** replicate. The floors follow
 neither the price list nor the generation order; four of the grid's ten
-replicated-clean configs belong to Opus 5, and Opus 5.5 lands a close second
-(`@xhigh`, 30 cents more), despite a lower list price than Opus 5. Replication killed three of our own
+replicated-clean configs belong to Opus 5; Opus 5.5 lands a close second
+(`@xhigh`, 30 cents more) — its lower list price is paid back in two extra
+effort steps — and Fable 5.1 moves the Fable tier's floor down one step to
+`@xhigh`. Replication killed three of our own
 single-sample headlines (Opus 4.8@low's sweep, Sonnet@xhigh's crossing, "max
 never wins") — the full story is in the report. Full findings: open
 [`site/report.html`](site/report.html) (or regenerate it, below).

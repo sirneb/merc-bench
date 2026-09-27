@@ -12,4 +12,4 @@ Precision aggregation at scale: balances, filtered counts, running-threshold det
 
 ## What we found
 
-The wall battery — the dataset's lone hard separator, and the noisiest cell in the grid: Opus 4.8 spans 3-6/6 across replicates at every effort, Haiku 2-5/6. Only Opus 5 (medium up), Sonnet@max and Fable@max held 6/6 in both replicates. The biggest token grinds live here.
+The wall battery — the dataset's lone hard separator, and the noisiest cell in the grid: Opus 4.8 spans 3-6/6 across replicates at every effort, Haiku 2-5/6. Only Opus 5 (medium up), Opus 5.5 (medium up), Fable 5.1 (every effort), Sonnet@max and Fable 5@max held 6/6 in both replicates; Opus 5.5@low dropped one (4-5/6). The biggest token grinds live here.
