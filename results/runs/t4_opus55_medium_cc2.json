@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile, busy applications keep asking databases the same questions, so engineers place a cache in front of slow storage; this layer answers repeated reads from memory. A good cache lowers latency and helps systems survive sudden heavy traffic spikes gracefully.\n\nHowever, caching introduces difficult tradeoffs that every team must weigh carefully. Stale data appears when the underlying rows change but cached copies remain; invalidation therefore becomes the hardest part of the design. Common strategies include time based expiry, write through updates, and explicit eviction triggered by application events. Each approach trades freshness against cache speed.\n\nAlong with this, a good plan must track hit ratios, monitor how much RAM is in play, and allow for sharding as traffic grows. Without such work, a fast copy of hot rows can quickly turn into a costly, confusing load for all staff.\n\nFinally, measure results before and after adding any cache; only then can you honestly say the optimization work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 10860,
+  "cache_read": 11320,
+  "output": 2551
+ },
+ "duration_s": 24.6,
+ "cost_usd": 0.1076,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

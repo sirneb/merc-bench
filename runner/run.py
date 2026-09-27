@@ -36,6 +36,8 @@ DEFAULT_PRICES = {  # $/MTok: input, cache_write, cache_read, output
     "fable": (10.0, 12.5, 1.0, 50.0),
     # Fable 5.1: same $10/$50 list price as Fable 5; cache reads are $0.25/MTok
     "fable51": (10.0, 12.5, 0.25, 50.0),
+    # Opus 5.5: $4/$20 list; cache reads $0.20/MTok (derived from Claude Code list-basis costUSD)
+    "opus55": (4.0, 5.0, 0.2, 20.0),
 }
 
 

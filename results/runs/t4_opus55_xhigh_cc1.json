@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile modern applications lean heavily on databases, and every slow query hurts users. A cache stores frequently requested data in fast memory; this simple idea can cut latency dramatically. Teams often place a cache between the application and the database.\n\nHowever well designed, consistency remains the hardest part. When a record changes in the database, stale copies must be invalidated or refreshed; otherwise users may see outdated values. Common strategies include write-through, write-behind, and time-based expiration. Choosing the right cache policy depends on workload patterns, tolerance for staleness, and how expensive a cache miss becomes.\n\nAlong this path, monitoring is vital. Admins track hit ratios daily; a low ratio signals lost RAM and poor tuning. Good dashboards, strict limits, and solid warm-up plans all assist a busy app during traffic bursts, so it stays quick and handy for millions of visitors.\n\nFinally teams must measure performance before and after adding a cache, since only real numbers prove the work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12557,
+  "cache_read": 11320,
+  "output": 5846
+ },
+ "duration_s": 51.8,
+ "cost_usd": 0.182,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

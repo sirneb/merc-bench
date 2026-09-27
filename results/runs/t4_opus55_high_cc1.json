@@ -1,0 +1,23 @@
+{
+ "task": "T4",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "text": "Meanwhile busy applications keep asking the database for identical rows, and every request burns precious time; a cache placed in front of that database can answer repeated queries straight from memory, sparing disks and network hops while users enjoy speed.\n\nHowever every cache introduces a hard question about freshness. When someone updates a record, the stored copy may become stale; teams therefore choose expiration timers, explicit invalidation, or write-through policies. Each approach trades simplicity against accuracy. A poorly tuned cache can serve wrong answers, while an oversized cache wastes memory that other services might need.\n\nAlong with quick lookups, a fast copy pool brings calm to a busy data hub; it absorbs traffic bursts, cuts load on primary disks, and allows a small group of hosts to withstand a flood of calls without crashing or stalling during rush hours.\n\nFinally measure hit rates and latency often, because a cache nobody monitors quietly decays until someone notices nothing was done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12033,
+  "cache_read": 11320,
+  "output": 2626
+ },
+ "duration_s": 25.9,
+ "cost_usd": 0.115,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
