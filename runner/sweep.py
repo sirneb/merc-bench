@@ -75,14 +75,22 @@ def next_auto_sample():
 
 
 def clean_invalid(sample):
-    """Delete invalid records for this sample so a rerun can refill them."""
+    """Move invalid records for this sample out of results/runs so a rerun can
+    refill them. They are kept under results/invalid/ (timestamped) because
+    the attempt provenance in them — stop_reason, served model, token counts —
+    is the only evidence of *why* a cell failed."""
     import json
+    import time
     removed = 0
+    keep = os.path.join(ROOT, "results", "invalid")
     for f in glob.glob(os.path.join(ROOT, "results", "runs",
                                     f"*_{sample}.json")):
         try:
             if json.load(open(f)).get("invalid"):
-                os.remove(f)
+                os.makedirs(keep, exist_ok=True)
+                stamp = time.strftime("%Y%m%d-%H%M%S")
+                os.replace(f, os.path.join(
+                    keep, os.path.basename(f)[:-5] + f".{stamp}.json"))
                 removed += 1
         except Exception:
             pass
