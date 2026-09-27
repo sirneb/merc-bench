@@ -4,6 +4,10 @@
 Written from the prompt text only: it parses prompt.txt (the opcode prose is
 implemented by hand below, NOT imported from generator.py), executes both
 programs, and compares against key.json.  Exit code 0 iff every field agrees.
+It also re-derives the "live" register / memory sets that the grader scores
+(registers whose destination is written by an instruction after the leading
+SET block; memory cells whose final value differs from the initial one) and
+checks them against key.json meta.
 
     python oracle.py                 # verify the shipped prompt/key
     python oracle.py --fuzz 1000     # lock-step comparison against the
@@ -78,9 +82,22 @@ def rot_left(v, k):
     return int(bits[k:] + bits[:k], 2)
 
 
+# opcodes whose FIRST operand is a destination register (from the syntax column)
+WRITES_RD = {"SET", "ADD", "ADDI", "SUB", "MUL", "DIV", "AND", "XOR", "ROT", "LD"}
+
+
+def setup_length(prog):
+    n = 0
+    while n < len(prog) and prog[n][0] == "SET":
+        n += 1
+    return n
+
+
 def execute(prog, memory, on_state=None):
-    st = {"r": [0] * 8, "m": list(memory), "pc": 0, "out": [], "n": 0, "halted": False}
+    st = {"r": [0] * 8, "m": list(memory), "pc": 0, "out": [], "n": 0, "halted": False,
+          "written": set()}
     R, M = st["r"], st["m"]
+    setup = setup_length(prog)
 
     def val(o):          # operand value: register content or literal
         return R[o[1]] if o[0] == "r" else o[1]
@@ -96,6 +113,8 @@ def execute(prog, memory, on_state=None):
         op, o = prog[pc]
         st["n"] += 1
         nxt = pc + 1
+        if op in WRITES_RD and pc >= setup:
+            st["written"].add(o[0][1])
         if op == "HLT":
             st["halted"] = True
             st["pc"] = pc + 1
@@ -137,13 +156,19 @@ def execute(prog, memory, on_state=None):
             raise ValueError("unknown opcode %s" % op)
         st["pc"] = nxt
     return {"out_stream": st["out"], "final_registers": R, "final_memory": M,
-            "steps_executed": st["n"], "halted": st["halted"]}
+            "steps_executed": st["n"], "halted": st["halted"],
+            "_live": {"registers": sorted(st["written"]),
+                      "memory": [i for i in range(16) if M[i] != memory[i]]}}
 
 
 def verify_shipped(quiet=False):
     prompt = open(os.path.join(HERE, "prompt.txt")).read()
-    key = json.load(open(os.path.join(HERE, "key.json")))["answer"]
+    kj = json.load(open(os.path.join(HERE, "key.json")))
+    key = kj["answer"]
     programs = parse_prompt(prompt)
+    if kj["meta"].get("out_counts_in_prompt") is False:
+        assert "emits" not in prompt.split("=== WHAT TO REPORT ===")[1], \
+            "prompt states OUT counts although meta says it should not"
     ok = True
     for tag in ("A", "B"):
         got = execute(*programs[tag])
@@ -154,10 +179,16 @@ def verify_shipped(quiet=False):
                 ok = False
                 print("MISMATCH Program %s %s:\n  oracle %r\n  key    %r"
                       % (tag, field, got[field], want[field]))
+        want_live = kj["meta"]["programs"][tag]["live"]
+        if got["_live"] != want_live:
+            ok = False
+            print("MISMATCH Program %s live sets:\n  oracle %r\n  key    %r"
+                  % (tag, got["_live"], want_live))
         if not quiet:
-            print("Program %s: %d steps, %d outs, halted=%s -> %s"
+            print("Program %s: %d steps, %d outs, halted=%s, live regs=%s, live mem=%s -> %s"
                   % (tag, got["steps_executed"], len(got["out_stream"]),
-                     got["halted"], "agrees with key" if ok else "DISAGREES"))
+                     got["halted"], got["_live"]["registers"], got["_live"]["memory"],
+                     "agrees with key" if ok else "DISAGREES"))
     return ok
 
 
@@ -199,7 +230,8 @@ def fuzz(n, seed=7):
         got = execute(parsed, memory,
                       on_state=lambda s: orc_states.append((s["pc"], tuple(s["r"]), tuple(s["m"]), len(s["out"]))))
         want = {"out_stream": ref.out, "final_registers": ref.reg, "final_memory": ref.mem,
-                "steps_executed": ref.steps, "halted": ref.halted}
+                "steps_executed": ref.steps, "halted": ref.halted,
+                "_live": {"registers": ref.live_registers(), "memory": ref.live_memory(memory)}}
         if not ref.halted:
             capped += 1
         if got != want or ref_states != orc_states:

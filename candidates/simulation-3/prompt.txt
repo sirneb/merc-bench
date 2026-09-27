@@ -13,7 +13,7 @@ You are the operations analyst of a small cold-chain distribution network. Below
 
 ## 3. Daily phases
 PHASE 1 — RECEIVE.
-  (a) CENTRAL: on each supplier delivery day listed in section 7, a lot of the listed quantity with expiry day = (delivery day + 18) is added to CENTRAL's stock. There are no other sources of stock.
+  (a) CENTRAL: on each supplier delivery day listed in section 7, one lot of the listed quantity with the listed expiry day is added to CENTRAL's stock. Remaining shelf life differs from delivery to delivery, so a later delivery may expire BEFORE an earlier one. There are no other sources of stock.
   (b) DEPOTS: every shipment whose arrival day equals today is added to the destination depot's stock lot by lot, keeping each lot's expiry day. Every unit that arrives counts toward that depot's units_received — even if the lot is discarded in phase 2 of the same day.
 PHASE 2 — EXPIRE.
   At every location (CENTRAL and each depot) every lot whose expiry day is LESS THAN OR EQUAL TO today is discarded in full. Discarded units count toward that location's total_expired. Consequently a lot with expiry day E can be used to serve or ship on days up to and including E-1, and is destroyed at phase 2 of day E. Nothing else expires at any other point of the day.
@@ -41,11 +41,13 @@ CENTRAL:
 - total_cancelled: total units of orders cancelled in phase 5 over the horizon.
 - total_expired: units discarded at CENTRAL in phase 2 over the horizon.
 Network:
-- fill_rate: (total units of demand served on the day it arose, i.e. the sum of phase-3 step-2 quantities over all depots and days 1–30) ÷ (total demand of all depots on days 1–30), rounded to 4 decimal places. Backorders served on a later day do NOT count toward the numerator.
+- same_day_served: total units of demand served on the day it arose, i.e. the sum of the phase-3 step-2 quantities over all depots and days 1–30. Backorders served on a later day (step 1) do NOT count.
+- total_demand: the sum of every cell of the demand table (all depots, days 1–30), whether or not it was served.
+- fill_rate: same_day_served ÷ total_demand, rounded to 4 decimal places.
 
 ## 5. Worked mini-example (different, tiny scenario — same rules)
 To pin down every rule, here is a complete 3-day run of a toy network with 2 depots. It is NOT the scenario you must solve.
-  Toy parameters: one supplier delivery of 36 units on day 1 with expiry day = delivery day + 12 = 13. Depot A: lead time 1, s=10, S=20. Depot B: lead time 3, s=12, S=20.
+  Toy parameters: one supplier delivery of 36 units on day 1 with expiry day 13. Depot A: lead time 1, s=10, S=20. Depot B: lead time 3, s=12, S=20.
   Day-0 state: CENTRAL lots: 10 units exp day 2, 12 units exp day 5. Depot A lots: 6 units exp day 1, 8 units exp day 4. Depot B lots: 5 units exp day 3. In transit at day 0: 4 units exp day 2 to depot B, arriving day 1. No backorders.
   Demand: day 1 A=5 B=7; day 2 A=9 B=6; day 3 A=11 B=3.
   Trace ('exp d4' means expiry day 4; 'IP=a+b-c' is on-hand + in-transit − backorders):
@@ -71,73 +73,72 @@ To pin down every rule, here is a complete 3-day run of a toy network with 2 dep
     P5 ALLOCATE: priority B>A (ratios B=7/20, A=0/20); CENTRAL on hand 4; B: ships 4 (4 exp d13) arriving d6, cancels 5; A: ships 0, cancels 11
     END: A: on_hand 9 bo 0 in_transit 0 | B: on_hand 0 bo 7 in_transit 22 | CENTRAL 0 | cum same-day served 34/41, cancelled 16
   Toy answer JSON (checkpoint day 3):
-  {"checkpoints":{"3":{"A":{"on_hand":9,"backorders":0,"in_transit":0},"B":{"on_hand":0,"backorders":7,"in_transit":22}}},"depots":{"A":{"total_expired":16,"stockout_days":0,"units_received":36},"B":{"total_expired":0,"stockout_days":2,"units_received":4}},"central":{"final_on_hand":0,"total_cancelled":16,"total_expired":0},"fill_rate":0.8293}
+  {"checkpoints":{"3":{"A":{"on_hand":9,"backorders":0,"in_transit":0},"B":{"on_hand":0,"backorders":7,"in_transit":22}}},"depots":{"A":{"total_expired":16,"stockout_days":0,"units_received":36},"B":{"total_expired":0,"stockout_days":2,"units_received":4}},"central":{"final_on_hand":0,"total_cancelled":16,"total_expired":0},"same_day_served":34,"total_demand":41,"fill_rate":0.8293}
   Note in particular: the 10 units that reached depot A on day 2 with expiry day 2 count as received AND as expired; on day 2 depot B ordered nothing because its in-transit units kept IP >= s even though it had backorders; on day 3 depot B's backorders were served before its new demand and only the new demand served counts for fill_rate; on day 3 the order priority was B before A because B's shortfall ratio was higher, so B got the last units and A's whole order was cancelled; and cancelled quantities were never carried over.
 
 ## 6. Starting state of THIS scenario (end of day 0)
-CENTRAL lots: 121 units expiring day 4; 91 units expiring day 9.
-Depot A lots: 19 units expiring day 5; 13 units expiring day 7.
-Depot B lots: 25 units expiring day 5; 14 units expiring day 10.
-Depot C lots: 30 units expiring day 3; 19 units expiring day 7.
-Depot D lots: 32 units expiring day 5; 27 units expiring day 8.
-In transit at day 0: to depot A, arriving day 1: 28 units expiring day 9.
-In transit at day 0: to depot C, arriving day 1: 42 units expiring day 6.
+CENTRAL lots: 103 units expiring day 4; 77 units expiring day 10.
+Depot A lots: 39 units expiring day 5; 24 units expiring day 7.
+Depot B lots: 13 units expiring day 4; 12 units expiring day 9.
+Depot C lots: 14 units expiring day 4; 9 units expiring day 7.
+Depot D lots: 22 units expiring day 3; 22 units expiring day 7.
+In transit at day 0: to depot A, arriving day 1: 30 units expiring day 8.
 Backorders at day 0: none at any depot.
 
 ## 7. Depot parameters
-Depot A: lead time 2 days, s = 18, S = 42.
-Depot B: lead time 2 days, s = 24, S = 56.
-Depot C: lead time 3 days, s = 39, S = 73.
-Depot D: lead time 4 days, s = 44, S = 74.
-CENTRAL supplier deliveries (each arrives in phase 1 of the listed day as one lot expiring on delivery day + 18):
-  Day 01: 151 units (expiry day 19)
-  Day 05: 151 units (expiry day 23)
-  Day 08: 60 units (expiry day 26)
-  Day 12: 151 units (expiry day 30)
-  Day 15: 196 units (expiry day 33)
-  Day 19: 151 units (expiry day 37)
-  Day 22: 151 units (expiry day 40)
-  Day 26: 151 units (expiry day 44)
-  Day 29: 106 units (expiry day 47)
+Depot A: lead time 3 days, s = 39, S = 83.
+Depot B: lead time 2 days, s = 14, S = 35.
+Depot C: lead time 3 days, s = 15, S = 30.
+Depot D: lead time 2 days, s = 24, S = 55.
+CENTRAL supplier deliveries (each arrives in phase 1 of the listed day as ONE lot with the listed expiry day; note the expiry days are not in delivery order):
+  Day 01: 52 units (expiry day 15)
+  Day 05: 129 units (expiry day 11)
+  Day 08: 168 units (expiry day 22)
+  Day 12: 129 units (expiry day 20)
+  Day 15: 284 units (expiry day 21)
+  Day 19: 52 units (expiry day 33)
+  Day 22: 129 units (expiry day 36)
+  Day 26: 206 units (expiry day 37)
+  Day 29: 129 units (expiry day 47)
 
 ## 8. Demand table (units demanded per depot per day, days 1–30)
 Each cell is labelled depot=units.
-Day 01: A=14  B=7  C=6  D=5
-Day 02: A=12  B=20  C=21  D=38
-Day 03: A=16  B=9  C=15  D=4
-Day 04: A=8  B=0  C=23  D=11
-Day 05: A=11  B=16  C=17  D=6
-Day 06: A=7  B=5  C=4  D=4
-Day 07: A=10  B=6  C=6  D=16
-Day 08: A=21  B=16  C=6  D=12
-Day 09: A=9  B=21  C=22  D=6
-Day 10: A=8  B=13  C=19  D=30
-Day 11: A=15  B=20  C=21  D=17
-Day 12: A=14  B=6  C=19  D=12
-Day 13: A=9  B=5  C=7  D=4
-Day 14: A=10  B=11  C=5  D=6
-Day 15: A=6  B=12  C=9  D=16
-Day 16: A=15  B=14  C=9  D=9
-Day 17: A=12  B=7  C=7  D=5
-Day 18: A=16  B=43  C=13  D=21
-Day 19: A=12  B=15  C=0  D=17
-Day 20: A=10  B=4  C=10  D=7
-Day 21: A=9  B=16  C=14  D=7
-Day 22: A=12  B=8  C=13  D=7
-Day 23: A=0  B=17  C=17  D=8
-Day 24: A=5  B=14  C=13  D=0
-Day 25: A=7  B=17  C=14  D=17
-Day 26: A=7  B=13  C=9  D=7
-Day 27: A=3  B=12  C=21  D=9
-Day 28: A=8  B=1  C=6  D=4
-Day 29: A=13  B=10  C=6  D=8
-Day 30: A=16  B=17  C=19  D=15
+Day 01: A=15  B=4  C=6  D=7
+Day 02: A=14  B=8  C=4  D=15
+Day 03: A=7  B=7  C=3  D=7
+Day 04: A=10  B=13  C=9  D=34
+Day 05: A=12  B=7  C=0  D=17
+Day 06: A=5  B=5  C=2  D=5
+Day 07: A=7  B=6  C=1  D=11
+Day 08: A=17  B=10  C=6  D=12
+Day 09: A=12  B=12  C=0  D=6
+Day 10: A=12  B=0  C=5  D=16
+Day 11: A=0  B=11  C=3  D=10
+Day 12: A=12  B=12  C=10  D=16
+Day 13: A=6  B=5  C=4  D=10
+Day 14: A=12  B=12  C=2  D=11
+Day 15: A=12  B=11  C=3  D=5
+Day 16: A=36  B=4  C=5  D=15
+Day 17: A=5  B=3  C=3  D=7
+Day 18: A=0  B=0  C=7  D=17
+Day 19: A=15  B=11  C=7  D=11
+Day 20: A=8  B=5  C=4  D=5
+Day 21: A=11  B=6  C=2  D=9
+Day 22: A=0  B=10  C=7  D=18
+Day 23: A=15  B=4  C=3  D=16
+Day 24: A=8  B=5  C=14  D=4
+Day 25: A=9  B=7  C=4  D=0
+Day 26: A=0  B=4  C=5  D=11
+Day 27: A=13  B=7  C=2  D=9
+Day 28: A=34  B=5  C=5  D=15
+Day 29: A=16  B=4  C=3  D=5
+Day 30: A=6  B=0  C=5  D=21
 
 ## 9. Output format
-Return ONLY one JSON object (no prose, no markdown fences, no comments) with exactly this shape. Checkpoint days are 10, 20, 30. All values except fill_rate are non-negative integers; fill_rate is a number with 4 decimal places.
+Return ONLY one JSON object (no prose, no markdown fences, no comments) with exactly this shape. Checkpoint days are 15, 22, 30. All values except fill_rate are non-negative integers; fill_rate is a number with 4 decimal places.
 {
  "checkpoints": {
-  "10": {
+  "15": {
    "A": {
     "on_hand": 0,
     "backorders": 0,
@@ -159,7 +160,7 @@ Return ONLY one JSON object (no prose, no markdown fences, no comments) with exa
     "in_transit": 0
    }
   },
-  "20": {
+  "22": {
    "A": {
     "on_hand": 0,
     "backorders": 0,
@@ -231,7 +232,9 @@ Return ONLY one JSON object (no prose, no markdown fences, no comments) with exa
   "total_cancelled": 0,
   "total_expired": 0
  },
+ "same_day_served": 0,
+ "total_demand": 0,
  "fill_rate": 0.0
 }
 
-Scoring is per field with partial credit, so fill in every field with your best value even if you are unsure of some. Do not output anything except the JSON object.
+Scoring: every value is graded exactly against the reference simulation, with partial credit across fields. At each checkpoint a depot's on_hand and backorders are scored together as one item (both must be right) and its in_transit as another; per-depot totals and CENTRAL figures are scored one by one; same_day_served, total_demand and fill_rate are each scored on their own (fill_rate must match to 4 decimal places, there is no tolerance band). Fill in every field with your best value even if you are unsure of some. Do not output anything except the JSON object.

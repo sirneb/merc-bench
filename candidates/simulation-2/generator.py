@@ -16,7 +16,15 @@ data-dependent length, and LD/ST memory scrambling) with random filler
 arithmetic, then a seed search keeps only programs that halt, hit the target
 step count within 5 %, exercise every opcode, fire every trap semantics
 (saturating SUB, signed JLT, DIV-by-zero, wrap-around ADD) at least 3 times,
-and emit an output stream with no period <= 8.
+emit an output stream with no period <= 8, do not emit a statically
+readable constant as the first OUT, and have no JLT that is taken exactly
+half the times it executes (or never / always).
+
+The shipped default is the `hard` preset (Program A ~400 steps with an
+inner loop, Program B ~1,100 steps with mask 7); `medium` is kept as a
+calibration rung.  key.json carries, per program, the set of "live" cells
+(registers written after the setup block, memory cells whose value changed),
+which is all the grader scores for registers/memory.
 """
 import argparse
 import json
@@ -48,7 +56,7 @@ def rotl(v, k):
 # Reference machine
 # --------------------------------------------------------------------------
 class Machine:
-    def __init__(self, program, memory, step_cap=STEP_CAP):
+    def __init__(self, program, memory, step_cap=STEP_CAP, setup_len=None):
         self.prog = program
         self.mem = list(memory)
         self.reg = [0] * NREG
@@ -62,10 +70,26 @@ class Machine:
         self.opcount = Counter()
         self.trace = []          # (step, pc, text, effect) for the first N steps
         self.trace_limit = 0
+        # "setup" = the leading run of SET instructions; registers first written
+        # after it are the live registers the grader scores.
+        self.setup_len = setup_len if setup_len is not None else leading_sets(program)
+        self.cur_pc = 0
+        self.written_after_setup = set()
+        self.jlt_exec = Counter()    # static pc -> times executed
+        self.jlt_taken = Counter()   # static pc -> times taken
+        self.out_src = []            # (register, written_after_setup?) per OUT
 
     # helpers used by the dispatch table
     def w(self, rd, val):
         self.reg[rd] = val & MASK
+        if self.cur_pc >= self.setup_len:
+            self.written_after_setup.add(rd)
+
+    def live_registers(self):
+        return sorted(self.written_after_setup)
+
+    def live_memory(self, initial):
+        return [i for i in range(MEMSZ) if self.mem[i] != initial[i]]
 
     def trap(self, name):
         self.traps[name] += 1
@@ -85,6 +109,7 @@ class Machine:
             name, ops = ins[0], ins[1:]
             before = (list(self.reg), list(self.mem), len(self.out))
             cur_pc = self.pc
+            self.cur_pc = cur_pc
             self.steps += 1
             self.opcount[name] += 1
             nxt = OPFN[name](self, ops)
@@ -110,6 +135,15 @@ class Machine:
         if self.halted:
             eff.append("HALT")
         return ", ".join(eff) if eff else "(no change)"
+
+
+def leading_sets(program):
+    n = 0
+    for ins in program:
+        if ins[0] != "SET":
+            break
+        n += 1
+    return n
 
 
 def _hlt(m, o):
@@ -181,6 +215,7 @@ def _st(m, o):
 
 def _out(m, o):
     m.out.append(m.reg[o[0]])
+    m.out_src.append((o[0], o[0] in m.written_after_setup))
 
 
 def _jmp(m, o):
@@ -192,6 +227,9 @@ def _jlt(m, o):
     s = signed(a) < signed(b)
     if s != (a < b):
         m.trap("jlt_signed_differs")
+    m.jlt_exec[m.cur_pc] += 1
+    if s:
+        m.jlt_taken[m.cur_pc] += 1
     return o[2] if s else None
 
 
@@ -483,7 +521,17 @@ def has_short_period(seq, maxp=8):
     return False
 
 
-def acceptable(m, program, cfg):
+def static_constants(program, memory):
+    """Values a zero-execution reader can lift straight off the listing: the
+    setup immediates, the initial memory cells and 0 (an unset register)."""
+    consts = {0}
+    for ins in program[:leading_sets(program)]:
+        consts.add(ins[2])
+    consts.update(memory)
+    return consts
+
+
+def acceptable(m, program, cfg, memory=None):
     tgt = cfg["steps"]
     if not m.halted:
         return "nohalt"
@@ -505,6 +553,21 @@ def acceptable(m, program, cfg):
         return "periodic"
     if len(set(m.out)) < 0.6 * len(m.out):
         return "repetitive"
+    # first OUT must not be a constant a static read could copy: the emitting
+    # register has to have been written since setup AND the value must not
+    # equal a setup immediate / initial memory cell / 0
+    if m.out_src and not m.out_src[0][1]:
+        return "first_out_constant"
+    if memory is not None and m.out[0] in static_constants(program, memory):
+        return "first_out_constant"
+    # every JLT must be genuinely data-dependent: not never/always taken, and
+    # not taken exactly half of the times it executes
+    for pc, n in m.jlt_exec.items():
+        t = m.jlt_taken[pc]
+        if n >= 2 and (t == 0 or t == n):
+            return "jlt_dead"
+        if n >= 2 and 2 * t == n:
+            return "jlt_half"
     if cfg.get("max_insts") and len(program) > cfg["max_insts"]:
         return "long"
     return None
@@ -516,7 +579,7 @@ def search(seed, tag, cfg, max_cand=200000):
         rng = random.Random("%s|%s|%d" % (seed, tag, cand))
         program, memory = build_program(rng, cfg)
         m = Machine(program, memory).run()
-        why = acceptable(m, program, cfg)
+        why = acceptable(m, program, cfg, memory)
         if why is None:
             return program, memory, cand, reasons
         reasons[why] += 1
@@ -530,23 +593,32 @@ def search(seed, tag, cfg, max_cand=200000):
 def preset(name):
     """Difficulty knob. steps = target executed-step count (+-5 %), outs =
     number of OUT values, inner = data-dependent inner loop, mask_pool = the
-    AND mask bounding the inner-loop trip count (mask+1 max trips)."""
+    AND mask bounding the inner-loop trip count (mask+1 max trips).  show_out_counts controls
+    whether the prompt states how many values each program emits (easy and
+    medium do; hard and extreme make the model find out by running the
+    program)."""
     base_a = dict(outs=20, outs_per_iter=1, fillers=(2, 4), jlt_blocks=1,
-                  mem_segments=1, inner=False, mask_pool=[1], max_insts=32)
+                  mem_segments=1, inner=False, mask_pool=[1], max_insts=32,
+                  show_out_counts=True)
     base_b = dict(outs=40, outs_per_iter=2, fillers=(6, 9), jlt_blocks=2,
-                  mem_segments=2, inner=True, mask_pool=[3, 7], max_insts=56)
+                  mem_segments=2, inner=True, mask_pool=[3, 7], max_insts=56,
+                  show_out_counts=True)
     P = {
         "easy":    (dict(base_a, steps=150, outs=10),
                     dict(base_b, steps=400, outs=20)),
         "medium":  (dict(base_a, steps=300),
                     dict(base_b, steps=900)),
-        "hard":    (dict(base_a, steps=400, inner=True),
-                    dict(base_b, steps=1100, mask_pool=[7])),
-        "extreme": (dict(base_a, steps=600, outs=30, inner=True, mask_pool=[3]),
+        "hard":    (dict(base_a, steps=400, inner=True, show_out_counts=False),
+                    dict(base_b, steps=1100, mask_pool=[7], show_out_counts=False)),
+        "extreme": (dict(base_a, steps=600, outs=30, inner=True, mask_pool=[3],
+                         show_out_counts=False),
                     dict(base_b, steps=3000, outs=60, mask_pool=[7, 15],
-                         fillers=(8, 12), max_insts=64)),
+                         fillers=(8, 12), max_insts=64, show_out_counts=False)),
     }
     return P[name]
+
+
+DEFAULT_DIFFICULTY = "hard"
 
 
 # --------------------------------------------------------------------------
@@ -576,13 +648,13 @@ PROMPT_TAIL = """
 === WHAT TO REPORT ===
 
 For each program, report the state at the moment the machine stopped:
-- out_stream: every value passed to OUT, in order (Program A emits %(outs_a)d values, Program B emits %(outs_b)d).
+- out_stream: every value passed to OUT, in order%(out_counts)s.
 - final_registers: [r0, r1, r2, r3, r4, r5, r6, r7] - exactly 8 integers in that order.
 - final_memory: [mem[0], ..., mem[15]] - exactly 16 integers in that order.
 - steps_executed: the total number of instructions executed, including the HLT.
 - halted: true if the machine stopped on HLT.
 
-Scoring note: out_stream is scored by its longest correct PREFIX, so an exact partial stream earns more than a complete but drifted one. Registers and memory are scored per element. Do not skip loop iterations or estimate - every value depends on every earlier step.
+Scoring note: out_stream is scored half by its longest correct PREFIX and half by how many positions match, so a stream that drifts early loses most of its points while an isolated slip costs little. Registers and memory are scored per element, and only cells the program actually changes count (report all of them anyway). steps_executed earns credit only when exact. Do not skip loop iterations or estimate - every value depends on every earlier step.
 
 === OUTPUT FORMAT ===
 
@@ -629,7 +701,7 @@ SCHEMA = {
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=2026)
-    ap.add_argument("--difficulty", default="medium",
+    ap.add_argument("--difficulty", default=DEFAULT_DIFFICULTY,
                     choices=["easy", "medium", "hard", "extreme"])
     ap.add_argument("--steps-a", type=int, help="override Program A target step count")
     ap.add_argument("--steps-b", type=int, help="override Program B target step count")
@@ -644,6 +716,7 @@ def main():
 
     key = {"answer": {}, "meta": {"seed": args.seed, "difficulty": args.difficulty,
                                   "targets": {"A": cfg_a["steps"], "B": cfg_b["steps"]},
+                                  "out_counts_in_prompt": bool(cfg_a["show_out_counts"] and cfg_b["show_out_counts"]),
                                   "programs": {}}}
     progs = {}
     for tag, cfg in (("A", cfg_a), ("B", cfg_b)):
@@ -663,16 +736,29 @@ def main():
             "rejections": dict(reasons),
             "trap_counts": dict(m.traps),
             "opcode_exec_counts": dict(m.opcount),
+            "setup_len": m.setup_len,
+            # the grader scores ONLY these registers / memory cells
+            "live": {"registers": m.live_registers(),
+                     "memory": m.live_memory(memory)},
+            "jlt": {str(pc): {"executed": n, "taken": m.jlt_taken[pc]}
+                    for pc, n in sorted(m.jlt_exec.items())},
+            "first_out": {"register": m.out_src[0][0], "value": m.out[0]},
             "initial_memory": memory,
             "listing": render_listing(program).split("\n"),
             "trace_first_40": ["step %d  pc=%d  %-22s -> %s" % t for t in m.trace],
         }
-        print("Program %s: %d instructions, %d steps, %d outs, candidate #%d, traps=%s"
-              % (tag, len(program), m.steps, len(m.out), cand, dict(m.traps)),
+        print("Program %s: %d instructions, %d steps, %d outs, candidate #%d, traps=%s, "
+              "live regs=%s, live mem=%d/16"
+              % (tag, len(program), m.steps, len(m.out), cand, dict(m.traps),
+                 m.live_registers(), len(m.live_memory(memory))),
               file=sys.stderr)
 
     prompt = render_prompt(progs)
-    prompt += PROMPT_TAIL % {"outs_a": cfg_a["outs"], "outs_b": cfg_b["outs"]}
+    if cfg_a["show_out_counts"] and cfg_b["show_out_counts"]:
+        out_counts = " (Program A emits %d values, Program B emits %d)" % (cfg_a["outs"], cfg_b["outs"])
+    else:
+        out_counts = ""
+    prompt += PROMPT_TAIL % {"out_counts": out_counts}
     os.makedirs(args.out_dir, exist_ok=True)
     with open(os.path.join(args.out_dir, "prompt.txt"), "w") as f:
         f.write(prompt)

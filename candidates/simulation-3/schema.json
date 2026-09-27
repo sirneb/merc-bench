@@ -4,7 +4,7 @@
   "checkpoints": {
    "type": "object",
    "properties": {
-    "10": {
+    "15": {
      "type": "object",
      "properties": {
       "A": {
@@ -103,7 +103,7 @@
       "D"
      ]
     },
-    "20": {
+    "22": {
      "type": "object",
      "properties": {
       "A": {
@@ -303,8 +303,8 @@
     }
    },
    "required": [
-    "10",
-    "20",
+    "15",
+    "22",
     "30"
    ]
   },
@@ -429,6 +429,14 @@
     "total_expired"
    ]
   },
+  "same_day_served": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "total_demand": {
+   "type": "integer",
+   "minimum": 0
+  },
   "fill_rate": {
    "type": "number",
    "minimum": 0,
@@ -439,6 +447,8 @@
   "checkpoints",
   "depots",
   "central",
+  "same_day_served",
+  "total_demand",
   "fill_rate"
  ]
 }

@@ -1,98 +1,100 @@
 {
  "checkpoints": {
-  "10": {
+  "15": {
    "A": {
-    "on_hand": 4,
-    "backorders": 0,
-    "in_transit": 30
-   },
-   "B": {
-    "on_hand": 9,
-    "backorders": 0,
-    "in_transit": 34
-   },
-   "C": {
-    "on_hand": 0,
-    "backorders": 3,
-    "in_transit": 66
-   },
-   "D": {
-    "on_hand": 10,
-    "backorders": 0,
-    "in_transit": 34
-   }
-  },
-  "20": {
-   "A": {
-    "on_hand": 4,
-    "backorders": 0,
-    "in_transit": 28
-   },
-   "B": {
-    "on_hand": 0,
-    "backorders": 17,
-    "in_transit": 69
-   },
-   "C": {
-    "on_hand": 50,
+    "on_hand": 40,
     "backorders": 0,
     "in_transit": 0
    },
-   "D": {
-    "on_hand": 24,
+   "B": {
+    "on_hand": 7,
     "backorders": 0,
-    "in_transit": 43
+    "in_transit": 28
+   },
+   "C": {
+    "on_hand": 11,
+    "backorders": 0,
+    "in_transit": 16
+   },
+   "D": {
+    "on_hand": 29,
+    "backorders": 0,
+    "in_transit": 0
+   }
+  },
+  "22": {
+   "A": {
+    "on_hand": 0,
+    "backorders": 11,
+    "in_transit": 52
+   },
+   "B": {
+    "on_hand": 0,
+    "backorders": 21,
+    "in_transit": 56
+   },
+   "C": {
+    "on_hand": 0,
+    "backorders": 8,
+    "in_transit": 0
+   },
+   "D": {
+    "on_hand": 0,
+    "backorders": 25,
+    "in_transit": 73
    }
   },
   "30": {
    "A": {
-    "on_hand": 0,
-    "backorders": 1,
-    "in_transit": 27
+    "on_hand": 14,
+    "backorders": 0,
+    "in_transit": 63
    },
    "B": {
-    "on_hand": 16,
+    "on_hand": 26,
     "backorders": 0,
-    "in_transit": 40
+    "in_transit": 0
    },
    "C": {
-    "on_hand": 42,
+    "on_hand": 15,
     "backorders": 0,
     "in_transit": 0
    },
    "D": {
-    "on_hand": 38,
+    "on_hand": 5,
     "backorders": 0,
-    "in_transit": 36
+    "in_transit": 50
    }
   }
  },
  "depots": {
   "A": {
-   "total_expired": 0,
-   "stockout_days": 6,
-   "units_received": 282
+   "total_expired": 103,
+   "stockout_days": 7,
+   "units_received": 383
   },
   "B": {
-   "total_expired": 57,
+   "total_expired": 79,
    "stockout_days": 8,
-   "units_received": 409
+   "units_received": 278
   },
   "C": {
-   "total_expired": 5,
-   "stockout_days": 3,
-   "units_received": 369
+   "total_expired": 52,
+   "stockout_days": 13,
+   "units_received": 178
   },
   "D": {
-   "total_expired": 58,
-   "stockout_days": 9,
-   "units_received": 365
+   "total_expired": 102,
+   "stockout_days": 6,
+   "units_received": 408
   }
  },
  "central": {
-  "final_on_hand": 3,
-  "total_cancelled": 361,
-  "total_expired": 19
+  "final_on_hand": 19,
+  "total_cancelled": 599,
+  "total_expired": 109
  },
- "fill_rate": 0.8647
+ "same_day_served": 744,
+ "total_demand": 1006,
+ "fill_rate": 0.7396
 }

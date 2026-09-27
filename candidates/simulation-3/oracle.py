@@ -30,7 +30,6 @@ def parse_prompt(text):
     # keep only the part after the worked example: "## 6." onwards
     body = text[text.index("## 6. Starting state"):]
     days = int(re.search(r"Days are numbered 1 to (\d+)", text).group(1))
-    shelf = int(re.search(r"expiry day = \(delivery day \+ (\d+)\)", text).group(1))
     depots = re.findall(r"^Depot ([A-Z]): lead time (\d+) days, s = (\d+), S = (\d+)\.", body, re.M)
     params = {d: dict(lead=int(l), s=int(s), S=int(S)) for d, l, s, S in depots}
     names = sorted(params)
@@ -46,7 +45,9 @@ def parse_prompt(text):
     transit0 = []
     for d, arrive, rest in re.findall(r"^In transit at day 0: to depot ([A-Z]), arriving day (\d+): (.*)$", body, re.M):
         transit0.append((d, int(arrive), lots(rest)))
-    deliveries = [(int(dd), int(q)) for dd, q in re.findall(r"^  Day (\d+): (\d+) units \(expiry day \d+\)", body, re.M)]
+    # each supplier delivery carries its own expiry day (shelf lives differ per delivery)
+    deliveries = [(int(dd), int(q), int(e))
+                  for dd, q, e in re.findall(r"^  Day (\d+): (\d+) units \(expiry day (\d+)\)", body, re.M)]
     demand = {d: {} for d in names}
     for line in re.findall(r"^Day (\d+): (.*)$", body, re.M):
         t = int(line[0])
@@ -55,7 +56,7 @@ def parse_prompt(text):
     for d in names:
         assert len(demand[d]) == days, (d, len(demand[d]))
     ck = [int(x) for x in re.search(r"Checkpoint days are ([\d, ]+)\.", text).group(1).split(",")]
-    return dict(days=days, shelf=shelf, names=names, params=params, central0=central0,
+    return dict(days=days, names=names, params=params, central0=central0,
                 depot0=depot0, transit0=transit0, deliveries=deliveries, demand=demand,
                 checkpoints=ck)
 
@@ -88,9 +89,9 @@ def simulate(P):
 
     for today in range(1, days + 1):
         # ---- phase 1: receive
-        for dd, q in P["deliveries"]:
+        for dd, q, e in P["deliveries"]:
             if dd == today:
-                central += [today + P["shelf"]] * q
+                central += [e] * q
         still = []
         for rec in transit:
             d, arrive, e = rec
@@ -168,6 +169,8 @@ def simulate(P):
                        "units_received": received[d]} for d in names},
         "central": {"final_on_hand": len(central), "total_cancelled": cancelled,
                     "total_expired": expired_c},
+        "same_day_served": same_day,
+        "total_demand": demanded,
         "fill_rate": round(same_day / demanded, 4),
     }
 

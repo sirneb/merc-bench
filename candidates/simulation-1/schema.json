@@ -1,6 +1,16 @@
 {
  "type": "object",
  "properties": {
+  "plays": {
+   "type": "array",
+   "items": {
+    "type": [
+     "string",
+     "null"
+    ],
+    "pattern": "^(Ore|Wood|Grain|Gem)-[1-9]$"
+   }
+  },
   "checkpoints": {
    "type": "array",
    "items": {
@@ -65,6 +75,7 @@
   }
  },
  "required": [
+  "plays",
   "checkpoints",
   "final"
  ],

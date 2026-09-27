@@ -24,15 +24,21 @@ from fractions import Fraction
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 DIFFICULTY = {
-    # days, number of depots, central shelf life (days), checkpoint spacing
-    "easy": dict(days=15, n_depots=3, shelf=18, ckpt=5),
-    "medium": dict(days=20, n_depots=4, shelf=18, ckpt=10),
-    "hard": dict(days=30, n_depots=4, shelf=18, ckpt=10),
-    "extreme": dict(days=60, n_depots=6, shelf=14, ckpt=10),
+    # days, number of depots, central shelf life (days), explicit checkpoint days.
+    # Checkpoints are listed explicitly (not a spacing) so that the first one sits
+    # past the point where every frontier model was still perfect in the pilot
+    # (day 10 of the old `hard` preset carried no information).
+    "easy": dict(days=15, n_depots=3, shelf=18, checkpoints=[8, 15]),
+    "medium": dict(days=20, n_depots=4, shelf=18, checkpoints=[12, 20]),
+    "hard": dict(days=30, n_depots=4, shelf=14, checkpoints=[15, 22, 30]),
+    "extreme": dict(days=60, n_depots=6, shelf=14, checkpoints=[20, 30, 40, 50, 60]),
 }
 WEEK = [1.0, 1.1, 0.9, 1.2, 1.0, 0.7, 0.8]
 DEM_LO, DEM_HI, N_SPIKES = 0.4, 1.6, 3
+P_ZERO_DEMAND = 0.08          # probability that a demand cell is 0 (feeds the zero-demand stockout-day clause)
+SHELF_OFFSETS = [-8, -6, -3, 0, 0, 4]  # per-delivery remaining shelf life = preset shelf + one of these
 FACTORS = [0.4, 0.7, 1.0, 1.0, 1.3, 1.6]
+BULK_FACTOR = 2.2             # size factor of the designed short-dated bulk delivery
 S_FACTOR = 1.0  # reorder point = S_FACTOR x mean lead-time demand
 
 
@@ -40,7 +46,10 @@ S_FACTOR = 1.0  # reorder point = S_FACTOR x mean lead-time demand
 # Reference simulator (lots stored as {expiry_day: qty} per location)
 # --------------------------------------------------------------------------
 class Sim:
-    def __init__(self, sc, trace=False):
+    def __init__(self, sc, trace=False, priority="ratio"):
+        # priority="abs" is a deliberate MISREADING used only by the seed selector:
+        # rank orders by absolute backorders instead of backorders/S.
+        self.priority = priority
         self.sc = sc
         self.depots = sc["depots"]
         self.days = sc["days"]
@@ -75,7 +84,25 @@ class Sim:
                        full_cancel=0, depot_expiry_events=0, depot_expired_units=0,
                        bo_depot_days=0, bo_depots=set(), priority_days=0,
                        arrive_expired_units=0, central_expiry_events=0,
-                       multi_lot_shipments=0, negative_ip_orders=0, order_count=0)
+                       multi_lot_shipments=0, negative_ip_orders=0, order_count=0,
+                       # rule-binding counters added after the critic pass:
+                       # cancel days on which the exact-ratio priority order allocates
+                       # different QUANTITIES than both "rank by absolute backorders"
+                       # and "alphabetical" would (so misreading the rule costs points)
+                       ratio_binding_days=set(),
+                       # phase-5 days with two ordering depots whose nonzero ratios
+                       # compare the other way round from their absolute backorders
+                       # (a "near tie" only cross-multiplication settles)
+                       ratio_inversions=0,
+                       # phase-5 days with an exact tie between two NONZERO ratios,
+                       # broken alphabetically
+                       nonzero_ratio_ties=0,
+                       # depot-days with zero demand but unserved old backorders
+                       # (the prompt's "still a stockout day" clause)
+                       zero_demand_stockout_days=0,
+                       # per depot: days with on_hand == 0 after phase 3 (superset of
+                       # stockout days; the gap is what makes the definition load-bearing)
+                       zero_on_hand_days={d: 0 for d in self.depots})
         self.total_in = (sum(q for q, _ in sc["central_lots"])
                          + sum(q for d in self.depots for q, _ in sc["depot_lots"][d])
                          + sum(q for sh in sc["in_transit0"] for q, _ in sh["lots"]))
@@ -117,9 +144,8 @@ class Sim:
             self.log(f"=== Day {t} ===")
             # Phase 1: receive
             p1 = []
-            for day, qty in sc["deliveries"]:
+            for day, qty, e in sc["deliveries"]:
                 if day == t:
-                    e = t + sc["shelf"]
                     self.central[e] = self.central.get(e, 0) + qty
                     self.total_in += qty
                     p1.append(f"CENTRAL receives supplier delivery {qty} exp d{e}")
@@ -173,6 +199,10 @@ class Sim:
                     self.so_days[d] += 1
                     self.ev["bo_depot_days"] += 1
                     self.ev["bo_depots"].add(d)
+                    if dem == 0:
+                        self.ev["zero_demand_stockout_days"] += 1
+                if self.on_hand(d) == 0:
+                    self.ev["zero_on_hand_days"][d] += 1
                 p3.append(f"{d}: on hand {oh}, backorders {old_bo} -> serves {srv_bo}, demand {dem} -> serves {srv_dem}"
                           f" (taken {self.fmt_lots(taken)}), backorders now {self.bo[d]}"
                           f"{' STOCKOUT DAY' if so else ''}, left {self.fmt_lots(self.stock[d])}")
@@ -196,11 +226,38 @@ class Sim:
             # Phase 5: allocate & ship
             p5 = []
             if orders:
-                prio = sorted(orders, key=lambda d: (-Fraction(self.bo[d], sc["S"][d]), d))
+                if self.priority == "abs":
+                    prio = sorted(orders, key=lambda d: (-self.bo[d], d))
+                else:
+                    prio = sorted(orders, key=lambda d: (-Fraction(self.bo[d], sc["S"][d]), d))
                 ratios = ", ".join(f"{d}={self.bo[d]}/{sc['S'][d]}" for d in prio)
                 p5.append(f"priority {'>'.join(prio)} (ratios {ratios}); CENTRAL on hand {sum(self.central.values())}")
                 if prio != sorted(prio):
                     self.ev["_prio_nonalpha_today"] = True
+                # --- does the exact-ratio rule bind today? Compare the quantities the
+                # ratio order allocates with what two plausible misreadings allocate.
+                avail0 = sum(self.central.values())
+
+                def alloc(order):
+                    left, out = avail0, {}
+                    for dd in order:
+                        out[dd] = min(orders[dd], left)
+                        left -= out[dd]
+                    return out
+                by_abs = sorted(orders, key=lambda d: (-self.bo[d], d))
+                by_alpha = sorted(orders)
+                ratio_alloc = alloc(prio)
+                if ratio_alloc != alloc(by_abs) and ratio_alloc != alloc(by_alpha):
+                    self.ev["_ratio_binds_today"] = True
+                nz = [d for d in orders if self.bo[d] > 0]
+                for i in range(len(nz)):
+                    for j in range(i + 1, len(nz)):
+                        x, y = nz[i], nz[j]
+                        rx, ry = Fraction(self.bo[x], sc["S"][x]), Fraction(self.bo[y], sc["S"][y])
+                        if rx == ry:
+                            self.ev["nonzero_ratio_ties"] += 1
+                        elif (rx > ry) != (self.bo[x] > self.bo[y]) and self.bo[x] != self.bo[y]:
+                            self.ev["ratio_inversions"] += 1
                 day_cancel = False
                 for d in prio:
                     q = orders[d]
@@ -230,7 +287,10 @@ class Sim:
                     self.ev["cancel_days"].add(t)
                     if self.ev.pop("_prio_nonalpha_today", False):
                         self.ev["priority_days"] += 1
+                    if self.ev.pop("_ratio_binds_today", False):
+                        self.ev["ratio_binding_days"].add(t)
                 self.ev.pop("_prio_nonalpha_today", None)
+                self.ev.pop("_ratio_binds_today", None)
             self.log("  P5 ALLOCATE: " + ("; ".join(p5) if p5 else "no orders"))
             # end of day
             eod = " | ".join(f"{d}: on_hand {self.on_hand(d)} bo {self.bo[d]} in_transit {self.in_transit(d)}"
@@ -255,6 +315,8 @@ class Sim:
                            "units_received": self.recv[d]} for d in self.depots},
             "central": {"final_on_hand": sum(self.central.values()),
                         "total_cancelled": self.cancelled, "total_expired": self.exp_c},
+            "same_day_served": self.served_same_day,
+            "total_demand": self.demanded,
             "fill_rate": round(self.served_same_day / self.demanded, 4) if self.demanded else 0.0,
         }
 
@@ -277,7 +339,7 @@ def sample_scenario(rng, cfg):
         row = []
         for t in range(1, days + 1):
             v = mus[i] * WEEK[(t - 1) % 7] * rng.uniform(DEM_LO, DEM_HI)
-            if rng.random() < 0.05:
+            if rng.random() < P_ZERO_DEMAND:
                 v = 0
             row.append(int(round(v)))
         for t in rng.sample(range(days), N_SPIKES):
@@ -290,10 +352,8 @@ def sample_scenario(rng, cfg):
         if rng.random() < 0.5:
             in_transit0.append({"depot": d, "arrive": rng.randint(1, 2),
                                 "lots": [[int(round(mus[i] * rng.uniform(2, 3.5))), rng.randint(6, 9)]]})
-    ck = cfg["ckpt"]
-    checkpoints = list(range(ck, days + 1, ck))
-    if checkpoints[-1] != days:
-        checkpoints.append(days)
+    checkpoints = list(cfg["checkpoints"])
+    assert checkpoints == sorted(set(checkpoints)) and checkpoints[-1] == days
     c_e1, c_e2 = rng.randint(3, 4), rng.randint(9, 11)
     # supplier schedule: alternating 3/4-day gaps, per-delivery size factors
     sched_days, t, gap = [], 1, rng.choice([3, 4])
@@ -302,6 +362,16 @@ def sample_scenario(rng, cfg):
         t += gap
         gap = 7 - gap
     factors = [rng.choice(FACTORS) for _ in sched_days]
+    expiries = [dd + shelf + rng.choice(SHELF_OFFSETS) for dd in sched_days]
+    # One designed "glut then famine" in the middle third of the horizon: a bulk
+    # delivery with the shortest remaining shelf life, followed by a small one.
+    # CENTRAL's FEFO rule pushes the bulk lot out first, but it cannot all leave
+    # before it expires, and the following small delivery then forces rationing.
+    j = rng.randrange(len(sched_days) // 3, max(len(sched_days) // 3 + 1, 2 * len(sched_days) // 3))
+    factors[j] = BULK_FACTOR
+    expiries[j] = sched_days[j] + shelf + min(SHELF_OFFSETS)
+    if j + 1 < len(sched_days):
+        factors[j + 1] = min(FACTORS)
     sc = dict(days=days, depots=depots, shelf=shelf, deliveries=None, lead=lead, s=s, S=S,
               central_lots=None, depot_lots=depot_lots, in_transit0=in_transit0,
               demand=demand, checkpoints=checkpoints)
@@ -313,26 +383,61 @@ def sample_scenario(rng, cfg):
     target = days / 3.3
     best = None
     for base in range(int(per_gap * 0.6), int(per_gap * 1.8) + 1, 1):
-        sc["deliveries"] = [[dd, int(round(base * f))] for dd, f in zip(sched_days, factors)]
+        sc["deliveries"] = [[dd, int(round(base * f)), e] for dd, f, e in zip(sched_days, factors, expiries)]
         sc["central_lots"] = [[round(base * 0.8), c_e1], [round(base * 0.6), c_e2]]
         sim = Sim(sc)
         key = sim.run()
         cd = len(sim.ev["cancel_days"])
-        pen = abs(cd - target) + (0 if 0.70 <= key["fill_rate"] <= 0.97 else 100) \
-            + (0 if key["central"]["final_on_hand"] > 0 else 50) \
-            + max(0, 4 - sim.ev["partial"]) * 3 + max(0, 2 - sim.ev["priority_days"]) * 4
+        # primary objective: as few failed selection gates as possible; secondary:
+        # rationing binds on about a third of the days
+        failed = sum(1 for ok in passes(sc, sim, key).values() if not ok)
+        pen = 10 * failed + abs(cd - target) \
+            + (0 if 0.70 <= key["fill_rate"] <= 0.97 else 40) \
+            + (0 if key["central"]["final_on_hand"] > 0 else 40)
         if best is None or pen < best[0]:
             best = (pen, base)
     base = best[1]
-    sc["deliveries"] = [[dd, int(round(base * f))] for dd, f in zip(sched_days, factors)]
+    sc["deliveries"] = [[dd, int(round(base * f)), e] for dd, f, e in zip(sched_days, factors, expiries)]
     sc["central_lots"] = [[round(base * 0.8), c_e1], [round(base * 0.6), c_e2]]
     return sc
+
+
+def graded_items(key):
+    """The answer as the grader scores it: (on_hand, backorders) pairs, in_transit,
+    per-depot totals, CENTRAL totals, same_day_served, total_demand, fill_rate."""
+    out = {}
+    for d, c in key["checkpoints"].items():
+        for dep, v in c.items():
+            out[f"ck{d}.{dep}.pair"] = (v["on_hand"], v["backorders"])
+            out[f"ck{d}.{dep}.in_transit"] = v["in_transit"]
+    for dep, v in key["depots"].items():
+        for f, x in v.items():
+            out[f"depots.{dep}.{f}"] = x
+    for f, x in key["central"].items():
+        out[f"central.{f}"] = x
+    for f in ("same_day_served", "total_demand", "fill_rate"):
+        out[f] = key[f]
+    return out
+
+
+def items_changed_by_abs_priority(sc, key):
+    """How many graded items change if orders are ranked by absolute backorders."""
+    alt = graded_items(Sim(sc, priority="abs").run())
+    return sum(1 for k, v in graded_items(key).items() if alt[k] != v)
+
+
+STRICT_DAYS = 30  # the critic gates below need a 30+ day horizon to be satisfiable
 
 
 def passes(sc, sim, key):
     ev = sim.ev
     days = sc["days"]
     scale = days / 30.0
+    # The rule-binding gates added after the critic pass are enforced on the shipped
+    # presets (hard, extreme). The short calibration rungs (easy, medium) keep only
+    # the original gates: with 15-20 days there is not enough post-warm-up horizon
+    # for all of them to fire together (0/300 sub-seeds passed when they were on).
+    strict = days >= STRICT_DAYS
     checks = {
         "cancel_orders>=4": ev["cancel_orders"] >= 4 * scale,
         "partial>=4": ev["partial"] >= 4 * scale,
@@ -343,7 +448,7 @@ def passes(sc, sim, key):
         "central_expiry>=1": ev["central_expiry_events"] >= 1,
         "bo_depot_days>=6": ev["bo_depot_days"] >= 6 * scale,
         "bo_depots>=3": len(ev["bo_depots"]) >= min(3, len(sc["depots"])),
-        "priority_days>=2": ev["priority_days"] >= 2 * scale,
+        "priority_days>=5": ev["priority_days"] >= (5 if strict else 2) * scale,
         "arrive_expired>=1": ev["arrive_expired_units"] >= 1,
         "multi_lot_shipments>=3": ev["multi_lot_shipments"] >= 3,
         "negative_ip_orders>=1": ev["negative_ip_orders"] >= 1,
@@ -355,6 +460,26 @@ def passes(sc, sim, key):
         "some checkpoint in_transit>0": sum(
             1 for c in key["checkpoints"].values() for v in c.values() if v["in_transit"] > 0) >= 3,
         "central final_on_hand>0": key["central"]["final_on_hand"] > 0,
+        # --- gates added after the critic pass so the advertised trap rules BIND ---
+        # (a) exact-fraction priority: on >= 1 cancel day the ratio order ships
+        #     different quantities than ranking by absolute backorders or alphabetically
+        "ratio_binding_days>=1": not strict or len(ev["ratio_binding_days"]) >= 1,
+        #     ... and that difference survives to the graded answer (>= 3 items)
+        "abs-priority misreading changes>=3 items": not strict or (
+            len(ev["ratio_binding_days"]) >= 1 and items_changed_by_abs_priority(sc, key) >= 3),
+        # (a') and >= 1 nonzero-ratio comparison that absolute backorders get wrong
+        "ratio_inversions>=1": not strict or ev["ratio_inversions"] >= 1,
+        # (b) the "zero demand but unserved old backorders is still a stockout day" clause fires
+        "zero_demand_stockout_days>=1": not strict or ev["zero_demand_stockout_days"] >= 1,
+        # (c) stockout_days is not just "days with on_hand == 0": the two counts differ
+        #     for >= 2 depots and by >= 3 days in total (so the misreading costs >= 2 fields)
+        "zero_on_hand != stockout for>=2 depots, total gap>=3": not strict or (
+            sum(1 for d in sc["depots"]
+                if ev["zero_on_hand_days"][d] - key["depots"][d]["stockout_days"] >= 1) >= 2
+            and sum(ev["zero_on_hand_days"][d] - key["depots"][d]["stockout_days"]
+                    for d in sc["depots"]) >= 3),
+        # (d) CENTRAL expiry is a repeated event, not a one-off
+        "central_expiry>=2": not strict or ev["central_expiry_events"] >= 2,
     }
     return checks
 
@@ -377,7 +502,7 @@ def build(seed, difficulty):
 # --------------------------------------------------------------------------
 # Worked mini-example (fixed, hand-chosen so every rule fires within 3 days)
 # --------------------------------------------------------------------------
-EXAMPLE = dict(days=3, depots=["A", "B"], shelf=12, deliveries=[[1, 36]],
+EXAMPLE = dict(days=3, depots=["A", "B"], shelf=12, deliveries=[[1, 36, 13]],
                lead={"A": 1, "B": 3}, s={"A": 10, "B": 12}, S={"A": 20, "B": 20},
                central_lots=[[10, 2], [12, 5]],
                depot_lots={"A": [[6, 1], [8, 4]], "B": [[5, 3]]},
@@ -414,7 +539,7 @@ def render_prompt(sc, ex_sc, ex_key, ex_trace):
     A("")
     A("## 3. Daily phases")
     A("PHASE 1 — RECEIVE.")
-    A(f"  (a) CENTRAL: on each supplier delivery day listed in section 7, a lot of the listed quantity with expiry day = (delivery day + {sc['shelf']}) is added to CENTRAL's stock. There are no other sources of stock.")
+    A("  (a) CENTRAL: on each supplier delivery day listed in section 7, one lot of the listed quantity with the listed expiry day is added to CENTRAL's stock. Remaining shelf life differs from delivery to delivery, so a later delivery may expire BEFORE an earlier one. There are no other sources of stock.")
     A("  (b) DEPOTS: every shipment whose arrival day equals today is added to the destination depot's stock lot by lot, keeping each lot's expiry day. Every unit that arrives counts toward that depot's units_received — even if the lot is discarded in phase 2 of the same day.")
     A("PHASE 2 — EXPIRE.")
     A("  At every location (CENTRAL and each depot) every lot whose expiry day is LESS THAN OR EQUAL TO today is discarded in full. Discarded units count toward that location's total_expired. Consequently a lot with expiry day E can be used to serve or ship on days up to and including E-1, and is destroyed at phase 2 of day E. Nothing else expires at any other point of the day.")
@@ -442,12 +567,14 @@ def render_prompt(sc, ex_sc, ex_key, ex_trace):
     A("- total_cancelled: total units of orders cancelled in phase 5 over the horizon.")
     A("- total_expired: units discarded at CENTRAL in phase 2 over the horizon.")
     A("Network:")
-    A(f"- fill_rate: (total units of demand served on the day it arose, i.e. the sum of phase-3 step-2 quantities over all depots and days 1–{days}) ÷ (total demand of all depots on days 1–{days}), rounded to 4 decimal places. Backorders served on a later day do NOT count toward the numerator.")
+    A(f"- same_day_served: total units of demand served on the day it arose, i.e. the sum of the phase-3 step-2 quantities over all depots and days 1–{days}. Backorders served on a later day (step 1) do NOT count.")
+    A(f"- total_demand: the sum of every cell of the demand table (all depots, days 1–{days}), whether or not it was served.")
+    A("- fill_rate: same_day_served ÷ total_demand, rounded to 4 decimal places.")
     A("")
     A("## 5. Worked mini-example (different, tiny scenario — same rules)")
     A("To pin down every rule, here is a complete 3-day run of a toy network with 2 depots. It is NOT the scenario you must solve.")
     ex = ex_sc
-    A(f"  Toy parameters: one supplier delivery of {ex['deliveries'][0][1]} units on day 1 with expiry day = delivery day + {ex['shelf']} = 13. "
+    A(f"  Toy parameters: one supplier delivery of {ex['deliveries'][0][1]} units on day 1 with expiry day {ex['deliveries'][0][2]}. "
       f"Depot A: lead time {ex['lead']['A']}, s={ex['s']['A']}, S={ex['S']['A']}. Depot B: lead time {ex['lead']['B']}, s={ex['s']['B']}, S={ex['S']['B']}.")
     A(f"  Day-0 state: CENTRAL lots: 10 units exp day 2, 12 units exp day 5. Depot A lots: 6 units exp day 1, 8 units exp day 4. "
       f"Depot B lots: 5 units exp day 3. In transit at day 0: 4 units exp day 2 to depot B, arriving day 1. No backorders.")
@@ -476,9 +603,9 @@ def render_prompt(sc, ex_sc, ex_key, ex_trace):
     A("## 7. Depot parameters")
     for d in D:
         A(f"Depot {d}: lead time {sc['lead'][d]} days, s = {sc['s'][d]}, S = {sc['S'][d]}.")
-    A(f"CENTRAL supplier deliveries (each arrives in phase 1 of the listed day as one lot expiring on delivery day + {sc['shelf']}):")
-    for dd, q in deliv:
-        A(f"  Day {dd:02d}: {q} units (expiry day {dd + sc['shelf']})")
+    A("CENTRAL supplier deliveries (each arrives in phase 1 of the listed day as ONE lot with the listed expiry day; note the expiry days are not in delivery order):")
+    for dd, q, e in deliv:
+        A(f"  Day {dd:02d}: {q} units (expiry day {e})")
     A("")
     A(f"## 8. Demand table (units demanded per depot per day, days 1–{days})")
     A("Each cell is labelled depot=units.")
@@ -493,11 +620,17 @@ def render_prompt(sc, ex_sc, ex_key, ex_trace):
         "checkpoints": {str(c): {d: {"on_hand": 0, "backorders": 0, "in_transit": 0} for d in D} for c in ck},
         "depots": {d: {"total_expired": 0, "stockout_days": 0, "units_received": 0} for d in D},
         "central": {"final_on_hand": 0, "total_cancelled": 0, "total_expired": 0},
+        "same_day_served": 0,
+        "total_demand": 0,
         "fill_rate": 0.0,
     }
     A(json.dumps(shape, indent=1))
     A("")
-    A("Scoring is per field with partial credit, so fill in every field with your best value even if you are unsure of some. Do not output anything except the JSON object.")
+    A("Scoring: every value is graded exactly against the reference simulation, with partial credit across fields. "
+      "At each checkpoint a depot's on_hand and backorders are scored together as one item (both must be right) and its in_transit as another; "
+      "per-depot totals and CENTRAL figures are scored one by one; same_day_served, total_demand and fill_rate are each scored on their own "
+      "(fill_rate must match to 4 decimal places, there is no tolerance band). Fill in every field with your best value even if you are unsure of some. "
+      "Do not output anything except the JSON object.")
     return "\n".join(lines) + "\n"
 
 
@@ -526,9 +659,11 @@ def make_schema(sc):
             "central": {"type": "object",
                         "properties": {"final_on_hand": nn, "total_cancelled": nn, "total_expired": nn},
                         "required": ["final_on_hand", "total_cancelled", "total_expired"]},
+            "same_day_served": nn,
+            "total_demand": nn,
             "fill_rate": {"type": "number", "minimum": 0, "maximum": 1},
         },
-        "required": ["checkpoints", "depots", "central", "fill_rate"],
+        "required": ["checkpoints", "depots", "central", "same_day_served", "total_demand", "fill_rate"],
     }
 
 
@@ -556,6 +691,7 @@ def main():
     with open(os.path.join(args.out, "trace.txt"), "w") as f:
         f.write("\n".join(sim.trace) + "\n")
     ev = {k: (sorted(v) if isinstance(v, set) else v) for k, v in sim.ev.items()}
+    ev["items_changed_by_abs_priority"] = items_changed_by_abs_priority(sc, key)
     print(json.dumps({"seed": args.seed, "difficulty": args.difficulty, "subseed": sc["_subseed"],
                       "prompt_bytes": len(prompt.encode()), "events": ev,
                       "checks": checks, "key_summary": {"fill_rate": key["fill_rate"],
