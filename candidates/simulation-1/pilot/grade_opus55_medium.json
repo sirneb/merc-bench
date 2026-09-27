@@ -1,0 +1,1 @@
+{"task": "S1", "score": 100, "total": 100, "detail": {"misses": {}, "checkpoints_found": 5, "first_divergence_turn": null, "per_checkpoint": {"20": "16/16", "40": "16/16", "60": "16/16", "80": "16/16", "100": "16/16"}}}

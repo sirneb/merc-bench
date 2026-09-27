@@ -1,0 +1,1 @@
+{"task": "A3", "score": 126.0, "total": 126.0, "detail": {"sub_scores": {"points": 40.0, "rank": 20.0, "buchholz": 20.0, "sonneborn_berger": 20.0, "wins": 10.0, "questions": 16.0}, "players_parsed": 20, "player_misses": {}, "question_misses": {}, "attribution": {"players_matching_key_points_bh_sb": 20, "best_single_trap_counterfactual": [], "best_counterfactual_matches": 16}}}

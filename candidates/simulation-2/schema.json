@@ -1,0 +1,89 @@
+{
+ "type": "object",
+ "properties": {
+  "program_a": {
+   "type": "object",
+   "properties": {
+    "out_stream": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     }
+    },
+    "final_registers": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     },
+     "minItems": 8,
+     "maxItems": 8
+    },
+    "final_memory": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     },
+     "minItems": 16,
+     "maxItems": 16
+    },
+    "steps_executed": {
+     "type": "integer"
+    },
+    "halted": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "out_stream",
+    "final_registers",
+    "final_memory",
+    "steps_executed",
+    "halted"
+   ]
+  },
+  "program_b": {
+   "type": "object",
+   "properties": {
+    "out_stream": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     }
+    },
+    "final_registers": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     },
+     "minItems": 8,
+     "maxItems": 8
+    },
+    "final_memory": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     },
+     "minItems": 16,
+     "maxItems": 16
+    },
+    "steps_executed": {
+     "type": "integer"
+    },
+    "halted": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "out_stream",
+    "final_registers",
+    "final_memory",
+    "steps_executed",
+    "halted"
+   ]
+  }
+ },
+ "required": [
+  "program_a",
+  "program_b"
+ ]
+}

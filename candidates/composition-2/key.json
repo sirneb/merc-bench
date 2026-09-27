@@ -1,0 +1,1303 @@
+{
+ "task": "composition-2",
+ "seed": 20261005,
+ "difficulty": "hard",
+ "params": {
+  "stations": 26,
+  "edges": 44,
+  "shipments": 14,
+  "hubs": 3,
+  "docks": 2,
+  "closures": 10,
+  "near_ties": 3,
+  "dates": 3,
+  "customers": 5,
+  "difficulty": "hard"
+ },
+ "instance": {
+  "stations": [
+   "Ashford",
+   "Belmont",
+   "Corwen",
+   "Dunmore",
+   "Elsmere",
+   "Fairlie",
+   "Garston",
+   "Halcott",
+   "Ilford",
+   "Jarrow",
+   "Kelso",
+   "Lindale",
+   "Morley",
+   "Naseby",
+   "Oakham",
+   "Penrith",
+   "Quorn",
+   "Radlett",
+   "Selby",
+   "Thirsk",
+   "Uppingham",
+   "Ventnor",
+   "Wetherby",
+   "Xenia",
+   "Yarm",
+   "Zeals"
+  ],
+  "hubs": [
+   "Halcott",
+   "Quorn",
+   "Yarm"
+  ],
+  "segments": [
+   {
+    "id": "SEG-01",
+    "a": "Ashford",
+    "b": "Fairlie",
+    "km": 44
+   },
+   {
+    "id": "SEG-02",
+    "a": "Ashford",
+    "b": "Ilford",
+    "km": 119
+   },
+   {
+    "id": "SEG-03",
+    "a": "Ashford",
+    "b": "Oakham",
+    "km": 41
+   },
+   {
+    "id": "SEG-04",
+    "a": "Ashford",
+    "b": "Selby",
+    "km": 116
+   },
+   {
+    "id": "SEG-05",
+    "a": "Belmont",
+    "b": "Dunmore",
+    "km": 113
+   },
+   {
+    "id": "SEG-06",
+    "a": "Belmont",
+    "b": "Fairlie",
+    "km": 55
+   },
+   {
+    "id": "SEG-07",
+    "a": "Belmont",
+    "b": "Lindale",
+    "km": 76
+   },
+   {
+    "id": "SEG-08",
+    "a": "Belmont",
+    "b": "Penrith",
+    "km": 76
+   },
+   {
+    "id": "SEG-09",
+    "a": "Belmont",
+    "b": "Selby",
+    "km": 109
+   },
+   {
+    "id": "SEG-10",
+    "a": "Corwen",
+    "b": "Halcott",
+    "km": 60
+   },
+   {
+    "id": "SEG-11",
+    "a": "Corwen",
+    "b": "Kelso",
+    "km": 39
+   },
+   {
+    "id": "SEG-12",
+    "a": "Dunmore",
+    "b": "Jarrow",
+    "km": 112
+   },
+   {
+    "id": "SEG-13",
+    "a": "Dunmore",
+    "b": "Naseby",
+    "km": 79
+   },
+   {
+    "id": "SEG-14",
+    "a": "Dunmore",
+    "b": "Penrith",
+    "km": 99
+   },
+   {
+    "id": "SEG-15",
+    "a": "Dunmore",
+    "b": "Radlett",
+    "km": 45
+   },
+   {
+    "id": "SEG-16",
+    "a": "Dunmore",
+    "b": "Uppingham",
+    "km": 37
+   },
+   {
+    "id": "SEG-17",
+    "a": "Elsmere",
+    "b": "Quorn",
+    "km": 36
+   },
+   {
+    "id": "SEG-18",
+    "a": "Elsmere",
+    "b": "Ventnor",
+    "km": 123
+   },
+   {
+    "id": "SEG-19",
+    "a": "Fairlie",
+    "b": "Morley",
+    "km": 35
+   },
+   {
+    "id": "SEG-20",
+    "a": "Garston",
+    "b": "Ilford",
+    "km": 36
+   },
+   {
+    "id": "SEG-21",
+    "a": "Garston",
+    "b": "Quorn",
+    "km": 117
+   },
+   {
+    "id": "SEG-22",
+    "a": "Halcott",
+    "b": "Xenia",
+    "km": 57
+   },
+   {
+    "id": "SEG-23",
+    "a": "Halcott",
+    "b": "Zeals",
+    "km": 54
+   },
+   {
+    "id": "SEG-24",
+    "a": "Ilford",
+    "b": "Morley",
+    "km": 109
+   },
+   {
+    "id": "SEG-25",
+    "a": "Ilford",
+    "b": "Quorn",
+    "km": 102
+   },
+   {
+    "id": "SEG-26",
+    "a": "Jarrow",
+    "b": "Naseby",
+    "km": 77
+   },
+   {
+    "id": "SEG-27",
+    "a": "Jarrow",
+    "b": "Penrith",
+    "km": 56
+   },
+   {
+    "id": "SEG-28",
+    "a": "Kelso",
+    "b": "Naseby",
+    "km": 52
+   },
+   {
+    "id": "SEG-29",
+    "a": "Lindale",
+    "b": "Morley",
+    "km": 62
+   },
+   {
+    "id": "SEG-30",
+    "a": "Lindale",
+    "b": "Radlett",
+    "km": 51
+   },
+   {
+    "id": "SEG-31",
+    "a": "Oakham",
+    "b": "Quorn",
+    "km": 36
+   },
+   {
+    "id": "SEG-32",
+    "a": "Oakham",
+    "b": "Selby",
+    "km": 109
+   },
+   {
+    "id": "SEG-33",
+    "a": "Oakham",
+    "b": "Ventnor",
+    "km": 94
+   },
+   {
+    "id": "SEG-34",
+    "a": "Penrith",
+    "b": "Wetherby",
+    "km": 47
+   },
+   {
+    "id": "SEG-35",
+    "a": "Radlett",
+    "b": "Uppingham",
+    "km": 55
+   },
+   {
+    "id": "SEG-36",
+    "a": "Selby",
+    "b": "Thirsk",
+    "km": 40
+   },
+   {
+    "id": "SEG-37",
+    "a": "Selby",
+    "b": "Ventnor",
+    "km": 63
+   },
+   {
+    "id": "SEG-38",
+    "a": "Selby",
+    "b": "Yarm",
+    "km": 60
+   },
+   {
+    "id": "SEG-39",
+    "a": "Thirsk",
+    "b": "Wetherby",
+    "km": 50
+   },
+   {
+    "id": "SEG-40",
+    "a": "Thirsk",
+    "b": "Xenia",
+    "km": 119
+   },
+   {
+    "id": "SEG-41",
+    "a": "Thirsk",
+    "b": "Yarm",
+    "km": 47
+   },
+   {
+    "id": "SEG-42",
+    "a": "Ventnor",
+    "b": "Yarm",
+    "km": 86
+   },
+   {
+    "id": "SEG-43",
+    "a": "Wetherby",
+    "b": "Xenia",
+    "km": 133
+   },
+   {
+    "id": "SEG-44",
+    "a": "Xenia",
+    "b": "Zeals",
+    "km": 89
+   }
+  ],
+  "closures": [
+   {
+    "date": "2026-10-05",
+    "a": "Ashford",
+    "b": "Fairlie"
+   },
+   {
+    "date": "2026-10-05",
+    "a": "Belmont",
+    "b": "Dunmore"
+   },
+   {
+    "date": "2026-10-05",
+    "a": "Oakham",
+    "b": "Selby"
+   },
+   {
+    "date": "2026-10-05",
+    "a": "Penrith",
+    "b": "Wetherby"
+   },
+   {
+    "date": "2026-10-06",
+    "a": "Ashford",
+    "b": "Selby"
+   },
+   {
+    "date": "2026-10-06",
+    "a": "Belmont",
+    "b": "Lindale"
+   },
+   {
+    "date": "2026-10-06",
+    "a": "Corwen",
+    "b": "Kelso"
+   },
+   {
+    "date": "2026-10-06",
+    "a": "Selby",
+    "b": "Thirsk"
+   },
+   {
+    "date": "2026-10-06",
+    "a": "Thirsk",
+    "b": "Yarm"
+   },
+   {
+    "date": "2026-10-07",
+    "a": "Oakham",
+    "b": "Quorn"
+   }
+  ],
+  "customers": [
+   "CU-01",
+   "CU-02",
+   "CU-03",
+   "CU-04",
+   "CU-05"
+  ],
+  "shipments": [
+   {
+    "id": "S01",
+    "origin": "Halcott",
+    "dest": "Quorn",
+    "ready": "2026-10-05T09:15",
+    "tonnage": 34,
+    "hazardous": false,
+    "customer": "CU-03"
+   },
+   {
+    "id": "S02",
+    "origin": "Garston",
+    "dest": "Yarm",
+    "ready": "2026-10-05T20:09",
+    "tonnage": 181,
+    "hazardous": true,
+    "customer": "CU-03"
+   },
+   {
+    "id": "S03",
+    "origin": "Naseby",
+    "dest": "Quorn",
+    "ready": "2026-10-05T08:26",
+    "tonnage": 100,
+    "hazardous": false,
+    "customer": "CU-04"
+   },
+   {
+    "id": "S04",
+    "origin": "Lindale",
+    "dest": "Yarm",
+    "ready": "2026-10-05T22:12",
+    "tonnage": 142,
+    "hazardous": false,
+    "customer": "CU-04"
+   },
+   {
+    "id": "S05",
+    "origin": "Garston",
+    "dest": "Halcott",
+    "ready": "2026-10-06T02:08",
+    "tonnage": 195,
+    "hazardous": false,
+    "customer": "CU-02"
+   },
+   {
+    "id": "S06",
+    "origin": "Corwen",
+    "dest": "Quorn",
+    "ready": "2026-10-05T07:35",
+    "tonnage": 128,
+    "hazardous": true,
+    "customer": "CU-02"
+   },
+   {
+    "id": "S07",
+    "origin": "Dunmore",
+    "dest": "Yarm",
+    "ready": "2026-10-05T19:36",
+    "tonnage": 41,
+    "hazardous": false,
+    "customer": "CU-03"
+   },
+   {
+    "id": "S08",
+    "origin": "Uppingham",
+    "dest": "Halcott",
+    "ready": "2026-10-06T06:39",
+    "tonnage": 71,
+    "hazardous": false,
+    "customer": "CU-02"
+   },
+   {
+    "id": "S09",
+    "origin": "Kelso",
+    "dest": "Quorn",
+    "ready": "2026-10-05T06:41",
+    "tonnage": 152,
+    "hazardous": false,
+    "customer": "CU-01"
+   },
+   {
+    "id": "S10",
+    "origin": "Uppingham",
+    "dest": "Yarm",
+    "ready": "2026-10-05T20:15",
+    "tonnage": 52,
+    "hazardous": false,
+    "customer": "CU-04"
+   },
+   {
+    "id": "S11",
+    "origin": "Fairlie",
+    "dest": "Halcott",
+    "ready": "2026-10-06T06:03",
+    "tonnage": 122,
+    "hazardous": true,
+    "customer": "CU-05"
+   },
+   {
+    "id": "S12",
+    "origin": "Ilford",
+    "dest": "Halcott",
+    "ready": "2026-10-06T03:39",
+    "tonnage": 79,
+    "hazardous": true,
+    "customer": "CU-05"
+   },
+   {
+    "id": "S13",
+    "origin": "Elsmere",
+    "dest": "Halcott",
+    "ready": "2026-10-06T02:08",
+    "tonnage": 182,
+    "hazardous": false,
+    "customer": "CU-01"
+   },
+   {
+    "id": "S14",
+    "origin": "Yarm",
+    "dest": "Quorn",
+    "ready": "2026-10-05T14:30",
+    "tonnage": 66,
+    "hazardous": false,
+    "customer": "CU-01"
+   }
+  ],
+  "docks": 2,
+  "rules": {
+   "speed_kmh": 60,
+   "dwell_min": 20,
+   "rest_after_driving_min": 360,
+   "rest_min": 45,
+   "unload_tonnes_per_block": 25,
+   "unload_block_min": 30
+  },
+  "tariff": {
+   "free_minutes": 90,
+   "block_minutes": 30,
+   "rate_per_block": 85,
+   "hazardous_multiplier": 2,
+   "cap_per_shipment": 900
+  }
+ },
+ "reference": {
+  "routes": [
+   {
+    "id": "S01",
+    "path": [
+     "Halcott",
+     "Xenia",
+     "Thirsk",
+     "Selby",
+     "Ashford",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 409
+   },
+   {
+    "id": "S02",
+    "path": [
+     "Garston",
+     "Ilford",
+     "Ashford",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 331
+   },
+   {
+    "id": "S03",
+    "path": [
+     "Naseby",
+     "Dunmore",
+     "Radlett",
+     "Lindale",
+     "Morley",
+     "Ilford",
+     "Quorn"
+    ],
+    "km": 448
+   },
+   {
+    "id": "S04",
+    "path": [
+     "Lindale",
+     "Belmont",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 245
+   },
+   {
+    "id": "S05",
+    "path": [
+     "Garston",
+     "Ilford",
+     "Morley",
+     "Fairlie",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 548
+   },
+   {
+    "id": "S06",
+    "path": [
+     "Corwen",
+     "Halcott",
+     "Xenia",
+     "Thirsk",
+     "Selby",
+     "Ashford",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 469
+   },
+   {
+    "id": "S07",
+    "path": [
+     "Dunmore",
+     "Radlett",
+     "Lindale",
+     "Belmont",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 341
+   },
+   {
+    "id": "S08",
+    "path": [
+     "Uppingham",
+     "Dunmore",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 373
+   },
+   {
+    "id": "S09",
+    "path": [
+     "Kelso",
+     "Naseby",
+     "Dunmore",
+     "Radlett",
+     "Lindale",
+     "Morley",
+     "Ilford",
+     "Quorn"
+    ],
+    "km": 500
+   },
+   {
+    "id": "S10",
+    "path": [
+     "Uppingham",
+     "Radlett",
+     "Lindale",
+     "Belmont",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 351
+   },
+   {
+    "id": "S11",
+    "path": [
+     "Fairlie",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 368
+   },
+   {
+    "id": "S12",
+    "path": [
+     "Ilford",
+     "Morley",
+     "Fairlie",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 512
+   },
+   {
+    "id": "S13",
+    "path": [
+     "Elsmere",
+     "Quorn",
+     "Oakham",
+     "Ashford",
+     "Fairlie",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 525
+   },
+   {
+    "id": "S14",
+    "path": [
+     "Yarm",
+     "Ventnor",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 216
+   }
+  ],
+  "arrivals": [
+   {
+    "id": "S01",
+    "arrival": "2026-10-05T18:29",
+    "rests": 1
+   },
+   {
+    "id": "S02",
+    "arrival": "2026-10-06T02:40",
+    "rests": 0
+   },
+   {
+    "id": "S03",
+    "arrival": "2026-10-05T17:34",
+    "rests": 0
+   },
+   {
+    "id": "S04",
+    "arrival": "2026-10-06T02:57",
+    "rests": 0
+   },
+   {
+    "id": "S05",
+    "arrival": "2026-10-06T14:21",
+    "rests": 1
+   },
+   {
+    "id": "S06",
+    "arrival": "2026-10-05T18:09",
+    "rests": 1
+   },
+   {
+    "id": "S07",
+    "arrival": "2026-10-06T02:37",
+    "rests": 0
+   },
+   {
+    "id": "S08",
+    "arrival": "2026-10-06T14:12",
+    "rests": 0
+   },
+   {
+    "id": "S09",
+    "arrival": "2026-10-05T17:46",
+    "rests": 1
+   },
+   {
+    "id": "S10",
+    "arrival": "2026-10-06T03:26",
+    "rests": 0
+   },
+   {
+    "id": "S11",
+    "arrival": "2026-10-06T13:31",
+    "rests": 0
+   },
+   {
+    "id": "S12",
+    "arrival": "2026-10-06T14:56",
+    "rests": 1
+   },
+   {
+    "id": "S13",
+    "arrival": "2026-10-06T14:18",
+    "rests": 1
+   },
+   {
+    "id": "S14",
+    "arrival": "2026-10-05T18:46",
+    "rests": 0
+   }
+  ],
+  "docks": [
+   {
+    "id": "S01",
+    "dock_start": "2026-10-05T21:16",
+    "wait_minutes": 167
+   },
+   {
+    "id": "S02",
+    "dock_start": "2026-10-06T02:40",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S03",
+    "dock_start": "2026-10-05T17:34",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S04",
+    "dock_start": "2026-10-06T03:37",
+    "wait_minutes": 40
+   },
+   {
+    "id": "S05",
+    "dock_start": "2026-10-06T16:01",
+    "wait_minutes": 100
+   },
+   {
+    "id": "S06",
+    "dock_start": "2026-10-05T19:34",
+    "wait_minutes": 85
+   },
+   {
+    "id": "S07",
+    "dock_start": "2026-10-06T02:37",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S08",
+    "dock_start": "2026-10-06T14:12",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S09",
+    "dock_start": "2026-10-05T17:46",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S10",
+    "dock_start": "2026-10-06T06:37",
+    "wait_minutes": 191
+   },
+   {
+    "id": "S11",
+    "dock_start": "2026-10-06T13:31",
+    "wait_minutes": 0
+   },
+   {
+    "id": "S12",
+    "dock_start": "2026-10-06T19:42",
+    "wait_minutes": 286
+   },
+   {
+    "id": "S13",
+    "dock_start": "2026-10-06T15:42",
+    "wait_minutes": 84
+   },
+   {
+    "id": "S14",
+    "dock_start": "2026-10-05T22:16",
+    "wait_minutes": 210
+   }
+  ],
+  "billing": {
+   "per_shipment": [
+    {
+     "id": "S01",
+     "fee": 255
+    },
+    {
+     "id": "S02",
+     "fee": 0
+    },
+    {
+     "id": "S03",
+     "fee": 0
+    },
+    {
+     "id": "S04",
+     "fee": 0
+    },
+    {
+     "id": "S05",
+     "fee": 85
+    },
+    {
+     "id": "S06",
+     "fee": 0
+    },
+    {
+     "id": "S07",
+     "fee": 0
+    },
+    {
+     "id": "S08",
+     "fee": 0
+    },
+    {
+     "id": "S09",
+     "fee": 0
+    },
+    {
+     "id": "S10",
+     "fee": 340
+    },
+    {
+     "id": "S11",
+     "fee": 0
+    },
+    {
+     "id": "S12",
+     "fee": 900
+    },
+    {
+     "id": "S13",
+     "fee": 0
+    },
+    {
+     "id": "S14",
+     "fee": 340
+    }
+   ],
+   "per_customer": [
+    {
+     "customer": "CU-01",
+     "total": 340
+    },
+    {
+     "customer": "CU-02",
+     "total": 85
+    },
+    {
+     "customer": "CU-03",
+     "total": 255
+    },
+    {
+     "customer": "CU-04",
+     "total": 340
+    },
+    {
+     "customer": "CU-05",
+     "total": 900
+    }
+   ],
+   "grand_total": 1920
+  }
+ },
+ "diagnostics": {
+  "closure_affected": [
+   "S01",
+   "S02",
+   "S03",
+   "S05",
+   "S06",
+   "S07",
+   "S08",
+   "S09",
+   "S10",
+   "S12",
+   "S13",
+   "S14"
+  ],
+  "distractor_closure_on_route": [
+   "S01",
+   "S02",
+   "S04",
+   "S05",
+   "S06",
+   "S07",
+   "S08",
+   "S10",
+   "S11",
+   "S12",
+   "S13",
+   "S14"
+  ],
+  "km_tie_shipments": [
+   "S01",
+   "S06"
+  ],
+  "shipments_with_rest": [
+   "S01",
+   "S05",
+   "S06",
+   "S09",
+   "S12",
+   "S13"
+  ],
+  "rest_boundary_just_over": [
+   "S01"
+  ],
+  "rest_boundary_just_under": [
+   "S03",
+   "S05"
+  ],
+  "midnight_crossing": [
+   "S02",
+   "S04",
+   "S07",
+   "S10"
+  ],
+  "near_tie_arrivals": [
+   [
+    "S08",
+    "S13",
+    6
+   ],
+   [
+    "S13",
+    "S05",
+    3
+   ],
+   [
+    "S03",
+    "S09",
+    12
+   ],
+   [
+    "S07",
+    "S02",
+    3
+   ]
+  ],
+  "billable": [
+   "S05",
+   "S12",
+   "S01",
+   "S14",
+   "S10"
+  ],
+  "capped": [
+   "S12"
+  ],
+  "hazardous_billable": [
+   "S12"
+  ],
+  "zero_wait": [
+   "S11",
+   "S08",
+   "S03",
+   "S09",
+   "S07",
+   "S02"
+  ],
+  "free_nonzero_wait": [
+   "S13",
+   "S06",
+   "S04"
+  ],
+  "near_ties_that_change_waits": 2,
+  "unrestricted_routes": {
+   "S01": {
+    "path": [
+     "Halcott",
+     "Xenia",
+     "Thirsk",
+     "Selby",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 361
+   },
+   "S02": {
+    "path": [
+     "Garston",
+     "Quorn",
+     "Oakham",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 322
+   },
+   "S03": {
+    "path": [
+     "Naseby",
+     "Dunmore",
+     "Belmont",
+     "Fairlie",
+     "Ashford",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 368
+   },
+   "S04": {
+    "path": [
+     "Lindale",
+     "Belmont",
+     "Selby",
+     "Yarm"
+    ],
+    "km": 245
+   },
+   "S05": {
+    "path": [
+     "Garston",
+     "Quorn",
+     "Oakham",
+     "Selby",
+     "Thirsk",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 478
+   },
+   "S06": {
+    "path": [
+     "Corwen",
+     "Halcott",
+     "Xenia",
+     "Thirsk",
+     "Selby",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 421
+   },
+   "S07": {
+    "path": [
+     "Dunmore",
+     "Penrith",
+     "Wetherby",
+     "Thirsk",
+     "Yarm"
+    ],
+    "km": 243
+   },
+   "S08": {
+    "path": [
+     "Uppingham",
+     "Dunmore",
+     "Naseby",
+     "Kelso",
+     "Corwen",
+     "Halcott"
+    ],
+    "km": 267
+   },
+   "S09": {
+    "path": [
+     "Kelso",
+     "Naseby",
+     "Dunmore",
+     "Belmont",
+     "Fairlie",
+     "Ashford",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 420
+   },
+   "S10": {
+    "path": [
+     "Uppingham",
+     "Dunmore",
+     "Penrith",
+     "Wetherby",
+     "Thirsk",
+     "Yarm"
+    ],
+    "km": 280
+   },
+   "S11": {
+    "path": [
+     "Fairlie",
+     "Belmont",
+     "Penrith",
+     "Wetherby",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 368
+   },
+   "S12": {
+    "path": [
+     "Ilford",
+     "Ashford",
+     "Selby",
+     "Thirsk",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 451
+   },
+   "S13": {
+    "path": [
+     "Elsmere",
+     "Quorn",
+     "Oakham",
+     "Selby",
+     "Thirsk",
+     "Xenia",
+     "Halcott"
+    ],
+    "km": 397
+   },
+   "S14": {
+    "path": [
+     "Yarm",
+     "Selby",
+     "Oakham",
+     "Quorn"
+    ],
+    "km": 205
+   }
+  },
+  "rest_checks": {
+   "S01": [
+    57,
+    176,
+    216,
+    332,
+    373
+   ],
+   "S02": [
+    36,
+    155,
+    271
+   ],
+   "S03": [
+    79,
+    124,
+    175,
+    237,
+    346
+   ],
+   "S04": [
+    76,
+    185
+   ],
+   "S05": [
+    36,
+    145,
+    180,
+    235,
+    311,
+    358,
+    491
+   ],
+   "S06": [
+    60,
+    117,
+    236,
+    276,
+    392,
+    41
+   ],
+   "S07": [
+    45,
+    96,
+    172,
+    281
+   ],
+   "S08": [
+    37,
+    136,
+    183,
+    316
+   ],
+   "S09": [
+    52,
+    131,
+    176,
+    227,
+    289,
+    398
+   ],
+   "S10": [
+    55,
+    106,
+    182,
+    291
+   ],
+   "S11": [
+    55,
+    131,
+    178,
+    311
+   ],
+   "S12": [
+    109,
+    144,
+    199,
+    275,
+    322,
+    455
+   ],
+   "S13": [
+    36,
+    72,
+    113,
+    157,
+    212,
+    288,
+    335,
+    468
+   ],
+   "S14": [
+    86,
+    180
+   ]
+  },
+  "n_shortest_paths": {
+   "S01": 2,
+   "S02": 1,
+   "S03": 1,
+   "S04": 1,
+   "S05": 1,
+   "S06": 2,
+   "S07": 1,
+   "S08": 1,
+   "S09": 1,
+   "S10": 1,
+   "S11": 1,
+   "S12": 1,
+   "S13": 1,
+   "S14": 1
+  },
+  "generator_attempts": 2574
+ }
+}

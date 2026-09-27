@@ -1,0 +1,121 @@
+IMPORTANT: Solve without any tools - no Bash, no Python, no code execution, no calculators, no files, no web. Work it out yourself.
+
+You are the crew-scheduling officer of a fictional airline. Every time zone below is FICTIONAL: their offsets and daylight-time rules are defined ONLY by this document. Real-world time-zone knowledge does not apply and will mislead you. Compute every answer from the rules and data given here.
+
+== CALENDAR ==
+All dates are in 2027, which is not a leap year. 2027-09-01 is a Wednesday. September has 30 days, October has 31 days. 'Second Sunday of October' means the second Sunday that occurs in October; 'last Sunday of October' means the final Sunday in October.
+
+== TIME ZONES ==
+Offsets are relative to UTC: 'UTC+5:45' means local time = UTC + 5 h 45 min; 'UTC-3:30' means local = UTC - 3 h 30 min. Where a zone has daylight time, the STANDARD offset is listed and daylight time ADDS the stated shift to it (e.g. standard UTC+5:45 with a 60-min shift is UTC+6:45 during daylight time). The time stated in each rule is the local wall-clock time showing immediately BEFORE the change: 'forward 60 min at 02:00' means the clocks jump from 02:00 to 03:00 (02:00-02:59 does not exist that day); 'back 60 min at 02:00' means that at 02:00 daylight time the clocks return to 01:00 standard time (01:00-01:59 occurs twice that day). Northern-style zones go forward in March/April and back in September/October; southern-style zones do the opposite - read each rule literally.
+
+ZONE  NAME                STANDARD   DAYLIGHT RULE
+ARB   Arbolen Time        UTC-4:00   Clocks go forward 60 min at 00:00 on the first Friday of March and back 60 min at 02:45 on the last Friday of October.
+BEL   Belmara Time        UTC+0:00   No daylight time (fixed offset all year).
+CAS   Cassiovar Time      UTC+5:45   Clocks go forward 60 min at 00:00 on the first Sunday of March and back 60 min at 02:00 on the second Sunday of October.
+DOR   Dorrindale Time     UTC-6:00   Clocks go forward 60 min at 01:00 on the third Sunday of April and back 60 min at 02:00 on the fourth Sunday of October. DECREE: daylight time is abolished this year. At 01:00 on Sunday 26 September 2027 clocks are set back 60 min to standard time, and the zone stays on standard time permanently from then on (the change scheduled for the fourth Sunday of October does NOT happen).
+ELM   Elmhaven Time       UTC+3:00   No daylight time (fixed offset all year).
+FAR   Farrowgate Time     UTC+4:30   No daylight time (fixed offset all year).
+GRW   Greywick Time       UTC+13:45  Clocks go forward 60 min at 03:00 on the first Sunday of September and back 60 min at 02:00 on the third Sunday of April.
+HAL   Halvern Time        UTC+10:30  Clocks go forward 30 min at 00:00 on the third Sunday of October and back 30 min at 00:00 on the second Sunday of March.
+ISK   Iskarra Time        UTC-3:30   Clocks go forward 60 min at 03:00 on the third Sunday of April and back 60 min at 02:30 on the second Sunday of September.
+JUR   Jurelle Time        UTC+11:00  Clocks go forward 60 min at 03:00 on the third Sunday of September and back 60 min at 01:00 on the second Sunday of April.
+KOV   Kovaris Time        UTC+1:00   No daylight time (fixed offset all year).
+LUM   Lumenport Time      UTC+2:00   Clocks go forward 60 min at 03:00 on the third Sunday of April and back 60 min at 02:30 on the first Sunday of October.
+
+== POLICY FOR SKIPPED AND REPEATED LOCAL TIMES ==
+Some scheduled DEPARTURE times fall inside a skipped or a repeated hour. Resolve them exactly like this:
+  * Skipped (non-existent) time: move the wall-clock time FORWARD by the size of the gap, then convert with the new (post-change) offset. Example: if clocks jump from 02:00 to 03:00, a departure printed as 02:20 actually happens at 03:20 in the new offset - which is the same instant as 02:20 in the OLD offset.
+  * Repeated (ambiguous) time: use the FIRST occurrence, i.e. the earlier instant (the one still in the pre-change offset).
+ARRIVALS are never ambiguous: an arrival is a definite instant. Its local time is that instant converted with whichever offset is in force in the arrival zone AT THAT INSTANT (if the arrival zone changes offset while the aircraft is in the air, use the new offset).
+
+== WORKED EXAMPLE (an example zone, not in the table) ==
+Zone XMP: standard UTC+2:30; clocks go forward 60 min at 02:00 on the first Sunday of April and back 60 min at 02:00 on the last Sunday of October. Zone FIX: UTC-4:00, no daylight time. Suppose 2027-10-31 is the last Sunday of October (it is).
+  Leg X1: departs XMP 2027-10-31 01:30, arrives FIX, block 300 min.
+    01:30 occurs twice in XMP that day (clocks go 02:00 -> 01:00). First occurrence = daylight offset UTC+3:30, so dep_utc = 2027-10-30 22:00. arr_utc = 22:00 + 300 min = 2027-10-31 03:00. arr_local (FIX, UTC-4:00) = 2027-10-30 23:00.
+  Leg X2: departs FIX 2027-04-03 20:20, arrives XMP, block 405 min.
+    dep_utc = 2027-04-04 00:20. arr_utc = 2027-04-04 07:05. XMP goes forward at 02:00 local on Sunday 2027-04-04 (first Sunday of April); 02:00 standard = 2027-04-03 23:30 UTC, which is before the arrival, so daylight offset UTC+3:30 applies: arr_local = 2027-04-04 10:35.
+  Leg X3: departs XMP 2027-04-04 02:40 (a skipped time), arrives FIX, block 120 min.
+    Move forward by the 60-min gap: 03:40 daylight (UTC+3:30) -> dep_utc = 2027-04-04 00:10. arr_utc = 02:10; arr_local (FIX) = 2027-04-03 22:10.
+
+== ROSTER ==
+Home base: CAS. One crew flies all 40 legs below, listed in chronological order. DEP_LOCAL is the scheduled departure in the LOCAL time of the departure zone on that date. BLOCK is the elapsed flight time in minutes from departure to arrival. Arrival = departure instant + block.
+
+ID   DEP  DEP_LOCAL          ARR  BLOCK
+L01  CAS  2027-09-04 16:14   BEL  189
+L02  BEL  2027-09-04 13:40   GRW  72
+L03  GRW  2027-09-05 07:16   ELM  150
+L04  ELM  2027-09-04 23:55   BEL  135
+L05  BEL  2027-09-11 16:51   HAL  96
+L06  HAL  2027-09-12 06:49   BEL  62
+L07  BEL  2027-09-11 22:57   FAR  126
+L08  FAR  2027-09-12 08:03   ISK  129
+L09  ISK  2027-09-18 09:33   JUR  91
+L10  JUR  2027-09-19 04:08   CAS  66
+L11  CAS  2027-09-19 01:03   BEL  72
+L12  BEL  2027-09-18 21:36   FAR  54
+L13  FAR  2027-09-26 07:55   DOR  48
+L14  DOR  2027-09-26 00:48   FAR  72
+L15  FAR  2027-09-26 12:19   JUR  45
+L16  JUR  2027-09-26 22:45   DOR  61
+L17  DOR  2027-09-30 05:17   FAR  178
+L18  FAR  2027-09-30 21:03   GRW  88
+L19  GRW  2027-10-01 10:26   DOR  86
+L20  DOR  2027-09-30 17:39   HAL  66
+L21  HAL  2027-10-03 07:25   ARB  50
+L22  ARB  2027-10-02 20:19   LUM  50
+L23  LUM  2027-10-03 03:39   DOR  45
+L24  DOR  2027-10-02 21:40   ISK  46
+L25  ISK  2027-10-09 12:02   CAS  151
+L26  CAS  2027-10-10 01:36   HAL  65
+L27  HAL  2027-10-10 07:45   DOR  109
+L28  DOR  2027-10-09 17:51   HAL  83
+L29  HAL  2027-10-16 10:13   FAR  121
+L30  FAR  2027-10-16 06:54   DOR  52
+L31  DOR  2027-10-15 22:34   GRW  225
+L32  GRW  2027-10-17 01:35   HAL  73
+L33  HAL  2027-10-24 08:21   KOV  148
+L34  KOV  2027-10-24 02:47   ISK  178
+L35  ISK  2027-10-24 02:53   DOR  55
+L36  DOR  2027-10-24 02:45   LUM  80
+L37  LUM  2027-10-29 04:38   ARB  87
+L38  ARB  2027-10-29 02:15   BEL  177
+L39  BEL  2027-10-29 09:49   ELM  142
+L40  ELM  2027-10-29 15:58   HAL  106
+
+== REQUIRED ANSWERS ==
+1. For EVERY leg: arr_utc (arrival instant in UTC) and arr_local (arrival wall-clock time in the ARRIVAL zone). Format both as 'YYYY-MM-DD HH:MM' (24-hour clock).
+2. Duty periods. The first duty period begins 60 minutes before the departure of L01. A leg belongs to the current duty period unless the gap from the PREVIOUS leg's arrival instant to this leg's departure instant is 600 minutes (10 h) or more; in that case the current duty period ends 30 minutes after the previous leg's arrival and a new duty period begins 60 minutes before this leg's departure. The last duty period ends 30 minutes after the arrival of the final leg. Number them D1, D2, ... in order. For each report start_utc, end_utc ('YYYY-MM-DD HH:MM') and minutes = end - start in real elapsed minutes (work in UTC; wall-clock changes never alter elapsed time).
+3. violations: the ids of every duty period whose minutes is STRICTLY greater than 840 (14 h), in order; [] if none.
+4. home_base_month_minutes: the sum of BLOCK minutes over all legs whose arrival, expressed in CAS local time (the home base, applying its own daylight rule at the arrival instant), falls in September 2027 - i.e. strictly before 2027-10-01 00:00 CAS local. The arrival zone's own calendar date is irrelevant here.
+
+Hint on method: convert each departure to UTC with the offset in force at departure (after applying the skipped/repeated policy), add the block minutes, then convert to the arrival zone with the offset in force at the ARRIVAL instant. Check every transition date by counting weekdays from the calendar anchor above. Be careful with the date when an offset crosses midnight and with zones east of UTC+12.
+
+== OUTPUT FORMAT ==
+Return ONLY a single JSON object - no prose, no markdown fences, no comments - with exactly this shape (all 40 legs, in roster order):
+{
+ "legs": [
+  {
+   "id": "L01",
+   "arr_utc": "YYYY-MM-DD HH:MM",
+   "arr_local": "YYYY-MM-DD HH:MM"
+  },
+  {
+   "id": "L02",
+   "arr_utc": "...",
+   "arr_local": "..."
+  }
+ ],
+ "duty_periods": [
+  {
+   "id": "D1",
+   "start_utc": "YYYY-MM-DD HH:MM",
+   "end_utc": "YYYY-MM-DD HH:MM",
+   "minutes": 0
+  }
+ ],
+ "violations": [
+  "D1"
+ ],
+ "home_base_month_minutes": 0
+}
+Use integers for minutes. Do not add any other keys.

@@ -1,0 +1,72 @@
+{
+ "type": "object",
+ "properties": {
+  "legs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "arr_utc": {
+      "type": "string",
+      "description": "YYYY-MM-DD HH:MM"
+     },
+     "arr_local": {
+      "type": "string",
+      "description": "YYYY-MM-DD HH:MM"
+     }
+    },
+    "required": [
+     "id",
+     "arr_utc",
+     "arr_local"
+    ]
+   }
+  },
+  "home_base_month_minutes": {
+   "type": "integer"
+  },
+  "duty_periods": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "start_utc": {
+      "type": "string",
+      "description": "YYYY-MM-DD HH:MM"
+     },
+     "end_utc": {
+      "type": "string",
+      "description": "YYYY-MM-DD HH:MM"
+     },
+     "minutes": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id",
+     "start_utc",
+     "end_utc",
+     "minutes"
+    ]
+   }
+  },
+  "violations": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ },
+ "required": [
+  "legs",
+  "duty_periods",
+  "violations",
+  "home_base_month_minutes"
+ ]
+}

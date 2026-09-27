@@ -1,0 +1,70 @@
+{
+ "type": "object",
+ "properties": {
+  "standings": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "rank": {
+      "type": "integer"
+     },
+     "player_id": {
+      "type": "string"
+     },
+     "points": {
+      "type": "number"
+     },
+     "buchholz": {
+      "type": "number"
+     },
+     "sonneborn_berger": {
+      "type": "number"
+     },
+     "wins": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "rank",
+     "player_id",
+     "points",
+     "buchholz",
+     "sonneborn_berger",
+     "wins"
+    ]
+   }
+  },
+  "answers": {
+   "type": "object",
+   "properties": {
+    "champion": {
+     "type": "string"
+    },
+    "third_place": {
+     "type": "string"
+    },
+    "total_forfeits": {
+     "type": "integer"
+    },
+    "most_points_lost": {
+     "type": "string"
+    },
+    "withdrawn_player_points": {
+     "type": "number"
+    }
+   },
+   "required": [
+    "champion",
+    "third_place",
+    "total_forfeits",
+    "most_points_lost",
+    "withdrawn_player_points"
+   ]
+  }
+ },
+ "required": [
+  "standings",
+  "answers"
+ ]
+}

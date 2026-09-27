@@ -1,0 +1,120 @@
+{
+ "type": "object",
+ "properties": {
+  "checkpoints": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "turn": {
+      "type": "integer"
+     },
+     "P1": {
+      "$ref": "#/$defs/player"
+     },
+     "P2": {
+      "$ref": "#/$defs/player"
+     }
+    },
+    "required": [
+     "turn",
+     "P1",
+     "P2"
+    ]
+   }
+  },
+  "final": {
+   "type": "object",
+   "properties": {
+    "winner": {
+     "type": "string",
+     "enum": [
+      "P1",
+      "P2",
+      "draw"
+     ]
+    },
+    "p1_score": {
+     "type": "integer"
+    },
+    "p2_score": {
+     "type": "integer"
+    },
+    "total_captures": {
+     "type": "integer"
+    },
+    "total_tolls_paid": {
+     "type": "integer"
+    },
+    "discard_pile_size": {
+     "type": "integer"
+    },
+    "deck_remaining": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "winner",
+    "p1_score",
+    "p2_score",
+    "total_captures",
+    "total_tolls_paid",
+    "discard_pile_size",
+    "deck_remaining"
+   ]
+  }
+ },
+ "required": [
+  "checkpoints",
+  "final"
+ ],
+ "$defs": {
+  "player": {
+   "type": "object",
+   "properties": {
+    "position": {
+     "type": "integer"
+    },
+    "coins": {
+     "type": "integer"
+    },
+    "hand_size": {
+     "type": "integer"
+    },
+    "hand_total": {
+     "type": "integer"
+    },
+    "stockpile": {
+     "type": "object",
+     "properties": {
+      "Ore": {
+       "type": "integer"
+      },
+      "Wood": {
+       "type": "integer"
+      },
+      "Grain": {
+       "type": "integer"
+      },
+      "Gem": {
+       "type": "integer"
+      }
+     },
+     "required": [
+      "Ore",
+      "Wood",
+      "Grain",
+      "Gem"
+     ]
+    }
+   },
+   "required": [
+    "position",
+    "coins",
+    "hand_size",
+    "hand_total",
+    "stockpile"
+   ]
+  }
+ }
+}

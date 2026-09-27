@@ -1,0 +1,18 @@
+[
+ {
+  "cmd": [
+   "claude",
+   "-p",
+   "--model",
+   "claude-haiku-4-5",
+   "--output-format",
+   "json",
+   "--effort",
+   "low"
+  ],
+  "returncode": 0,
+  "stdout": "{\"duration_api_ms\":337571,\"stop_reason\":\"end_turn\",\"session_id\":\"9ea80061-f203-485f-a987-aab5c1ee16c6\",\"total_cost_usd\":0.27992,\"usage\":{\"input_tokens\":10,\"cache_creation_input_tokens\":6756,\"cache_read_input_tokens\":14880,\"output_tokens\":52982,\"output_tokens_details\":{\"thinking_tokens\":52491},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":6756,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"not_available\",\"iterations\":[{\"input_tokens\":10,\"output_tokens\":52982,\"cache_read_input_tokens\":14880,\"cache_creation_input_tokens\":6756,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":6756},\"type\":\"message\"}],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5\":{\"inputTokens\":10,\"outputTokens\":52982,\"cacheReadInputTokens\":14880,\"cacheCreationInputTokens\":6756,\"webSearchRequests\":0,\"costUSD\":0.27992,\"contextWindow\":200000,\"maxOutputTokens\":32000,\"thinkingTokens\":52491,\"canonicalModel\":\"claude-haiku-4-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"is_error\":false,\"num_turns\":1,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"```json\\n{\\\"program_a\\\": {\\\"out_stream\\\": [768, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175, 1175], \\\"final_registers\\\": [0, 1, 1175, 0, 1916, 1, 4081, 2635], \\\"final_memory\\\": [900, 3471, 3561, 326, 308, 1525, 2000, 2505, 145, 2042, 2410, 1653, 2715, 2172, 891, 1336], \\\"steps_executed\\\": 348, \\\"halted\\\": true}, \\\"program_b\\\": {\\\"out_stream\\\": [2055, 521, 1405, 2231, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234, 2234], \\\"final_registers\\\": [0, 0, 0, 1016, 661, 7, 2863, 2242], \\\"final_memory\\\": [3151, 521, 2791, 1888, 661, 3905, 2863, 1965, 1523, 1060, 626, 1564, 1407, 3983, 1835, 1574], \\\"steps_executed\\\": 509, \\\"halted\\\": true}}\\n```\",\"ttft_ms\":334493,\"type\":\"result\",\"duration_ms\":337618,\"uuid\":\"dad320f5-19e3-4d3f-a304-977bc963be50\",\"ttft_stream_ms\":638,\"time_to_request_ms\":23,\"first_content_frame_ms\":639,\"queued_turn_count\":0,\"result_index\":0}\n",
+  "stderr": "",
+  "duration_s": 338.5382947921753
+ }
+]

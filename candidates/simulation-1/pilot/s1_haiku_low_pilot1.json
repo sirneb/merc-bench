@@ -1,0 +1,168 @@
+{
+ "task": "S1",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "pilot1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "checkpoints": [
+   {
+    "turn": 20,
+    "P1": {
+     "position": 6,
+     "coins": 6,
+     "hand_size": 5,
+     "hand_total": 7,
+     "stockpile": {
+      "Ore": 1,
+      "Wood": 0,
+      "Grain": 1,
+      "Gem": 0
+     }
+    },
+    "P2": {
+     "position": 7,
+     "coins": 47,
+     "hand_size": 4,
+     "hand_total": 19,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 0,
+      "Grain": 0,
+      "Gem": 0
+     }
+    }
+   },
+   {
+    "turn": 40,
+    "P1": {
+     "position": 4,
+     "coins": 14,
+     "hand_size": 5,
+     "hand_total": 12,
+     "stockpile": {
+      "Ore": 2,
+      "Wood": 1,
+      "Grain": 1,
+      "Gem": 0
+     }
+    },
+    "P2": {
+     "position": 8,
+     "coins": 82,
+     "hand_size": 4,
+     "hand_total": 25,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 0,
+      "Grain": 0,
+      "Gem": 1
+     }
+    }
+   },
+   {
+    "turn": 60,
+    "P1": {
+     "position": 1,
+     "coins": 28,
+     "hand_size": 4,
+     "hand_total": 15,
+     "stockpile": {
+      "Ore": 3,
+      "Wood": 1,
+      "Grain": 1,
+      "Gem": 0
+     }
+    },
+    "P2": {
+     "position": 6,
+     "coins": 108,
+     "hand_size": 5,
+     "hand_total": 23,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 0,
+      "Grain": 0,
+      "Gem": 2
+     }
+    }
+   },
+   {
+    "turn": 80,
+    "P1": {
+     "position": 8,
+     "coins": 35,
+     "hand_size": 4,
+     "hand_total": 14,
+     "stockpile": {
+      "Ore": 3,
+      "Wood": 2,
+      "Grain": 2,
+      "Gem": 0
+     }
+    },
+    "P2": {
+     "position": 5,
+     "coins": 135,
+     "hand_size": 5,
+     "hand_total": 28,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 0,
+      "Grain": 1,
+      "Gem": 1
+     }
+    }
+   },
+   {
+    "turn": 100,
+    "P1": {
+     "position": 11,
+     "coins": 42,
+     "hand_size": 4,
+     "hand_total": 17,
+     "stockpile": {
+      "Ore": 3,
+      "Wood": 2,
+      "Grain": 2,
+      "Gem": 0
+     }
+    },
+    "P2": {
+     "position": 3,
+     "coins": 147,
+     "hand_size": 5,
+     "hand_total": 25,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 1,
+      "Grain": 1,
+      "Gem": 2
+     }
+    }
+   }
+  ],
+  "final": {
+   "winner": "P2",
+   "p1_score": 57,
+   "p2_score": 153,
+   "total_captures": 3,
+   "total_tolls_paid": 8,
+   "discard_pile_size": 11,
+   "deck_remaining": 8
+  }
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 8611,
+  "cache_read": 13856,
+  "output": 31843
+ },
+ "duration_s": 203.7,
+ "cost_usd": 0.1714,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}
