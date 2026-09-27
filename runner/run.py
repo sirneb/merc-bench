@@ -117,7 +117,12 @@ def run_claude_code(model, effort, prompt, schema):
     full = (prompt + "\n\nRespond with ONLY a single JSON object matching "
             "this JSON Schema (no prose, no code fences):\n"
             + json.dumps(schema))
-    cmd = ["claude", "-p", "--model", model, "--output-format", "json"]
+    # No tools: the tasks forbid them, the key files sit on disk next to the
+    # runner, and an empty tool list also drops ~20k tokens of Claude Code's own
+    # system prompt from every run. Records made before 2026-09-27 ran without
+    # this flag (num_turns==1 and no tool use was verified on all of them).
+    cmd = ["claude", "-p", "--model", model, "--output-format", "json",
+           "--tools", ""]
     if effort != "none":
         cmd += ["--effort", effort]
     t0 = time.time()
@@ -144,6 +149,7 @@ def run_claude_code(model, effort, prompt, schema):
     CLI_ATTEMPTS.append({
         "served": sorted(mu.keys()),
         "stop_reason": out.get("stop_reason"),
+        "tools": "disabled",
         "num_turns": out.get("num_turns"),
         "thinking_tokens": ((u.get("output_tokens_details") or {})
                             .get("thinking_tokens")),
