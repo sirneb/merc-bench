@@ -19,6 +19,7 @@ import json
 import os
 import re
 import subprocess
+import threading
 import sys
 import time
 
@@ -146,7 +147,7 @@ def run_claude_code(model, effort, prompt, schema):
     # after a safety-classifier refusal, and that answer must not be scored as
     # the requested model.
     mu = out.get("modelUsage") or {}
-    CLI_ATTEMPTS.append({
+    cli_attempts().append({
         "served": sorted(mu.keys()),
         "stop_reason": out.get("stop_reason"),
         "tools": "disabled",
@@ -158,7 +159,15 @@ def run_claude_code(model, effort, prompt, schema):
     return answer, usage, dur
 
 
-CLI_ATTEMPTS = []  # reset per record in main(); appended by run_claude_code
+_TLS = threading.local()
+
+
+def cli_attempts():
+    """Per-thread list of CLI attempt provenance, so concurrent runners (e.g.
+    candidates/pilot.py's worker pool) never mix attempts across records."""
+    if not hasattr(_TLS, "attempts"):
+        _TLS.attempts = []
+    return _TLS.attempts
 
 
 
@@ -257,7 +266,8 @@ def main():
         print(f"[{tid}] running {args.model}@{args.effort} via {args.harness}...",
               flush=True)
         fn = run_api if args.harness == "api" else run_claude_code
-        del CLI_ATTEMPTS[:]
+        del cli_attempts()[:]
+        CLI_ATTEMPTS = cli_attempts()
         answer, usage, dur, attempts, fail = attempt_with_retries(
             fn, args.model, args.effort, prompt, schema)
         notes = []

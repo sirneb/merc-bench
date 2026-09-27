@@ -59,9 +59,8 @@ def one_run(cdir, slug, prompt, schema, family, model, effort, rep, outdir):
         rec = json.load(open(path))
         if not rec.get("invalid"):
             return rec
-    # CLI_ATTEMPTS is module-global in the runner; give each worker its own list.
-    attempts = []
-    runner.CLI_ATTEMPTS = attempts
+    attempts = runner.cli_attempts()  # thread-local in the runner
+    del attempts[:]
     answer, usage, dur, n_att, fail = runner.attempt_with_retries(
         runner.run_claude_code, model, effort, prompt, schema)
     notes = []
