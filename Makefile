@@ -9,6 +9,7 @@ report:
 verify:
 	python3 runner/aggregate.py
 	python3 report/generate.py
+	python3 report/lint_prose.py
 	git diff --exit-code -- results/scores.csv results/summary.json \
 	  && echo "VERIFY OK: regraded scores match the committed baseline" \
 	  || (echo "VERIFY FAILED: regraded scores differ from committed baseline"; exit 1)
