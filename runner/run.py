@@ -227,6 +227,14 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
         last_answer = answer if answer is not None else last_answer
         if validate_answer(answer, schema, reason):
             return answer, usage_total, dur_total, i + 1, None
+        # A retry only helps when the model produced a malformed answer. If the
+        # CLI reports the response was cut off by the output cap, or ended in a
+        # safety refusal, the same prompt will do the same again: stop here and
+        # let the record be marked invalid instead of burning two more attempts.
+        stop = (cli_attempts()[-1].get("stop_reason") if cli_attempts() else None)
+        if stop in ("max_tokens", "refusal"):
+            reason.append(f"stop_reason={stop}; not retrying")
+            return last_answer, usage_total, dur_total, i + 1, "; ".join(reason)
     return last_answer, usage_total, dur_total, tries, "; ".join(reason)
 
 
