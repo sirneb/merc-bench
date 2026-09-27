@@ -69,7 +69,10 @@ Non-Anthropic models, or harnesses like Codex/Cursor/your own scripts: anything
 that can write a record file conforming to
 [`docs/results-format.md`](docs/results-format.md) participates on equal terms —
 the graders and the report consume only those records. Full walkthrough:
-[`docs/adding-a-model.md`](docs/adding-a-model.md).
+[`docs/adding-a-model.md`](docs/adding-a-model.md) — including the
+[checklist](docs/adding-a-model.md#complete-checklist-adding-a-model-to-the-shipped-grid)
+for adding a model to the shipped grid, since the report's conclusions are
+hand-written and do not regenerate with the data.
 
 ## Verify our numbers
 

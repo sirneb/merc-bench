@@ -6,7 +6,9 @@ Data-driven sections (regenerate automatically as results change):
   per-task cards (from tasks/*/README.md).
 Editorial sections (curated prose in report/fragments/*.html — update by hand
 when the data changes materially): findings, method, decision charts,
-external-claims scoreboard, limits.
+external-claims scoreboard, limits. Adding a model to the grid is a data AND
+prose change: follow the checklist in docs/adding-a-model.md and run
+`make lint-prose`.
 
 Usage: python report/generate.py   ->  site/report.html
 """
