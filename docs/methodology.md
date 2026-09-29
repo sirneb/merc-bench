@@ -19,6 +19,18 @@
   the six-puzzle set has repeated attempts per configuration. Aggregates show
   min–max ranges; sample provenance is preserved per record.
 
+- **Two tiers.** The original twelve tasks (T1–T10 core, E and T5B supplementary)
+  saturated by September 2026: every frontier tier scored 98–100 on the core set.
+  A *hard tier* (T13 TALLY-12, T14 cold-chain depots, T15 Quarry Duel) was added
+  from a propose → judge → build → pilot → critique tournament (the full record
+  is `candidates/TOURNAMENT.md` on the `hard-tier-candidates` branch). Hard-tier
+  tasks are long exact simulations whose graders give partial credit but where a
+  single slip cascades, so they are reported on mean % of points, min–max spread
+  and P(clean) rather than the binary floor, and they do not enter the 10-task
+  reliability floors. Every hard-tier package ships a seeded generator with a
+  difficulty knob, an independent oracle that must agree with the key, and a
+  grader self-test. Hard-tier runs use `claude -p --tools ""`.
+
 ## Measurement
 
 - **Scores** are recomputed from raw answers by `runner/aggregate.py` on every

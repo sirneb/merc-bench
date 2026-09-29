@@ -1,0 +1,138 @@
+{
+ "task": "T14",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 10,
+     "backorders": 0,
+     "in_transit": 49
+    },
+    "B": {
+     "on_hand": 12,
+     "backorders": 0,
+     "in_transit": 23
+    },
+    "C": {
+     "on_hand": 21,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 39,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 1,
+     "in_transit": 52
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 10,
+     "in_transit": 8
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 9,
+     "in_transit": 39
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 27,
+     "in_transit": 82
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 73,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 19,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 15,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 26,
+     "in_transit": 60
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 75,
+    "stockout_days": 4,
+    "units_received": 414
+   },
+   "B": {
+    "total_expired": 51,
+    "stockout_days": 9,
+    "units_received": 243
+   },
+   "C": {
+    "total_expired": 79,
+    "stockout_days": 13,
+    "units_received": 205
+   },
+   "D": {
+    "total_expired": 95,
+    "stockout_days": 7,
+    "units_received": 370
+   }
+  },
+  "central": {
+   "final_on_hand": 69,
+   "total_cancelled": 664,
+   "total_expired": 97
+  },
+  "same_day_served": 743,
+  "total_demand": 1006,
+  "fill_rate": 0.7386
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 12278,
+  "cache_read": 3397,
+  "output": 46343
+ },
+ "duration_s": 332.3,
+ "cost_usd": 0.5132,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 45697,
+    "total_cost_usd": 0.5132254
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5"
+  ],
+  "total_cost_usd": 0.5132
+ }
+}

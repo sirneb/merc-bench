@@ -1,0 +1,168 @@
+{
+ "task": "T13",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [
+    3122,
+    2862,
+    1879,
+    108,
+    2970,
+    3252,
+    4034,
+    3774,
+    3712,
+    2362,
+    1063,
+    57,
+    2364,
+    2687,
+    4030,
+    2171,
+    2983,
+    2832,
+    3801,
+    3506
+   ],
+   "final_registers": [
+    4095,
+    0,
+    693,
+    193,
+    1,
+    0,
+    3506,
+    0
+   ],
+   "final_memory": [
+    969,
+    971,
+    3712,
+    571,
+    782,
+    2362,
+    1491,
+    3945,
+    4040,
+    3506,
+    1976,
+    812,
+    2983,
+    582,
+    2042,
+    4030
+   ],
+   "steps_executed": 390,
+   "halted": true
+  },
+  "program_b": {
+   "out_stream": [
+    3712,
+    514,
+    3199,
+    0,
+    1692,
+    130,
+    339,
+    0,
+    2712,
+    0,
+    3527,
+    32,
+    372,
+    40,
+    1755,
+    0,
+    2608,
+    3584,
+    2447,
+    1343,
+    3020,
+    2956,
+    2787,
+    64,
+    1352,
+    138,
+    2007,
+    2184,
+    3492,
+    256,
+    1387,
+    505,
+    992,
+    1344,
+    159,
+    2,
+    3836,
+    1080,
+    3699,
+    48
+   ],
+   "final_registers": [
+    3870,
+    1,
+    3375,
+    7,
+    3870,
+    0,
+    0,
+    4067
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3605,
+    3602,
+    2750,
+    1315,
+    3600,
+    3604,
+    1664,
+    3607,
+    3607,
+    1315,
+    1812,
+    882,
+    3601,
+    3605
+   ],
+   "steps_executed": 1070,
+   "halted": true
+  }
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 7358,
+  "cache_read": 5985,
+  "output": 108584
+ },
+ "duration_s": 802.3,
+ "cost_usd": 1.1165,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 108103,
+    "total_cost_usd": 1.1164729999999996
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5"
+  ],
+  "total_cost_usd": 1.1165
+ }
+}

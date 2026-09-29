@@ -40,6 +40,8 @@ DEFAULT_PRICES = {  # $/MTok: input, cache_write (5-minute cache), cache_read, o
     # Sonnet 5 lists at $2/$10 (verified 2026-09-27 against the CLI's list-basis
     # costUSD; the $3/$15 used before that date overstated every Sonnet cost ~1.5x)
     "sonnet": (2.0, 2.5, 0.2, 10.0),
+    # Sonnet 5.5 (2026-09-28): same $2/$10 list price as Sonnet 5 (platform.claude.com/docs pricing page)
+    "sonnet55": (2.0, 2.5, 0.2, 10.0),
     "opus48": (5.0, 6.25, 0.5, 25.0), "opus5": (5.0, 6.25, 0.5, 25.0),
     "fable": (10.0, 12.5, 1.0, 50.0),
     # Fable 5.1: same $10/$50 list price as Fable 5; cache reads are $0.25/MTok

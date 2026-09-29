@@ -35,7 +35,7 @@ TASK_DIR = {
     "T15": "t15-quarry-duel",
 }
 EFFORT_ORDER = ["none", "low", "medium", "high", "xhigh", "max"]
-FAMILY_ORDER = ["haiku", "sonnet", "opus48", "opus5", "opus55", "fable", "fable51"]
+FAMILY_ORDER = ["haiku", "sonnet", "sonnet55", "opus48", "opus5", "opus55", "fable", "fable51"]
 
 _graders = {}
 
