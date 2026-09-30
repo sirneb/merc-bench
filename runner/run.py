@@ -133,11 +133,25 @@ def run_claude_code(model, effort, prompt, schema):
     if effort != "none":
         cmd += ["--effort", effort]
     t0 = time.time()
-    r = subprocess.run(cmd, input=full, capture_output=True, text=True,
-                       timeout=3600)
+    try:
+        r = subprocess.run(cmd, input=full, capture_output=True, text=True,
+                           timeout=3600)
+    except subprocess.TimeoutExpired as e:
+        dur = time.time() - t0
+        cli_attempts().append({"served": [], "stop_reason": "timeout",
+                               "tools": "disabled", "num_turns": None,
+                               "thinking_tokens": None, "total_cost_usd": None,
+                               "duration_s": round(dur, 1)})
+        raise RuntimeError(f"claude -p timed out after {dur:.0f}s") from e
     dur = time.time() - t0
     if r.returncode != 0:
-        raise RuntimeError(f"claude -p failed: {r.stderr[:300]}")
+        cli_attempts().append({"served": [], "stop_reason": "cli_error",
+                               "tools": "disabled", "num_turns": None,
+                               "thinking_tokens": None, "total_cost_usd": None,
+                               "returncode": r.returncode, "duration_s": round(dur, 1),
+                               "stderr_tail": r.stderr[-600:], "stdout_tail": r.stdout[-300:]})
+        raise RuntimeError(f"claude -p exit {r.returncode} after {dur:.0f}s: "
+                           f"{r.stderr.strip()[-200:] or r.stdout.strip()[-200:]}")
     out = extract_json(r.stdout) or {}
     text = out.get("result", r.stdout)
     answer = extract_json(text if isinstance(text, str) else json.dumps(text))
@@ -208,17 +222,20 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
     usage_total = None
     dur_total = 0.0
     reason = []
+    errors = []  # one entry per failed attempt, in order
     last_answer = None
     for i in range(tries):
         p = prompt if i == 0 else (
             prompt + "\n\nIMPORTANT: your previous response was rejected ("
             + "; ".join(reason) +
             "). Respond again with ONLY the complete, valid JSON object.")
+        harness_err = None
+        t_att = time.time()
         try:
             answer, usage, dur = fn(model, effort, p, schema)
         except Exception as e:
-            reason = [f"harness error: {e}"]
-            answer, usage, dur = None, None, 0.0
+            harness_err = f"harness error: {e}"
+            answer, usage, dur = None, None, time.time() - t_att
         dur_total += dur
         if usage:
             if usage_total is None:
@@ -229,15 +246,20 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
         last_answer = answer if answer is not None else last_answer
         if validate_answer(answer, schema, reason):
             return answer, usage_total, dur_total, i + 1, None
+        if harness_err:
+            reason[:] = [harness_err]
+        errors.append(reason[0] if reason else "?")
         # A retry only helps when the model produced a malformed answer. If the
         # CLI reports the response was cut off by the output cap, or ended in a
         # safety refusal, the same prompt will do the same again: stop here and
         # let the record be marked invalid instead of burning two more attempts.
         stop = (cli_attempts()[-1].get("stop_reason") if cli_attempts() else None)
         if stop in ("max_tokens", "refusal"):
-            reason.append(f"stop_reason={stop}; not retrying")
-            return last_answer, usage_total, dur_total, i + 1, "; ".join(reason)
-    return last_answer, usage_total, dur_total, tries, "; ".join(reason)
+            errors[-1] += f" (stop_reason={stop}; not retrying)"
+            return last_answer, usage_total, dur_total, i + 1, " | ".join(
+                f"attempt {k + 1}: {e}" for k, e in enumerate(errors))
+    return last_answer, usage_total, dur_total, tries, " | ".join(
+        f"attempt {k + 1}: {e}" for k, e in enumerate(errors))
 
 
 def cost_usd(usage, family, harness="api"):
