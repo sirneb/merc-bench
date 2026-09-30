@@ -77,7 +77,10 @@ def one_run(cdir, slug, prompt, schema, family, model, effort, rep, outdir):
         "cost_basis": "standard list prices, USD/MTok",
         "cost_estimated": usage is None, "notes": "",
     }
-    if fail:
+    capped = bool(attempts) and attempts[-1].get("stop_reason") == "max_tokens"
+    if fail and capped:
+        notes.append("output cap exceeded (harness max_tokens); scored as null answer, not retried")
+    elif fail:
         rec["invalid"] = True
     if attempts:
         served = sorted({m for a in attempts for m in a["served"]})

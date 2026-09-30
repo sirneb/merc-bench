@@ -144,6 +144,18 @@ def run_claude_code(model, effort, prompt, schema):
                                "duration_s": round(dur, 1)})
         raise RuntimeError(f"claude -p timed out after {dur:.0f}s") from e
     dur = time.time() - t0
+    if r.returncode != 0 and "output token maximum" in r.stdout:
+        # The model did not finish inside the harness's output budget. That is
+        # a measured outcome of this config on this task (docs/adding-a-model.md:
+        # "record the failure honestly — both outcomes are data"), not a
+        # transport failure: return no answer, flag it, and do not retry.
+        out = extract_json(r.stdout) or {}
+        cli_attempts().append({"served": [], "stop_reason": "max_tokens",
+                               "tools": "disabled", "num_turns": out.get("num_turns"),
+                               "thinking_tokens": None, "total_cost_usd": out.get("total_cost_usd"),
+                               "duration_s": round(dur, 1),
+                               "error": (out.get("result") or r.stdout[-300:])[:300]})
+        return None, None, dur
     if r.returncode != 0:
         cli_attempts().append({"served": [], "stop_reason": "cli_error",
                                "tools": "disabled", "num_turns": None,
@@ -322,7 +334,11 @@ def main():
             "cost_estimated": usage is None,
             "notes": "",
         }
-        if fail:
+        capped = bool(CLI_ATTEMPTS) and CLI_ATTEMPTS[-1].get("stop_reason") == "max_tokens"
+        if fail and capped:
+            # answered nothing within the output budget: scored as a null answer
+            notes.append("output cap exceeded (harness max_tokens); scored as null answer, not retried")
+        elif fail:
             rec["invalid"] = True
         if CLI_ATTEMPTS:
             served = sorted({m for a in CLI_ATTEMPTS for m in a["served"]})

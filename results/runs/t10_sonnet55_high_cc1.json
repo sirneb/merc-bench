@@ -1,0 +1,82 @@
+{
+ "task": "T10",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-28",
+ "answer": {
+  "robots": [
+   {
+    "id": "R1",
+    "x": 1,
+    "y": 3,
+    "carrying": 1
+   },
+   {
+    "id": "R2",
+    "x": 4,
+    "y": 3,
+    "carrying": 0
+   },
+   {
+    "id": "R3",
+    "x": 3,
+    "y": 3,
+    "carrying": 0
+   }
+  ],
+  "floor_boxes": [
+   {
+    "x": 2,
+    "y": 4,
+    "count": 2
+   },
+   {
+    "x": 5,
+    "y": 4,
+    "count": 1
+   },
+   {
+    "x": 0,
+    "y": 3,
+    "count": 2
+   },
+   {
+    "x": 4,
+    "y": 3,
+    "count": 2
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 4132,
+  "cache_read": 7137,
+  "output": 822
+ },
+ "duration_s": 7.9,
+ "cost_usd": 0.0262,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 666,
+    "total_cost_usd": 0.0509314
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.0509
+ }
+}

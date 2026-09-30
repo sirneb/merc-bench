@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-29",
+ "answer": {
+  "text": "Meanwhile every busy application eventually discovers that its database is the slowest component in the request path. A cache keeps recent answers close to the code; repeated reads then skip the disk entirely. Each cache hit saves several precious milliseconds.\n\nHowever fast a copy may be, it can quietly drift away from the truth. When a row changes, the old copy in the cache must be replaced or removed; otherwise readers receive stale answers. Good designs attach a strict time limit to every cache entry, and they also invalidate related keys whenever a write succeeds.\n\nAlong this road, caching stays vital; a fast pool of hot data sits in RAM, so a lookup can avoid a slow disk trip. Its pay-off is big for popular rows, but a wrong or old copy can hurt trust. Watch hit ratios, drop cold rows, and pick a sound policy for wiping old data.\n\nFinally measure hit rates, choose sensible expiry times, and protect your cache from stampedes. After that, the work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3756,
+  "cache_read": 7137,
+  "output": 20086
+ },
+ "duration_s": 127.5,
+ "cost_usd": 0.2173,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 19744,
+    "total_cost_usd": 0.4332034
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.4332
+ }
+}
