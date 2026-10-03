@@ -266,7 +266,7 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
         # safety refusal, the same prompt will do the same again: stop here and
         # let the record be marked invalid instead of burning two more attempts.
         stop = (cli_attempts()[-1].get("stop_reason") if cli_attempts() else None)
-        if stop in ("max_tokens", "refusal"):
+        if stop in ("max_tokens", "refusal", "timeout"):
             errors[-1] += f" (stop_reason={stop}; not retrying)"
             return last_answer, usage_total, dur_total, i + 1, " | ".join(
                 f"attempt {k + 1}: {e}" for k, e in enumerate(errors))
@@ -334,10 +334,12 @@ def main():
             "cost_estimated": usage is None,
             "notes": "",
         }
-        capped = bool(CLI_ATTEMPTS) and CLI_ATTEMPTS[-1].get("stop_reason") == "max_tokens"
+        stop = CLI_ATTEMPTS[-1].get("stop_reason") if CLI_ATTEMPTS else None
+        capped = stop in ("max_tokens", "timeout")
         if fail and capped:
-            # answered nothing within the output budget: scored as a null answer
-            notes.append("output cap exceeded (harness max_tokens); scored as null answer, not retried")
+            # answered nothing within the harness budget (output cap or the
+            # 1-hour wall-clock cap): a measured outcome, scored as a null answer
+            notes.append(f"harness budget exceeded ({stop}); scored as null answer, not retried")
         elif fail:
             rec["invalid"] = True
         if CLI_ATTEMPTS:

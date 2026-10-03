@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-02",
+ "answer": {
+  "text": "Meanwhile, a cache keeps hot rows near the application, so repeated reads skip the slow trip to disk. Every hit saves time and shields the primary database; every miss, though, still pays full price, and a bigger cache may help.\n\nHowever, speed has a cost, because stale entries can mislead users. Teams therefore set expiry timers, invalidate keys after writes, and choose eviction policies such as least recently used; each choice trades freshness against hit rate. A cold cache also needs warming, or the very first requests will stampede the database before the cache recovers.\n\nAlong this path, a quick lookup in main RAM can lift a slow disk from strain; but old data is a trap, so a smart tool must drop, patch, or void any old copy right as a row shifts.\n\nFinally, measure your cache hit ratio, tune lifetimes with real traffic, and keep correctness first until the work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3762,
+  "cache_read": 7137,
+  "output": 3895
+ },
+ "duration_s": 29.0,
+ "cost_usd": 0.0554,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 3590,
+    "total_cost_usd": 0.10943139999999998
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.1094
+ }
+}

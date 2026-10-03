@@ -77,9 +77,10 @@ def one_run(cdir, slug, prompt, schema, family, model, effort, rep, outdir):
         "cost_basis": "standard list prices, USD/MTok",
         "cost_estimated": usage is None, "notes": "",
     }
-    capped = bool(attempts) and attempts[-1].get("stop_reason") == "max_tokens"
+    stop = attempts[-1].get("stop_reason") if attempts else None
+    capped = stop in ("max_tokens", "timeout")
     if fail and capped:
-        notes.append("output cap exceeded (harness max_tokens); scored as null answer, not retried")
+        notes.append(f"harness budget exceeded ({stop}); scored as null answer, not retried")
     elif fail:
         rec["invalid"] = True
     if attempts:
