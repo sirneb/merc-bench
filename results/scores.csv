@@ -58,6 +58,7 @@ e_sonnet55_high_cc2.json,E,sonnet55,high,cc2,5,5,0.0602,False,25.1,3771,2026-10-
 e_sonnet55_low_cc1.json,E,sonnet55,low,cc1,5,5,0.0512,False,19.1,3002,2026-09-28,claude-code
 e_sonnet55_low_cc2.json,E,sonnet55,low,cc2,5,5,0.052,False,22.2,3251,2026-10-01,claude-code
 e_sonnet55_max_cc1.json,E,sonnet55,max,cc1,5,5,0.4769,False,289.4,45375,2026-09-29,claude-code
+e_sonnet55_max_cc2.json,E,sonnet55,max,cc2,5,5,0.3236,False,202.1,31011,2026-10-03,claude-code
 e_sonnet55_medium_cc1.json,E,sonnet55,medium,cc1,5,5,0.0523,False,20.1,3089,2026-09-28,claude-code
 e_sonnet55_medium_cc2.json,E,sonnet55,medium,cc2,5,5,0.0529,False,21.7,3179,2026-10-02,claude-code
 e_sonnet55_xhigh_cc1.json,E,sonnet55,xhigh,cc1,5,5,0.0757,False,34.3,5252,2026-09-28,claude-code
@@ -130,6 +131,7 @@ t10_sonnet55_high_cc2.json,T10,sonnet55,high,cc2,7,7,0.0216,False,6.9,801,2026-1
 t10_sonnet55_low_cc1.json,T10,sonnet55,low,cc1,7,7,0.0242,False,7.2,744,2026-09-28,claude-code
 t10_sonnet55_low_cc2.json,T10,sonnet55,low,cc2,7,7,0.023,False,7.2,786,2026-10-01,claude-code
 t10_sonnet55_max_cc1.json,T10,sonnet55,max,cc1,7,7,0.0381,False,13.1,1925,2026-09-29,claude-code
+t10_sonnet55_max_cc2.json,T10,sonnet55,max,cc2,7,7,0.0256,False,11.2,1643,2026-10-03,claude-code
 t10_sonnet55_medium_cc1.json,T10,sonnet55,medium,cc1,7,7,0.0249,False,6.7,786,2026-09-28,claude-code
 t10_sonnet55_medium_cc2.json,T10,sonnet55,medium,cc2,7,7,0.0245,False,7.4,779,2026-10-02,claude-code
 t10_sonnet55_xhigh_cc1.json,T10,sonnet55,xhigh,cc1,7,7,0.0295,False,8.6,1058,2026-09-28,claude-code
@@ -185,6 +187,7 @@ t13_opus55_low_cc1.json,T13,opus55,low,cc1,57.33,80,0.5217,False,191.6,23896,202
 t13_opus55_low_cc2.json,T13,opus55,low,cc2,55.83,80,0.3986,False,161.4,19837,2026-09-27,claude-code
 t13_opus55_low_cc3.json,T13,opus55,low,cc3,78,80,0.3845,False,147.0,17465,2026-09-27,claude-code
 t13_opus55_max_cc1.json,T13,opus55,max,cc1,80,80,2.3361,False,786.7,114183,2026-09-27,claude-code
+t13_opus55_max_cc2.json,T13,opus55,max,cc2,80,80,2.3048,False,791.5,112152,2026-10-03,claude-code
 t13_opus55_medium_cc1.json,T13,opus55,medium,cc1,80,80,0.6354,False,231.4,30010,2026-09-27,claude-code
 t13_opus55_medium_cc2.json,T13,opus55,medium,cc2,80,80,0.6291,False,230.4,29266,2026-09-27,claude-code
 t13_opus55_medium_cc3.json,T13,opus55,medium,cc3,80,80,0.6677,False,249.6,33289,2026-09-27,claude-code
@@ -196,6 +199,7 @@ t13_opus5_low_cc1.json,T13,opus5,low,cc1,69,80,1.1198,False,377.9,42547,2026-09-
 t13_opus5_low_cc2.json,T13,opus5,low,cc2,77,80,1.0604,False,379.3,42208,2026-09-27,claude-code
 t13_opus5_low_cc3.json,T13,opus5,low,cc3,53,80,0.9685,False,355.4,38532,2026-09-27,claude-code
 t13_opus5_max_cc1.json,T13,opus5,max,cc1,80,80,2.66,False,879.1,102982,2026-09-27,claude-code
+t13_opus5_max_cc2.json,T13,opus5,max,cc2,80,80,5.3241,False,1710.5,206535,2026-10-03,claude-code
 t13_opus5_medium_cc1.json,T13,opus5,medium,cc1,53,80,1.2073,False,408.6,46045,2026-09-27,claude-code
 t13_opus5_medium_cc2.json,T13,opus5,medium,cc2,50,80,1.3648,False,468.0,52799,2026-09-27,claude-code
 t13_opus5_medium_cc3.json,T13,opus5,medium,cc3,44.83,80,1.4337,False,488.8,57138,2026-09-27,claude-code
@@ -206,6 +210,7 @@ t13_sonnet55_high_cc2.json,T13,sonnet55,high,cc2,64,80,0.6897,False,375.5,66620,
 t13_sonnet55_low_cc1.json,T13,sonnet55,low,cc1,54.83,80,0.3378,False,185.6,31548,2026-09-28,claude-code
 t13_sonnet55_low_cc2.json,T13,sonnet55,low,cc2,71,80,0.3427,False,195.2,31769,2026-10-01,claude-code
 t13_sonnet55_max_cc1.json,T13,sonnet55,max,cc1,0,80,,True,2583.9,,2026-09-30,claude-code
+t13_sonnet55_max_cc2.json,T13,sonnet55,max,cc2,0,80,,True,2649.3,,2026-10-03,claude-code
 t13_sonnet55_medium_cc1.json,T13,sonnet55,medium,cc1,57.33,80,0.4322,False,234.6,40525,2026-09-28,claude-code
 t13_sonnet55_medium_cc2.json,T13,sonnet55,medium,cc2,69,80,0.4049,False,218.6,37835,2026-10-02,claude-code
 t13_sonnet55_xhigh_cc1.json,T13,sonnet55,xhigh,cc1,80,80,0.9774,False,523.2,94882,2026-09-28,claude-code
@@ -216,6 +221,7 @@ t13_sonnet_low_cc1.json,T13,sonnet,low,cc1,2.67,80,0.0254,False,6.1,370,2026-09-
 t13_sonnet_low_cc2.json,T13,sonnet,low,cc2,3.33,80,0.0279,False,8.8,623,2026-09-27,claude-code
 t13_sonnet_low_cc3.json,T13,sonnet,low,cc3,3.33,80,0.0259,False,7.4,429,2026-09-27,claude-code
 t13_sonnet_max_cc1.json,T13,sonnet,max,cc1,62.5,80,3.0132,False,1799.3,240612,2026-09-27,claude-code
+t13_sonnet_max_cc2.json,T13,sonnet,max,cc2,0,80,,True,3600.0,,2026-10-03,claude-code
 t13_sonnet_medium_cc1.json,T13,sonnet,medium,cc1,80,80,0.3238,False,221.1,30209,2026-09-27,claude-code
 t13_sonnet_medium_cc2.json,T13,sonnet,medium,cc2,69.5,80,0.3277,False,238.7,32589,2026-09-27,claude-code
 t13_sonnet_medium_cc3.json,T13,sonnet,medium,cc3,44.83,80,0.3394,False,253.9,33751,2026-09-27,claude-code
@@ -256,6 +262,7 @@ t14_opus55_low_cc1.json,T14,opus55,low,cc1,28,60,0.2398,False,65.5,7320,2026-09-
 t14_opus55_low_cc2.json,T14,opus55,low,cc2,24,60,0.1512,False,64.1,7412,2026-09-27,claude-code
 t14_opus55_low_cc3.json,T14,opus55,low,cc3,28,60,0.2195,False,58.6,6727,2026-09-27,claude-code
 t14_opus55_max_cc1.json,T14,opus55,max,cc1,60,60,0.7691,False,243.6,33772,2026-09-27,claude-code
+t14_opus55_max_cc2.json,T14,opus55,max,cc2,60,60,0.8016,False,265.4,35597,2026-10-03,claude-code
 t14_opus55_medium_cc1.json,T14,opus55,medium,cc1,60,60,0.3996,False,125.3,15672,2026-09-27,claude-code
 t14_opus55_medium_cc2.json,T14,opus55,medium,cc2,60,60,0.2041,False,82.6,10055,2026-09-27,claude-code
 t14_opus55_medium_cc3.json,T14,opus55,medium,cc3,59,60,0.1991,False,81.6,9806,2026-09-27,claude-code
@@ -267,6 +274,7 @@ t14_opus5_low_cc1.json,T14,opus5,low,cc1,60,60,0.4881,False,124.8,13225,2026-09-
 t14_opus5_low_cc2.json,T14,opus5,low,cc2,17,60,0.3043,False,116.9,11856,2026-09-27,claude-code
 t14_opus5_low_cc3.json,T14,opus5,low,cc3,12,60,0.341,False,120.3,13326,2026-09-27,claude-code
 t14_opus5_max_cc1.json,T14,opus5,max,cc1,60,60,1.3359,False,429.5,48347,2026-09-27,claude-code
+t14_opus5_max_cc2.json,T14,opus5,max,cc2,18,60,1.0104,False,315.6,35545,2026-10-03,claude-code
 t14_opus5_medium_cc1.json,T14,opus5,medium,cc1,25,60,0.5605,False,164.4,17769,2026-09-27,claude-code
 t14_opus5_medium_cc2.json,T14,opus5,medium,cc2,27,60,0.5811,False,164.2,18142,2026-09-27,claude-code
 t14_opus5_medium_cc3.json,T14,opus5,medium,cc3,60,60,0.7115,False,269.6,28216,2026-09-27,claude-code
@@ -277,6 +285,7 @@ t14_sonnet55_high_cc2.json,T14,sonnet55,high,cc2,59,60,0.2017,False,101.6,15232,
 t14_sonnet55_low_cc1.json,T14,sonnet55,low,cc1,24,60,0.1787,False,92.1,12935,2026-09-28,claude-code
 t14_sonnet55_low_cc2.json,T14,sonnet55,low,cc2,53,60,0.1707,False,81.7,12456,2026-10-01,claude-code
 t14_sonnet55_max_cc1.json,T14,sonnet55,max,cc1,60,60,0.5387,False,250.7,48891,2026-09-29,claude-code
+t14_sonnet55_max_cc2.json,T14,sonnet55,max,cc2,60,60,0.6008,False,315.3,55588,2026-10-03,claude-code
 t14_sonnet55_medium_cc1.json,T14,sonnet55,medium,cc1,60,60,0.1811,False,84.9,13144,2026-09-28,claude-code
 t14_sonnet55_medium_cc2.json,T14,sonnet55,medium,cc2,60,60,0.1798,False,92.7,13194,2026-10-02,claude-code
 t14_sonnet55_xhigh_cc1.json,T14,sonnet55,xhigh,cc1,60,60,0.2848,False,151.6,23957,2026-09-28,claude-code
@@ -325,6 +334,7 @@ t15_opus55_low_cc1.json,T15,opus55,low,cc1,428,1000,1.0795,False,341.4,51110,202
 t15_opus55_low_cc2.json,T15,opus55,low,cc2,692,1000,0.808,False,271.3,40290,2026-09-27,claude-code
 t15_opus55_low_cc3.json,T15,opus55,low,cc3,1000,1000,0.7902,False,271.7,39396,2026-09-27,claude-code
 t15_opus55_max_cc1.json,T15,opus55,max,cc1,1000,1000,2.4903,False,798.0,121638,2026-09-27,claude-code
+t15_opus55_max_cc2.json,T15,opus55,max,cc2,1000,1000,2.5822,False,885.0,125754,2026-10-03,claude-code
 t15_opus55_medium_cc1.json,T15,opus55,medium,cc1,1000,1000,1.0273,False,322.6,48500,2026-09-27,claude-code
 t15_opus55_medium_cc2.json,T15,opus55,medium,cc2,1000,1000,0.9156,False,305.9,45667,2026-09-27,claude-code
 t15_opus55_medium_cc3.json,T15,opus55,medium,cc3,382,1000,0.9027,False,301.5,45021,2026-09-27,claude-code
@@ -336,6 +346,7 @@ t15_opus5_low_cc1.json,T15,opus5,low,cc1,1000,1000,1.2532,False,382.0,47202,2026
 t15_opus5_low_cc2.json,T15,opus5,low,cc2,1000,1000,1.3309,False,422.3,52993,2026-09-27,claude-code
 t15_opus5_low_cc3.json,T15,opus5,low,cc3,988,1000,1.4817,False,498.4,59023,2026-09-27,claude-code
 t15_opus5_max_cc1.json,T15,opus5,max,cc1,997,1000,5.977,False,1852.0,232336,2026-09-27,claude-code
+t15_opus5_max_cc2.json,T15,opus5,max,cc2,684,1000,5.4251,False,1743.3,211982,2026-10-03,claude-code
 t15_opus5_medium_cc1.json,T15,opus5,medium,cc1,1000,1000,1.6948,False,526.9,64866,2026-09-27,claude-code
 t15_opus5_medium_cc2.json,T15,opus5,medium,cc2,1000,1000,1.4387,False,452.6,57306,2026-09-27,claude-code
 t15_opus5_medium_cc3.json,T15,opus5,medium,cc3,297,1000,1.6065,False,506.3,64017,2026-09-27,claude-code
@@ -346,6 +357,7 @@ t15_sonnet55_high_cc2.json,T15,sonnet55,high,cc2,1000,1000,0.7798,False,374.6,74
 t15_sonnet55_low_cc1.json,T15,sonnet55,low,cc1,34,1000,0.0793,False,24.3,4396,2026-09-28,claude-code
 t15_sonnet55_low_cc2.json,T15,sonnet55,low,cc2,845,1000,0.61,False,290.2,57807,2026-10-01,claude-code
 t15_sonnet55_max_cc1.json,T15,sonnet55,max,cc1,1000,1000,3.839,False,1830.4,373172,2026-09-29,claude-code
+t15_sonnet55_max_cc2.json,T15,sonnet55,max,cc2,0,1000,,True,2368.2,,2026-10-03,claude-code
 t15_sonnet55_medium_cc1.json,T15,sonnet55,medium,cc1,274,1000,0.5507,False,258.6,51531,2026-09-28,claude-code
 t15_sonnet55_medium_cc2.json,T15,sonnet55,medium,cc2,1000,1000,0.5461,False,256.7,51257,2026-10-02,claude-code
 t15_sonnet55_xhigh_cc1.json,T15,sonnet55,xhigh,cc1,340,1000,2.6249,False,1320.8,255395,2026-09-29,claude-code
@@ -355,6 +367,7 @@ t15_sonnet_high_cc2.json,T15,sonnet,high,cc2,479,1000,1.3067,False,791.5,127167,
 t15_sonnet_low_cc1.json,T15,sonnet,low,cc1,8,1000,0.0447,False,14.6,1630,2026-09-27,claude-code
 t15_sonnet_low_cc2.json,T15,sonnet,low,cc2,21,1000,0.1038,False,35.5,4663,2026-09-27,claude-code
 t15_sonnet_low_cc3.json,T15,sonnet,low,cc3,5,1000,0.0735,False,21.8,1631,2026-09-27,claude-code
+t15_sonnet_max_cc1.json,T15,sonnet,max,cc1,0,1000,,True,3508.0,,2026-10-03,claude-code
 t15_sonnet_max_cc2.json,T15,sonnet,max,cc2,0,1000,,True,3255.6,,2026-10-03,claude-code
 t15_sonnet_medium_cc1.json,T15,sonnet,medium,cc1,404,1000,0.6898,False,437.0,66113,2026-09-27,claude-code
 t15_sonnet_medium_cc2.json,T15,sonnet,medium,cc2,1000,1000,0.5201,False,329.2,51796,2026-09-27,claude-code
@@ -419,6 +432,7 @@ t1_sonnet55_high_cc2.json,T1,sonnet55,high,cc2,16,16,0.0299,False,8.6,997,2026-1
 t1_sonnet55_low_cc1.json,T1,sonnet55,low,cc1,16,16,0.023,False,10.6,1039,2026-09-28,claude-code
 t1_sonnet55_low_cc2.json,T1,sonnet55,low,cc2,16,16,0.0268,False,10.3,988,2026-10-01,claude-code
 t1_sonnet55_max_cc1.json,T1,sonnet55,max,cc1,16,16,0.0583,False,27.6,4576,2026-09-28,claude-code
+t1_sonnet55_max_cc2.json,T1,sonnet55,max,cc2,16,16,0.0498,False,23.6,3986,2026-10-03,claude-code
 t1_sonnet55_medium_cc1.json,T1,sonnet55,medium,cc1,16,16,0.0235,False,9.4,1091,2026-09-28,claude-code
 t1_sonnet55_medium_cc2.json,T1,sonnet55,medium,cc2,16,16,0.0282,False,9.0,980,2026-10-02,claude-code
 t1_sonnet55_xhigh_cc1.json,T1,sonnet55,xhigh,cc1,16,16,0.0294,False,12.4,1679,2026-09-28,claude-code
@@ -491,6 +505,7 @@ t2_sonnet55_high_cc2.json,T2,sonnet55,high,cc2,8,8,0.028,False,11.9,1245,2026-10
 t2_sonnet55_low_cc1.json,T2,sonnet55,low,cc1,8,8,0.0224,False,8.2,991,2026-09-28,claude-code
 t2_sonnet55_low_cc2.json,T2,sonnet55,low,cc2,8,8,0.0201,False,7.4,762,2026-10-01,claude-code
 t2_sonnet55_max_cc1.json,T2,sonnet55,max,cc1,8,8,0.2681,False,168.8,25936,2026-09-28,claude-code
+t2_sonnet55_max_cc2.json,T2,sonnet55,max,cc2,8,8,0.0579,False,40.2,5160,2026-10-03,claude-code
 t2_sonnet55_medium_cc1.json,T2,sonnet55,medium,cc1,8,8,0.0189,False,6.4,631,2026-09-28,claude-code
 t2_sonnet55_medium_cc2.json,T2,sonnet55,medium,cc2,8,8,0.0232,False,9.0,919,2026-10-02,claude-code
 t2_sonnet55_xhigh_cc1.json,T2,sonnet55,xhigh,cc1,8,8,0.0307,False,15.4,1791,2026-09-28,claude-code
@@ -563,6 +578,7 @@ t3_sonnet55_high_cc2.json,T3,sonnet55,high,cc2,6,6,0.5661,False,189.1,36519,2026
 t3_sonnet55_low_cc1.json,T3,sonnet55,low,cc1,5,6,0.2208,False,17.7,2248,2026-09-28,claude-code
 t3_sonnet55_low_cc2.json,T3,sonnet55,low,cc2,5,6,0.2544,False,37.2,5653,2026-10-01,claude-code
 t3_sonnet55_max_cc1.json,T3,sonnet55,max,cc1,6,6,1.5038,False,3040.5,128377,2026-09-29,claude-code
+t3_sonnet55_max_cc2.json,T3,sonnet55,max,cc2,6,6,5.6794,False,2258.1,491116,2026-10-03,claude-code
 t3_sonnet55_medium_cc1.json,T3,sonnet55,medium,cc1,5,6,0.2635,False,44.4,6531,2026-09-28,claude-code
 t3_sonnet55_medium_cc2.json,T3,sonnet55,medium,cc2,4,6,0.2197,False,15.9,2026,2026-10-02,claude-code
 t3_sonnet55_xhigh_cc1.json,T3,sonnet55,xhigh,cc1,6,6,0.9093,False,341.9,71077,2026-09-28,claude-code
@@ -635,6 +651,7 @@ t4_sonnet55_high_cc2.json,T4,sonnet55,high,cc2,9,10,0.0489,False,25.2,3384,2026-
 t4_sonnet55_low_cc1.json,T4,sonnet55,low,cc1,9,10,0.039,False,21.4,2631,2026-09-28,claude-code
 t4_sonnet55_low_cc2.json,T4,sonnet55,low,cc2,9,10,0.0356,False,19.8,2357,2026-10-01,claude-code
 t4_sonnet55_max_cc1.json,T4,sonnet55,max,cc1,10,10,0.2173,False,127.5,20086,2026-09-29,claude-code
+t4_sonnet55_max_cc2.json,T4,sonnet55,max,cc2,10,10,0.2506,False,153.2,23649,2026-10-03,claude-code
 t4_sonnet55_medium_cc1.json,T4,sonnet55,medium,cc1,10,10,0.041,False,21.7,2804,2026-09-28,claude-code
 t4_sonnet55_medium_cc2.json,T4,sonnet55,medium,cc2,10,10,0.0387,False,22.1,2511,2026-10-02,claude-code
 t4_sonnet55_xhigh_cc1.json,T4,sonnet55,xhigh,cc1,10,10,0.0643,False,35.4,4856,2026-09-28,claude-code
@@ -707,6 +724,7 @@ t5a_sonnet55_high_cc2.json,T5A,sonnet55,high,cc2,2,3,0.076,False,39.1,5686,2026-
 t5a_sonnet55_low_cc1.json,T5A,sonnet55,low,cc1,3,3,0.0902,False,55.6,7323,2026-09-28,claude-code
 t5a_sonnet55_low_cc2.json,T5A,sonnet55,low,cc2,3,3,0.0688,False,41.4,5249,2026-10-01,claude-code
 t5a_sonnet55_max_cc1.json,T5A,sonnet55,max,cc1,3,3,0.1298,False,68.8,11369,2026-09-29,claude-code
+t5a_sonnet55_max_cc2.json,T5A,sonnet55,max,cc2,3,3,0.0978,False,51.0,8747,2026-10-03,claude-code
 t5a_sonnet55_medium_cc1.json,T5A,sonnet55,medium,cc1,3,3,0.0594,False,33.1,4222,2026-09-28,claude-code
 t5a_sonnet55_medium_cc2.json,T5A,sonnet55,medium,cc2,3,3,0.0643,False,35.1,4652,2026-10-02,claude-code
 t5a_sonnet55_xhigh_cc1.json,T5A,sonnet55,xhigh,cc1,3,3,0.0865,False,48.0,6639,2026-09-28,claude-code
@@ -779,6 +797,7 @@ t5b_sonnet55_high_cc2.json,T5B,sonnet55,high,cc2,6,6,0.1193,False,76.2,9760,2026
 t5b_sonnet55_low_cc1.json,T5B,sonnet55,low,cc1,6,6,0.0894,False,52.4,6986,2026-09-28,claude-code
 t5b_sonnet55_low_cc2.json,T5B,sonnet55,low,cc2,5,6,0.0915,False,53.6,7280,2026-10-01,claude-code
 t5b_sonnet55_max_cc1.json,T5B,sonnet55,max,cc1,6,6,0.2243,False,115.8,20142,2026-09-29,claude-code
+t5b_sonnet55_max_cc2.json,T5B,sonnet55,max,cc2,6,6,0.1969,False,104.1,17969,2026-10-03,claude-code
 t5b_sonnet55_medium_cc1.json,T5B,sonnet55,medium,cc1,6,6,0.0942,False,58.9,7446,2026-09-28,claude-code
 t5b_sonnet55_medium_cc2.json,T5B,sonnet55,medium,cc2,6,6,0.0964,False,56.3,7620,2026-10-02,claude-code
 t5b_sonnet55_xhigh_cc1.json,T5B,sonnet55,xhigh,cc1,6,6,0.1304,False,71.2,11223,2026-09-28,claude-code
@@ -851,6 +870,7 @@ t6_sonnet55_high_cc2.json,T6,sonnet55,high,cc2,13,13,0.0316,False,11.5,1613,2026
 t6_sonnet55_low_cc1.json,T6,sonnet55,low,cc1,13,13,0.029,False,8.4,1099,2026-09-28,claude-code
 t6_sonnet55_low_cc2.json,T6,sonnet55,low,cc2,13,13,0.0268,False,8.0,985,2026-10-01,claude-code
 t6_sonnet55_max_cc1.json,T6,sonnet55,max,cc1,13,13,0.0831,False,32.9,6206,2026-09-29,claude-code
+t6_sonnet55_max_cc2.json,T6,sonnet55,max,cc2,13,13,0.0757,False,31.5,6023,2026-10-03,claude-code
 t6_sonnet55_medium_cc1.json,T6,sonnet55,medium,cc1,13,13,0.03,False,10.3,1191,2026-09-28,claude-code
 t6_sonnet55_medium_cc2.json,T6,sonnet55,medium,cc2,13,13,0.0296,False,9.5,1114,2026-10-02,claude-code
 t6_sonnet55_xhigh_cc1.json,T6,sonnet55,xhigh,cc1,13,13,0.0416,False,13.0,2054,2026-09-28,claude-code
@@ -923,6 +943,7 @@ t7_sonnet55_high_cc2.json,T7,sonnet55,high,cc2,20,20,0.0188,False,4.2,311,2026-1
 t7_sonnet55_low_cc1.json,T7,sonnet55,low,cc1,20,20,0.0169,False,4.8,307,2026-09-28,claude-code
 t7_sonnet55_low_cc2.json,T7,sonnet55,low,cc2,20,20,0.0158,False,5.1,311,2026-10-01,claude-code
 t7_sonnet55_max_cc1.json,T7,sonnet55,max,cc1,20,20,0.0226,False,5.5,590,2026-09-29,claude-code
+t7_sonnet55_max_cc2.json,T7,sonnet55,max,cc2,20,20,0.0314,False,15.9,2027,2026-10-03,claude-code
 t7_sonnet55_medium_cc1.json,T7,sonnet55,medium,cc1,20,20,0.0172,False,4.2,311,2026-09-28,claude-code
 t7_sonnet55_medium_cc2.json,T7,sonnet55,medium,cc2,20,20,0.0173,False,4.4,311,2026-10-02,claude-code
 t7_sonnet55_xhigh_cc1.json,T7,sonnet55,xhigh,cc1,20,20,0.0218,False,5.9,505,2026-09-28,claude-code
@@ -995,6 +1016,7 @@ t8_sonnet55_high_cc2.json,T8,sonnet55,high,cc2,8,8,0.0258,False,7.0,743,2026-10-
 t8_sonnet55_low_cc1.json,T8,sonnet55,low,cc1,8,8,0.0235,False,7.2,693,2026-09-28,claude-code
 t8_sonnet55_low_cc2.json,T8,sonnet55,low,cc2,8,8,0.0187,False,4.7,330,2026-10-01,claude-code
 t8_sonnet55_max_cc1.json,T8,sonnet55,max,cc1,8,8,0.098,False,51.8,7873,2026-09-29,claude-code
+t8_sonnet55_max_cc2.json,T8,sonnet55,max,cc2,8,8,0.0795,False,41.9,6559,2026-10-03,claude-code
 t8_sonnet55_medium_cc1.json,T8,sonnet55,medium,cc1,8,8,0.0239,False,6.4,699,2026-09-28,claude-code
 t8_sonnet55_medium_cc2.json,T8,sonnet55,medium,cc2,8,8,0.0203,False,5.2,335,2026-10-02,claude-code
 t8_sonnet55_xhigh_cc1.json,T8,sonnet55,xhigh,cc1,8,8,0.0316,False,11.7,1225,2026-09-28,claude-code
@@ -1067,6 +1089,7 @@ t9_sonnet55_high_cc2.json,T9,sonnet55,high,cc2,7,7,0.0389,False,11.9,1902,2026-1
 t9_sonnet55_low_cc1.json,T9,sonnet55,low,cc1,7,7,0.0347,False,12.1,1642,2026-09-28,claude-code
 t9_sonnet55_low_cc2.json,T9,sonnet55,low,cc2,7,7,0.0335,False,10.1,1664,2026-10-01,claude-code
 t9_sonnet55_max_cc1.json,T9,sonnet55,max,cc1,7,7,0.1595,False,81.9,13879,2026-09-29,claude-code
+t9_sonnet55_max_cc2.json,T9,sonnet55,max,cc2,7,7,0.1399,False,72.1,12453,2026-10-03,claude-code
 t9_sonnet55_medium_cc1.json,T9,sonnet55,medium,cc1,7,7,0.036,False,12.3,1757,2026-09-28,claude-code
 t9_sonnet55_medium_cc2.json,T9,sonnet55,medium,cc2,7,7,0.0356,False,10.4,1721,2026-10-02,claude-code
 t9_sonnet55_xhigh_cc1.json,T9,sonnet55,xhigh,cc1,7,7,0.0434,False,14.3,2257,2026-09-28,claude-code

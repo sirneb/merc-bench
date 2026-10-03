@@ -873,9 +873,9 @@
   "T13": {
    "total": 80,
    "cost_usd": 3.0132,
-   "duration_s": 1799.3,
-   "n": 1,
-   "score_min": 62.5,
+   "duration_s": 3600.0,
+   "n": 2,
+   "score_min": 0,
    "score_max": 62.5
   },
   "T14": {
@@ -889,8 +889,8 @@
   "T15": {
    "total": 1000,
    "cost_usd": null,
-   "duration_s": 3255.6,
-   "n": 1,
+   "duration_s": 3508.0,
+   "n": 2,
    "score_min": 0,
    "score_max": 0
   },
@@ -1468,7 +1468,7 @@
    "total": 5,
    "cost_usd": 0.4769,
    "duration_s": 289.4,
-   "n": 1,
+   "n": 2,
    "score_min": 5,
    "score_max": 5
   },
@@ -1476,39 +1476,39 @@
    "total": 7,
    "cost_usd": 0.0381,
    "duration_s": 13.1,
-   "n": 1,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   },
   "T13": {
    "total": 80,
    "cost_usd": null,
-   "duration_s": 2583.9,
-   "n": 1,
+   "duration_s": 2649.3,
+   "n": 2,
    "score_min": 0,
    "score_max": 0
   },
   "T14": {
    "total": 60,
-   "cost_usd": 0.5387,
-   "duration_s": 250.7,
-   "n": 1,
+   "cost_usd": 0.6008,
+   "duration_s": 315.3,
+   "n": 2,
    "score_min": 60,
    "score_max": 60
   },
   "T15": {
    "total": 1000,
    "cost_usd": 3.839,
-   "duration_s": 1830.4,
-   "n": 1,
-   "score_min": 1000,
+   "duration_s": 2368.2,
+   "n": 2,
+   "score_min": 0,
    "score_max": 1000
   },
   "T1": {
    "total": 16,
    "cost_usd": 0.0583,
    "duration_s": 27.6,
-   "n": 1,
+   "n": 2,
    "score_min": 16,
    "score_max": 16
   },
@@ -1516,23 +1516,23 @@
    "total": 8,
    "cost_usd": 0.2681,
    "duration_s": 168.8,
-   "n": 1,
+   "n": 2,
    "score_min": 8,
    "score_max": 8
   },
   "T3": {
    "total": 6,
-   "cost_usd": 1.5038,
+   "cost_usd": 5.6794,
    "duration_s": 3040.5,
-   "n": 1,
+   "n": 2,
    "score_min": 6,
    "score_max": 6
   },
   "T4": {
    "total": 10,
-   "cost_usd": 0.2173,
-   "duration_s": 127.5,
-   "n": 1,
+   "cost_usd": 0.2506,
+   "duration_s": 153.2,
+   "n": 2,
    "score_min": 10,
    "score_max": 10
   },
@@ -1540,7 +1540,7 @@
    "total": 3,
    "cost_usd": 0.1298,
    "duration_s": 68.8,
-   "n": 1,
+   "n": 2,
    "score_min": 3,
    "score_max": 3
   },
@@ -1548,7 +1548,7 @@
    "total": 6,
    "cost_usd": 0.2243,
    "duration_s": 115.8,
-   "n": 1,
+   "n": 2,
    "score_min": 6,
    "score_max": 6
   },
@@ -1556,15 +1556,15 @@
    "total": 13,
    "cost_usd": 0.0831,
    "duration_s": 32.9,
-   "n": 1,
+   "n": 2,
    "score_min": 13,
    "score_max": 13
   },
   "T7": {
    "total": 20,
-   "cost_usd": 0.0226,
-   "duration_s": 5.5,
-   "n": 1,
+   "cost_usd": 0.0314,
+   "duration_s": 15.9,
+   "n": 2,
    "score_min": 20,
    "score_max": 20
   },
@@ -1572,7 +1572,7 @@
    "total": 8,
    "cost_usd": 0.098,
    "duration_s": 51.8,
-   "n": 1,
+   "n": 2,
    "score_min": 8,
    "score_max": 8
   },
@@ -1580,7 +1580,7 @@
    "total": 7,
    "cost_usd": 0.1595,
    "duration_s": 81.9,
-   "n": 1,
+   "n": 2,
    "score_min": 7,
    "score_max": 7
   }
@@ -2458,9 +2458,9 @@
   },
   "T13": {
    "total": 80,
-   "cost_usd": 2.66,
-   "duration_s": 879.1,
-   "n": 1,
+   "cost_usd": 5.3241,
+   "duration_s": 1710.5,
+   "n": 2,
    "score_min": 80,
    "score_max": 80
   },
@@ -2468,16 +2468,16 @@
    "total": 60,
    "cost_usd": 1.3359,
    "duration_s": 429.5,
-   "n": 1,
-   "score_min": 60,
+   "n": 2,
+   "score_min": 18,
    "score_max": 60
   },
   "T15": {
    "total": 1000,
    "cost_usd": 5.977,
    "duration_s": 1852.0,
-   "n": 1,
-   "score_min": 997,
+   "n": 2,
+   "score_min": 684,
    "score_max": 997
   },
   "T1": {
@@ -3069,24 +3069,24 @@
   "T13": {
    "total": 80,
    "cost_usd": 2.3361,
-   "duration_s": 786.7,
-   "n": 1,
+   "duration_s": 791.5,
+   "n": 2,
    "score_min": 80,
    "score_max": 80
   },
   "T14": {
    "total": 60,
-   "cost_usd": 0.7691,
-   "duration_s": 243.6,
-   "n": 1,
+   "cost_usd": 0.8016,
+   "duration_s": 265.4,
+   "n": 2,
    "score_min": 60,
    "score_max": 60
   },
   "T15": {
    "total": 1000,
-   "cost_usd": 2.4903,
-   "duration_s": 798.0,
-   "n": 1,
+   "cost_usd": 2.5822,
+   "duration_s": 885.0,
+   "n": 2,
    "score_min": 1000,
    "score_max": 1000
   },
