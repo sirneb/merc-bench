@@ -12,4 +12,4 @@ Python semantics traps (mutable defaults, closure late binding, dict key collaps
 
 ## What we found
 
-A one-point noise band: scattered single misses across Haiku (all efforts), Sonnet low/medium and Opus 4.8@xhigh; perfect elsewhere. No config missed two.
+A one-point noise band: scattered single misses across Haiku (all efforts), Sonnet 5 low/medium and Opus 4.8@xhigh; perfect elsewhere, Sonnet 5.5 included. No config missed two.
