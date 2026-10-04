@@ -55,6 +55,14 @@
    prose rather than scoring format compliance; format deviations are recorded,
    not punished. Both corrections are reproducible from the shipped raw answers.
 
+- **Budget overruns are data.** A run that exceeds the harness output-token
+  maximum (128k under Claude Code) or the runner's one-hour wall clock is
+  recorded once as a valid record with a null answer (score 0) and is not
+  retried: a model that cannot finish inside the budget is a measured outcome of
+  that configuration. Transport failures (CLI crash, usage-limit refusal, a
+  fallback model answering) remain `invalid` and are refilled; the quarantined
+  originals are kept under `results/invalid/` with their provenance.
+
 ## Known limits
 
 Synthetic, single-shot tasks ≤60 minutes without repository context; long-horizon

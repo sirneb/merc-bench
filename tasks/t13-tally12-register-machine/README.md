@@ -292,3 +292,7 @@ package.
 writer), `prompt.txt`, `schema.json`, `key.json` (answer plus `meta`: seed,
 preset, live sets, trap counts, opcode counts, JLT take counts, listings,
 traces), `grade.py`, `oracle.py`, `pilot/` (first pilot on the medium preset).
+
+## What we found
+
+Clean in both replicates for 13 of 36 configs: Opus 5.5 from medium, Opus 5 and Fable 5.1 from xhigh, Opus 4.8 at low and xhigh, Fable 5 at xhigh. Sonnet 5.5 peaks at 90 % (high) and scores 0 at max in both replicates — thinking exhausts the 128k output budget and no answer arrives; Sonnet 5 peaks at medium (81 %), hit the one-hour wall clock at max, and never exceeds 45 % above medium. Haiku 3–6 %. The task separates the Sonnet tier from the Opus/Fable tiers cleanly and the two Sonnet generations from each other; among the top tiers it is TALLY-12's cost, not its score, that differs (Opus 5.5 @ high $0.96 vs Fable 5.1 @ high $4.16 for the same 80/80).

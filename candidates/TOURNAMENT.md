@@ -1,5 +1,10 @@
 # MERC hard-tier tournament — report
 
+> **Outcome (2026-10-03).** TALLY-12, cold-chain and Quarry Duel were promoted as T13–T15 after the
+> §4.1 fixes and an n=3 replication, then run across the full grid at n=2. Results: §3b of
+> `site/report.html` and the "hard tier" section of the README. Cold-chain proved the separator the
+> pilot suggested (7 of 36 configs replicated-clean); Opus 5.5 is the only model clean on all three.
+
 Date: 2026-09-26. Repository: `merc-bench` (Model x Effort, Reliability & Cost). Candidate packages under `candidates/`.
 
 **Why this tournament ran.** The 12 shipped tasks are saturated: in `results/summary.json` every config above Haiku scores 98-100 % on the 10 core tasks; only T3 (6 points) and T4 (10 points) move at all, and at the top only by one point (e.g. Opus 5, Opus 5.5 and Fable 5.1 all hold T3 6/6 from `medium` up; T4 differs by a single point across replicates). The goal was tasks where `claude-sonnet-5`, `claude-opus-5`, `claude-opus-5-5` and `claude-fable-5-1` land at clearly different scores and where effort visibly moves the outcome, measured on success (graded score / total), wall-clock, input tokens, output tokens and list-price cost.

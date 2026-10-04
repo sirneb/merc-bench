@@ -141,7 +141,7 @@
 <body>
 <div class="sheet">
   <header class="masthead">
-    <div class="eyebrow">MERC · findings report · measured 2026-07-25 → 2026-07-26 (Fable 5.1: 2026-09-01 → 2026-09-02; Opus 5.5: 2026-09-26; Sonnet 5.5 + hard tier: 2026-09-27 →)</div>
+    <div class="eyebrow">MERC · findings report · measured 2026-07-25 → 2026-07-26 (Fable 5.1: 2026-09-01 → 2026-09-02; Opus 5.5: 2026-09-26; Sonnet 5.5 + hard tier T13–T15: 2026-09-27 → 2026-10-03)</div>
     <h1>Model <span class="dim">×</span> Effort<br>Reliability &amp; Cost, Measured</h1>
     <p class="standfirst">Controlled experiments across Claude models at every effort
     level that mattered — identical prompts, one variable at a time, ground truth
@@ -162,13 +162,15 @@
         effort — there, the cheapest configuration strictly wins.</div></div>
       <div class="kpi"><div class="big">The reliability floor</div>
         <div class="cap">cheapest config clean in every replicate of the 10 core
-        tasks: <b>Sonnet 5</b> max ($3.55/33m) · <b>Sonnet 5.5</b> xhigh ($1.29/9m) · <b>Opus 5</b> medium ($2.76/9m) · <b>Opus 5.5</b> xhigh ($3.08/10m) · <b>Fable 5</b> max ($11.53/27m) · <b>Fable 5.1</b> xhigh ($8.03/16m). Opus 5 reaches it at medium; Opus 5.5 and Fable 5.1 at
-        xhigh; Sonnet and Fable 5 only at max; Opus 4.8 and Haiku never did.</div></div>
+        tasks: <b>Sonnet 5</b> max ($3.55/33m) · <b>Sonnet 5.5</b> xhigh ($1.29/9m) · <b>Opus 5</b> medium ($2.76/9m) · <b>Opus 5.5</b> xhigh ($3.08/10m) · <b>Fable 5</b> max ($11.53/27m) · <b>Fable 5.1</b> xhigh ($8.03/16m). Opus 5 reaches it at medium; Sonnet 5.5, Opus 5.5 and
+        Fable 5.1 at xhigh; Sonnet 5 and Fable 5 only at max; Opus 4.8 and Haiku
+        never did. Sonnet 5.5 @ xhigh ($1.29) is the cheapest clean config.</div></div>
       <div class="kpi"><div class="big">The last point is the expensive one</div>
         <div class="cap">below its floor a config drops one stubborn point, not
         many; buying that point with effort costs 2–4× (Fable low→max: $4.98→$11.53;
-        Opus 5.5 low→max: $1.78→$7.71). The cheap route to zero-defect is Opus 5 @
-        medium or Opus 5.5 @ xhigh, not max effort.</div></div>
+        Opus 5.5 low→max: $1.78→$7.71). The cheap route to zero-defect is Sonnet 5.5 @
+        xhigh, Opus 5 @ medium or Opus 5.5 @ xhigh, not max effort — and on the
+        hard tier (§3b) only Opus 5.5 is clean everywhere, from high.</div></div>
     </div>
     <div class="panel scatter" style="margin-top:16px">
       <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · circle size = reliability (avg points dropped per sweep; bigger = fewer) · solid = replicated n≥2 · hover/tap for stats</div>
@@ -391,7 +393,21 @@
       n = replicates per cell; P(clean) = share of replicates at full marks. Costs at
       list price with 1-hour cache writes.</p>
     </div>
-    
+    <h3>H1 · Three tasks, one real separator</h3>
+<p>TALLY-12 and Quarry Duel are solved cleanly in both replicates by thirteen configurations each; <b>cold-chain by seven</b>. Cold-chain — a 30-day, four-depot perishable-inventory simulation with ratio-based rationing — is where the frontier splits: Opus 5.5 holds it from high up, Fable 5.1 only from xhigh, Sonnet 5.5 at medium, xhigh and max, and nobody else twice at any effort. Opus 5 and Opus 4.8 land at 100 % in one replicate and 20–50 % in the other at almost every effort; Fable 5 never holds it twice. The failure is always one bookkeeping slip around a stockout day that propagates to the end.</p>
+
+<h3>H2 · Opus 5.5 is alone at the top, and cheap there</h3>
+<p>Opus 5.5 is the only configuration family clean on all three tasks in both replicates, and it does so at high, xhigh and max. At high the three-task sweep costs $2.37 and 13 minutes; Fable 5.1, the only other model to reach the same place, needs xhigh and $11.33 / 31 minutes. Opus 5.5 at medium is already clean on TALLY-12 and 99 % on cold-chain; its only gap below high is Quarry Duel (79 %, one collapse in three runs).</p>
+
+<h3>H3 · The effort axis finally shows, in both directions</h3>
+<p>Haiku 4.5 never leaves the noise floor (3–17 % at every effort, and its low-effort Quarry Duel attempts often fail to produce JSON at all). Below medium every Sonnet collapses to the same noise (1–5 %); at low the Opus and Fable tiers still solve TALLY-12 and Quarry Duel but not cold-chain. Above medium the two Sonnets diverge: Sonnet 5.5 improves through xhigh (cold-chain clean, TALLY-12 85–90 %) and then falls off a cliff at max — 0 % on TALLY-12 in both replicates, because thinking consumes the 128k output budget and no answer arrives. Sonnet 5 peaks at medium (75–81 % everywhere) and degrades from high onwards, ending with two budget overruns at max. Max effort never improved a Sonnet on this tier; it bought Opus 5.5 and Fable 5.1 nothing they did not already have at xhigh.</p>
+
+<h3>H4 · Replicates matter more here than on the core set</h3>
+<p>The hard-tier graders award partial credit, but a single state slip cascades through everything after it, so the same configuration can score 30 % and 100 % on consecutive runs — Opus 5 at medium on Quarry Duel, Fable 5 at high on cold-chain, Sonnet 5.5 at low on all three. Treat any n=2 cell with a spread wider than 30 points as "unreliable here", not as a mean. P(clean) in the table is the honest summary.</p>
+
+<h3>H5 · What the hard tier does not change</h3>
+<p>The ten core tasks still decide the reliability floors, and those floors did not move: Opus 5 @ medium, Opus 5.5 @ xhigh, Fable 5.1 @ xhigh, Sonnet 5 @ max — joined by the new Sonnet 5.5 @ xhigh, which at $1.29 is now the cheapest replicated-clean config in the grid. The hard tier re-orders the top: on tasks that actually separate the frontier, Opus 5.5 is a clear first, Fable 5.1 second at four to five times the price, Sonnet 5.5 third with one task it cannot hold, and Opus 5 — the core-set value champion — fourth, undone by cold-chain.</p>
+
   </section>
   <section id="findings">
     <h2><span class="no">§4</span>Findings</h2>
@@ -401,7 +417,7 @@
 <p>Knowledge recall, classic-bug review, state simulation, 5-attribute puzzles and regex writing were solved by essentially every configuration in every replicate; math, code trace, CSV and the constraint gauntlet sit within a one-or-two-point noise band for everything above Haiku. Same-score price spreads run 5–12×. For transforms, extraction, lookups, format work and classic review: buy the cheapest configuration that has passed the task for you.</p>
 
 <h3>F2 · Reliability floors, measured with replicates</h3>
-<p>Defining a config as <i>clean</i> only if it dropped zero points in every replicate of the 10 core tasks: Opus 5 is clean from medium up ($2.76, 9 min — the cheapest and nearly fastest clean config in the grid); Opus 5.5 from xhigh up ($3.08, 10 min); Fable 5.1 from xhigh up ($8.03, 16 min); Sonnet is clean only at max ($3.55, 33 min); Fable 5 only at max ($11.53, 27 min); Opus 4.8 and Haiku were never clean at any effort. Four of the ten replicated-clean configs in the entire grid belong to Opus 5; the two point releases added later (Fable 5.1, Opus 5.5) contribute two each.</p>
+<p>Defining a config as <i>clean</i> only if it dropped zero points in every replicate of the 10 core tasks: Opus 5 is clean from medium up ($2.76, 9 min — the cheapest and nearly fastest clean config in the grid); Opus 5.5 from xhigh up ($3.08, 10 min); Fable 5.1 from xhigh up ($8.03, 16 min); Sonnet is clean only at max ($3.55, 33 min); Fable 5 only at max ($11.53, 27 min); Opus 4.8 and Haiku were never clean at any effort. Sonnet 5.5 (added 2026-09-28) is clean from xhigh up ($1.29, 9 min) — now the cheapest replicated-clean config in the grid, with the caveat that it ran on the tools-disabled harness (≈$1.65 like-for-like; still cheapest). Four of the twelve replicated-clean configs in the entire grid belong to Opus 5; the three point releases added later (Fable 5.1, Opus 5.5, Sonnet 5.5) contribute two each.</p>
 
 <h3>F3 · Opus 5 is the value frontier, and replication strengthened it</h3>
 <p>Clean twice at medium, high, xhigh and max; at low it dropped exactly one gauntlet point — the same point — in both samples, while still solving the deep puzzles 6/6 and the subtle bugs 5/5 twice. Every other family got less reliable under replication; Opus 5 got confirmed. If you run one configuration for everything hard, Opus 5 @ medium is the measured answer. Opus 5.5, measured two months later at a lower list price ($4/$20), lands 32 cents behind it: clean at xhigh ($3.08, 10 min) and max, with one gauntlet point dropped in one replicate at medium and high and a ledger point (4–5/6) at low. Below its floor it is the fastest thing in the grid — a full low-effort sweep is 3 minutes and $1.78, a quarter less than Opus 5@low — so the choice between the two Opus generations is "clean at medium for $2.76" versus "nearly clean at low for $1.78".</p>
@@ -420,6 +436,9 @@
 
 <h3>F8 · The generation gap lives in novel semantics — and in reliability</h3>
 <p>Opus 4.8 stalls at 4/5 on the subtle semantic bugs at low and high and fixes the fifth only at xhigh — in all four samples across both study generations — while Opus 5 and Fable found 5/5 at every effort, twice. And at the same list price as Opus 5, Opus 4.8 never produced a clean sweep. The same-price generation upgrade is free reliability; take it and re-find your floor a step or two lower. The point releases replicated the pattern in miniature: Fable 5.1 kept 5/5 on the subtle bugs at every effort and moved Fable's clean point down one step (xhigh instead of max); Opus 5.5 also found 5/5 at every effort, but its cheaper list price is paid back in effort — it needs xhigh to be clean where Opus 5 needs medium. Re-find the floor after every release, in both directions.</p>
+
+<h3>F9 · When the tasks stop saturating, the ranking changes</h3>
+<p>Everything above was measured on tasks where the frontier scores 98–100 and floors are decided by single points. The hard tier (§3b) asks the same question with headroom, and the answer is different: Opus 5.5 is the only model clean on all three hard tasks in both replicates (from high; $2.37 / 13 min for the three), Fable 5.1 gets there only at xhigh for 4–5× the price, Sonnet 5.5 holds cold-chain for $0.20 but never Quarry Duel, and Opus 5 — the core-set value frontier — collapses on cold-chain in one of every two runs at every effort. Sonnet 5 degrades above medium and at max simply fails to answer within the output budget. The core floors are still the right answer for work that looks like the core tasks; for long exact simulation, read H1–H5.</p>
 
   </section>
 
@@ -449,13 +468,13 @@ LD/ST index memory by register value mod 16. Both programs are built around a
 state drives data-dependent `JLT` branches, memory scrambling, and an inner
 loop whose trip count is `(state AND mask) + 1` (mask 1 in Program A, mask 7
 in Program B). There is no closed form and nothing to pattern-match: every OUT
-value depends on every earlier step.</p><p><b>Found</b></p></div>
+value depends on every earlier step.</p><p><b>Found</b>Clean in both replicates for 13 of 36 configs: Opus 5.5 from medium, Opus 5 and Fable 5.1 from xhigh, Opus 4.8 at low and xhigh, Fable 5 at xhigh. Sonnet 5.5 peaks at 90 % (high) and scores 0 at max in both replicates — thinking exhausts the 128k output budget and no answer arrives; Sonnet 5 peaks at medium (81 %), hit the one-hour wall clock at max, and never exceeds 45 % above medium. Haiku 3–6 %. The task separates the Sonnet tier from the Opus/Fable tiers cleanly and the two Sonnet generations from each other; among the top tiers it is TALLY-12&#x27;s cost, not its score, that differs (Opus 5.5 @ high $0.96 vs Fable 5.1 @ high $4.16 for the same 80/80).</p></div>
 <div class="tcard"><div class="tname">Cold-chain depot network (T14)</div><p><b>Design</b>30-day, 5-node perishable-inventory simulation from a written operating manual: lead times, FEFO lot expiry with per-delivery shelf lives, backorders, (s, S) ordering and ratio-based central rationing with cancel-not-backlog; 60 points over 51 independently graded items.</p><p><b>Why</b>The model receives a ~14.8 KB operating manual, a day-0 state (lots with expiry days at
 CENTRAL and four depots, plus one shipment already in transit), a nine-line supplier
 delivery schedule (each delivery with its own expiry day) and a 30 x 4 demand table, and
 must run the network day by day through five fixed phases (receive, expire, serve,
 review/order, allocate/ship). It reports depot state at days 15/22/30, per-depot horizon
-totals, CENTRAL totals, and the network&#x27;s same-day served units, total demand and fill rate.</p><p><b>Found</b></p></div>
+totals, CENTRAL totals, and the network&#x27;s same-day served units, total demand and fill rate.</p><p><b>Found</b>The hard tier&#x27;s real separator: replicated-clean for only 7 of 36 configs — Opus 5.5 at high, xhigh and max; Fable 5.1 at xhigh and max; Sonnet 5.5 at medium, xhigh and max. Opus 5 and Opus 4.8 score 100 % in one replicate and 20–50 % in the other at nearly every effort (P(clean) 0.33–0.5); Fable 5 never holds it twice (best 70 % mean at max); Sonnet 5 tops out at 75 % (medium); Haiku 10–22 %. The failure mode is always one bookkeeping slip around a stockout or expiry day — usually at the day-18/20 demand spike — that propagates through every later checkpoint. Cheapest clean: Sonnet 5.5 @ medium, $0.20 and under two minutes.</p></div>
 <div class="tcard"><div class="tname">Quarry Duel (T15)</div><p><b>Design</b>200 turns (`hard` preset, the default) of a fully deterministic two-player card-and-track game,
 played from a rulebook rendered out of the simulator&#x27;s own constants; report the card played on
 every turn, 19 checkpoints and a final block, no tools. The prompt prints the complete game state
@@ -467,7 +486,7 @@ the whole hand (one player: highest card of the most-held suit with a suit-order
 other: highest card that lands on a MINE else lowest card), move on a 12-space circular track,
 capture (steal the opponent&#x27;s lowest card), then one of six space effects (MINE, TOLL, FORGE,
 SWAP, QUARRY, WELL), discard, and hand-limit enforcement. That is 200 turns x 6-8 dependent rule
-checks (~1,400 state updates), not decomposable into independent partial sums.</p><p><b>Found</b></p></div>
+checks (~1,400 state updates), not decomposable into independent partial sums.</p><p><b>Found</b>Replicated-clean for 13 of 36 configs: Opus 5.5 from high, Opus 5 at high and xhigh, Opus 4.8 at low and xhigh, Fable 5 at xhigh, Fable 5.1 from medium. The cascade grader makes it bimodal below those floors: the same config lands at 30 % and 100 % in consecutive runs (Opus 5 @ medium, Sonnet 5.5 @ low, Fable 5.1 @ low), so P(clean) is the number to read. Sonnet 5.5 never holds it (best 75 % at high; 31–34 % at xhigh); Sonnet 5 overran the 128k output cap at max in both replicates, scored 0. Haiku&#x27;s low-effort attempts either fail to produce JSON or score under 10 %. The 200-turn play log is where every miss starts: once a stale position or hand count enters, the checkpoints and final block follow it.</p></div>
     </div>
   </section>
 
@@ -487,17 +506,17 @@ checks (~1,400 state updates), not decomposable into independent partial sums.</
         <td class="alt">Haiku @ low</td><td class="alt">Opus 5 @ medium</td>
         <td class="alt">archived tool-enabled rounds: every tier self-verifies to perfect</td></tr>
       <tr><td>Everyday features, tests, routine review</td>
-        <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ medium</span></td>
-        <td class="alt">Sonnet @ low</td><td class="alt">Opus 5 @ medium</td>
-        <td class="alt">F1/F8; classic-pattern review saturates (T9) in every replicate, Opus 5.5 and Fable 5.1 included</td></tr>
+        <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ medium</span> / <span class="chip" style="color:var(--sonnet55);background:var(--good-bg)">Sonnet 5.5 @ medium</span></td>
+        <td class="alt">Sonnet @ low</td><td class="alt">Sonnet 5.5 @ xhigh ($1.29, replicated-clean on the core set)</td>
+        <td class="alt">F1/F8; classic-pattern review saturates (T9) in every replicate, Opus 5.5, Fable 5.1 and Sonnet 5.5 included</td></tr>
       <tr><td>Subtle/novel-semantics review, security reads</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ low–med</span></td>
         <td class="alt">Opus 5.5 @ low</td><td class="alt">Fable 5.1 @ xhigh</td>
         <td class="alt">E: Opus 5, Opus 5.5, Fable 5 and Fable 5.1 all 5/5 at every effort; Opus 4.8 stalls at 4/5 until xhigh (both generations); key on bug novelty — T9 saturates</td></tr>
       <tr><td>Exact analysis over big inputs (logs, ledgers, audits)</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ medium</span> — or any tier + tools</td>
-        <td class="alt">Opus 5.5 @ medium ($2.14, 5 min; clean on T3, one gauntlet slip elsewhere)</td><td class="alt">avoid Haiku entirely</td>
-        <td class="alt">T3/F2: the wall; only Opus 5 ≥medium, Opus 5.5 ≥medium, Fable 5.1 ≥low, Sonnet@max and Fable@max held it clean twice</td></tr>
+        <td class="alt">Sonnet 5.5 @ xhigh ($1.29, 9 min, core-clean twice) · Opus 5.5 @ medium ($2.14, 5 min)</td><td class="alt">Opus 5.5 @ high for long exact simulation (H2); avoid Haiku entirely</td>
+        <td class="alt">T3/F2: the wall; Opus 5 ≥medium, Opus 5.5 ≥medium, Fable 5.1 ≥low, Sonnet 5.5 ≥xhigh, Sonnet@max and Fable@max held it clean twice. On the hard tier only Opus 5.5 (≥high) and Fable 5.1 (≥xhigh) hold all three tasks twice</td></tr>
       <tr><td>Hard debugging, unknown root cause</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ high</span></td>
         <td class="alt">Opus 5 @ medium</td><td class="alt">Fable 5.1 @ xhigh</td>
@@ -507,9 +526,9 @@ checks (~1,400 state updates), not decomposable into independent partial sums.</
         <td class="alt">Haiku @ low (not high)</td><td class="alt">Opus 5 / Opus 5.5 @ any</td>
         <td class="alt">F4/T5B: Haiku solves the set at low–medium and collapses at high; Opus 5 and Opus 5.5 perfect at every effort (Fable 5.1@medium dropped one T5B cell once)</td></tr>
       <tr><td>Long-horizon autonomy, large migrations</td>
-        <td><span class="chip" style="color:var(--fable51);background:var(--good-bg)">Fable 5.1 @ xhigh</span></td>
-        <td class="alt">Opus 5 @ high</td><td class="alt">Fable 5.1 @ max</td>
-        <td class="alt"><span class="verdict unk">NOT MEASURED HERE</span> Fable-tier is fastest per task; Fable 5 slipped a gauntlet point below max and Fable 5.1 below xhigh, so pick the first replicated-clean step of whichever you run when a single unsupervised pass must be clean</td></tr>
+        <td><span class="chip" style="color:var(--opus55);background:var(--good-bg)">Opus 5.5 @ high</span></td>
+        <td class="alt">Opus 5.5 @ medium</td><td class="alt">Fable 5.1 @ xhigh</td>
+        <td class="alt"><span class="verdict unk">LONG-HORIZON NOT MEASURED</span> but the hard tier is the closest proxy: Opus 5.5 is the only model clean on all three long simulations in both replicates (from high, $2.37/13 min); Fable 5.1 matches it only from xhigh at 4–5× the price; Opus 5 and Fable 5 collapse on cold-chain in one of two runs (H1–H2)</td></tr>
       <tr><td>Quick factual Q&amp;A, lookups, summaries, everyday writing</td>
         <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku @ low</span> / <span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low</span></td>
         <td class="alt">—</td><td class="alt">Sonnet @ medium</td>
@@ -567,7 +586,7 @@ checks (~1,400 state updates), not decomposable into independent partial sums.</
     <h3>Dataset generations & corrections</h3>
 <p>This is the study's second-generation dataset at two full replicates per configuration: every active record came through the shipped, reproducible runner (Claude Code headless path with answer validation and retry), and each config's 12 tasks were run twice (sample tags cc1/cc2; a few haiku@medium cells carry a third early sample). Fable 5.1 (2026-09-01→02) and Opus 5.5 (2026-09-26) were added after the fact through the same runner at n=2; one Fable 5.1 max-effort replicate hit a burst of transport failures that were quarantined as <code>invalid</code> and refilled on a later pass. The first-generation records (a session-bound orchestration harness) are preserved in <code>archive/workflow-runs/</code>. Replication materially revised three of our own published claims — Opus 4.8@low's perfect sweep, Sonnet@xhigh's ledger crossing, and "max effort never wins" — all documented in F4/F5. Two grading corrections carry forward: JSON-wrapped answers are graded on content, and transport failures are quarantined as <code>invalid</code> rather than scored. Two cost corrections landed 2026-09-27 and re-priced every record from stored token usage: Sonnet 5 was billed at $3/$15 instead of its $2/$10 list price (all Sonnet costs fell ~25%), and cache writes under the Claude Code harness were billed at the 5-minute rate (1.25× input) when <code>claude -p</code> writes 1-hour caches (2× input), which raised every other family's sweep cost 6–43% (most at low effort, where cache writes dominate). Neither correction moved any floor. The runner now also records which model actually served each attempt and quarantines records answered by a fallback model after a safety-classifier refusal — a failure mode discovered during the hard-tier tournament (see <code>candidates/TOURNAMENT.md</code> on the <code>hard-tier-candidates</code> branch).</p>
 <h3>Limits</h3>
-<p>n=2 is still small — ranges are honest but confidence intervals are not computable; the plan is to accumulate replicates over time (one <code>runner/sweep.py --sample auto</code> per pass). All runs came from one account on subscription serving, in three measurement windows: the original six families within three days of each other in July 2026, Fable 5.1 five weeks later, Opus 5.5 four weeks after that — so serving-side drift between windows is not controlled, and cross-window comparisons (Opus 5 vs Opus 5.5, Fable 5 vs Fable 5.1) carry that caveat. Costs are imputed from measured tokens at standard list prices; every family's price row and the 1-hour cache-write rate were verified against the CLI's list-basis cost fields, and recomputed costs match the CLI's own <code>total_cost_usd</code> to the cent. Tasks are synthetic, single-shot, ≤35 minutes, without repository context; long-horizon autonomy and agentic orchestration are not measured. Response-length headroom was raised to the models' own output ceilings; harnesses with tighter caps will fail the biggest grinds. Usage-window exhaustion during long sweeps produces transport failures — the sweep driver cleans and refills them automatically.</p>
+<p>n=2 is still small — ranges are honest but confidence intervals are not computable; the plan is to accumulate replicates over time (one <code>runner/sweep.py --sample auto</code> per pass). All runs came from one account on subscription serving, in four measurement windows: the original six families within three days of each other in July 2026, Fable 5.1 five weeks later, Opus 5.5 four weeks after that, and Sonnet 5.5 plus the whole hard tier over 2026-09-27 → 10-03 — so serving-side drift between windows is not controlled, and cross-window comparisons carry that caveat. Two harness changes landed with the last window and apply to every record made from 2026-09-27 (all of Sonnet 5.5, all of T13–T15): <code>claude -p</code> runs with an empty tool list, which removes ~20k tokens of Claude Code's own system prompt from each call — worth about $0.13 (Haiku), $0.36 (Sonnet), $0.90 (Opus 5), $1.05 (Opus 5.5), $1.25 (Fable 5) and $1.63 (Fable 5.1) per 10-task sweep at list price, so Sonnet 5.5's core-set costs are ~$0.36 lighter than a like-for-like Sonnet 5 row; and a harness budget overrun — the 128k output-token maximum or the runner's one-hour wall clock — is recorded once as a valid null answer (score 0) instead of being retried and quarantined, because a model that cannot finish inside the budget is a measured outcome. Six hard-tier cells carry that outcome: Sonnet 5 @ max on Quarry Duel (both replicates) and TALLY-12 (one), Sonnet 5.5 @ max on TALLY-12 (both) and Quarry Duel (one). The CLI did not yet know Sonnet 5.5's price at measurement time; its cost rows use the published $2/$10 list price. Costs are imputed from measured tokens at standard list prices; every family's price row and the 1-hour cache-write rate were verified against the CLI's list-basis cost fields, and recomputed costs match the CLI's own <code>total_cost_usd</code> to the cent. Tasks are synthetic, single-shot, ≤35 minutes, without repository context; long-horizon autonomy and agentic orchestration are not measured. Response-length headroom was raised to the models' own output ceilings; harnesses with tighter caps will fail the biggest grinds. Usage-window exhaustion during long sweeps produces transport failures — the sweep driver cleans and refills them automatically.</p>
 
   </section>
 

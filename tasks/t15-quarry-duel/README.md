@@ -192,3 +192,7 @@ sweep are the replication step's job. The pilot records in `pilot/` were produce
 `generator.py` (reference simulator + variant simulator + renderer), `oracle.py` (independent
 checker), `grade.py`, `prompt.txt`, `schema.json`, `key.json`, `trace.json`, `meta.json`,
 `pilot/` (first pilot, medium preset, untouched).
+
+## What we found
+
+Replicated-clean for 13 of 36 configs: Opus 5.5 from high, Opus 5 at high and xhigh, Opus 4.8 at low and xhigh, Fable 5 at xhigh, Fable 5.1 from medium. The cascade grader makes it bimodal below those floors: the same config lands at 30 % and 100 % in consecutive runs (Opus 5 @ medium, Sonnet 5.5 @ low, Fable 5.1 @ low), so P(clean) is the number to read. Sonnet 5.5 never holds it (best 75 % at high; 31–34 % at xhigh); Sonnet 5 overran the 128k output cap at max in both replicates, scored 0. Haiku's low-effort attempts either fail to produce JSON or score under 10 %. The 200-turn play log is where every miss starts: once a stale position or hand count enters, the checkpoints and final block follow it.
