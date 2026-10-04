@@ -23,7 +23,7 @@ python runner/run.py --harness api \
 make report
 ```
 
-- `--tasks all` runs the 10 core tasks + E + T5B; or pass a comma list (`T1,T3,E`).
+- `--tasks all` runs the 13 core tasks + E + T5B; or pass a comma list (`T1,T3,E`).
 - `--effort none` for models without the effort parameter.
 - For non-Claude pricing, pass `--price-in`/`--price-out` ($/MTok) so `cost_usd`
   is computed on your basis (and say so in the record's `cost_basis`).
@@ -136,9 +136,6 @@ generator only warns (`make lint-prose`), it cannot write the conclusions.
 
 ### 4. Update the data-facing text
 
-- [ ] Hard tier (T13+): the §3b table regenerates, but `report/fragments/hard.html`
-      and each `tasks/t1x-*/README.md` "What we found" name specific models —
-      revisit them like the fragments below.
 
 - [ ] `README.md` headline table: add the row (`Tier | cheapest clean config | $ | min`).
 - [ ] `README.md` prose under the table: recount "N of the grid's M

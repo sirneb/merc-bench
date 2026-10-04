@@ -13,7 +13,7 @@
         <td class="alt">archived tool-enabled rounds: every tier self-verifies to perfect</td></tr>
       <tr><td>Everyday features, tests, routine review</td>
         <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ medium</span> / <span class="chip" style="color:var(--sonnet55);background:var(--good-bg)">Sonnet 5.5 @ medium</span></td>
-        <td class="alt">Sonnet @ low</td><td class="alt">Sonnet 5.5 @ xhigh ($1.29, replicated-clean on the core set)</td>
+        <td class="alt">Sonnet @ low</td><td class="alt">Sonnet 5.5 @ xhigh ($1.29, replicated-clean on the ten saturated tasks)</td>
         <td class="alt">F1/F8; classic-pattern review saturates (T9) in every replicate, Opus 5.5, Fable 5.1 and Sonnet 5.5 included</td></tr>
       <tr><td>Subtle/novel-semantics review, security reads</td>
         <td><span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ low–med</span> / <span class="chip" style="color:var(--sonnet55);background:var(--good-bg)">Sonnet 5.5 @ low</span></td>
@@ -21,12 +21,12 @@
         <td class="alt">E: Opus 5, Opus 5.5, Sonnet 5.5, Fable 5 and Fable 5.1 all 5/5 at every effort; Sonnet 5 crosses only at high; Opus 4.8 stalls at 4/5 until xhigh (both generations); key on bug novelty — T9 saturates</td></tr>
       <tr><td>Exact analysis over big inputs (logs, ledgers, audits)</td>
         <td><span class="chip" style="color:var(--sonnet55);background:var(--good-bg)">Sonnet 5.5 @ xhigh</span> / <span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ medium</span> — or any tier + tools</td>
-        <td class="alt">Sonnet 5.5 @ xhigh ($1.29, 9 min, core-clean twice) · Opus 5.5 @ medium ($2.14, 5 min)</td><td class="alt">Opus 5.5 @ high for long exact simulation (H2); avoid Haiku entirely</td>
-        <td class="alt">T3/F2: the wall; Opus 5 ≥medium, Opus 5.5 ≥medium, Fable 5.1 ≥low, Sonnet 5.5 ≥xhigh, Sonnet@max and Fable@max held it clean twice. On the hard tier only Opus 5.5 (≥high) and Fable 5.1 (≥xhigh) hold all three tasks twice</td></tr>
+        <td class="alt">Sonnet 5.5 @ xhigh ($1.29, 9 min, clean twice on the ten saturated tasks) · Opus 5.5 @ medium ($2.14, 5 min)</td><td class="alt">Opus 5.5 @ high for long exact simulation (F9); avoid Haiku entirely</td>
+        <td class="alt">T3/F2: the wall; Opus 5 ≥medium, Opus 5.5 ≥medium, Fable 5.1 ≥low, Sonnet 5.5 ≥xhigh, Sonnet@max and Fable@max held it clean twice. Over all 13 tasks only Opus 5.5 (≥xhigh) and Fable 5.1 (≥xhigh) are ever clean; Opus 5.5 ≥high holds the three simulations</td></tr>
       <tr><td>Hard debugging, unknown root cause</td>
         <td><span class="chip" style="color:var(--opus55);background:var(--good-bg)">Opus 5.5 @ high</span></td>
         <td class="alt">Opus 5 @ medium</td><td class="alt">Fable 5.1 @ xhigh</td>
-        <td class="alt">extrapolated from E/T3 walls: "didn't know → tier/generation", now backed by the hard tier, where Opus 5.5 @ high is the cheapest config clean on all three long simulations (H2); Fable 5.1@xhigh is the cheapest clean Fable-tier config ($8.03 core / $11.33 hard)</td></tr>
+        <td class="alt">extrapolated from E/T3 walls: "didn't know → tier/generation", now backed by the simulations, where Opus 5.5 @ high is the cheapest config clean on all three (F9); Fable 5.1@xhigh is the cheapest clean Fable-tier config ($19.61 for the 13 tasks)</td></tr>
       <tr><td>Quick logic checks, invariants, scheduling math</td>
         <td><span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low</span></td>
         <td class="alt">Haiku @ low (not high)</td><td class="alt">Opus 5 / Opus 5.5 @ any</td>
@@ -34,14 +34,14 @@
       <tr><td>Long-horizon autonomy, large migrations</td>
         <td><span class="chip" style="color:var(--opus55);background:var(--good-bg)">Opus 5.5 @ high</span></td>
         <td class="alt">Opus 5.5 @ medium</td><td class="alt">Fable 5.1 @ xhigh</td>
-        <td class="alt"><span class="verdict unk">LONG-HORIZON NOT MEASURED</span> but the hard tier is the closest proxy: Opus 5.5 is the only model clean on all three long simulations in both replicates (from high, $2.37/13 min); Fable 5.1 matches it only from xhigh at 4–5× the price; Opus 5 and Fable 5 collapse on cold-chain in one of two runs (H1–H2)</td></tr>
+        <td class="alt"><span class="verdict unk">LONG-HORIZON NOT MEASURED</span> but the three simulations are the closest proxy: Opus 5.5 is the only model clean on all three long simulations in both replicates (from high, $2.37/13 min); Fable 5.1 matches it only from xhigh at 4–5× the price; Opus 5 and Fable 5 collapse on cold-chain in one of two runs (F9)</td></tr>
       <tr><td>Quick factual Q&amp;A, lookups, summaries, everyday writing</td>
         <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku @ low</span> / <span class="chip" style="color:var(--sonnet);background:var(--good-bg)">Sonnet @ low</span></td>
         <td class="alt">—</td><td class="alt">Sonnet @ medium</td>
         <td class="alt">T7 fully saturated; free-form prose showed no walls</td></tr>
       <tr><td>Precise numeric work from documents</td>
         <td><span class="chip" style="color:var(--sonnet55);background:var(--good-bg)">Sonnet 5.5 @ xhigh</span> / <span class="chip" style="color:var(--opus);background:var(--good-bg)">Opus 5 @ medium</span> — or any model + calculator</td>
-        <td class="alt">Sonnet 5.5 @ high (ledger 6/6 twice; one gauntlet/puzzle slip)</td><td class="alt">Opus 5.5 @ high for ledger-sized simulations (H1)</td>
+        <td class="alt">Sonnet 5.5 @ high (ledger 6/6 twice; one gauntlet/puzzle slip)</td><td class="alt">Opus 5.5 @ high for ledger-sized simulations (F9)</td>
         <td class="alt">T1 saturates; T3-scale exactness doesn't — Sonnet 5.5 holds the ledger from high, Sonnet 5 only at max</td></tr>
       <tr><td>Real-time / customer-facing chat</td>
         <td><span class="chip" style="color:var(--haiku);background:var(--good-bg)">Haiku @ low</span></td>
