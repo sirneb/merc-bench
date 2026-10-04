@@ -19,17 +19,18 @@
   the six-puzzle set has repeated attempts per configuration. Aggregates show
   min–max ranges; sample provenance is preserved per record.
 
-- **Two tiers.** The original twelve tasks (T1–T10 core, E and T5B supplementary)
-  saturated by September 2026: every frontier tier scored 98–100 on the core set.
-  A *hard tier* (T13 TALLY-12, T14 cold-chain depots, T15 Quarry Duel) was added
-  from a propose → judge → build → pilot → critique tournament (the full record
-  is `candidates/TOURNAMENT.md` on the `hard-tier-candidates` branch). Hard-tier
-  tasks are long exact simulations whose graders give partial credit but where a
-  single slip cascades, so they are reported on mean % of points, min–max spread
-  and P(clean) rather than the binary floor, and they do not enter the 10-task
-  reliability floors. Every hard-tier package ships a seeded generator with a
-  difficulty knob, an independent oracle that must agree with the key, and a
-  grader self-test. Hard-tier runs use `claude -p --tools ""`.
+- **Thirteen core tasks.** The original ten core tasks (T1–T10; E and T5B are
+  supplementary) had saturated by September 2026: every frontier tier scored
+  98–100 on them. Three long exact simulations (T13 TALLY-12, T14 cold-chain
+  depots, T15 Quarry Duel) were added from a propose → judge → build → pilot →
+  critique tournament (`candidates/TOURNAMENT.md` on the `hard-tier-candidates`
+  branch) and are scored exactly like the others: they enter the reliability
+  floors, the map totals and the scatter. Their graders give partial credit but a
+  single slip cascades, so min–max across replicates matters more there; the
+  scatter's reliability encoding is the mean share of points dropped per task so
+  a 1000-point task weighs the same as a 6-point one. Each package ships a seeded
+  generator with a difficulty knob, an independent oracle that must agree with
+  the key, and a grader self-test.
 
 ## Measurement
 
