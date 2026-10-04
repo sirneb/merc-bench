@@ -136,6 +136,10 @@ generator only warns (`make lint-prose`), it cannot write the conclusions.
 
 ### 4. Update the data-facing text
 
+- [ ] Hard tier (T13+): the §3b table regenerates, but `report/fragments/hard.html`
+      and each `tasks/t1x-*/README.md` "What we found" name specific models —
+      revisit them like the fragments below.
+
 - [ ] `README.md` headline table: add the row (`Tier | cheapest clean config | $ | min`).
 - [ ] `README.md` prose under the table: recount "N of the grid's M
       replicated-clean configs" (M = every config with a ★ in the map).

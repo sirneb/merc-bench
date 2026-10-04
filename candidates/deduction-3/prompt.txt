@@ -1,0 +1,88 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+CRIB SLIDE — recover a Vigenere key from cribs and read the plaintext.
+
+The text below is a ciphertext of 1328 letters (A-Z only, shown in groups of five, with the
+1-based position of the first letter of each line at the left). It was produced from a
+plaintext of 1328 letters by a periodic Vigenere cipher:
+
+  letters are numbered A=0, B=1, ..., Z=25;
+  the key is a string K of p letters (an arbitrary letter string, NOT a dictionary word);
+  ciphertext letter i (1-based) = (plaintext letter i + K[(i-1) mod p]) mod 26,
+  so K[0] shifts positions 1, p+1, 2p+1, ...; K[1] shifts positions 2, p+2, ...; etc.
+
+The period p is unknown, but it is between 10 and 14 inclusive.
+
+WHAT THE PLAINTEXT IS
+The plaintext is a synthetic shipping manifest written with capital letters only (no spaces,
+digits or punctuation). All proper names in it are invented, so they cannot be guessed. It
+consists of a short carrier header followed by a sequence of fields in an UNKNOWN order. Each
+field is a LABEL immediately followed by its VALUE, and consecutive fields are separated by
+the word STOP (which occurs nowhere else). Numbers are written in words without AND or
+hyphens, e.g. 2417 -> TWOTHOUSANDFOURHUNDREDSEVENTEEN, 40 -> FORTY, 105 -> ONEHUNDREDFIVE.
+Container, seal and reference codes are strings of random letters.
+
+CRIBS
+Each of the following 4 labels occurs EXACTLY ONCE in the plaintext (as a field label).
+Their exact positions are not given, only a window for the position of their first letter:
+  - PALLETS  (its first letter is at some position between 93 and 132 inclusive)
+  - CONSIGNEE  (its first letter is at some position between 104 and 143 inclusive)
+  - SHIPPER  (its first letter is at some position between 571 and 610 inclusive)
+  - VESSEL  (its first letter is at some position between 1136 and 1175 inclusive)
+
+Within the stated period range and windows, exactly one (period, key) pair is consistent
+with all the cribs simultaneously; that is the key you must find.
+
+CIPHERTEXT
+0001  MPORV WKUAR EXTQX VRZIO HPVFA MLRPC XSSLD XFLWO ELOHK CZEYI
+0051  ITZOU UDXZR BKENH TYIUB PSIJW WOKGB NGFAQ OGUUE CUQXC SICOK
+0101  WAZQV ZTBCS ZNYFB TKQHZ FZHZT VVOOP KPYIU BPSII EUOKT IQFTZ
+0151  UOYUX PJUAK NJKDT ZDXMT IYQUG UNXXF LWZLA BTZDV AEMBY JQPAC
+0201  ZDLHM QEFAU JSQNB NJKDC UDQUA KMUBY AKTYT VNNJK DGXTK PNCNV
+0251  EJFYI UBQYO OLOZG QRQRP ZLABU NDAEN RYJSC IACJD RHAYB HZYIU
+0301  BQIXB WFFJK GXHIN URSON JTPEI YDEBF ZNLAH VOXKI TGCJR VZZXQ
+0351  BEXTJ FUMMJ UBJTT YFBTO HQQLK GQDRI NJDCP DRUYC EIOOH PVEGO
+0401  XEBUP MQKQA ZQPZI OHPVH KMYRJ UMPME HYFBT KKNQI GHKAE HZHFW
+0451  CLXLF LWDNP VPAHG ZQRDD AVVTS XQQWD NPSFT HZACM OUIQP ACZEV
+0501  BOOOS WKCZT BYNQJ RGUJX THRYH AROOC KFLWD NOHPV AKZTX CSIHX
+0551  UWAZQ VZTPK FTIEF JSNJK DTNXV BRVNF EZPAB GDVRZ IPCQV DXFBJ
+0601  YYOQI GGMQT VZQJT FKGZN HVBIP CQMGU EFQVI OYHLD XFLWD NPVPA
+0651  HGZQI DWDHI ACJDR HAENH ZYTBQ AWOEL KBXTN AHWZV AGLUB JQCSO
+0701  IPCQL GKUTL OSDOS MTYFU MMJUC OKINA HWVDZ BJTTN GAHMU ZSMKK
+0751  KZFXJ FQBJZ HVQEG VHPCO LDXFL JDLAG UUEIM EXJDO COKIN AHWVD
+0801  ZBJTT NGAHM UZHIO GZKFM SIPCQ VAGOR SATAZ JBTXK SPVIH CVTVM
+0851  DBWFR QFHYI UBYIO JAFPL RXQQM ODKTJ BTYQI IIPAF PUCKF JSAEQ
+0901  FGUJX ZVRZI PCQSP XWFEI TJINH TXEAY RZGGF BTTFL RDDAG UUETA
+0951  GMAOL OSZNI DRWKQ PWNVD XFFWO ELJPE PMQBF ZYCVU NJTPE IYDEB
+1001  FYIUB EIXUE JJTVI XRVFR NOJRR GUEXC UWFSK TZDNR BIPCQ JTYFV
+1051  RVJEC OIDAZ GVTTN WTNDU XRVOI PCQNT OSUXX CPKPN JTPEI YIELU
+1101  ETOSU XNJKD XKXMT GTZHY OSZDT SEEHI BCVXI KQAXC EQGBT SLUII
+1151  CKJRS KSZTV VOOPK PYIUB IINIA ZIKPR UUSNJ KDDUB SAQMO OSCPJ
+1201  TTOEE OUOGU UEVAE XJVHC BJXTS GSJVH SUVDX FFXJF BZBMS UHNXL
+1251  KKZTZ DVUAW KUYHP XUXMV VABAQ VWJKQ TVVIG GUUEX QZEMA OVFJT
+1301  KLBSO EHRCU DFAHO EQEYS UJMUD YJT
+
+QUESTIONS (answer from the decrypted manifest)
+Q1. The container code (a string of letters).
+Q2. The seal number (a string of letters).
+Q3. The number of pallets.
+Q4. The number of cartons.
+Q5. The gross mass in kilograms.
+Q6. The declared value (a whole number).
+Q7. The consignee (the full name as written).
+Q8. The port of discharge (as written).
+Q9. The vessel name (as written).
+Q10. The shipper (the full name as written).
+
+OUTPUT FORMAT
+Return ONLY a single JSON object, with no commentary before or after it, exactly of this form:
+
+{"period": <integer p>,
+ "key": "<the p key letters, K[0] first, i.e. the letter that shifts position 1>",
+ "answers": [{"id": 1, "value": "..."}, {"id": 2, "value": "..."}, ..., {"id": 10, "value": "..."}]}
+
+Rules for "value": numbers (Q3-Q6) as plain digits, e.g. "2417"; codes (Q1-Q2) as the exact
+letters; names (Q7-Q10) as the letters of the value exactly as they appear in the plaintext
+(spaces optional, e.g. "HARVOLD TRADING" and "HARVOLDTRADING" are both accepted).
+Every value must be a string. Example shape only (the values are NOT hints):
+{"period": 10, "key": "AHOVCJQXEL", "answers": [{"id": 1, "value": "QWERTYU"}, {"id": 3, "value": "42"}]}

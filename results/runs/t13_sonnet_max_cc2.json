@@ -1,0 +1,49 @@
+{
+ "task": "T13",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-03",
+ "answer": null,
+ "usage": null,
+ "duration_s": 3600.0,
+ "cost_usd": null,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": "harness budget exceeded (timeout: 1-hour wall-clock cap) on all 3 attempts; scored as null answer. Recorded once (one attempt is the measured cost of this outcome); converted 2026-10-03 from the quarantined record.",
+ "cli": {
+  "attempts": [
+   {
+    "served": [],
+    "stop_reason": "timeout",
+    "tools": "disabled",
+    "num_turns": null,
+    "thinking_tokens": null,
+    "total_cost_usd": null,
+    "duration_s": 3600.0
+   },
+   {
+    "served": [],
+    "stop_reason": "timeout",
+    "tools": "disabled",
+    "num_turns": null,
+    "thinking_tokens": null,
+    "total_cost_usd": null,
+    "duration_s": 3600.0
+   },
+   {
+    "served": [],
+    "stop_reason": "timeout",
+    "tools": "disabled",
+    "num_turns": null,
+    "thinking_tokens": null,
+    "total_cost_usd": null,
+    "duration_s": 3600.1
+   }
+  ],
+  "served_models": [],
+  "total_cost_usd": 0
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-03",
+ "answer": {
+  "text": "Meanwhile database caching keeps frequently requested results close to the application, so queries avoid slow disk reads and repeated computation. A well-tuned cache can cut latency dramatically; it shields the primary database from sudden bursts of traffic during busy periods.\n\nHowever caching has a price: stored copies can become stale when the underlying rows change. Designers therefore choose expiration times, invalidate entries after writes, or refresh them in the background. Every cache strategy trades freshness against throughput; a cache that never expires risks serving wrong answers, while one that expires too constantly saves very little.\n\nAlong with fast lookups, caching also brings risks. Old information may stay put for hours if a fact in a row shifts. To avoid such harm, an admin can assign a short TTL to any copy, or drop that copy right away if its origin shifts. Caution is vital: a fast but wrong output is a costly flaw.\n\nFinally measure hit rates and tune cache sizes so each cache earns its place; when it does, you are done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3369,
+  "cache_read": 3144,
+  "output": 23649
+ },
+ "duration_s": 153.2,
+ "cost_usd": 0.2506,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 23303,
+    "total_cost_usd": 0.2505988
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.2506
+ }
+}

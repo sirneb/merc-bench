@@ -1,0 +1,66 @@
+{
+ "task": "T3",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-29",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "2965.25"
+   },
+   {
+    "id": 2,
+    "value": "64"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "899.37"
+   },
+   {
+    "id": 5,
+    "value": "payroll"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 4,
+  "cache_write": 54295,
+  "cache_read": 14274,
+  "output": 128377
+ },
+ "duration_s": 3040.5,
+ "cost_usd": 1.5038,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "multi-turn continuation (output cap hit)",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 3,
+    "thinking_tokens": 128280,
+    "total_cost_usd": 13.984808399999999
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 13.9848
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "xhigh",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-28",
+ "answer": {
+  "text": "Meanwhile a database answers questions by reading pages from disk, which is slow. A cache keeps recent results in memory; applications then skip repeated queries, gaining speed and lowering load on the primary server. Each cache hit saves precious milliseconds.\n\nHowever a cache introduces a hard problem: stale data. When a row changes in the database, the cached copy becomes wrong until it expires or is invalidated; teams therefore choose expiry times, write-through updates, or explicit deletion, balancing freshness against speed. Careful design therefore keeps ordinary users from seeing outdated values in busy production systems.\n\nAlong a busy path, a hot data lookup can stay in fast local RAM, sparing a slow disk from constant work; this trick cuts cost and lag, mainly for popular rows and totals. Sadly, a dusty copy can fool a visitor, so old data must vanish on a strict plan.\n\nFinally you should measure hit ratio, because a cache that is rarely used wastes memory, and tuning is never done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3586,
+  "cache_read": 7137,
+  "output": 4856
+ },
+ "duration_s": 35.4,
+ "cost_usd": 0.0643,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 4505,
+    "total_cost_usd": 0.12724339999999998
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.1272
+ }
+}

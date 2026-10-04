@@ -1,0 +1,270 @@
+{
+ "task": "simulation-2",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "r3",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [
+    3122,
+    2170,
+    1999,
+    126,
+    2489,
+    289,
+    512,
+    3567,
+    0,
+    2427,
+    391,
+    383,
+    679,
+    391,
+    343,
+    519,
+    327,
+    495,
+    543,
+    3581
+   ],
+   "final_registers": [
+    0,
+    0,
+    1216,
+    193,
+    1,
+    0,
+    3581,
+    3555
+   ],
+   "final_memory": [
+    2418,
+    971,
+    768,
+    571,
+    2302,
+    2362,
+    1491,
+    3945,
+    4040,
+    1248,
+    2932,
+    812,
+    1561,
+    582,
+    1138,
+    1886
+   ],
+   "steps_executed": 378,
+   "halted": true
+  },
+  "program_b": {
+   "out_stream": [
+    2912,
+    672,
+    1147,
+    867,
+    80,
+    1644,
+    3391,
+    2808,
+    3960,
+    3276,
+    2430,
+    1674,
+    4043,
+    2988,
+    236,
+    1071,
+    462,
+    1395,
+    2751,
+    1946,
+    1699,
+    2088,
+    2988,
+    1449,
+    3690,
+    1743,
+    883,
+    1857,
+    560,
+    2033,
+    110,
+    1629,
+    2399,
+    3052,
+    363,
+    1530,
+    1652,
+    2457,
+    386,
+    1793
+   ],
+   "final_registers": [
+    0,
+    882,
+    2015,
+    7,
+    557,
+    0,
+    0,
+    4067
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3401,
+    2986,
+    2750,
+    1315,
+    1774,
+    2228,
+    1664,
+    3607,
+    1709,
+    2015,
+    1812,
+    882,
+    1894,
+    1315
+   ],
+   "steps_executed": 1180,
+   "halted": true
+  }
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 6774,
+  "cache_read": 0,
+  "output": 51476
+ },
+ "duration_s": 340.8,
+ "cost_usd": 0.2709,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-4-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 50972,
+    "total_cost_usd": 0.270938
+   }
+  ],
+  "served_models": [
+   "claude-haiku-4-5"
+  ],
+  "total_cost_usd": 0.2709
+ },
+ "score": 4.17,
+ "total": 80,
+ "grade_detail": {
+  "program_a": {
+   "out_points": 1.0,
+   "out_total": 20,
+   "out_prefix_correct": 1,
+   "out_pointwise_matches": 1,
+   "first_wrong_out_index": 1,
+   "out_reported": 20,
+   "registers": {
+    "live": [
+     0,
+     1,
+     2,
+     5,
+     6,
+     7
+    ],
+    "ok": [
+     1,
+     5
+    ],
+    "points": 1.333,
+    "all_8_ok": 4
+   },
+   "memory": {
+    "live": [
+     0,
+     2,
+     9,
+     10,
+     11,
+     12,
+     14,
+     15
+    ],
+    "ok": [
+     11
+    ],
+    "points": 0.5,
+    "all_16_ok": 8
+   },
+   "steps": {
+    "want": 390,
+    "got": 378,
+    "points": 0
+   },
+   "halted": {
+    "want": true,
+    "got": true
+   }
+  },
+  "program_b": {
+   "out_points": 0.0,
+   "out_total": 40,
+   "out_prefix_correct": 0,
+   "out_pointwise_matches": 0,
+   "first_wrong_out_index": 0,
+   "out_reported": 40,
+   "registers": {
+    "live": [
+     0,
+     1,
+     2,
+     4,
+     5,
+     6
+    ],
+    "ok": [
+     5,
+     6
+    ],
+    "points": 1.333,
+    "all_8_ok": 4
+   },
+   "memory": {
+    "live": [
+     3,
+     4,
+     5,
+     7,
+     9,
+     10,
+     14,
+     15
+    ],
+    "ok": [],
+    "points": 0.0,
+    "all_16_ok": 8
+   },
+   "steps": {
+    "want": 1072,
+    "got": 1180,
+    "points": 0
+   },
+   "halted": {
+    "want": true,
+    "got": true
+   }
+  }
+ }
+}

@@ -1,0 +1,168 @@
+{
+ "task": "T13",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [
+    1426,
+    1684,
+    666,
+    1083,
+    1654,
+    3145,
+    3416,
+    3360,
+    2685,
+    3267,
+    3216,
+    2676,
+    3458,
+    3148,
+    827,
+    1382,
+    2338,
+    3566,
+    2928,
+    2658
+   ],
+   "final_registers": [
+    0,
+    0,
+    4157,
+    193,
+    1,
+    0,
+    2658,
+    0
+   ],
+   "final_memory": [
+    2746,
+    971,
+    1578,
+    553,
+    782,
+    1422,
+    3267,
+    947,
+    3360,
+    2316,
+    282,
+    812,
+    3566,
+    582,
+    3458,
+    1343
+   ],
+   "steps_executed": 384,
+   "halted": true
+  },
+  "program_b": {
+   "out_stream": [
+    3712,
+    256,
+    3103,
+    1332,
+    1880,
+    0,
+    2721,
+    1597,
+    2906,
+    1261,
+    2364,
+    0,
+    3161,
+    2074,
+    3045,
+    2867,
+    3413,
+    1535,
+    1742,
+    756,
+    1869,
+    1024,
+    2483,
+    2314,
+    2798,
+    2701,
+    3321,
+    1490,
+    2042,
+    1888,
+    3617,
+    1223,
+    1528,
+    774,
+    2861,
+    1980,
+    3340,
+    2447,
+    1634,
+    1056
+   ],
+   "final_registers": [
+    2050,
+    3,
+    1259,
+    7,
+    851,
+    0,
+    0,
+    4067
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3401,
+    2986,
+    2750,
+    1315,
+    1774,
+    2228,
+    1664,
+    3607,
+    3604,
+    2015,
+    1812,
+    882,
+    1894,
+    3606
+   ],
+   "steps_executed": 587,
+   "halted": true
+  }
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 6370,
+  "cache_read": 4286,
+  "output": 52294
+ },
+ "duration_s": 344.1,
+ "cost_usd": 0.2746,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-4-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 51810,
+    "total_cost_usd": 0.27464859999999996
+   }
+  ],
+  "served_models": [
+   "claude-haiku-4-5"
+  ],
+  "total_cost_usd": 0.2746
+ }
+}

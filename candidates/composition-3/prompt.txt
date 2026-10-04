@@ -1,0 +1,242 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web, no calculator. Work it out yourself, by hand, with exact arithmetic. Your ENTIRE reply must be a single JSON object matching the OUTPUT FORMAT at the end (no prose, no markdown fences, nothing before or after the JSON).
+
+You are given the specification of an invented 16-bit machine (the "QX-16"), an assembly listing, a ciphertext and a keystream definition. Four stages, each a deterministic function of the previous one:
+
+  Stage 1  assemble the listing into exact 16-bit machine words;
+  Stage 2  emulate the program from address 0x000 until HLT and report checkpoints, the digest, the final input block and the executed-instruction count;
+  Stage 3  use the digest to run the keystream generator and decrypt the ciphertext into an English question;
+  Stage 4  answer that question from your Stage 2 final memory.
+
+The QX-16 is not any real machine. Nothing about it can be recalled; everything needed is defined below.
+
+============================================================
+PART A — THE QX-16 MACHINE
+============================================================
+
+Memory: 512 words of 16 bits, addresses 0x000..0x1FF. Everything not set by the listing is 0x0000.
+Registers: ACC (16-bit accumulator), PC (9-bit program counter), flags C (carry, 1 bit) and Z (zero, 1 bit).
+Reset state: ACC = 0x0000, PC = 0x000, C = 0, Z = 0 (Z starts at 0 even though ACC is zero).
+
+Instruction word layout (bit 15 = most significant):
+  bits 15..12  opcode      (4 bits)
+  bits 11..9   mode        (3 bits)
+  bits 8..0    operand     (9 bits, an unsigned value 0..511)
+  word = (opcode << 12) | (mode << 9) | operand.
+
+Execution cycle, repeated until HLT:
+  1. w = mem[PC];  addr = PC;  PC = (PC + 1) & 0x1FF.
+  2. decode w and execute it (a taken jump then overwrites PC with its target).
+  3. the executed-instruction count increases by 1 (HLT itself counts).
+Instructions are fetched from memory each cycle, so a store that changes a word which is executed later changes what executes. The program below deliberately does this.
+
+Modes for data instructions (LDA STA ADD ADC SUB AND XOR ROL ROR):
+  mode 0  immediate   value v = operand (zero-extended to 16 bits). For STA, the effective address is the operand itself.
+  mode 1  direct      effective address ea = operand;  v = mem[ea].
+  mode 2  indirect    ea = mem[operand] & 0x1FF;  v = mem[ea]  (the pointer word's upper 7 bits are ignored).
+  modes 3..7 behave exactly like mode 2. (The assembler never emits them.)
+Modes for jumps (JMP JZ JNZ JC):
+  mode 0  PC-relative  target = (addr + 1 + operand - 256) & 0x1FF, where addr is the address of the jump instruction itself. The bias is 256: operand 256 means "the next word", 255 means "jump to itself", 257 skips one word.
+  mode 1  absolute     target = operand.
+  mode 2  indirect     target = mem[operand] & 0x1FF.   (modes 3..7 behave like mode 2.)
+
+Opcodes (hex), semantics, and flag effects. "v" is the resolved value, "a" the ACC value before the instruction. All arithmetic is on 16-bit unsigned values.
+  0  HLT   stop. Nothing changes except that the instruction is counted and PC has already advanced by 1.
+  1  LDA   ACC = v.                                   Z = (ACC == 0).                          C unchanged.
+  2  STA   mem[ea] = ACC.                              flags unchanged.
+  3  ADD   r = a + v;  ACC = r & 0xFFFF;               C = bit 16 of r (1 if a + v >= 65536).   Z = (ACC == 0).
+  4  ADC   r = a + v + C;  ACC = r & 0xFFFF;           C = bit 16 of r.                          Z = (ACC == 0).
+  5  SUB   ACC = (a - v) & 0xFFFF;                     C = 1 if a < v (a borrow occurred) else 0. Z = (ACC == 0).
+  6  AND   ACC = a & v.                                Z = (ACC == 0).                          C unchanged.
+  7  XOR   ACC = a ^ v.                                Z = (ACC == 0).                          C unchanged.
+  8  ROL   n = v & 15. Repeat n times: newC = bit 15 of ACC; ACC = ((ACC << 1) | C) & 0xFFFF; C = newC.  Then Z = (ACC == 0).
+           (rotate left through carry: the carry flag is a 17th bit; n = 0 changes nothing except Z.)
+  9  ROR   n = v & 15. Repeat n times: newC = bit 0 of ACC; ACC = (ACC >> 1) | (C << 15); C = newC.       Then Z = (ACC == 0).
+  A  JMP   PC = target.                                flags unchanged.
+  B  JZ    if Z == 1: PC = target.                     flags unchanged.
+  C  JNZ   if Z == 0: PC = target.                     flags unchanged.
+  D  JC    if C == 1: PC = target.                     flags unchanged.
+  E, F     not used by the assembler; if ever executed they behave exactly like HLT.
+There is no undefined behaviour: every word is executable under the rules above.
+
+============================================================
+PART B — ASSEMBLER SYNTAX
+============================================================
+
+One statement per line. A line is:  [label:]  [instruction | directive]  [; comment]
+Labels are case-sensitive identifiers; a label's value is the address of the word that follows it (the next emitted word).
+Numbers are decimal (e.g. 7) or hexadecimal with 0x (e.g. 0x1F3). A bare identifier used as a number is a label.
+Directives:
+  .org N          continue emitting at address N.
+  .word V, V...   emit one 16-bit word per value (a label as a value emits its address).
+Operand forms for data instructions:
+  #X    mode 0 (immediate; X must be 0..511; X may be a label, giving that label's address as the value)
+  X     mode 1 (direct)
+  [X]   mode 2 (indirect)
+Operand forms for jumps:
+  X     mode 0 (PC-relative to the label X: operand = X - (addr + 1) + 256, which must fall in 0..511)
+  =X    mode 1 (absolute)
+  [X]   mode 2 (indirect)
+HLT takes no operand and assembles to 0x0000.
+Assembly is two-pass: forward references to labels are fine. Words are emitted in listing order.
+
+============================================================
+WORKED EXAMPLE (assembled and executed exactly by these rules)
+============================================================
+
+Listing:
+        .org 0x000
+        LDA #0x1F3
+        SUB #0x1FF
+        ROL #3
+        ADC val
+        JC over
+        XOR #1
+over:   STA ptr
+        LDA [ptr]
+        ADD #0x0A5
+        JZ over
+        HLT
+val:    .word 0xC0DE
+ptr:    .word val
+
+Machine words:
+address  word    source
+0x000    0x11F3  LDA #0x1F3
+0x001    0x51FF  SUB #0x1FF
+0x002    0x8003  ROL #3
+0x003    0x420B  ADC val
+0x004    0xD101  JC over
+0x005    0x7001  XOR #1
+0x006    0x220C  STA ptr
+0x007    0x140C  LDA [ptr]
+0x008    0x30A5  ADD #0x0A5
+0x009    0xB0FC  JZ over
+0x00A    0x0000  HLT
+0x00B    0xC0DE  .word
+0x00C    0x000B  .word
+
+Execution trace (PC(after) is the PC once the instruction has completed):
+step  PC(before)  word    ACC(after)  C  Z  PC(after)  note
+1     0x000       0x11F3  0x01F3      0  0  0x001      immediate 0x1F3 zero-extended; Z=0
+2     0x001       0x51FF  0xFFF4      1  0  0x002      0x01F3 - 0x1FF borrows: C=1, ACC wraps to 0xFFF4
+3     0x002       0x8003  0xFFA7      1  0  0x003      3 rotates through carry: C in at bit 0 each time, bit 15 out into C
+4     0x003       0x420B  0xC086      1  0  0x004      ADC adds mem[val] plus carry-in 1; carry out of bit 16 sets C
+5     0x004       0xD101  0xC086      1  0  0x006      JC taken (C=1): target = 0x004 + 1 + (0x101 - 256) = 0x006
+6     0x006       0x220C  0xC086      1  0  0x007      STA ptr (this word is at 0x006 = over): writes ACC into ptr; flags unchanged
+7     0x007       0x140C  0x0000      1  1  0x008      indirect: address = mem[ptr] & 0x1FF, loads that word; Z from result
+8     0x008       0x30A5  0x00A5      0  0  0x009      ADD #0x0A5: no carry out, so C becomes 0; Z=0
+9     0x009       0xB0FC  0x00A5      0  0  0x00A      JZ not taken (Z=0): falls through to 0x00A (operand 0x0FC = 252 would have meant 0x009 + 1 + 252 - 256 = 0x006)
+10    0x00A       0x0000  0x00A5      0  0  0x00B      HLT: counted as an executed instruction; PC(after) = 0x00B
+
+Final state: ACC = 0x00A5, C = 0, Z = 0, PC = 0x00B, executed instructions = 10.
+Study this example until every column is reproducible; the same rules apply to the real program.
+
+============================================================
+PART C — THE PROGRAM (Stage 1 and Stage 2)
+============================================================
+
+        .org 0x000
+start:  LDA #data
+        STA dst
+        LDA #9
+        STA left
+again:  
+grab:   LDA data          ; operand is patched at runtime
+        STA tmp
+        XOR acc0
+        ROL #1
+        ADC acc1
+        STA acc0
+        LDA tmp
+        AND #7
+        ADD #tbl
+        STA sel
+        LDA [sel]
+        XOR acc1
+        ROR #2
+        STA acc1
+        LDA acc2
+        ADC tmp
+        XOR mask1
+        STA acc2
+        LDA acc3
+        SUB acc0
+        JC over
+        XOR #0x0FE
+over:   ADD acc2
+        STA acc3
+        XOR acc1
+        STA [dst]
+        LDA dst
+        ADD #1
+        STA dst
+        LDA grab
+        ADD #1
+        STA grab
+        LDA left
+        SUB #1
+        STA left
+        JNZ again
+        HLT
+acc0:   .word 0xF907
+acc1:   .word 0x6734
+acc2:   .word 0x190B
+acc3:   .word 0x666E
+tmp:    .word 0
+left:   .word 0
+dst:    .word 0
+sel:    .word 0
+mask1:  .word 0xFFC0
+tbl:    .word 0x2C0F, 0xB8AE, 0x56F6, 0x5218, 0xA9F0, 0xE646, 0xEE37, 0x25E8
+        .org 0x100
+data:   .word 0x36, 0x8E, 0x66, 0x8C, 0xE5, 0x10, 0x4E, 0x35, 0xC3
+
+Stage 1 — "machine_words": list the words at addresses 0x000 up to and including the last word emitted before the ".org 0x100" line, in address order, each as exactly 4 hex digits. Every address in that range is emitted by the listing; there are no gaps. Do NOT include the input block.
+
+Stage 2 — "execution": emulate from reset until HLT and report
+  "checkpoints": after every 50th executed instruction (step 50, 100, 150, ...) record {"step", "pc", "acc", "c", "z"} where pc is the PC value after that instruction completed (i.e. the address of the next instruction to execute) as 3 hex digits, acc as 4 hex digits, and c/z as 0 or 1. Then append one last entry for the final state after HLT, with "step" = the total executed-instruction count. If the machine halts exactly on a multiple of 50, report that state once, as the final entry.
+  "digest": the final contents of the four words labelled acc0, acc1, acc2, acc3, in that order, 4 hex digits each.
+  "instruction_count": the total number of executed instructions including HLT.
+  "data_block": the final contents of the 9 words of the input block at 0x100..0x108, in address order, 4 hex digits each (the program overwrites them).
+
+============================================================
+PART D — KEYSTREAM AND CIPHERTEXT (Stage 3)
+============================================================
+
+Let s0, s1, s2, s3 be the four digest words from Stage 2 (acc0, acc1, acc2, acc3 in that order). All values are 16-bit; "<<" discards bits shifted above bit 15, ">>" is a logical (zero-fill) shift. Generate one keystream byte per ciphertext byte, in order:
+
+  for each byte index i = 0, 1, 2, ...:
+      t  = s0 ^ ((s0 << 4) & 0xFFFF)
+      u  = s3 ^ (s3 >> 5) ^ t ^ (t >> 3)          (computed from the CURRENT s3, before the shift below)
+      s0 = s1;  s1 = s2;  s2 = s3;  s3 = u
+      k[i] = (s3 ^ (s3 >> 8)) & 0xFF
+      plaintext[i] = ciphertext[i] ^ k[i]
+
+Ciphertext (74 bytes, hex, in order):
+E1 E7 A7 F7 DB 06 84 50 01 A7 2C 5C 6A BC C8 83 93 B0 A3 7B D6 69 62 01 F8 91 AE 4F BF 30 42 23 85 04 3A 00 E7 F9 FB 50 DA E0 05 F2 39 4D 5E C0 27 AF 77 70 2F 28 E7 77 F6 70 02 FD 22 82 B5 E0 C5 90 E4 CC 16 95 C9 A5 C2 5D
+
+The plaintext is printable ASCII: one English sentence ending in "?". Report it verbatim as "plaintext" (if a few characters come out wrong, still report exactly what you computed; do not "repair" it).
+
+============================================================
+PART E — FINAL ANSWER (Stage 4)
+============================================================
+
+The plaintext is a question about the FINAL contents of the input block (the words at 0x100..0x108 after HLT, i.e. your "data_block"). "Address" means a memory address (0x100 is the first word of the block). Answer it with exactly 4 hex digits in "final_answer": a 16-bit value as 4 hex digits, a count as 4 hex digits (e.g. 5 -> "0005"), an address as 4 hex digits (e.g. 0x104 -> "0104").
+
+============================================================
+OUTPUT FORMAT
+============================================================
+
+Return ONLY this JSON object (uppercase hex, no 0x prefixes, fixed widths as stated):
+{
+  "machine_words": ["....", "....", ...],
+  "execution": {
+    "checkpoints": [{"step": 50, "pc": "...", "acc": "....", "c": 0, "z": 0}, ...],
+    "digest": ["....", "....", "....", "...."],
+    "instruction_count": 0,
+    "data_block": ["....", ...]
+  },
+  "plaintext": "...",
+  "final_answer": "...."
+}
+Every stage is graded separately with partial credit, and the later stages are also graded against your own earlier-stage values, so always fill in every field with your best exact computation rather than leaving anything out.

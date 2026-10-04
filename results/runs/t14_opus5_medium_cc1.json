@@ -1,0 +1,138 @@
+{
+ "task": "T14",
+ "model": "claude-opus-5",
+ "family": "opus5",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 56,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 7,
+     "backorders": 0,
+     "in_transit": 28
+    },
+    "C": {
+     "on_hand": 21,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 29,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 0,
+     "in_transit": 55
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 18,
+     "in_transit": 53
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 9,
+     "in_transit": 39
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 25,
+     "in_transit": 52
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 63
+    },
+    "B": {
+     "on_hand": 26,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 15,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 5,
+     "backorders": 0,
+     "in_transit": 50
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 92,
+    "stockout_days": 3,
+    "units_received": 372
+   },
+   "B": {
+    "total_expired": 73,
+    "stockout_days": 8,
+    "units_received": 272
+   },
+   "C": {
+    "total_expired": 64,
+    "stockout_days": 15,
+    "units_received": 190
+   },
+   "D": {
+    "total_expired": 102,
+    "stockout_days": 7,
+    "units_received": 408
+   }
+  },
+  "central": {
+   "final_on_hand": 32,
+   "total_cancelled": 533,
+   "total_expired": 101
+  },
+  "same_day_served": 764,
+  "total_demand": 1006,
+  "fill_rate": 0.7594
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 11601,
+  "cache_read": 531,
+  "output": 17769
+ },
+ "duration_s": 164.4,
+ "cost_usd": 0.5605,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-opus-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 17238,
+    "total_cost_usd": 0.5605104999999999
+   }
+  ],
+  "served_models": [
+   "claude-opus-5"
+  ],
+  "total_cost_usd": 0.5605
+ }
+}

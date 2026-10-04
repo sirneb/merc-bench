@@ -1,0 +1,127 @@
+{
+ "type": "object",
+ "properties": {
+  "routes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "path": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "km": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id",
+     "path",
+     "km"
+    ]
+   }
+  },
+  "arrivals": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "arrival": {
+      "type": "string"
+     },
+     "rests": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id",
+     "arrival"
+    ]
+   }
+  },
+  "docks": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "dock_start": {
+      "type": "string"
+     },
+     "wait_minutes": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id",
+     "dock_start",
+     "wait_minutes"
+    ]
+   }
+  },
+  "billing": {
+   "type": "object",
+   "properties": {
+    "per_shipment": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "string"
+       },
+       "fee": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "id",
+       "fee"
+      ]
+     }
+    },
+    "per_customer": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "customer": {
+        "type": "string"
+       },
+       "total": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "customer",
+       "total"
+      ]
+     }
+    },
+    "grand_total": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "per_customer",
+    "grand_total"
+   ]
+  }
+ },
+ "required": [
+  "routes",
+  "arrivals",
+  "docks",
+  "billing"
+ ]
+}

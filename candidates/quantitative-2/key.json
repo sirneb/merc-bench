@@ -1,0 +1,1013 @@
+{
+ "legs": [
+  {
+   "id": "L01",
+   "dep_zone": "CAS",
+   "dep_local": "2027-09-04 16:14",
+   "dep_utc": "2027-09-04 09:29",
+   "arr_zone": "BEL",
+   "block": 189,
+   "arr_local": "2027-09-04 12:38",
+   "arr_utc": "2027-09-04 12:38",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D1"
+  },
+  {
+   "id": "L02",
+   "dep_zone": "BEL",
+   "dep_local": "2027-09-04 13:40",
+   "dep_utc": "2027-09-04 13:40",
+   "arr_zone": "GRW",
+   "block": 72,
+   "arr_local": "2027-09-05 05:37",
+   "arr_utc": "2027-09-04 14:52",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": true,
+   "duty": "D1"
+  },
+  {
+   "id": "L03",
+   "dep_zone": "GRW",
+   "dep_local": "2027-09-05 07:16",
+   "dep_utc": "2027-09-04 16:31",
+   "arr_zone": "ELM",
+   "block": 150,
+   "arr_local": "2027-09-04 22:01",
+   "arr_utc": "2027-09-04 19:01",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D1"
+  },
+  {
+   "id": "L04",
+   "dep_zone": "ELM",
+   "dep_local": "2027-09-04 23:55",
+   "dep_utc": "2027-09-04 20:55",
+   "arr_zone": "BEL",
+   "block": 135,
+   "arr_local": "2027-09-04 23:10",
+   "arr_utc": "2027-09-04 23:10",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D1"
+  },
+  {
+   "id": "L05",
+   "dep_zone": "BEL",
+   "dep_local": "2027-09-11 16:51",
+   "dep_utc": "2027-09-11 16:51",
+   "arr_zone": "HAL",
+   "block": 96,
+   "arr_local": "2027-09-12 04:57",
+   "arr_utc": "2027-09-11 18:27",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D2"
+  },
+  {
+   "id": "L06",
+   "dep_zone": "HAL",
+   "dep_local": "2027-09-12 06:49",
+   "dep_utc": "2027-09-11 20:19",
+   "arr_zone": "BEL",
+   "block": 62,
+   "arr_local": "2027-09-11 21:21",
+   "arr_utc": "2027-09-11 21:21",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D2"
+  },
+  {
+   "id": "L07",
+   "dep_zone": "BEL",
+   "dep_local": "2027-09-11 22:57",
+   "dep_utc": "2027-09-11 22:57",
+   "arr_zone": "FAR",
+   "block": 126,
+   "arr_local": "2027-09-12 05:33",
+   "arr_utc": "2027-09-12 01:03",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D2"
+  },
+  {
+   "id": "L08",
+   "dep_zone": "FAR",
+   "dep_local": "2027-09-12 08:03",
+   "dep_utc": "2027-09-12 03:33",
+   "arr_zone": "ISK",
+   "block": 129,
+   "arr_local": "2027-09-12 02:12",
+   "arr_utc": "2027-09-12 05:42",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": true,
+   "duty": "D2"
+  },
+  {
+   "id": "L09",
+   "dep_zone": "ISK",
+   "dep_local": "2027-09-18 09:33",
+   "dep_utc": "2027-09-18 13:03",
+   "arr_zone": "JUR",
+   "block": 91,
+   "arr_local": "2027-09-19 01:34",
+   "arr_utc": "2027-09-18 14:34",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": true,
+   "duty": "D3"
+  },
+  {
+   "id": "L10",
+   "dep_zone": "JUR",
+   "dep_local": "2027-09-19 04:08",
+   "dep_utc": "2027-09-18 16:08",
+   "arr_zone": "CAS",
+   "block": 66,
+   "arr_local": "2027-09-18 23:59",
+   "arr_utc": "2027-09-18 17:14",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": true,
+   "duty": "D3"
+  },
+  {
+   "id": "L11",
+   "dep_zone": "CAS",
+   "dep_local": "2027-09-19 01:03",
+   "dep_utc": "2027-09-18 18:18",
+   "arr_zone": "BEL",
+   "block": 72,
+   "arr_local": "2027-09-18 19:30",
+   "arr_utc": "2027-09-18 19:30",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D3"
+  },
+  {
+   "id": "L12",
+   "dep_zone": "BEL",
+   "dep_local": "2027-09-18 21:36",
+   "dep_utc": "2027-09-18 21:36",
+   "arr_zone": "FAR",
+   "block": 54,
+   "arr_local": "2027-09-19 03:00",
+   "arr_utc": "2027-09-18 22:30",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D3"
+  },
+  {
+   "id": "L13",
+   "dep_zone": "FAR",
+   "dep_local": "2027-09-26 07:55",
+   "dep_utc": "2027-09-26 03:25",
+   "arr_zone": "DOR",
+   "block": 48,
+   "arr_local": "2027-09-25 23:13",
+   "arr_utc": "2027-09-26 04:13",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": true,
+   "duty": "D4"
+  },
+  {
+   "id": "L14",
+   "dep_zone": "DOR",
+   "dep_local": "2027-09-26 00:48",
+   "dep_utc": "2027-09-26 05:48",
+   "arr_zone": "FAR",
+   "block": 72,
+   "arr_local": "2027-09-26 11:30",
+   "arr_utc": "2027-09-26 07:00",
+   "dep_kind": "repeated",
+   "near_transition": true,
+   "arr_in_home_september": true,
+   "duty": "D4"
+  },
+  {
+   "id": "L15",
+   "dep_zone": "FAR",
+   "dep_local": "2027-09-26 12:19",
+   "dep_utc": "2027-09-26 07:49",
+   "arr_zone": "JUR",
+   "block": 45,
+   "arr_local": "2027-09-26 20:34",
+   "arr_utc": "2027-09-26 08:34",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D4"
+  },
+  {
+   "id": "L16",
+   "dep_zone": "JUR",
+   "dep_local": "2027-09-26 22:45",
+   "dep_utc": "2027-09-26 10:45",
+   "arr_zone": "DOR",
+   "block": 61,
+   "arr_local": "2027-09-26 05:46",
+   "arr_utc": "2027-09-26 11:46",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D4"
+  },
+  {
+   "id": "L17",
+   "dep_zone": "DOR",
+   "dep_local": "2027-09-30 05:17",
+   "dep_utc": "2027-09-30 11:17",
+   "arr_zone": "FAR",
+   "block": 178,
+   "arr_local": "2027-09-30 18:45",
+   "arr_utc": "2027-09-30 14:15",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": true,
+   "duty": "D5"
+  },
+  {
+   "id": "L18",
+   "dep_zone": "FAR",
+   "dep_local": "2027-09-30 21:03",
+   "dep_utc": "2027-09-30 16:33",
+   "arr_zone": "GRW",
+   "block": 88,
+   "arr_local": "2027-10-01 08:46",
+   "arr_utc": "2027-09-30 18:01",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D5"
+  },
+  {
+   "id": "L19",
+   "dep_zone": "GRW",
+   "dep_local": "2027-10-01 10:26",
+   "dep_utc": "2027-09-30 19:41",
+   "arr_zone": "DOR",
+   "block": 86,
+   "arr_local": "2027-09-30 15:07",
+   "arr_utc": "2027-09-30 21:07",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D5"
+  },
+  {
+   "id": "L20",
+   "dep_zone": "DOR",
+   "dep_local": "2027-09-30 17:39",
+   "dep_utc": "2027-09-30 23:39",
+   "arr_zone": "HAL",
+   "block": 66,
+   "arr_local": "2027-10-01 11:15",
+   "arr_utc": "2027-10-01 00:45",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D5"
+  },
+  {
+   "id": "L21",
+   "dep_zone": "HAL",
+   "dep_local": "2027-10-03 07:25",
+   "dep_utc": "2027-10-02 20:55",
+   "arr_zone": "ARB",
+   "block": 50,
+   "arr_local": "2027-10-02 18:45",
+   "arr_utc": "2027-10-02 21:45",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D6"
+  },
+  {
+   "id": "L22",
+   "dep_zone": "ARB",
+   "dep_local": "2027-10-02 20:19",
+   "dep_utc": "2027-10-02 23:19",
+   "arr_zone": "LUM",
+   "block": 50,
+   "arr_local": "2027-10-03 02:09",
+   "arr_utc": "2027-10-03 00:09",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": false,
+   "duty": "D6"
+  },
+  {
+   "id": "L23",
+   "dep_zone": "LUM",
+   "dep_local": "2027-10-03 03:39",
+   "dep_utc": "2027-10-03 01:39",
+   "arr_zone": "DOR",
+   "block": 45,
+   "arr_local": "2027-10-02 20:24",
+   "arr_utc": "2027-10-03 02:24",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D6"
+  },
+  {
+   "id": "L24",
+   "dep_zone": "DOR",
+   "dep_local": "2027-10-02 21:40",
+   "dep_utc": "2027-10-03 03:40",
+   "arr_zone": "ISK",
+   "block": 46,
+   "arr_local": "2027-10-03 00:56",
+   "arr_utc": "2027-10-03 04:26",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D6"
+  },
+  {
+   "id": "L25",
+   "dep_zone": "ISK",
+   "dep_local": "2027-10-09 12:02",
+   "dep_utc": "2027-10-09 15:32",
+   "arr_zone": "CAS",
+   "block": 151,
+   "arr_local": "2027-10-10 00:48",
+   "arr_utc": "2027-10-09 18:03",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": false,
+   "duty": "D7"
+  },
+  {
+   "id": "L26",
+   "dep_zone": "CAS",
+   "dep_local": "2027-10-10 01:36",
+   "dep_utc": "2027-10-09 18:51",
+   "arr_zone": "HAL",
+   "block": 65,
+   "arr_local": "2027-10-10 06:26",
+   "arr_utc": "2027-10-09 19:56",
+   "dep_kind": "repeated",
+   "near_transition": true,
+   "arr_in_home_september": false,
+   "duty": "D7"
+  },
+  {
+   "id": "L27",
+   "dep_zone": "HAL",
+   "dep_local": "2027-10-10 07:45",
+   "dep_utc": "2027-10-09 21:15",
+   "arr_zone": "DOR",
+   "block": 109,
+   "arr_local": "2027-10-09 17:04",
+   "arr_utc": "2027-10-09 23:04",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D7"
+  },
+  {
+   "id": "L28",
+   "dep_zone": "DOR",
+   "dep_local": "2027-10-09 17:51",
+   "dep_utc": "2027-10-09 23:51",
+   "arr_zone": "HAL",
+   "block": 83,
+   "arr_local": "2027-10-10 11:44",
+   "arr_utc": "2027-10-10 01:14",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D7"
+  },
+  {
+   "id": "L29",
+   "dep_zone": "HAL",
+   "dep_local": "2027-10-16 10:13",
+   "dep_utc": "2027-10-15 23:43",
+   "arr_zone": "FAR",
+   "block": 121,
+   "arr_local": "2027-10-16 06:14",
+   "arr_utc": "2027-10-16 01:44",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D8"
+  },
+  {
+   "id": "L30",
+   "dep_zone": "FAR",
+   "dep_local": "2027-10-16 06:54",
+   "dep_utc": "2027-10-16 02:24",
+   "arr_zone": "DOR",
+   "block": 52,
+   "arr_local": "2027-10-15 21:16",
+   "arr_utc": "2027-10-16 03:16",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D8"
+  },
+  {
+   "id": "L31",
+   "dep_zone": "DOR",
+   "dep_local": "2027-10-15 22:34",
+   "dep_utc": "2027-10-16 04:34",
+   "arr_zone": "GRW",
+   "block": 225,
+   "arr_local": "2027-10-16 23:04",
+   "arr_utc": "2027-10-16 08:19",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D8"
+  },
+  {
+   "id": "L32",
+   "dep_zone": "GRW",
+   "dep_local": "2027-10-17 01:35",
+   "dep_utc": "2027-10-16 10:50",
+   "arr_zone": "HAL",
+   "block": 73,
+   "arr_local": "2027-10-16 22:33",
+   "arr_utc": "2027-10-16 12:03",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": false,
+   "duty": "D8"
+  },
+  {
+   "id": "L33",
+   "dep_zone": "HAL",
+   "dep_local": "2027-10-24 08:21",
+   "dep_utc": "2027-10-23 21:21",
+   "arr_zone": "KOV",
+   "block": 148,
+   "arr_local": "2027-10-24 00:49",
+   "arr_utc": "2027-10-23 23:49",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D9"
+  },
+  {
+   "id": "L34",
+   "dep_zone": "KOV",
+   "dep_local": "2027-10-24 02:47",
+   "dep_utc": "2027-10-24 01:47",
+   "arr_zone": "ISK",
+   "block": 178,
+   "arr_local": "2027-10-24 01:15",
+   "arr_utc": "2027-10-24 04:45",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D9"
+  },
+  {
+   "id": "L35",
+   "dep_zone": "ISK",
+   "dep_local": "2027-10-24 02:53",
+   "dep_utc": "2027-10-24 06:23",
+   "arr_zone": "DOR",
+   "block": 55,
+   "arr_local": "2027-10-24 01:18",
+   "arr_utc": "2027-10-24 07:18",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D9"
+  },
+  {
+   "id": "L36",
+   "dep_zone": "DOR",
+   "dep_local": "2027-10-24 02:45",
+   "dep_utc": "2027-10-24 08:45",
+   "arr_zone": "LUM",
+   "block": 80,
+   "arr_local": "2027-10-24 12:05",
+   "arr_utc": "2027-10-24 10:05",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D9"
+  },
+  {
+   "id": "L37",
+   "dep_zone": "LUM",
+   "dep_local": "2027-10-29 04:38",
+   "dep_utc": "2027-10-29 02:38",
+   "arr_zone": "ARB",
+   "block": 87,
+   "arr_local": "2027-10-29 01:05",
+   "arr_utc": "2027-10-29 04:05",
+   "dep_kind": "normal",
+   "near_transition": true,
+   "arr_in_home_september": false,
+   "duty": "D10"
+  },
+  {
+   "id": "L38",
+   "dep_zone": "ARB",
+   "dep_local": "2027-10-29 02:15",
+   "dep_utc": "2027-10-29 05:15",
+   "arr_zone": "BEL",
+   "block": 177,
+   "arr_local": "2027-10-29 08:12",
+   "arr_utc": "2027-10-29 08:12",
+   "dep_kind": "repeated",
+   "near_transition": true,
+   "arr_in_home_september": false,
+   "duty": "D10"
+  },
+  {
+   "id": "L39",
+   "dep_zone": "BEL",
+   "dep_local": "2027-10-29 09:49",
+   "dep_utc": "2027-10-29 09:49",
+   "arr_zone": "ELM",
+   "block": 142,
+   "arr_local": "2027-10-29 15:11",
+   "arr_utc": "2027-10-29 12:11",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D10"
+  },
+  {
+   "id": "L40",
+   "dep_zone": "ELM",
+   "dep_local": "2027-10-29 15:58",
+   "dep_utc": "2027-10-29 12:58",
+   "arr_zone": "HAL",
+   "block": 106,
+   "arr_local": "2027-10-30 01:44",
+   "arr_utc": "2027-10-29 14:44",
+   "dep_kind": "normal",
+   "near_transition": false,
+   "arr_in_home_september": false,
+   "duty": "D10"
+  }
+ ],
+ "duty_periods": [
+  {
+   "id": "D1",
+   "start_utc": "2027-09-04 08:29",
+   "end_utc": "2027-09-04 23:40",
+   "minutes": 911,
+   "leg_ids": [
+    "L01",
+    "L02",
+    "L03",
+    "L04"
+   ]
+  },
+  {
+   "id": "D2",
+   "start_utc": "2027-09-11 15:51",
+   "end_utc": "2027-09-12 06:12",
+   "minutes": 861,
+   "leg_ids": [
+    "L05",
+    "L06",
+    "L07",
+    "L08"
+   ]
+  },
+  {
+   "id": "D3",
+   "start_utc": "2027-09-18 12:03",
+   "end_utc": "2027-09-18 23:00",
+   "minutes": 657,
+   "leg_ids": [
+    "L09",
+    "L10",
+    "L11",
+    "L12"
+   ]
+  },
+  {
+   "id": "D4",
+   "start_utc": "2027-09-26 02:25",
+   "end_utc": "2027-09-26 12:16",
+   "minutes": 591,
+   "leg_ids": [
+    "L13",
+    "L14",
+    "L15",
+    "L16"
+   ]
+  },
+  {
+   "id": "D5",
+   "start_utc": "2027-09-30 10:17",
+   "end_utc": "2027-10-01 01:15",
+   "minutes": 898,
+   "leg_ids": [
+    "L17",
+    "L18",
+    "L19",
+    "L20"
+   ]
+  },
+  {
+   "id": "D6",
+   "start_utc": "2027-10-02 19:55",
+   "end_utc": "2027-10-03 04:56",
+   "minutes": 541,
+   "leg_ids": [
+    "L21",
+    "L22",
+    "L23",
+    "L24"
+   ]
+  },
+  {
+   "id": "D7",
+   "start_utc": "2027-10-09 14:32",
+   "end_utc": "2027-10-10 01:44",
+   "minutes": 672,
+   "leg_ids": [
+    "L25",
+    "L26",
+    "L27",
+    "L28"
+   ]
+  },
+  {
+   "id": "D8",
+   "start_utc": "2027-10-15 22:43",
+   "end_utc": "2027-10-16 12:33",
+   "minutes": 830,
+   "leg_ids": [
+    "L29",
+    "L30",
+    "L31",
+    "L32"
+   ]
+  },
+  {
+   "id": "D9",
+   "start_utc": "2027-10-23 20:21",
+   "end_utc": "2027-10-24 10:35",
+   "minutes": 854,
+   "leg_ids": [
+    "L33",
+    "L34",
+    "L35",
+    "L36"
+   ]
+  },
+  {
+   "id": "D10",
+   "start_utc": "2027-10-29 01:38",
+   "end_utc": "2027-10-29 15:14",
+   "minutes": 816,
+   "leg_ids": [
+    "L37",
+    "L38",
+    "L39",
+    "L40"
+   ]
+  }
+ ],
+ "violations": [
+  "D1",
+  "D2",
+  "D5",
+  "D9"
+ ],
+ "home_base_month_minutes": 1646,
+ "config": {
+  "legs": 40,
+  "proximity": 1.0,
+  "odd_offsets": true,
+  "decree": true,
+  "chain": true,
+  "ambiguity": 3,
+  "seed": 20270914,
+  "difficulty": "hard"
+ },
+ "home_base": "CAS",
+ "roles": {
+  "HOME": "CAS",
+  "DECREE": "DOR",
+  "HALF": "HAL",
+  "SOUTH": "JUR",
+  "NEGHALF": "ISK",
+  "SAT": "ARB",
+  "NORTH": "LUM",
+  "DATELINE": "GRW"
+ },
+ "zones": [
+  {
+   "code": "ARB",
+   "name": "Arbolen Time",
+   "std": -240,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     3,
+     1,
+     4,
+     0
+    ],
+    "end": [
+     10,
+     -1,
+     4,
+     165
+    ]
+   },
+   "decree": null,
+   "posix": "ARB4:00ARD3:00,M3.1.5/0:00,M10.5.5/2:45"
+  },
+  {
+   "code": "BEL",
+   "name": "Belmara Time",
+   "std": 0,
+   "shift": 0,
+   "rule": null,
+   "decree": null,
+   "posix": "BEL0:00"
+  },
+  {
+   "code": "CAS",
+   "name": "Cassiovar Time",
+   "std": 345,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     3,
+     1,
+     6,
+     0
+    ],
+    "end": [
+     10,
+     2,
+     6,
+     120
+    ]
+   },
+   "decree": null,
+   "posix": "CAS-5:45CAD-6:45,M3.1.0/0:00,M10.2.0/2:00"
+  },
+  {
+   "code": "DOR",
+   "name": "Dorrindale Time",
+   "std": -360,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     4,
+     3,
+     6,
+     60
+    ],
+    "end": [
+     10,
+     4,
+     6,
+     120
+    ]
+   },
+   "decree": [
+    2027,
+    9,
+    26,
+    60
+   ],
+   "posix": "DOR6:00DOD5:00,M4.3.0/1:00,M10.4.0/2:00"
+  },
+  {
+   "code": "ELM",
+   "name": "Elmhaven Time",
+   "std": 180,
+   "shift": 0,
+   "rule": null,
+   "decree": null,
+   "posix": "ELM-3:00"
+  },
+  {
+   "code": "FAR",
+   "name": "Farrowgate Time",
+   "std": 270,
+   "shift": 0,
+   "rule": null,
+   "decree": null,
+   "posix": "FAR-4:30"
+  },
+  {
+   "code": "GRW",
+   "name": "Greywick Time",
+   "std": 825,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     9,
+     1,
+     6,
+     180
+    ],
+    "end": [
+     4,
+     3,
+     6,
+     120
+    ]
+   },
+   "decree": null,
+   "posix": "GRW-13:45GRD-14:45,M9.1.0/3:00,M4.3.0/2:00"
+  },
+  {
+   "code": "HAL",
+   "name": "Halvern Time",
+   "std": 630,
+   "shift": 30,
+   "rule": {
+    "shift": 30,
+    "start": [
+     10,
+     3,
+     6,
+     0
+    ],
+    "end": [
+     3,
+     2,
+     6,
+     0
+    ]
+   },
+   "decree": null,
+   "posix": "HAL-10:30HAD-11:00,M10.3.0/0:00,M3.2.0/0:00"
+  },
+  {
+   "code": "ISK",
+   "name": "Iskarra Time",
+   "std": -210,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     4,
+     3,
+     6,
+     180
+    ],
+    "end": [
+     9,
+     2,
+     6,
+     150
+    ]
+   },
+   "decree": null,
+   "posix": "ISK3:30ISD2:30,M4.3.0/3:00,M9.2.0/2:30"
+  },
+  {
+   "code": "JUR",
+   "name": "Jurelle Time",
+   "std": 660,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     9,
+     3,
+     6,
+     180
+    ],
+    "end": [
+     4,
+     2,
+     6,
+     60
+    ]
+   },
+   "decree": null,
+   "posix": "JUR-11:00JUD-12:00,M9.3.0/3:00,M4.2.0/1:00"
+  },
+  {
+   "code": "KOV",
+   "name": "Kovaris Time",
+   "std": 60,
+   "shift": 0,
+   "rule": null,
+   "decree": null,
+   "posix": "KOV-1:00"
+  },
+  {
+   "code": "LUM",
+   "name": "Lumenport Time",
+   "std": 120,
+   "shift": 60,
+   "rule": {
+    "shift": 60,
+    "start": [
+     4,
+     3,
+     6,
+     180
+    ],
+    "end": [
+     10,
+     1,
+     6,
+     150
+    ]
+   },
+   "decree": null,
+   "posix": "LUM-2:00LUD-3:00,M4.3.0/3:00,M10.1.0/2:30"
+  }
+ ],
+ "anchors": [
+  {
+   "instant": "2027-10-09 19:15",
+   "zone": "CAS",
+   "kind": "end",
+   "shift": 60,
+   "bias": "DOR"
+  },
+  {
+   "instant": "2027-09-30 17:15",
+   "zone": null,
+   "kind": "boundary",
+   "shift": 0,
+   "bias": "DOR"
+  },
+  {
+   "instant": "2027-10-24 07:00",
+   "zone": "DOR",
+   "kind": "phantom",
+   "shift": 60
+  },
+  {
+   "instant": "2027-09-26 06:00",
+   "zone": "DOR",
+   "kind": "end",
+   "shift": 60
+  },
+  {
+   "instant": "2027-10-16 13:30",
+   "zone": "HAL",
+   "kind": "start",
+   "shift": 30,
+   "bias": "DOR"
+  },
+  {
+   "instant": "2027-09-18 16:00",
+   "zone": "JUR",
+   "kind": "start",
+   "shift": 60
+  },
+  {
+   "instant": "2027-09-12 05:00",
+   "zone": "ISK",
+   "kind": "end",
+   "shift": 60
+  },
+  {
+   "instant": "2027-10-29 05:45",
+   "zone": "ARB",
+   "kind": "end",
+   "shift": 60
+  },
+  {
+   "instant": "2027-10-02 23:30",
+   "zone": "LUM",
+   "kind": "end",
+   "shift": 60,
+   "bias": "DOR"
+  },
+  {
+   "instant": "2027-09-04 13:15",
+   "zone": "GRW",
+   "kind": "start",
+   "shift": 60
+  }
+ ],
+ "stats": {
+  "near_transition_legs": 12,
+  "engineered_departures": 3,
+  "violations": 4,
+  "duty_periods": 10
+ }
+}

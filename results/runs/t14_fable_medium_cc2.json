@@ -1,0 +1,138 @@
+{
+ "task": "T14",
+ "model": "claude-fable-5",
+ "family": "fable",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 12,
+     "backorders": 0,
+     "in_transit": 47
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 7,
+     "in_transit": 30
+    },
+    "C": {
+     "on_hand": 11,
+     "backorders": 0,
+     "in_transit": 19
+    },
+    "D": {
+     "on_hand": 29,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 0,
+     "backorders": 0,
+     "in_transit": 21
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 16,
+     "in_transit": 41
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 7,
+     "in_transit": 37
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 27,
+     "in_transit": 82
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 63
+    },
+    "B": {
+     "on_hand": 19,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 15,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 14,
+     "backorders": 0,
+     "in_transit": 41
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 125,
+    "stockout_days": 6,
+    "units_received": 405
+   },
+   "B": {
+    "total_expired": 52,
+    "stockout_days": 7,
+    "units_received": 244
+   },
+   "C": {
+    "total_expired": 58,
+    "stockout_days": 9,
+    "units_received": 184
+   },
+   "D": {
+    "total_expired": 87,
+    "stockout_days": 6,
+    "units_received": 402
+   }
+  },
+  "central": {
+   "final_on_hand": 41,
+   "total_cancelled": 625,
+   "total_expired": 108
+  },
+  "same_day_served": 750,
+  "total_demand": 1006,
+  "fill_rate": 0.7455
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 11750,
+  "cache_read": 5355,
+  "output": 29366
+ },
+ "duration_s": 274.2,
+ "cost_usd": 1.7087,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-fable-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 28835,
+    "total_cost_usd": 1.708675
+   }
+  ],
+  "served_models": [
+   "claude-fable-5"
+  ],
+  "total_cost_usd": 1.7087
+ }
+}

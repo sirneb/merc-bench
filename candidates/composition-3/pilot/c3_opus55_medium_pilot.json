@@ -1,0 +1,155 @@
+{
+ "task": "C3",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "medium",
+ "sample": "pilot",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "machine_words": [
+   "1100",
+   "222F",
+   "1009",
+   "222E",
+   "1300",
+   "222D",
+   "7229",
+   "8001",
+   "422A",
+   "2229",
+   "122D",
+   "6007",
+   "3032",
+   "2230",
+   "1430",
+   "722A",
+   "9002",
+   "222A",
+   "122B",
+   "422D",
+   "7231",
+   "222B",
+   "122C",
+   "5229",
+   "D101",
+   "70FE",
+   "322B",
+   "222C",
+   "722A",
+   "242F",
+   "122F",
+   "3001",
+   "222F",
+   "1204",
+   "3001",
+   "2204",
+   "122E",
+   "5001",
+   "222E",
+   "C0DC",
+   "0000",
+   "F907",
+   "6734",
+   "190B",
+   "666E",
+   "0000",
+   "0000",
+   "0000",
+   "0000",
+   "FFC0",
+   "2C0F",
+   "B8AE",
+   "56F6",
+   "5218",
+   "A9F0",
+   "E646",
+   "EE37",
+   "25E8"
+  ],
+  "execution": {
+   "checkpoints": [
+    {
+     "step": 50,
+     "pc": "00E",
+     "acc": "0038",
+     "c": 0,
+     "z": 0
+    },
+    {
+     "step": 100,
+     "pc": "01C",
+     "acc": "63A5",
+     "c": 1,
+     "z": 0
+    },
+    {
+     "step": 150,
+     "pc": "007",
+     "acc": "9639",
+     "c": 0,
+     "z": 0
+    },
+    {
+     "step": 200,
+     "pc": "015",
+     "acc": "193A",
+     "c": 0,
+     "z": 0
+    },
+    {
+     "step": 250,
+     "pc": "024",
+     "acc": "1307",
+     "c": 0,
+     "z": 0
+    },
+    {
+     "step": 300,
+     "pc": "00F",
+     "acc": "5218",
+     "c": 0,
+     "z": 0
+    },
+    {
+     "step": 325,
+     "pc": "029",
+     "acc": "0000",
+     "c": 0,
+     "z": 1
+    }
+   ],
+   "digest": [
+    "CCB0",
+    "9B44",
+    "E541",
+    "9E8F"
+   ],
+   "instruction_count": 325,
+   "data_block": [
+    "50EB",
+    "2485",
+    "7CEF",
+    "C8A0",
+    "4207",
+    "2566",
+    "2832",
+    "BAF7",
+    "05CB"
+   ]
+  },
+  "plaintext": "Address of the largest final input word (lowest if tied), as 4 hex digits?",
+  "final_answer": "0103"
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 17032,
+  "cache_read": 11320,
+  "output": 28380
+ },
+ "duration_s": 203.1,
+ "cost_usd": 0.655,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-01",
+ "answer": {
+  "text": "Meanwhile, a database cache keeps recent query results in fast memory; applications then skip repeated trips to slow disks. This simple idea reduces latency, lowers server cost, and lets busy websites serve thousands of visitors without strain at peak hours.\n\nHowever, every cache needs rules; entries expire, and a cache must decide which items to evict when space runs out. Popular policies include least recently used and time based expiry. Invalidation remains hard, because stale values can mislead users; careful teams therefore test freshness constantly, measuring hit rates and watching memory use across every node.\n\nAlong with fast caching of hot rows, any big shop can lift output and cut disk load. Slow, aging data upsets folks, so a good plan must drop old units and chart a valid span for all of its data points.\n\nFinally, a tuned cache and a warm cache strategy make reads fast and routine, so now we are all done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2657,
+  "cache_read": 7137,
+  "output": 2357
+ },
+ "duration_s": 19.8,
+ "cost_usd": 0.0356,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 2049,
+    "total_cost_usd": 0.0698314
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.0698
+ }
+}

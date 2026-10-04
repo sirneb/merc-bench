@@ -19,6 +19,18 @@
   the six-puzzle set has repeated attempts per configuration. Aggregates show
   min–max ranges; sample provenance is preserved per record.
 
+- **Two tiers.** The original twelve tasks (T1–T10 core, E and T5B supplementary)
+  saturated by September 2026: every frontier tier scored 98–100 on the core set.
+  A *hard tier* (T13 TALLY-12, T14 cold-chain depots, T15 Quarry Duel) was added
+  from a propose → judge → build → pilot → critique tournament (the full record
+  is `candidates/TOURNAMENT.md` on the `hard-tier-candidates` branch). Hard-tier
+  tasks are long exact simulations whose graders give partial credit but where a
+  single slip cascades, so they are reported on mean % of points, min–max spread
+  and P(clean) rather than the binary floor, and they do not enter the 10-task
+  reliability floors. Every hard-tier package ships a seeded generator with a
+  difficulty knob, an independent oracle that must agree with the key, and a
+  grader self-test. Hard-tier runs use `claude -p --tools ""`.
+
 ## Measurement
 
 - **Scores** are recomputed from raw answers by `runner/aggregate.py` on every
@@ -42,6 +54,14 @@
    schema JSON (notably the state-simulation task). Graders parse content out of
    prose rather than scoring format compliance; format deviations are recorded,
    not punished. Both corrections are reproducible from the shipped raw answers.
+
+- **Budget overruns are data.** A run that exceeds the harness output-token
+  maximum (128k under Claude Code) or the runner's one-hour wall clock is
+  recorded once as a valid record with a null answer (score 0) and is not
+  retried: a model that cannot finish inside the budget is a measured outcome of
+  that configuration. Transport failures (CLI crash, usage-limit refusal, a
+  fallback model answering) remain `invalid` and are refilled; the quarantined
+  originals are kept under `results/invalid/` with their provenance.
 
 ## Known limits
 

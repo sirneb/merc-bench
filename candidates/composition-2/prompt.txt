@@ -1,0 +1,200 @@
+IMPORTANT: Solve without any tools — no Bash, no Python, no code execution, no files, no web. Work it out yourself.
+
+You are the dispatcher of a small freight rail network. Work through the four stages below EXACTLY as specified and report every stage's results. Each stage uses only the static data in this prompt and the results of the previous stage, so be precise: a wrong route changes the arrival time, which changes the dock queue, which changes the bills.
+
+======================================================================
+RULES
+======================================================================
+
+General
+- Every shipment travels as its own train. Trains never interact on the track (no capacity limits, no meets).
+- All timestamps are local depot time in one time zone with no daylight-saving change, written YYYY-MM-DDTHH:MM (24-hour clock). Every duration in this problem is a whole number of minutes, so no rounding is ever needed.
+- Track segments are undirected (usable in either direction) with the km length listed.
+- Station names are compared as plain strings; every station name starts with a different letter, so alphabetical order is simply the order of first letters.
+
+Stage 1 - ROUTES
+- A shipment's departure date is the date part of its ready timestamp.
+- A maintenance-calendar entry '<date>  X -- Y' means segment X--Y is closed for the whole of that date: NO train whose departure date is that date may use that segment anywhere on its route, even if the train would only reach the segment on a later date. Closures listed for other dates are irrelevant to that train. Closures never delay a train; they only restrict which segments its route may use.
+- The route is the simple path (no station visited twice) from origin to destination that minimises total km using only segments open on the departure date. Trains may pass through hub stations as intermediate stops.
+- Tie-break: if two or more paths have the same minimum km, choose the one whose station sequence is alphabetically first, comparing station names position by position (the origin is the same for all, so the first differing position decides; e.g. [Ashford, Belmont, Kelso, Zeals] beats [Ashford, Corwen, Belmont, Zeals]).
+- Report the full station sequence including origin and destination, and the total km.
+
+Stage 2 - ARRIVALS
+- The train departs the origin at exactly the ready timestamp. There is no dwell at the origin.
+- Speed is exactly 60 km/h on every segment, so a segment of k km takes exactly k minutes. A segment is never interrupted once started.
+- At every intermediate station (each station on the route except origin and destination) the train dwells 20 minutes. There is no dwell at the destination: the arrival time is the minute the train reaches the destination station.
+- Crew rule: the crew keeps a driving counter that starts at 0 at the origin and increases by a segment's minutes when that segment is completed. Dwell and rest minutes do NOT count. Immediately before the train departs on any segment other than the first (i.e. after the 20-minute dwell), if the counter is 360 or more, the crew takes a 45-minute rest at that station (so that departure is delayed by 20+45 minutes in total) and the counter resets to 0. The check uses completed driving only: a segment is never split even if it pushes the counter far past 360. No rest is taken at the destination. A long trip may include more than one rest.
+- Report the arrival timestamp and the number of rests taken.
+
+Stage 3 - DOCKS
+- Each destination hub has 2 identical unloading docks, dedicated to that hub. All docks are free from the start and operate around the clock. Only the shipments in this problem use them.
+- Unloading a shipment takes ceil(tonnage / 25) x 30 minutes (e.g. 100 t -> 4 x 30 = 120 min; 101 t -> 5 x 30 = 150 min).
+- Shipments bound for the same hub are served strictly in service order: earlier arrival first; if two arrive in the same minute, the smaller shipment id first. Process them one at a time in that order: take the dock that becomes free earliest (any free dock if several are idle); dock_start = the later of the shipment's arrival and that dock's free time; that dock is then busy until dock_start + unloading minutes, and is free again in that very minute (a new shipment may start in the same minute another finishes).
+- wait_minutes = dock_start - arrival (in minutes).
+
+Stage 4 - DEMURRAGE BILLING
+- Per shipment: the first 90 minutes of wait are free. billable = max(0, wait_minutes - 90). blocks = ceil(billable / 30) (a started block counts in full). fee = blocks x $85; if the shipment is hazardous the fee is multiplied by 2; finally the fee is capped at $900 per shipment (the cap applies after the hazardous multiplier). All fees are whole dollars.
+- Per customer: the sum of that customer's shipment fees (report every customer, including those with $0). Grand total: the sum over all shipments.
+
+======================================================================
+DATA
+======================================================================
+
+PARAMETERS: speed_kmh=60 dwell_min=20 rest_after_driving_min=360 rest_min=45 docks_per_hub=2 unload_tonnes_per_block=25 unload_block_min=30
+TARIFF: free_minutes=90 block_minutes=30 rate_per_block=85 hazardous_multiplier=2 cap_per_shipment=900
+
+STATIONS (26): Ashford, Belmont, Corwen, Dunmore, Elsmere, Fairlie, Garston, Halcott, Ilford, Jarrow, Kelso, Lindale, Morley, Naseby, Oakham, Penrith, Quorn, Radlett, Selby, Thirsk, Uppingham, Ventnor, Wetherby, Xenia, Yarm, Zeals
+
+HUBS (3): Halcott, Quorn, Yarm
+
+SEGMENTS (44; undirected; km):
+  SEG-01  Ashford -- Fairlie  44 km
+  SEG-02  Ashford -- Ilford  119 km
+  SEG-03  Ashford -- Oakham  41 km
+  SEG-04  Ashford -- Selby  116 km
+  SEG-05  Belmont -- Dunmore  113 km
+  SEG-06  Belmont -- Fairlie  55 km
+  SEG-07  Belmont -- Lindale  76 km
+  SEG-08  Belmont -- Penrith  76 km
+  SEG-09  Belmont -- Selby  109 km
+  SEG-10  Corwen -- Halcott  60 km
+  SEG-11  Corwen -- Kelso  39 km
+  SEG-12  Dunmore -- Jarrow  112 km
+  SEG-13  Dunmore -- Naseby  79 km
+  SEG-14  Dunmore -- Penrith  99 km
+  SEG-15  Dunmore -- Radlett  45 km
+  SEG-16  Dunmore -- Uppingham  37 km
+  SEG-17  Elsmere -- Quorn  36 km
+  SEG-18  Elsmere -- Ventnor  123 km
+  SEG-19  Fairlie -- Morley  35 km
+  SEG-20  Garston -- Ilford  36 km
+  SEG-21  Garston -- Quorn  117 km
+  SEG-22  Halcott -- Xenia  57 km
+  SEG-23  Halcott -- Zeals  54 km
+  SEG-24  Ilford -- Morley  109 km
+  SEG-25  Ilford -- Quorn  102 km
+  SEG-26  Jarrow -- Naseby  77 km
+  SEG-27  Jarrow -- Penrith  56 km
+  SEG-28  Kelso -- Naseby  52 km
+  SEG-29  Lindale -- Morley  62 km
+  SEG-30  Lindale -- Radlett  51 km
+  SEG-31  Oakham -- Quorn  36 km
+  SEG-32  Oakham -- Selby  109 km
+  SEG-33  Oakham -- Ventnor  94 km
+  SEG-34  Penrith -- Wetherby  47 km
+  SEG-35  Radlett -- Uppingham  55 km
+  SEG-36  Selby -- Thirsk  40 km
+  SEG-37  Selby -- Ventnor  63 km
+  SEG-38  Selby -- Yarm  60 km
+  SEG-39  Thirsk -- Wetherby  50 km
+  SEG-40  Thirsk -- Xenia  119 km
+  SEG-41  Thirsk -- Yarm  47 km
+  SEG-42  Ventnor -- Yarm  86 km
+  SEG-43  Wetherby -- Xenia  133 km
+  SEG-44  Xenia -- Zeals  89 km
+
+MAINTENANCE CALENDAR (10 closures; segment closed for the whole date shown):
+  2026-10-05  Ashford -- Fairlie
+  2026-10-05  Belmont -- Dunmore
+  2026-10-05  Oakham -- Selby
+  2026-10-05  Penrith -- Wetherby
+  2026-10-06  Ashford -- Selby
+  2026-10-06  Belmont -- Lindale
+  2026-10-06  Corwen -- Kelso
+  2026-10-06  Selby -- Thirsk
+  2026-10-06  Thirsk -- Yarm
+  2026-10-07  Oakham -- Quorn
+
+CUSTOMERS (5): CU-01, CU-02, CU-03, CU-04, CU-05
+
+SHIPMENTS (14):
+  S01  origin=Halcott  dest=Quorn  ready=2026-10-05T09:15  tonnage=34  hazardous=no  customer=CU-03
+  S02  origin=Garston  dest=Yarm  ready=2026-10-05T20:09  tonnage=181  hazardous=yes  customer=CU-03
+  S03  origin=Naseby  dest=Quorn  ready=2026-10-05T08:26  tonnage=100  hazardous=no  customer=CU-04
+  S04  origin=Lindale  dest=Yarm  ready=2026-10-05T22:12  tonnage=142  hazardous=no  customer=CU-04
+  S05  origin=Garston  dest=Halcott  ready=2026-10-06T02:08  tonnage=195  hazardous=no  customer=CU-02
+  S06  origin=Corwen  dest=Quorn  ready=2026-10-05T07:35  tonnage=128  hazardous=yes  customer=CU-02
+  S07  origin=Dunmore  dest=Yarm  ready=2026-10-05T19:36  tonnage=41  hazardous=no  customer=CU-03
+  S08  origin=Uppingham  dest=Halcott  ready=2026-10-06T06:39  tonnage=71  hazardous=no  customer=CU-02
+  S09  origin=Kelso  dest=Quorn  ready=2026-10-05T06:41  tonnage=152  hazardous=no  customer=CU-01
+  S10  origin=Uppingham  dest=Yarm  ready=2026-10-05T20:15  tonnage=52  hazardous=no  customer=CU-04
+  S11  origin=Fairlie  dest=Halcott  ready=2026-10-06T06:03  tonnage=122  hazardous=yes  customer=CU-05
+  S12  origin=Ilford  dest=Halcott  ready=2026-10-06T03:39  tonnage=79  hazardous=yes  customer=CU-05
+  S13  origin=Elsmere  dest=Halcott  ready=2026-10-06T02:08  tonnage=182  hazardous=no  customer=CU-01
+  S14  origin=Yarm  dest=Quorn  ready=2026-10-05T14:30  tonnage=66  hazardous=no  customer=CU-01
+
+======================================================================
+OUTPUT FORMAT
+======================================================================
+
+Return ONLY a single JSON object (no prose, no markdown fences) with exactly this shape. Include every shipment in every list, in shipment-id order, and every customer in per_customer. Timestamps as strings YYYY-MM-DDTHH:MM; km, rests, wait_minutes, fee, total and grand_total as integers.
+
+{
+ "routes": [
+  {
+   "id": "S01",
+   "path": [
+    "Origin",
+    "Intermediate",
+    "Destination"
+   ],
+   "km": 0
+  },
+  {
+   "id": "S02",
+   "path": [
+    "..."
+   ],
+   "km": 0
+  }
+ ],
+ "arrivals": [
+  {
+   "id": "S01",
+   "arrival": "2026-10-05T12:34",
+   "rests": 0
+  },
+  {
+   "id": "S02",
+   "arrival": "...",
+   "rests": 0
+  }
+ ],
+ "docks": [
+  {
+   "id": "S01",
+   "dock_start": "2026-10-05T12:34",
+   "wait_minutes": 0
+  },
+  {
+   "id": "S02",
+   "dock_start": "...",
+   "wait_minutes": 0
+  }
+ ],
+ "billing": {
+  "per_shipment": [
+   {
+    "id": "S01",
+    "fee": 0
+   },
+   {
+    "id": "S02",
+    "fee": 0
+   }
+  ],
+  "per_customer": [
+   {
+    "customer": "CU-01",
+    "total": 0
+   },
+   {
+    "customer": "CU-02",
+    "total": 0
+   }
+  ],
+  "grand_total": 0
+ }
+}
+
+Do not include any keys other than those shown. Do not explain your work.

@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-02",
+ "answer": {
+  "text": "Meanwhile, a database cache keeps frequently requested results in fast memory, so applications avoid repeating costly queries against slower storage; the cache therefore reduces latency, lowers load on the primary server, and lets systems serve many more users each second.\n\nHowever, speed has a price, because stored copies can drift away from the truth. Teams therefore choose expiry times, invalidate entries after writes, and monitor hit rates carefully; a cache with poor eviction rules wastes memory, while a well tuned cache quietly absorbs enormous traffic without surprising anyone, even during sudden big holiday shopping spikes.\n\nAlong with growth, a busy log of data must go through lots of slow disk work; but a fast mapping in main RAM can sit by to catch calls and cut wait. Tuning of this stash is tricky, as old facts can fool us, so a solid plan for purging old rows is vital.\n\nFinally, measure results, keep each cache small and relevant, test failures early, and stay reliable when the work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3039,
+  "cache_read": 7137,
+  "output": 2511
+ },
+ "duration_s": 22.1,
+ "cost_usd": 0.0387,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 2165,
+    "total_cost_usd": 0.0759674
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.076
+ }
+}

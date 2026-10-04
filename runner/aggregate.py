@@ -29,9 +29,13 @@ TASK_DIR = {
     "T5B": "t05b-logic-puzzles-4attr", "T6": "t06-strict-csv",
     "T7": "t07-knowledge-recall", "T8": "t08-regex-writing",
     "T9": "t09-bug-review", "T10": "t10-state-simulation", "E": "e-subtle-bugs",
+    # hard tier (added 2026-09-27 from the benchmark tournament)
+    "T13": "t13-tally12-register-machine",
+    "T14": "t14-cold-chain-depots",
+    "T15": "t15-quarry-duel",
 }
 EFFORT_ORDER = ["none", "low", "medium", "high", "xhigh", "max"]
-FAMILY_ORDER = ["haiku", "sonnet", "opus48", "opus5", "opus55", "fable", "fable51"]
+FAMILY_ORDER = ["haiku", "sonnet", "sonnet55", "opus48", "opus5", "opus55", "fable", "fable51"]
 
 _graders = {}
 

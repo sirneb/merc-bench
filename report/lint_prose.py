@@ -24,6 +24,7 @@ CHECKS = [
     ("README.md", "headline reliability-floor table"),
     ("report/fragments/findings.html", "F2 lists every family's floor"),
     ("report/fragments/decisions.html", "recommendations name configs"),
+    ("report/fragments/hard.html", "hard-tier prose names which configs separate"),
 ]
 
 

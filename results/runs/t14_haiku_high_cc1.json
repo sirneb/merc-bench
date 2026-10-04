@@ -1,0 +1,138 @@
+{
+ "task": "T14",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "checkpoints": {
+   "15": {
+    "A": {
+     "on_hand": 53,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 4,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 56,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 29,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "22": {
+    "A": {
+     "on_hand": 16,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 51,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 0,
+     "backorders": 29,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 0,
+     "backorders": 30,
+     "in_transit": 0
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 35,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 68,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 12,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 62,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 0,
+    "stockout_days": 3,
+    "units_received": 206
+   },
+   "B": {
+    "total_expired": 80,
+    "stockout_days": 12,
+    "units_received": 203
+   },
+   "C": {
+    "total_expired": 56,
+    "stockout_days": 8,
+    "units_received": 238
+   },
+   "D": {
+    "total_expired": 62,
+    "stockout_days": 4,
+    "units_received": 340
+   }
+  },
+  "central": {
+   "final_on_hand": 47,
+   "total_cancelled": 472,
+   "total_expired": 0
+  },
+  "same_day_served": 663,
+  "total_demand": 1013,
+  "fill_rate": 0.6545
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 10963,
+  "cache_read": 0,
+  "output": 24793
+ },
+ "duration_s": 210.0,
+ "cost_usd": 0.1459,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-4-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 24057,
+    "total_cost_usd": 0.145901
+   }
+  ],
+  "served_models": [
+   "claude-haiku-4-5"
+  ],
+  "total_cost_usd": 0.1459
+ }
+}

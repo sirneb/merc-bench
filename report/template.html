@@ -9,7 +9,7 @@
     --paper: #F6F7F5; --ink: #1C2126; --muted: #5A6572; --line: #D9DDDA;
     --card: #FFFFFF; --wash: #EEF0ED;
     --haiku: #0E8A7B; --sonnet: #2E5FA3; --opus: #6A4FA3; --opus48: #A04E7C;
-    --fable: #C2521F; --fable51: #B8860B; --opus55: #6A4FBF;
+    --fable: #C2521F; --fable51: #B8860B; --opus55: #6A4FBF; --sonnet55: #1F7A8C;
     --good: #0E8A7B; --warn: #B3830A; --good-bg: #0E8A7B14; --warn-bg: #B3830A1F;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     --body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -17,7 +17,7 @@
   @media (prefers-color-scheme: dark) {
     :root { --paper:#14181C; --ink:#E8EAE6; --muted:#97A1AB; --line:#2B323A;
       --card:#1B2127; --wash:#1F262D; --haiku:#3BC0AE; --sonnet:#7AA5E8;
-      --opus:#B29BE8; --opus48:#E08FC0; --opus55:#8F7BE0; --fable:#EC8A55; --fable51:#E5B84A; --good:#3BC0AE; --warn:#D9A93C;
+      --opus:#B29BE8; --opus48:#E08FC0; --opus55:#8F7BE0; --sonnet55:#5FC3D6; --fable:#EC8A55; --fable51:#E5B84A; --good:#3BC0AE; --warn:#D9A93C;
       --good-bg:#3BC0AE1C; --warn-bg:#D9A93C24; }
   }
   * { box-sizing: border-box; }
@@ -92,6 +92,11 @@
   .heat .cell.bad { background: var(--warn-bg); color: var(--warn);
     outline: 2px solid var(--warn); outline-offset: -2px; }
   .heat .cell.na { background: var(--wash); color: var(--muted); font-weight: 400; }
+  table.hard td.cell { border-radius: 4px; text-align: center; font-family: var(--mono); font-weight: 700; background: var(--good-bg); color: var(--good); }
+  table.hard td.cell.miss { background: var(--warn-bg); color: var(--warn); }
+  table.hard td.cell.bad { background: var(--warn-bg); color: var(--warn); outline: 1px solid var(--warn); }
+  table.hard td.grp { font-family: var(--mono); font-size: 11px; font-weight: 700; padding-top: 12px; }
+  table.hard th { font-size: 11px; }
   .heat .cell.stat { background: var(--wash); color: var(--muted); font-weight: 600; }
   .heat .cell.stat.win { color: var(--ink); font-weight: 700; }
   .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px;
@@ -157,13 +162,15 @@
         effort — there, the cheapest configuration strictly wins.</div></div>
       <div class="kpi"><div class="big">The reliability floor</div>
         <div class="cap">cheapest config clean in every replicate of the 10 core
-        tasks: {{FLOORS}}. Opus 5 reaches it at medium; Opus 5.5 and Fable 5.1 at
-        xhigh; Sonnet and Fable 5 only at max; Opus 4.8 and Haiku never did.</div></div>
+        tasks: {{FLOORS}}. Opus 5 reaches it at medium; Sonnet 5.5, Opus 5.5 and
+        Fable 5.1 at xhigh; Sonnet 5 and Fable 5 only at max; Opus 4.8 and Haiku
+        never did. Sonnet 5.5 @ xhigh ($1.29) is the cheapest clean config.</div></div>
       <div class="kpi"><div class="big">The last point is the expensive one</div>
         <div class="cap">below its floor a config drops one stubborn point, not
         many; buying that point with effort costs 2–4× (Fable low→max: $4.98→$11.53;
-        Opus 5.5 low→max: $1.78→$7.71). The cheap route to zero-defect is Opus 5 @
-        medium or Opus 5.5 @ xhigh, not max effort.</div></div>
+        Opus 5.5 low→max: $1.78→$7.71). The cheap route to zero-defect is Sonnet 5.5 @
+        xhigh, Opus 5 @ medium or Opus 5.5 @ xhigh, not max effort — and on the
+        hard tier (§3b) only Opus 5.5 is clean everywhere, from high.</div></div>
     </div>
     <div class="panel scatter" style="margin-top:16px">
       <div class="ctitle">Full-coverage configurations · total cost (→) vs total wall-clock (↓) · circle size = reliability (avg points dropped per sweep; bigger = fewer) · solid = replicated n≥2 · hover/tap for stats</div>
@@ -208,6 +215,22 @@
     </div>
   </section>
 
+  <section id="hard">
+    <h2><span class="no">§3b</span>The hard tier</h2>
+    <p class="lede">Three tasks added in September 2026 because the original twelve had
+    saturated: every frontier tier scored 98–100 on the core set and could not be told
+    apart. These are long exact simulations where a single slip cascades, so they are
+    reported on <b>mean % of points</b>, the min–max spread and the share of clean
+    replicates rather than the binary floor used above. They do not enter the 10-task
+    reliability floors.</p>
+    <div class="panel">
+      {{HARD}}
+      <p class="note">Runs made with tools disabled (<code>claude -p --tools ""</code>);
+      n = replicates per cell; P(clean) = share of replicates at full marks. Costs at
+      list price with 1-hour cache writes.</p>
+    </div>
+    {{HARD_PROSE}}
+  </section>
   <section id="findings">
     <h2><span class="no">§4</span>Findings</h2>
     {{FINDINGS}}

@@ -19,6 +19,7 @@ import json
 import os
 import re
 import subprocess
+import threading
 import sys
 import time
 
@@ -29,12 +30,18 @@ TASK_DIR = {
     "T5B": "t05b-logic-puzzles-4attr", "T6": "t06-strict-csv",
     "T7": "t07-knowledge-recall", "T8": "t08-regex-writing",
     "T9": "t09-bug-review", "T10": "t10-state-simulation", "E": "e-subtle-bugs",
+    # hard tier (added 2026-09-27 from the benchmark tournament)
+    "T13": "t13-tally12-register-machine",
+    "T14": "t14-cold-chain-depots",
+    "T15": "t15-quarry-duel",
 }
 DEFAULT_PRICES = {  # $/MTok: input, cache_write (5-minute cache), cache_read, output
     "haiku": (1.0, 1.25, 0.1, 5.0),
     # Sonnet 5 lists at $2/$10 (verified 2026-09-27 against the CLI's list-basis
     # costUSD; the $3/$15 used before that date overstated every Sonnet cost ~1.5x)
     "sonnet": (2.0, 2.5, 0.2, 10.0),
+    # Sonnet 5.5 (2026-09-28): same $2/$10 list price as Sonnet 5 (platform.claude.com/docs pricing page)
+    "sonnet55": (2.0, 2.5, 0.2, 10.0),
     "opus48": (5.0, 6.25, 0.5, 25.0), "opus5": (5.0, 6.25, 0.5, 25.0),
     "fable": (10.0, 12.5, 1.0, 50.0),
     # Fable 5.1: same $10/$50 list price as Fable 5; cache reads are $0.25/MTok
@@ -117,15 +124,46 @@ def run_claude_code(model, effort, prompt, schema):
     full = (prompt + "\n\nRespond with ONLY a single JSON object matching "
             "this JSON Schema (no prose, no code fences):\n"
             + json.dumps(schema))
-    cmd = ["claude", "-p", "--model", model, "--output-format", "json"]
+    # No tools: the tasks forbid them, the key files sit on disk next to the
+    # runner, and an empty tool list also drops ~20k tokens of Claude Code's own
+    # system prompt from every run. Records made before 2026-09-27 ran without
+    # this flag (num_turns==1 and no tool use was verified on all of them).
+    cmd = ["claude", "-p", "--model", model, "--output-format", "json",
+           "--tools", ""]
     if effort != "none":
         cmd += ["--effort", effort]
     t0 = time.time()
-    r = subprocess.run(cmd, input=full, capture_output=True, text=True,
-                       timeout=3600)
+    try:
+        r = subprocess.run(cmd, input=full, capture_output=True, text=True,
+                           timeout=3600)
+    except subprocess.TimeoutExpired as e:
+        dur = time.time() - t0
+        cli_attempts().append({"served": [], "stop_reason": "timeout",
+                               "tools": "disabled", "num_turns": None,
+                               "thinking_tokens": None, "total_cost_usd": None,
+                               "duration_s": round(dur, 1)})
+        raise RuntimeError(f"claude -p timed out after {dur:.0f}s") from e
     dur = time.time() - t0
+    if r.returncode != 0 and "output token maximum" in r.stdout:
+        # The model did not finish inside the harness's output budget. That is
+        # a measured outcome of this config on this task (docs/adding-a-model.md:
+        # "record the failure honestly — both outcomes are data"), not a
+        # transport failure: return no answer, flag it, and do not retry.
+        out = extract_json(r.stdout) or {}
+        cli_attempts().append({"served": [], "stop_reason": "max_tokens",
+                               "tools": "disabled", "num_turns": out.get("num_turns"),
+                               "thinking_tokens": None, "total_cost_usd": out.get("total_cost_usd"),
+                               "duration_s": round(dur, 1),
+                               "error": (out.get("result") or r.stdout[-300:])[:300]})
+        return None, None, dur
     if r.returncode != 0:
-        raise RuntimeError(f"claude -p failed: {r.stderr[:300]}")
+        cli_attempts().append({"served": [], "stop_reason": "cli_error",
+                               "tools": "disabled", "num_turns": None,
+                               "thinking_tokens": None, "total_cost_usd": None,
+                               "returncode": r.returncode, "duration_s": round(dur, 1),
+                               "stderr_tail": r.stderr[-600:], "stdout_tail": r.stdout[-300:]})
+        raise RuntimeError(f"claude -p exit {r.returncode} after {dur:.0f}s: "
+                           f"{r.stderr.strip()[-200:] or r.stdout.strip()[-200:]}")
     out = extract_json(r.stdout) or {}
     text = out.get("result", r.stdout)
     answer = extract_json(text if isinstance(text, str) else json.dumps(text))
@@ -141,9 +179,10 @@ def run_claude_code(model, effort, prompt, schema):
     # after a safety-classifier refusal, and that answer must not be scored as
     # the requested model.
     mu = out.get("modelUsage") or {}
-    CLI_ATTEMPTS.append({
+    cli_attempts().append({
         "served": sorted(mu.keys()),
         "stop_reason": out.get("stop_reason"),
+        "tools": "disabled",
         "num_turns": out.get("num_turns"),
         "thinking_tokens": ((u.get("output_tokens_details") or {})
                             .get("thinking_tokens")),
@@ -152,7 +191,15 @@ def run_claude_code(model, effort, prompt, schema):
     return answer, usage, dur
 
 
-CLI_ATTEMPTS = []  # reset per record in main(); appended by run_claude_code
+_TLS = threading.local()
+
+
+def cli_attempts():
+    """Per-thread list of CLI attempt provenance, so concurrent runners (e.g.
+    candidates/pilot.py's worker pool) never mix attempts across records."""
+    if not hasattr(_TLS, "attempts"):
+        _TLS.attempts = []
+    return _TLS.attempts
 
 
 
@@ -187,17 +234,20 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
     usage_total = None
     dur_total = 0.0
     reason = []
+    errors = []  # one entry per failed attempt, in order
     last_answer = None
     for i in range(tries):
         p = prompt if i == 0 else (
             prompt + "\n\nIMPORTANT: your previous response was rejected ("
             + "; ".join(reason) +
             "). Respond again with ONLY the complete, valid JSON object.")
+        harness_err = None
+        t_att = time.time()
         try:
             answer, usage, dur = fn(model, effort, p, schema)
         except Exception as e:
-            reason = [f"harness error: {e}"]
-            answer, usage, dur = None, None, 0.0
+            harness_err = f"harness error: {e}"
+            answer, usage, dur = None, None, time.time() - t_att
         dur_total += dur
         if usage:
             if usage_total is None:
@@ -208,7 +258,20 @@ def attempt_with_retries(fn, model, effort, prompt, schema, tries=3):
         last_answer = answer if answer is not None else last_answer
         if validate_answer(answer, schema, reason):
             return answer, usage_total, dur_total, i + 1, None
-    return last_answer, usage_total, dur_total, tries, "; ".join(reason)
+        if harness_err:
+            reason[:] = [harness_err]
+        errors.append(reason[0] if reason else "?")
+        # A retry only helps when the model produced a malformed answer. If the
+        # CLI reports the response was cut off by the output cap, or ended in a
+        # safety refusal, the same prompt will do the same again: stop here and
+        # let the record be marked invalid instead of burning two more attempts.
+        stop = (cli_attempts()[-1].get("stop_reason") if cli_attempts() else None)
+        if stop in ("max_tokens", "refusal", "timeout"):
+            errors[-1] += f" (stop_reason={stop}; not retrying)"
+            return last_answer, usage_total, dur_total, i + 1, " | ".join(
+                f"attempt {k + 1}: {e}" for k, e in enumerate(errors))
+    return last_answer, usage_total, dur_total, tries, " | ".join(
+        f"attempt {k + 1}: {e}" for k, e in enumerate(errors))
 
 
 def cost_usd(usage, family, harness="api"):
@@ -251,7 +314,8 @@ def main():
         print(f"[{tid}] running {args.model}@{args.effort} via {args.harness}...",
               flush=True)
         fn = run_api if args.harness == "api" else run_claude_code
-        del CLI_ATTEMPTS[:]
+        del cli_attempts()[:]
+        CLI_ATTEMPTS = cli_attempts()
         answer, usage, dur, attempts, fail = attempt_with_retries(
             fn, args.model, args.effort, prompt, schema)
         notes = []
@@ -270,7 +334,13 @@ def main():
             "cost_estimated": usage is None,
             "notes": "",
         }
-        if fail:
+        stop = CLI_ATTEMPTS[-1].get("stop_reason") if CLI_ATTEMPTS else None
+        capped = stop in ("max_tokens", "timeout")
+        if fail and capped:
+            # answered nothing within the harness budget (output cap or the
+            # 1-hour wall-clock cap): a measured outcome, scored as a null answer
+            notes.append(f"harness budget exceeded ({stop}); scored as null answer, not retried")
+        elif fail:
             rec["invalid"] = True
         if CLI_ATTEMPTS:
             served = sorted({m for a in CLI_ATTEMPTS for m in a["served"]})

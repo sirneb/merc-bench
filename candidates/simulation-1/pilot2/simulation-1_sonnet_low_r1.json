@@ -1,0 +1,1430 @@
+{
+ "task": "simulation-1",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "low",
+ "sample": "r1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "plays": [
+   "Gem-4",
+   "Ore-9",
+   "Gem-4",
+   "Ore-8",
+   "Wood-8",
+   "Ore-5",
+   "Wood-5",
+   "Ore-1",
+   "Gem-4",
+   "Wood-4",
+   "Ore-3",
+   "Ore-6",
+   "Wood-8",
+   "Ore-6",
+   "Gem-8",
+   "Grain-8",
+   "Gem-7",
+   "Grain-6",
+   "Ore-7",
+   "Grain-3",
+   "Wood-1",
+   "Wood-7",
+   "Gem-1",
+   "Ore-4",
+   "Wood-7",
+   "Grain-2",
+   "Grain-4",
+   "Gem-7",
+   "Gem-6",
+   "Wood-9",
+   "Wood-3",
+   "Grain-5",
+   "Wood-8",
+   "Grain-4",
+   "Grain-7",
+   "Gem-8",
+   "Grain-3",
+   "Gem-7",
+   "Gem-2",
+   "Wood-1",
+   "Gem-5",
+   "Gem-8",
+   "Wood-7",
+   "Grain-9",
+   "Gem-9",
+   "Grain-9",
+   "Ore-2",
+   "Wood-2",
+   "Grain-1",
+   "Ore-2",
+   "Wood-4",
+   "Ore-4",
+   "Gem-4",
+   "Grain-8",
+   "Wood-6",
+   "Ore-7",
+   "Grain-6",
+   "Wood-5",
+   "Gem-3",
+   "Ore-7",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4",
+   "Ore-7",
+   "Gem-3",
+   "Gem-7",
+   "Gem-8",
+   "Gem-8",
+   "Ore-7",
+   "Grain-1",
+   "Wood-2"
+  ],
+  "checkpoints": [
+   {
+    "turn": 10,
+    "P1": {
+     "position": 4,
+     "coins": 20,
+     "hand_size": 5,
+     "hand_total": 25,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 0,
+      "Grain": 0,
+      "Gem": 0
+     }
+    },
+    "P2": {
+     "position": 4,
+     "coins": 30,
+     "hand_size": 5,
+     "hand_total": 25,
+     "stockpile": {
+      "Ore": 0,
+      "Wood": 0,
+      "Grain": 0,
+      "Gem": 0
+     }
+    }
+   }
+  ],
+  "final": {
+   "winner": "P2",
+   "p1_score": 60,
+   "p2_score": 150,
+   "total_captures": 10,
+   "total_tolls_paid": 30,
+   "discard_pile_size": 40,
+   "deck_remaining": 0
+  }
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 6910,
+  "cache_read": 3966,
+  "output": 1630
+ },
+ "duration_s": 14.6,
+ "cost_usd": 0.0447,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 331,
+    "total_cost_usd": 0.044737200000000005
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5"
+  ],
+  "total_cost_usd": 0.0447
+ },
+ "score": 8,
+ "total": 1000,
+ "grade_detail": {
+  "misses": {
+   "t10.P1.position": {
+    "want": 9,
+    "got": 4
+   },
+   "t10.P1.coins": {
+    "want": 5,
+    "got": 20
+   },
+   "t10.P1.hand_size": {
+    "want": 3,
+    "got": 5
+   },
+   "t10.P1.hand_total": {
+    "want": 11,
+    "got": 25
+   },
+   "t10.P1.stockpile_total": {
+    "want": 1,
+    "got": 0
+   },
+   "t10.P1.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 0
+    },
+    "got": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "t10.P2.position": {
+    "want": 9,
+    "got": 4
+   },
+   "t10.P2.coins": {
+    "want": 32,
+    "got": 30
+   },
+   "t10.P2.hand_total": {
+    "want": 32,
+    "got": 25
+   },
+   "t20.P1.position": {
+    "want": 10,
+    "got": null
+   },
+   "t20.P1.coins": {
+    "want": 1,
+    "got": null
+   },
+   "t20.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t20.P1.hand_total": {
+    "want": 9,
+    "got": null
+   },
+   "t20.P1.stockpile_total": {
+    "want": 1,
+    "got": null
+   },
+   "t20.P1.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t20.P2.position": {
+    "want": 6,
+    "got": null
+   },
+   "t20.P2.coins": {
+    "want": 46,
+    "got": null
+   },
+   "t20.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t20.P2.hand_total": {
+    "want": 31,
+    "got": null
+   },
+   "t20.P2.stockpile_total": {
+    "want": 2,
+    "got": null
+   },
+   "t20.P2.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 1,
+     "Grain": 1,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t30.P1.position": {
+    "want": 9,
+    "got": null
+   },
+   "t30.P1.coins": {
+    "want": 4,
+    "got": null
+   },
+   "t30.P1.hand_size": {
+    "want": 3,
+    "got": null
+   },
+   "t30.P1.hand_total": {
+    "want": 7,
+    "got": null
+   },
+   "t30.P1.stockpile_total": {
+    "want": 1,
+    "got": null
+   },
+   "t30.P1.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 1,
+     "Grain": 0,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t30.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t30.P2.coins": {
+    "want": 66,
+    "got": null
+   },
+   "t30.P2.hand_size": {
+    "want": 5,
+    "got": null
+   },
+   "t30.P2.hand_total": {
+    "want": 31,
+    "got": null
+   },
+   "t30.P2.stockpile_total": {
+    "want": 2,
+    "got": null
+   },
+   "t30.P2.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 1,
+     "Grain": 1,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t40.P1.position": {
+    "want": 0,
+    "got": null
+   },
+   "t40.P1.coins": {
+    "want": 17,
+    "got": null
+   },
+   "t40.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t40.P1.hand_total": {
+    "want": 16,
+    "got": null
+   },
+   "t40.P1.stockpile_total": {
+    "want": 2,
+    "got": null
+   },
+   "t40.P1.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 1,
+     "Grain": 0,
+     "Gem": 1
+    },
+    "got": null
+   },
+   "t40.P2.position": {
+    "want": 10,
+    "got": null
+   },
+   "t40.P2.coins": {
+    "want": 71,
+    "got": null
+   },
+   "t40.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t40.P2.hand_total": {
+    "want": 24,
+    "got": null
+   },
+   "t40.P2.stockpile_total": {
+    "want": 2,
+    "got": null
+   },
+   "t40.P2.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 1
+    },
+    "got": null
+   },
+   "t60.P1.position": {
+    "want": 8,
+    "got": null
+   },
+   "t60.P1.coins": {
+    "want": 28,
+    "got": null
+   },
+   "t60.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t60.P1.hand_total": {
+    "want": 10,
+    "got": null
+   },
+   "t60.P1.stockpile_total": {
+    "want": 3,
+    "got": null
+   },
+   "t60.P1.stockpile": {
+    "want": {
+     "Ore": 0,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t60.P2.position": {
+    "want": 3,
+    "got": null
+   },
+   "t60.P2.coins": {
+    "want": 91,
+    "got": null
+   },
+   "t60.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t60.P2.hand_total": {
+    "want": 30,
+    "got": null
+   },
+   "t60.P2.stockpile_total": {
+    "want": 5,
+    "got": null
+   },
+   "t60.P2.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 2,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t70.P1.position": {
+    "want": 7,
+    "got": null
+   },
+   "t70.P1.coins": {
+    "want": 38,
+    "got": null
+   },
+   "t70.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t70.P1.hand_total": {
+    "want": 10,
+    "got": null
+   },
+   "t70.P1.stockpile_total": {
+    "want": 3,
+    "got": null
+   },
+   "t70.P1.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 1
+    },
+    "got": null
+   },
+   "t70.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t70.P2.coins": {
+    "want": 103,
+    "got": null
+   },
+   "t70.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t70.P2.hand_total": {
+    "want": 24,
+    "got": null
+   },
+   "t70.P2.stockpile_total": {
+    "want": 5,
+    "got": null
+   },
+   "t70.P2.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 2,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t80.P1.position": {
+    "want": 10,
+    "got": null
+   },
+   "t80.P1.coins": {
+    "want": 47,
+    "got": null
+   },
+   "t80.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t80.P1.hand_total": {
+    "want": 10,
+    "got": null
+   },
+   "t80.P1.stockpile_total": {
+    "want": 3,
+    "got": null
+   },
+   "t80.P1.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 1
+    },
+    "got": null
+   },
+   "t80.P2.position": {
+    "want": 3,
+    "got": null
+   },
+   "t80.P2.coins": {
+    "want": 124,
+    "got": null
+   },
+   "t80.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t80.P2.hand_total": {
+    "want": 29,
+    "got": null
+   },
+   "t80.P2.stockpile_total": {
+    "want": 6,
+    "got": null
+   },
+   "t80.P2.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 1,
+     "Grain": 2,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t90.P1.position": {
+    "want": 4,
+    "got": null
+   },
+   "t90.P1.coins": {
+    "want": 47,
+    "got": null
+   },
+   "t90.P1.hand_size": {
+    "want": 5,
+    "got": null
+   },
+   "t90.P1.hand_total": {
+    "want": 15,
+    "got": null
+   },
+   "t90.P1.stockpile_total": {
+    "want": 3,
+    "got": null
+   },
+   "t90.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t90.P2.position": {
+    "want": 11,
+    "got": null
+   },
+   "t90.P2.coins": {
+    "want": 145,
+    "got": null
+   },
+   "t90.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t90.P2.hand_total": {
+    "want": 26,
+    "got": null
+   },
+   "t90.P2.stockpile_total": {
+    "want": 7,
+    "got": null
+   },
+   "t90.P2.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 2,
+     "Grain": 2,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t100.P1.position": {
+    "want": 4,
+    "got": null
+   },
+   "t100.P1.coins": {
+    "want": 47,
+    "got": null
+   },
+   "t100.P1.hand_size": {
+    "want": 5,
+    "got": null
+   },
+   "t100.P1.hand_total": {
+    "want": 19,
+    "got": null
+   },
+   "t100.P1.stockpile_total": {
+    "want": 3,
+    "got": null
+   },
+   "t100.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 0,
+     "Grain": 1,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t100.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t100.P2.coins": {
+    "want": 164,
+    "got": null
+   },
+   "t100.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t100.P2.hand_total": {
+    "want": 28,
+    "got": null
+   },
+   "t100.P2.stockpile_total": {
+    "want": 7,
+    "got": null
+   },
+   "t100.P2.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 2,
+     "Grain": 2,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t110.P1.position": {
+    "want": 10,
+    "got": null
+   },
+   "t110.P1.coins": {
+    "want": 47,
+    "got": null
+   },
+   "t110.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t110.P1.hand_total": {
+    "want": 12,
+    "got": null
+   },
+   "t110.P1.stockpile_total": {
+    "want": 4,
+    "got": null
+   },
+   "t110.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 0,
+     "Grain": 2,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t110.P2.position": {
+    "want": 7,
+    "got": null
+   },
+   "t110.P2.coins": {
+    "want": 170,
+    "got": null
+   },
+   "t110.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t110.P2.hand_total": {
+    "want": 30,
+    "got": null
+   },
+   "t110.P2.stockpile_total": {
+    "want": 10,
+    "got": null
+   },
+   "t110.P2.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 3,
+     "Grain": 3,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t120.P1.position": {
+    "want": 9,
+    "got": null
+   },
+   "t120.P1.coins": {
+    "want": 45,
+    "got": null
+   },
+   "t120.P1.hand_size": {
+    "want": 3,
+    "got": null
+   },
+   "t120.P1.hand_total": {
+    "want": 10,
+    "got": null
+   },
+   "t120.P1.stockpile_total": {
+    "want": 4,
+    "got": null
+   },
+   "t120.P1.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 3,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t120.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t120.P2.coins": {
+    "want": 202,
+    "got": null
+   },
+   "t120.P2.hand_size": {
+    "want": 5,
+    "got": null
+   },
+   "t120.P2.hand_total": {
+    "want": 29,
+    "got": null
+   },
+   "t120.P2.stockpile_total": {
+    "want": 10,
+    "got": null
+   },
+   "t120.P2.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 3,
+     "Grain": 3,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t130.P1.position": {
+    "want": 7,
+    "got": null
+   },
+   "t130.P1.coins": {
+    "want": 51,
+    "got": null
+   },
+   "t130.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t130.P1.hand_total": {
+    "want": 14,
+    "got": null
+   },
+   "t130.P1.stockpile_total": {
+    "want": 4,
+    "got": null
+   },
+   "t130.P1.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 3,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t130.P2.position": {
+    "want": 8,
+    "got": null
+   },
+   "t130.P2.coins": {
+    "want": 217,
+    "got": null
+   },
+   "t130.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t130.P2.hand_total": {
+    "want": 32,
+    "got": null
+   },
+   "t130.P2.stockpile_total": {
+    "want": 12,
+    "got": null
+   },
+   "t130.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 3,
+     "Grain": 4,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t140.P1.position": {
+    "want": 4,
+    "got": null
+   },
+   "t140.P1.coins": {
+    "want": 71,
+    "got": null
+   },
+   "t140.P1.hand_size": {
+    "want": 5,
+    "got": null
+   },
+   "t140.P1.hand_total": {
+    "want": 15,
+    "got": null
+   },
+   "t140.P1.stockpile_total": {
+    "want": 4,
+    "got": null
+   },
+   "t140.P1.stockpile": {
+    "want": {
+     "Ore": 1,
+     "Wood": 0,
+     "Grain": 3,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t140.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t140.P2.coins": {
+    "want": 234,
+    "got": null
+   },
+   "t140.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t140.P2.hand_total": {
+    "want": 32,
+    "got": null
+   },
+   "t140.P2.stockpile_total": {
+    "want": 12,
+    "got": null
+   },
+   "t140.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 3,
+     "Grain": 4,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t150.P1.position": {
+    "want": 6,
+    "got": null
+   },
+   "t150.P1.coins": {
+    "want": 78,
+    "got": null
+   },
+   "t150.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t150.P1.hand_total": {
+    "want": 11,
+    "got": null
+   },
+   "t150.P1.stockpile_total": {
+    "want": 6,
+    "got": null
+   },
+   "t150.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 1,
+     "Grain": 3,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t150.P2.position": {
+    "want": 1,
+    "got": null
+   },
+   "t150.P2.coins": {
+    "want": 246,
+    "got": null
+   },
+   "t150.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t150.P2.hand_total": {
+    "want": 35,
+    "got": null
+   },
+   "t150.P2.stockpile_total": {
+    "want": 12,
+    "got": null
+   },
+   "t150.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 3,
+     "Grain": 4,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t160.P1.position": {
+    "want": 1,
+    "got": null
+   },
+   "t160.P1.coins": {
+    "want": 78,
+    "got": null
+   },
+   "t160.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t160.P1.hand_total": {
+    "want": 14,
+    "got": null
+   },
+   "t160.P1.stockpile_total": {
+    "want": 6,
+    "got": null
+   },
+   "t160.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 2,
+     "Grain": 2,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t160.P2.position": {
+    "want": 8,
+    "got": null
+   },
+   "t160.P2.coins": {
+    "want": 262,
+    "got": null
+   },
+   "t160.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t160.P2.hand_total": {
+    "want": 34,
+    "got": null
+   },
+   "t160.P2.stockpile_total": {
+    "want": 13,
+    "got": null
+   },
+   "t160.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 5,
+     "Grain": 3,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t170.P1.position": {
+    "want": 0,
+    "got": null
+   },
+   "t170.P1.coins": {
+    "want": 78,
+    "got": null
+   },
+   "t170.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t170.P1.hand_total": {
+    "want": 18,
+    "got": null
+   },
+   "t170.P1.stockpile_total": {
+    "want": 6,
+    "got": null
+   },
+   "t170.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 2,
+     "Grain": 2,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t170.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t170.P2.coins": {
+    "want": 282,
+    "got": null
+   },
+   "t170.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t170.P2.hand_total": {
+    "want": 26,
+    "got": null
+   },
+   "t170.P2.stockpile_total": {
+    "want": 13,
+    "got": null
+   },
+   "t170.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 5,
+     "Grain": 3,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t180.P1.position": {
+    "want": 7,
+    "got": null
+   },
+   "t180.P1.coins": {
+    "want": 83,
+    "got": null
+   },
+   "t180.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t180.P1.hand_total": {
+    "want": 13,
+    "got": null
+   },
+   "t180.P1.stockpile_total": {
+    "want": 6,
+    "got": null
+   },
+   "t180.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 2,
+     "Grain": 2,
+     "Gem": 0
+    },
+    "got": null
+   },
+   "t180.P2.position": {
+    "want": 9,
+    "got": null
+   },
+   "t180.P2.coins": {
+    "want": 304,
+    "got": null
+   },
+   "t180.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t180.P2.hand_total": {
+    "want": 27,
+    "got": null
+   },
+   "t180.P2.stockpile_total": {
+    "want": 13,
+    "got": null
+   },
+   "t180.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 4,
+     "Grain": 3,
+     "Gem": 3
+    },
+    "got": null
+   },
+   "t190.P1.position": {
+    "want": 2,
+    "got": null
+   },
+   "t190.P1.coins": {
+    "want": 90,
+    "got": null
+   },
+   "t190.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t190.P1.hand_total": {
+    "want": 13,
+    "got": null
+   },
+   "t190.P1.stockpile_total": {
+    "want": 9,
+    "got": null
+   },
+   "t190.P1.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 2,
+     "Grain": 2,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t190.P2.position": {
+    "want": 3,
+    "got": null
+   },
+   "t190.P2.coins": {
+    "want": 321,
+    "got": null
+   },
+   "t190.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t190.P2.hand_total": {
+    "want": 35,
+    "got": null
+   },
+   "t190.P2.stockpile_total": {
+    "want": 13,
+    "got": null
+   },
+   "t190.P2.stockpile": {
+    "want": {
+     "Ore": 3,
+     "Wood": 4,
+     "Grain": 3,
+     "Gem": 3
+    },
+    "got": null
+   },
+   "t200.P1.position": {
+    "want": 1,
+    "got": null
+   },
+   "t200.P1.coins": {
+    "want": 96,
+    "got": null
+   },
+   "t200.P1.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t200.P1.hand_total": {
+    "want": 10,
+    "got": null
+   },
+   "t200.P1.stockpile_total": {
+    "want": 10,
+    "got": null
+   },
+   "t200.P1.stockpile": {
+    "want": {
+     "Ore": 2,
+     "Wood": 2,
+     "Grain": 4,
+     "Gem": 2
+    },
+    "got": null
+   },
+   "t200.P2.position": {
+    "want": 3,
+    "got": null
+   },
+   "t200.P2.coins": {
+    "want": 335,
+    "got": null
+   },
+   "t200.P2.hand_size": {
+    "want": 4,
+    "got": null
+   },
+   "t200.P2.hand_total": {
+    "want": 34,
+    "got": null
+   },
+   "t200.P2.stockpile_total": {
+    "want": 14,
+    "got": null
+   },
+   "t200.P2.stockpile": {
+    "want": {
+     "Ore": 4,
+     "Wood": 4,
+     "Grain": 3,
+     "Gem": 3
+    },
+    "got": null
+   },
+   "final.p1_score": {
+    "want": 126,
+    "got": 60
+   },
+   "final.p2_score": {
+    "want": 377,
+    "got": 150
+   },
+   "final.total_captures": {
+    "want": 18,
+    "got": 10
+   },
+   "final.total_tolls_paid": {
+    "want": 45,
+    "got": 30
+   },
+   "final.discard_pile_size": {
+    "want": 22,
+    "got": 40
+   },
+   "final.deck_remaining": {
+    "want": 6,
+    "got": 0
+   }
+  },
+  "checkpoints_found": 1,
+  "first_divergence_turn": 10,
+  "per_checkpoint": {
+   "10": "4/24",
+   "20": "0/24",
+   "30": "0/24",
+   "40": "0/24",
+   "60": "0/24",
+   "70": "0/24",
+   "80": "0/24",
+   "90": "0/24",
+   "100": "0/24",
+   "110": "0/24",
+   "120": "0/24",
+   "130": "0/24",
+   "140": "0/24",
+   "150": "0/24",
+   "160": "0/24",
+   "170": "0/24",
+   "180": "0/24",
+   "190": "0/24",
+   "200": "0/24"
+  },
+  "plays": {
+   "segment1": {
+    "turns": "1-50",
+    "correct_prefix": 2,
+    "first_wrong_turn": 3,
+    "points": "4/100"
+   },
+   "segment2": {
+    "turns": "51-200",
+    "correct_prefix": 0,
+    "first_wrong_turn": 51,
+    "points": "0/300"
+   },
+   "entries_reported": 178,
+   "pointwise_matches": "8/200"
+  },
+  "checkpoint_matching": "1/1 turn labels matched",
+  "winner": {
+   "reported": "P2",
+   "want": "P2",
+   "scored": false,
+   "correct": true
+  },
+  "floors": {
+   "constant_guess_floor": 36,
+   "best_constant_floor": 93,
+   "total": 1000,
+   "note": "constant_guess_floor = zeros with hand_size 4; best_constant_floor = modal value of every checkpoint field plus the best repeated card, final block 0"
+  }
+ }
+}

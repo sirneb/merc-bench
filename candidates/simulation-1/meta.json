@@ -1,0 +1,308 @@
+{
+ "seed": 1,
+ "difficulty": "hard",
+ "attempt": 181,
+ "rejections": {
+  "coverage:discard_before_effect,well_no_reshuffle,toll_all_or_nothing": 27,
+  "pool depleted": 104,
+  "hand limit": 34,
+  "coverage:discard_before_effect,well_no_reshuffle,suitcount_tie_latest_suit": 1,
+  "coverage:toll_all_or_nothing": 10,
+  "coverage:discard_before_effect,well_no_reshuffle": 3,
+  "coverage:discard_before_effect,well_no_reshuffle,toll_all_or_nothing,forge_tie_latest": 1
+ },
+ "params": {
+  "turns": 200,
+  "deck": 60,
+  "layout": {
+   "MINE": 2,
+   "TOLL": 2,
+   "FORGE": 1,
+   "SWAP": 1,
+   "QUARRY": 2,
+   "WELL": 1
+  },
+  "hand_limit": 5,
+  "checkpoint_every": 10,
+  "resync_turn": 50,
+  "checkpoint_turns": [
+   10,
+   20,
+   30,
+   40,
+   60,
+   70,
+   80,
+   90,
+   100,
+   110,
+   120,
+   130,
+   140,
+   150,
+   160,
+   170,
+   180,
+   190,
+   200
+  ]
+ },
+ "game": {
+  "track": [
+   "PLAIN",
+   "PLAIN",
+   "SWAP",
+   "MINE",
+   "WELL",
+   "FORGE",
+   "QUARRY",
+   "TOLL",
+   "PLAIN",
+   "MINE",
+   "TOLL",
+   "QUARRY"
+  ],
+  "suit_order": [
+   "Wood",
+   "Gem",
+   "Ore",
+   "Grain"
+  ],
+  "target": "MINE",
+  "targeting_player": "P2",
+  "deck": [
+   "Ore-5",
+   "Gem-4",
+   "Gem-4",
+   "Wood-4",
+   "Wood-5",
+   "Ore-8",
+   "Ore-9",
+   "Ore-1",
+   "Ore-3",
+   "Wood-8",
+   "Ore-6",
+   "Grain-8",
+   "Grain-6",
+   "Gem-8",
+   "Gem-7",
+   "Grain-2",
+   "Grain-3",
+   "Ore-6",
+   "Ore-3",
+   "Ore-7",
+   "Wood-1",
+   "Wood-7",
+   "Gem-1",
+   "Ore-4",
+   "Wood-7",
+   "Grain-2",
+   "Grain-4",
+   "Gem-7",
+   "Gem-6",
+   "Wood-9",
+   "Wood-3",
+   "Grain-5",
+   "Wood-8",
+   "Grain-4",
+   "Grain-7",
+   "Gem-8",
+   "Grain-3",
+   "Gem-7",
+   "Gem-2",
+   "Wood-1",
+   "Gem-5",
+   "Gem-8",
+   "Wood-7",
+   "Grain-9",
+   "Gem-9",
+   "Grain-9",
+   "Ore-2",
+   "Wood-2",
+   "Grain-1",
+   "Ore-2",
+   "Wood-4",
+   "Ore-4",
+   "Gem-4",
+   "Grain-8",
+   "Wood-6",
+   "Ore-7",
+   "Grain-6",
+   "Wood-5",
+   "Gem-3",
+   "Ore-7"
+  ]
+ },
+ "stats": {
+  "captures": 18,
+  "tolls_paid": 45,
+  "toll_events": 23,
+  "reshuffles": 4,
+  "hand_limit_discards": 1,
+  "empty_hand_turns": 0,
+  "swap_same_space": 0,
+  "well_reshuffles": 1,
+  "captures_on_swap": 0,
+  "short_tolls": 1,
+  "forge_ties": 5,
+  "multi_candidate": 18,
+  "suit_ties": 20,
+  "min_circulation": 28,
+  "fire_PLAIN": 0,
+  "fire_MINE": 61,
+  "fire_TOLL": 23,
+  "fire_FORGE": 11,
+  "fire_SWAP": 14,
+  "fire_QUARRY": 24,
+  "fire_WELL": 19,
+  "fire_TRADE": 0,
+  "fire_BANK": 0
+ },
+ "reshuffle_turns": [
+  53,
+  98,
+  139,
+  174
+ ],
+ "coverage": {
+  "reshuffle_not_reversed": {
+   "binding": true,
+   "clause": "reshuffle keeps the discard pile's order (oldest card on top)"
+  },
+  "discard_before_effect": {
+   "binding": true,
+   "clause": "played card discarded before the space effect (matters when a WELL draw triggers the reshuffle)"
+  },
+  "well_no_reshuffle": {
+   "binding": true,
+   "clause": "a WELL draw from an empty deck does nothing (no reshuffle)"
+  },
+  "well_respects_hand_limit": {
+   "binding": true,
+   "clause": "WELL draws only if fewer than 5 cards are held"
+  },
+  "hand_limit_discard_highest": {
+   "binding": true,
+   "clause": "hand limit discards the HIGHEST card"
+  },
+  "toll_all_or_nothing": {
+   "binding": true,
+   "clause": "TOLL transfers nothing when the payer holds fewer than 2 coins"
+  },
+  "forge_tie_latest": {
+   "binding": true,
+   "clause": "FORGE ties broken towards the LATEST suit"
+  },
+  "capture_highest": {
+   "binding": true,
+   "clause": "capture takes the opponent's HIGHEST card"
+  },
+  "targeter_lowest_candidate": {
+   "binding": true,
+   "clause": "the targeting player plays the LOWEST candidate"
+  },
+  "suitcount_tie_latest_suit": {
+   "binding": true,
+   "clause": "the suit-count player resolves suit ties towards the LATEST suit"
+  },
+  "suit_tiebreak_reversed": {
+   "binding": true,
+   "clause": "equal-value cards compared with the REVERSED suit order"
+  },
+  "swap_applies_new_space": {
+   "binding": true,
+   "clause": "after SWAP the mover also resolves the effect of the space it was swapped onto"
+  }
+ },
+ "resync_state": {
+  "P1": {
+   "position": 6,
+   "coins": 26,
+   "hand_size": 4,
+   "hand_total": 9,
+   "stockpile": {
+    "Ore": 0,
+    "Wood": 1,
+    "Grain": 1,
+    "Gem": 1
+   }
+  },
+  "P2": {
+   "position": 4,
+   "coins": 81,
+   "hand_size": 5,
+   "hand_total": 33,
+   "stockpile": {
+    "Ore": 1,
+    "Wood": 0,
+    "Grain": 1,
+    "Gem": 2
+   }
+  },
+  "hand_P1": [
+   "Grain-1",
+   "Wood-2",
+   "Ore-2",
+   "Gem-4"
+  ],
+  "hand_P2": [
+   "Gem-3",
+   "Gem-7",
+   "Ore-7",
+   "Gem-8",
+   "Gem-8"
+  ],
+  "deck": [
+   "Ore-7"
+  ],
+  "discard_top_first": [
+   "Wood-5",
+   "Grain-8",
+   "Wood-6",
+   "Grain-3",
+   "Ore-4",
+   "Wood-4",
+   "Grain-9",
+   "Wood-1",
+   "Ore-3",
+   "Grain-9",
+   "Gem-9",
+   "Gem-7",
+   "Gem-8",
+   "Wood-7",
+   "Gem-5",
+   "Wood-1",
+   "Ore-8",
+   "Grain-4",
+   "Grain-4",
+   "Grain-7",
+   "Grain-8",
+   "Wood-8",
+   "Grain-5",
+   "Wood-9",
+   "Wood-3",
+   "Gem-6",
+   "Ore-3",
+   "Wood-7",
+   "Ore-4",
+   "Gem-4",
+   "Grain-2",
+   "Wood-4",
+   "Ore-6",
+   "Ore-7",
+   "Gem-7",
+   "Grain-3",
+   "Wood-5",
+   "Ore-1",
+   "Ore-5",
+   "Ore-6",
+   "Wood-8",
+   "Ore-9",
+   "Gem-4"
+  ],
+  "captures_so_far": 4,
+  "tolls_paid_so_far": 9,
+  "reshuffles_so_far": 0
+ },
+ "prompt_bytes": 10368
+}

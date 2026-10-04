@@ -1,0 +1,66 @@
+{
+ "task": "D3",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "medium",
+ "sample": "pilot1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "period": 11,
+  "key": "GPGMNEVQWOB",
+  "answers": [
+   {
+    "id": 1,
+    "value": "VBTBFAS"
+   },
+   {
+    "id": 2,
+    "value": "NOEQBLYS"
+   },
+   {
+    "id": 3,
+    "value": "32"
+   },
+   {
+    "id": 4,
+    "value": "1936"
+   },
+   {
+    "id": 5,
+    "value": "46847"
+   },
+   {
+    "id": 6,
+    "value": "794539"
+   },
+   {
+    "id": 7,
+    "value": "CESPESKTRADING"
+   },
+   {
+    "id": 8,
+    "value": "GREANFEERTBURG"
+   },
+   {
+    "id": 9,
+    "value": "HEALIHO"
+   },
+   {
+    "id": 10,
+    "value": "SPILOUMARINE"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 13006,
+  "cache_read": 11423,
+  "output": 41996
+ },
+ "duration_s": 335.2,
+ "cost_usd": 0.6821,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

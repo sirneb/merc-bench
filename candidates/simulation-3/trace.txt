@@ -1,0 +1,210 @@
+=== Day 1 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 52 exp d15; A receives shipment: 30 exp d8
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 93, backorders 0 -> serves 0, demand 15 -> serves 15 (taken 15 exp d5), backorders now 0, left 24 exp d5, 24 exp d7, 30 exp d8 | B: on hand 25, backorders 0 -> serves 0, demand 4 -> serves 4 (taken 4 exp d4), backorders now 0, left 9 exp d4, 12 exp d9 | C: on hand 23, backorders 0 -> serves 0, demand 6 -> serves 6 (taken 6 exp d4), backorders now 0, left 8 exp d4, 9 exp d7 | D: on hand 44, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d3), backorders now 0, left 15 exp d3, 22 exp d7
+  P4 REVIEW: A: IP=78+0-0=78 >= s=39 -> no order | B: IP=21+0-0=21 >= s=14 -> no order | C: IP=17+0-0=17 >= s=15 -> no order | D: IP=37+0-0=37 >= s=24 -> no order
+  P5 ALLOCATE: no orders
+  END: A: on_hand 78 bo 0 in_transit 0 | B: on_hand 21 bo 0 in_transit 0 | C: on_hand 17 bo 0 in_transit 0 | D: on_hand 37 bo 0 in_transit 0 | CENTRAL 232 | cum same-day served 32/32, cancelled 0
+=== Day 2 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 78, backorders 0 -> serves 0, demand 14 -> serves 14 (taken 14 exp d5), backorders now 0, left 10 exp d5, 24 exp d7, 30 exp d8 | B: on hand 21, backorders 0 -> serves 0, demand 8 -> serves 8 (taken 8 exp d4), backorders now 0, left 1 exp d4, 12 exp d9 | C: on hand 17, backorders 0 -> serves 0, demand 4 -> serves 4 (taken 4 exp d4), backorders now 0, left 4 exp d4, 9 exp d7 | D: on hand 37, backorders 0 -> serves 0, demand 15 -> serves 15 (taken 15 exp d3), backorders now 0, left 22 exp d7
+  P4 REVIEW: A: IP=64+0-0=64 >= s=39 -> no order | B: IP=13+0-0=13 < s=14 -> orders 22 | C: IP=13+0-0=13 < s=15 -> orders 17 | D: IP=22+0-0=22 < s=24 -> orders 33
+  P5 ALLOCATE: priority B>C>D (ratios B=0/35, C=0/30, D=0/55); CENTRAL on hand 232; B: ships 22 (22 exp d4) arriving d4; C: ships 17 (17 exp d4) arriving d5; D: ships 33 (33 exp d4) arriving d4
+  END: A: on_hand 64 bo 0 in_transit 0 | B: on_hand 13 bo 0 in_transit 22 | C: on_hand 13 bo 0 in_transit 17 | D: on_hand 22 bo 0 in_transit 33 | CENTRAL 160 | cum same-day served 73/73, cancelled 0
+=== Day 3 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 64, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d5), backorders now 0, left 3 exp d5, 24 exp d7, 30 exp d8 | B: on hand 13, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 1 exp d4, 6 exp d9), backorders now 0, left 6 exp d9 | C: on hand 13, backorders 0 -> serves 0, demand 3 -> serves 3 (taken 3 exp d4), backorders now 0, left 1 exp d4, 9 exp d7 | D: on hand 22, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d7), backorders now 0, left 15 exp d7
+  P4 REVIEW: A: IP=57+0-0=57 >= s=39 -> no order | B: IP=6+22-0=28 >= s=14 -> no order | C: IP=10+17-0=27 >= s=15 -> no order | D: IP=15+33-0=48 >= s=24 -> no order
+  P5 ALLOCATE: no orders
+  END: A: on_hand 57 bo 0 in_transit 0 | B: on_hand 6 bo 0 in_transit 22 | C: on_hand 10 bo 0 in_transit 17 | D: on_hand 15 bo 0 in_transit 33 | CENTRAL 160 | cum same-day served 97/97, cancelled 0
+=== Day 4 ===
+  P1 RECEIVE: B receives shipment: 22 exp d4; D receives shipment: 33 exp d4
+  P2 EXPIRE: CENTRAL discards 31 (31 exp d4); B discards 22 (22 exp d4); C discards 1 (1 exp d4); D discards 33 (33 exp d4)
+  P3 SERVE: A: on hand 57, backorders 0 -> serves 0, demand 10 -> serves 10 (taken 3 exp d5, 7 exp d7), backorders now 0, left 17 exp d7, 30 exp d8 | B: on hand 6, backorders 0 -> serves 0, demand 13 -> serves 6 (taken 6 exp d9), backorders now 7 STOCKOUT DAY, left nothing | C: on hand 9, backorders 0 -> serves 0, demand 9 -> serves 9 (taken 9 exp d7), backorders now 0, left nothing | D: on hand 15, backorders 0 -> serves 0, demand 34 -> serves 15 (taken 15 exp d7), backorders now 19 STOCKOUT DAY, left nothing
+  P4 REVIEW: A: IP=47+0-0=47 >= s=39 -> no order | B: IP=0+0-7=-7 < s=14 -> orders 42 | C: IP=0+17-0=17 >= s=15 -> no order | D: IP=0+0-19=-19 < s=24 -> orders 74
+  P5 ALLOCATE: priority D>B (ratios D=19/55, B=7/35); CENTRAL on hand 129; D: ships 74 (74 exp d10) arriving d6; B: ships 42 (3 exp d10, 39 exp d15) arriving d6
+  END: A: on_hand 47 bo 0 in_transit 0 | B: on_hand 0 bo 7 in_transit 42 | C: on_hand 0 bo 0 in_transit 17 | D: on_hand 0 bo 19 in_transit 74 | CENTRAL 13 | cum same-day served 137/163, cancelled 0
+=== Day 5 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 129 exp d11; C receives shipment: 17 exp d4
+  P2 EXPIRE: C discards 17 (17 exp d4)
+  P3 SERVE: A: on hand 47, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d7), backorders now 0, left 5 exp d7, 30 exp d8 | B: on hand 0, backorders 7 -> serves 0, demand 7 -> serves 0 (taken nothing), backorders now 14 STOCKOUT DAY, left nothing | C: on hand 0, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left nothing | D: on hand 0, backorders 19 -> serves 0, demand 17 -> serves 0 (taken nothing), backorders now 36 STOCKOUT DAY, left nothing
+  P4 REVIEW: A: IP=35+0-0=35 < s=39 -> orders 48 | B: IP=0+42-14=28 >= s=14 -> no order | C: IP=0+0-0=0 < s=15 -> orders 30 | D: IP=0+74-36=38 >= s=24 -> no order
+  P5 ALLOCATE: priority A>C (ratios A=0/83, C=0/30); CENTRAL on hand 142; A: ships 48 (48 exp d11) arriving d8; C: ships 30 (30 exp d11) arriving d8
+  END: A: on_hand 35 bo 0 in_transit 48 | B: on_hand 0 bo 14 in_transit 42 | C: on_hand 0 bo 0 in_transit 30 | D: on_hand 0 bo 36 in_transit 74 | CENTRAL 64 | cum same-day served 149/199, cancelled 0
+=== Day 6 ===
+  P1 RECEIVE: B receives shipment: 3 exp d10, 39 exp d15; D receives shipment: 74 exp d10
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 35, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d7), backorders now 0, left 30 exp d8 | B: on hand 42, backorders 14 -> serves 14, demand 5 -> serves 5 (taken 3 exp d10, 16 exp d15), backorders now 0, left 23 exp d15 | C: on hand 0, backorders 0 -> serves 0, demand 2 -> serves 0 (taken nothing), backorders now 2 STOCKOUT DAY, left nothing | D: on hand 74, backorders 36 -> serves 36, demand 5 -> serves 5 (taken 41 exp d10), backorders now 0, left 33 exp d10
+  P4 REVIEW: A: IP=30+48-0=78 >= s=39 -> no order | B: IP=23+0-0=23 >= s=14 -> no order | C: IP=0+30-2=28 >= s=15 -> no order | D: IP=33+0-0=33 >= s=24 -> no order
+  P5 ALLOCATE: no orders
+  END: A: on_hand 30 bo 0 in_transit 48 | B: on_hand 23 bo 0 in_transit 0 | C: on_hand 0 bo 2 in_transit 30 | D: on_hand 33 bo 0 in_transit 0 | CENTRAL 64 | cum same-day served 164/216, cancelled 0
+=== Day 7 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 30, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d8), backorders now 0, left 23 exp d8 | B: on hand 23, backorders 0 -> serves 0, demand 6 -> serves 6 (taken 6 exp d15), backorders now 0, left 17 exp d15 | C: on hand 0, backorders 2 -> serves 0, demand 1 -> serves 0 (taken nothing), backorders now 3 STOCKOUT DAY, left nothing | D: on hand 33, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d10), backorders now 0, left 22 exp d10
+  P4 REVIEW: A: IP=23+48-0=71 >= s=39 -> no order | B: IP=17+0-0=17 >= s=14 -> no order | C: IP=0+30-3=27 >= s=15 -> no order | D: IP=22+0-0=22 < s=24 -> orders 33
+  P5 ALLOCATE: priority D (ratios D=0/55); CENTRAL on hand 64; D: ships 33 (33 exp d11) arriving d9
+  END: A: on_hand 23 bo 0 in_transit 48 | B: on_hand 17 bo 0 in_transit 0 | C: on_hand 0 bo 3 in_transit 30 | D: on_hand 22 bo 0 in_transit 33 | CENTRAL 31 | cum same-day served 188/241, cancelled 0
+=== Day 8 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 168 exp d22; A receives shipment: 48 exp d11; C receives shipment: 30 exp d11
+  P2 EXPIRE: A discards 23 (23 exp d8)
+  P3 SERVE: A: on hand 48, backorders 0 -> serves 0, demand 17 -> serves 17 (taken 17 exp d11), backorders now 0, left 31 exp d11 | B: on hand 17, backorders 0 -> serves 0, demand 10 -> serves 10 (taken 10 exp d15), backorders now 0, left 7 exp d15 | C: on hand 30, backorders 3 -> serves 3, demand 6 -> serves 6 (taken 9 exp d11), backorders now 0, left 21 exp d11 | D: on hand 22, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d10), backorders now 0, left 10 exp d10
+  P4 REVIEW: A: IP=31+0-0=31 < s=39 -> orders 52 | B: IP=7+0-0=7 < s=14 -> orders 28 | C: IP=21+0-0=21 >= s=15 -> no order | D: IP=10+33-0=43 >= s=24 -> no order
+  P5 ALLOCATE: priority A>B (ratios A=0/83, B=0/35); CENTRAL on hand 199; A: ships 52 (18 exp d11, 13 exp d15, 21 exp d22) arriving d11; B: ships 28 (28 exp d22) arriving d10
+  END: A: on_hand 31 bo 0 in_transit 52 | B: on_hand 7 bo 0 in_transit 28 | C: on_hand 21 bo 0 in_transit 0 | D: on_hand 10 bo 0 in_transit 33 | CENTRAL 119 | cum same-day served 233/286, cancelled 0
+=== Day 9 ===
+  P1 RECEIVE: D receives shipment: 33 exp d11
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 31, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d11), backorders now 0, left 19 exp d11 | B: on hand 7, backorders 0 -> serves 0, demand 12 -> serves 7 (taken 7 exp d15), backorders now 5 STOCKOUT DAY, left nothing | C: on hand 21, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left 21 exp d11 | D: on hand 43, backorders 0 -> serves 0, demand 6 -> serves 6 (taken 6 exp d10), backorders now 0, left 4 exp d10, 33 exp d11
+  P4 REVIEW: A: IP=19+52-0=71 >= s=39 -> no order | B: IP=0+28-5=23 >= s=14 -> no order | C: IP=21+0-0=21 >= s=15 -> no order | D: IP=37+0-0=37 >= s=24 -> no order
+  P5 ALLOCATE: no orders
+  END: A: on_hand 19 bo 0 in_transit 52 | B: on_hand 0 bo 5 in_transit 28 | C: on_hand 21 bo 0 in_transit 0 | D: on_hand 37 bo 0 in_transit 0 | CENTRAL 119 | cum same-day served 258/316, cancelled 0
+=== Day 10 ===
+  P1 RECEIVE: B receives shipment: 28 exp d22
+  P2 EXPIRE: D discards 4 (4 exp d10)
+  P3 SERVE: A: on hand 19, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d11), backorders now 0, left 7 exp d11 | B: on hand 28, backorders 5 -> serves 5, demand 0 -> serves 0 (taken 5 exp d22), backorders now 0, left 23 exp d22 | C: on hand 21, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d11), backorders now 0, left 16 exp d11 | D: on hand 33, backorders 0 -> serves 0, demand 16 -> serves 16 (taken 16 exp d11), backorders now 0, left 17 exp d11
+  P4 REVIEW: A: IP=7+52-0=59 >= s=39 -> no order | B: IP=23+0-0=23 >= s=14 -> no order | C: IP=16+0-0=16 >= s=15 -> no order | D: IP=17+0-0=17 < s=24 -> orders 38
+  P5 ALLOCATE: priority D (ratios D=0/55); CENTRAL on hand 119; D: ships 38 (38 exp d22) arriving d12
+  END: A: on_hand 7 bo 0 in_transit 52 | B: on_hand 23 bo 0 in_transit 0 | C: on_hand 16 bo 0 in_transit 0 | D: on_hand 17 bo 0 in_transit 38 | CENTRAL 81 | cum same-day served 291/349, cancelled 0
+=== Day 11 ===
+  P1 RECEIVE: A receives shipment: 18 exp d11, 13 exp d15, 21 exp d22
+  P2 EXPIRE: A discards 25 (25 exp d11); C discards 16 (16 exp d11); D discards 17 (17 exp d11)
+  P3 SERVE: A: on hand 34, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left 13 exp d15, 21 exp d22 | B: on hand 23, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d22), backorders now 0, left 12 exp d22 | C: on hand 0, backorders 0 -> serves 0, demand 3 -> serves 0 (taken nothing), backorders now 3 STOCKOUT DAY, left nothing | D: on hand 0, backorders 0 -> serves 0, demand 10 -> serves 0 (taken nothing), backorders now 10 STOCKOUT DAY, left nothing
+  P4 REVIEW: A: IP=34+0-0=34 < s=39 -> orders 49 | B: IP=12+0-0=12 < s=14 -> orders 23 | C: IP=0+0-3=-3 < s=15 -> orders 33 | D: IP=0+38-10=28 >= s=24 -> no order
+  P5 ALLOCATE: priority C>A>B (ratios C=3/30, A=0/83, B=0/35); CENTRAL on hand 81; C: ships 33 (33 exp d22) arriving d14; A: ships 48 (48 exp d22) arriving d14, cancels 1; B: ships 0, cancels 23
+  END: A: on_hand 34 bo 0 in_transit 48 | B: on_hand 12 bo 0 in_transit 0 | C: on_hand 0 bo 3 in_transit 33 | D: on_hand 0 bo 10 in_transit 38 | CENTRAL 0 | cum same-day served 302/373, cancelled 24
+=== Day 12 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 129 exp d20; D receives shipment: 38 exp d22
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 34, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d15), backorders now 0, left 1 exp d15, 21 exp d22 | B: on hand 12, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d22), backorders now 0, left nothing | C: on hand 0, backorders 3 -> serves 0, demand 10 -> serves 0 (taken nothing), backorders now 13 STOCKOUT DAY, left nothing | D: on hand 38, backorders 10 -> serves 10, demand 16 -> serves 16 (taken 26 exp d22), backorders now 0, left 12 exp d22
+  P4 REVIEW: A: IP=22+48-0=70 >= s=39 -> no order | B: IP=0+0-0=0 < s=14 -> orders 35 | C: IP=0+33-13=20 >= s=15 -> no order | D: IP=12+0-0=12 < s=24 -> orders 43
+  P5 ALLOCATE: priority B>D (ratios B=0/35, D=0/55); CENTRAL on hand 129; B: ships 35 (35 exp d20) arriving d14; D: ships 43 (43 exp d20) arriving d14
+  END: A: on_hand 22 bo 0 in_transit 48 | B: on_hand 0 bo 0 in_transit 35 | C: on_hand 0 bo 13 in_transit 33 | D: on_hand 12 bo 0 in_transit 43 | CENTRAL 51 | cum same-day served 342/423, cancelled 24
+=== Day 13 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 22, backorders 0 -> serves 0, demand 6 -> serves 6 (taken 1 exp d15, 5 exp d22), backorders now 0, left 16 exp d22 | B: on hand 0, backorders 0 -> serves 0, demand 5 -> serves 0 (taken nothing), backorders now 5 STOCKOUT DAY, left nothing | C: on hand 0, backorders 13 -> serves 0, demand 4 -> serves 0 (taken nothing), backorders now 17 STOCKOUT DAY, left nothing | D: on hand 12, backorders 0 -> serves 0, demand 10 -> serves 10 (taken 10 exp d22), backorders now 0, left 2 exp d22
+  P4 REVIEW: A: IP=16+48-0=64 >= s=39 -> no order | B: IP=0+35-5=30 >= s=14 -> no order | C: IP=0+33-17=16 >= s=15 -> no order | D: IP=2+43-0=45 >= s=24 -> no order
+  P5 ALLOCATE: no orders
+  END: A: on_hand 16 bo 0 in_transit 48 | B: on_hand 0 bo 5 in_transit 35 | C: on_hand 0 bo 17 in_transit 33 | D: on_hand 2 bo 0 in_transit 43 | CENTRAL 51 | cum same-day served 358/448, cancelled 24
+=== Day 14 ===
+  P1 RECEIVE: A receives shipment: 48 exp d22; B receives shipment: 35 exp d20; C receives shipment: 33 exp d22; D receives shipment: 43 exp d20
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 64, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d22), backorders now 0, left 52 exp d22 | B: on hand 35, backorders 5 -> serves 5, demand 12 -> serves 12 (taken 17 exp d20), backorders now 0, left 18 exp d20 | C: on hand 33, backorders 17 -> serves 17, demand 2 -> serves 2 (taken 19 exp d22), backorders now 0, left 14 exp d22 | D: on hand 45, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d20), backorders now 0, left 32 exp d20, 2 exp d22
+  P4 REVIEW: A: IP=52+0-0=52 >= s=39 -> no order | B: IP=18+0-0=18 >= s=14 -> no order | C: IP=14+0-0=14 < s=15 -> orders 16 | D: IP=34+0-0=34 >= s=24 -> no order
+  P5 ALLOCATE: priority C (ratios C=0/30); CENTRAL on hand 51; C: ships 16 (16 exp d20) arriving d17
+  END: A: on_hand 52 bo 0 in_transit 0 | B: on_hand 18 bo 0 in_transit 0 | C: on_hand 14 bo 0 in_transit 16 | D: on_hand 34 bo 0 in_transit 0 | CENTRAL 35 | cum same-day served 395/485, cancelled 24
+=== Day 15 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 284 exp d21
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 52, backorders 0 -> serves 0, demand 12 -> serves 12 (taken 12 exp d22), backorders now 0, left 40 exp d22 | B: on hand 18, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d20), backorders now 0, left 7 exp d20 | C: on hand 14, backorders 0 -> serves 0, demand 3 -> serves 3 (taken 3 exp d22), backorders now 0, left 11 exp d22 | D: on hand 34, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d20), backorders now 0, left 27 exp d20, 2 exp d22
+  P4 REVIEW: A: IP=40+0-0=40 >= s=39 -> no order | B: IP=7+0-0=7 < s=14 -> orders 28 | C: IP=11+16-0=27 >= s=15 -> no order | D: IP=29+0-0=29 >= s=24 -> no order
+  P5 ALLOCATE: priority B (ratios B=0/35); CENTRAL on hand 319; B: ships 28 (28 exp d20) arriving d17
+  END: A: on_hand 40 bo 0 in_transit 0 | B: on_hand 7 bo 0 in_transit 28 | C: on_hand 11 bo 0 in_transit 16 | D: on_hand 29 bo 0 in_transit 0 | CENTRAL 291 | cum same-day served 426/516, cancelled 24
+=== Day 16 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 40, backorders 0 -> serves 0, demand 36 -> serves 36 (taken 36 exp d22), backorders now 0, left 4 exp d22 | B: on hand 7, backorders 0 -> serves 0, demand 4 -> serves 4 (taken 4 exp d20), backorders now 0, left 3 exp d20 | C: on hand 11, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d22), backorders now 0, left 6 exp d22 | D: on hand 29, backorders 0 -> serves 0, demand 15 -> serves 15 (taken 15 exp d20), backorders now 0, left 12 exp d20, 2 exp d22
+  P4 REVIEW: A: IP=4+0-0=4 < s=39 -> orders 79 | B: IP=3+28-0=31 >= s=14 -> no order | C: IP=6+16-0=22 >= s=15 -> no order | D: IP=14+0-0=14 < s=24 -> orders 41
+  P5 ALLOCATE: priority A>D (ratios A=0/83, D=0/55); CENTRAL on hand 291; A: ships 79 (7 exp d20, 72 exp d21) arriving d19; D: ships 41 (41 exp d21) arriving d18
+  END: A: on_hand 4 bo 0 in_transit 79 | B: on_hand 3 bo 0 in_transit 28 | C: on_hand 6 bo 0 in_transit 16 | D: on_hand 14 bo 0 in_transit 41 | CENTRAL 171 | cum same-day served 486/576, cancelled 24
+=== Day 17 ===
+  P1 RECEIVE: B receives shipment: 28 exp d20; C receives shipment: 16 exp d20
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 4, backorders 0 -> serves 0, demand 5 -> serves 4 (taken 4 exp d22), backorders now 1 STOCKOUT DAY, left nothing | B: on hand 31, backorders 0 -> serves 0, demand 3 -> serves 3 (taken 3 exp d20), backorders now 0, left 28 exp d20 | C: on hand 22, backorders 0 -> serves 0, demand 3 -> serves 3 (taken 3 exp d20), backorders now 0, left 13 exp d20, 6 exp d22 | D: on hand 14, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d20), backorders now 0, left 5 exp d20, 2 exp d22
+  P4 REVIEW: A: IP=0+79-1=78 >= s=39 -> no order | B: IP=28+0-0=28 >= s=14 -> no order | C: IP=19+0-0=19 >= s=15 -> no order | D: IP=7+41-0=48 >= s=24 -> no order
+  P5 ALLOCATE: no orders
+  END: A: on_hand 0 bo 1 in_transit 79 | B: on_hand 28 bo 0 in_transit 0 | C: on_hand 19 bo 0 in_transit 0 | D: on_hand 7 bo 0 in_transit 41 | CENTRAL 171 | cum same-day served 503/594, cancelled 24
+=== Day 18 ===
+  P1 RECEIVE: D receives shipment: 41 exp d21
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 0, backorders 1 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 1 STOCKOUT DAY, left nothing | B: on hand 28, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left 28 exp d20 | C: on hand 19, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d20), backorders now 0, left 6 exp d20, 6 exp d22 | D: on hand 48, backorders 0 -> serves 0, demand 17 -> serves 17 (taken 5 exp d20, 12 exp d21), backorders now 0, left 29 exp d21, 2 exp d22
+  P4 REVIEW: A: IP=0+79-1=78 >= s=39 -> no order | B: IP=28+0-0=28 >= s=14 -> no order | C: IP=12+0-0=12 < s=15 -> orders 18 | D: IP=31+0-0=31 >= s=24 -> no order
+  P5 ALLOCATE: priority C (ratios C=0/30); CENTRAL on hand 171; C: ships 18 (18 exp d21) arriving d21
+  END: A: on_hand 0 bo 1 in_transit 79 | B: on_hand 28 bo 0 in_transit 0 | C: on_hand 12 bo 0 in_transit 18 | D: on_hand 31 bo 0 in_transit 0 | CENTRAL 153 | cum same-day served 527/618, cancelled 24
+=== Day 19 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 52 exp d33; A receives shipment: 7 exp d20, 72 exp d21
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 79, backorders 1 -> serves 1, demand 15 -> serves 15 (taken 7 exp d20, 9 exp d21), backorders now 0, left 63 exp d21 | B: on hand 28, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d20), backorders now 0, left 17 exp d20 | C: on hand 12, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 6 exp d20, 1 exp d22), backorders now 0, left 5 exp d22 | D: on hand 31, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d21), backorders now 0, left 18 exp d21, 2 exp d22
+  P4 REVIEW: A: IP=63+0-0=63 >= s=39 -> no order | B: IP=17+0-0=17 >= s=14 -> no order | C: IP=5+18-0=23 >= s=15 -> no order | D: IP=20+0-0=20 < s=24 -> orders 35
+  P5 ALLOCATE: priority D (ratios D=0/55); CENTRAL on hand 205; D: ships 35 (35 exp d21) arriving d21
+  END: A: on_hand 63 bo 0 in_transit 0 | B: on_hand 17 bo 0 in_transit 0 | C: on_hand 5 bo 0 in_transit 18 | D: on_hand 20 bo 0 in_transit 35 | CENTRAL 170 | cum same-day served 571/662, cancelled 24
+=== Day 20 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: B discards 17 (17 exp d20)
+  P3 SERVE: A: on hand 63, backorders 0 -> serves 0, demand 8 -> serves 8 (taken 8 exp d21), backorders now 0, left 55 exp d21 | B: on hand 0, backorders 0 -> serves 0, demand 5 -> serves 0 (taken nothing), backorders now 5 STOCKOUT DAY, left nothing | C: on hand 5, backorders 0 -> serves 0, demand 4 -> serves 4 (taken 4 exp d22), backorders now 0, left 1 exp d22 | D: on hand 20, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d21), backorders now 0, left 13 exp d21, 2 exp d22
+  P4 REVIEW: A: IP=55+0-0=55 >= s=39 -> no order | B: IP=0+0-5=-5 < s=14 -> orders 40 | C: IP=1+18-0=19 >= s=15 -> no order | D: IP=15+35-0=50 >= s=24 -> no order
+  P5 ALLOCATE: priority B (ratios B=5/35); CENTRAL on hand 170; B: ships 40 (40 exp d21) arriving d22
+  END: A: on_hand 55 bo 0 in_transit 0 | B: on_hand 0 bo 5 in_transit 40 | C: on_hand 1 bo 0 in_transit 18 | D: on_hand 15 bo 0 in_transit 35 | CENTRAL 130 | cum same-day served 588/684, cancelled 24
+=== Day 21 ===
+  P1 RECEIVE: C receives shipment: 18 exp d21; D receives shipment: 35 exp d21
+  P2 EXPIRE: CENTRAL discards 78 (78 exp d21); A discards 55 (55 exp d21); C discards 18 (18 exp d21); D discards 48 (48 exp d21)
+  P3 SERVE: A: on hand 0, backorders 0 -> serves 0, demand 11 -> serves 0 (taken nothing), backorders now 11 STOCKOUT DAY, left nothing | B: on hand 0, backorders 5 -> serves 0, demand 6 -> serves 0 (taken nothing), backorders now 11 STOCKOUT DAY, left nothing | C: on hand 1, backorders 0 -> serves 0, demand 2 -> serves 1 (taken 1 exp d22), backorders now 1 STOCKOUT DAY, left nothing | D: on hand 2, backorders 0 -> serves 0, demand 9 -> serves 2 (taken 2 exp d22), backorders now 7 STOCKOUT DAY, left nothing
+  P4 REVIEW: A: IP=0+0-11=-11 < s=39 -> orders 94 | B: IP=0+40-11=29 >= s=14 -> no order | C: IP=0+0-1=-1 < s=15 -> orders 31 | D: IP=0+0-7=-7 < s=24 -> orders 62
+  P5 ALLOCATE: priority A>D>C (ratios A=11/83, D=7/55, C=1/30); CENTRAL on hand 52; A: ships 52 (52 exp d33) arriving d24, cancels 42; D: ships 0, cancels 62; C: ships 0, cancels 31
+  END: A: on_hand 0 bo 11 in_transit 52 | B: on_hand 0 bo 11 in_transit 40 | C: on_hand 0 bo 1 in_transit 0 | D: on_hand 0 bo 7 in_transit 0 | CENTRAL 0 | cum same-day served 591/712, cancelled 159
+=== Day 22 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 129 exp d36; B receives shipment: 40 exp d21
+  P2 EXPIRE: B discards 40 (40 exp d21)
+  P3 SERVE: A: on hand 0, backorders 11 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 11 STOCKOUT DAY, left nothing | B: on hand 0, backorders 11 -> serves 0, demand 10 -> serves 0 (taken nothing), backorders now 21 STOCKOUT DAY, left nothing | C: on hand 0, backorders 1 -> serves 0, demand 7 -> serves 0 (taken nothing), backorders now 8 STOCKOUT DAY, left nothing | D: on hand 0, backorders 7 -> serves 0, demand 18 -> serves 0 (taken nothing), backorders now 25 STOCKOUT DAY, left nothing
+  P4 REVIEW: A: IP=0+52-11=41 >= s=39 -> no order | B: IP=0+0-21=-21 < s=14 -> orders 56 | C: IP=0+0-8=-8 < s=15 -> orders 38 | D: IP=0+0-25=-25 < s=24 -> orders 80
+  P5 ALLOCATE: priority B>D>C (ratios B=21/35, D=25/55, C=8/30); CENTRAL on hand 129; B: ships 56 (56 exp d36) arriving d24; D: ships 73 (73 exp d36) arriving d24, cancels 7; C: ships 0, cancels 38
+  END: A: on_hand 0 bo 11 in_transit 52 | B: on_hand 0 bo 21 in_transit 56 | C: on_hand 0 bo 8 in_transit 0 | D: on_hand 0 bo 25 in_transit 73 | CENTRAL 0 | cum same-day served 591/747, cancelled 204
+=== Day 23 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 0, backorders 11 -> serves 0, demand 15 -> serves 0 (taken nothing), backorders now 26 STOCKOUT DAY, left nothing | B: on hand 0, backorders 21 -> serves 0, demand 4 -> serves 0 (taken nothing), backorders now 25 STOCKOUT DAY, left nothing | C: on hand 0, backorders 8 -> serves 0, demand 3 -> serves 0 (taken nothing), backorders now 11 STOCKOUT DAY, left nothing | D: on hand 0, backorders 25 -> serves 0, demand 16 -> serves 0 (taken nothing), backorders now 41 STOCKOUT DAY, left nothing
+  P4 REVIEW: A: IP=0+52-26=26 < s=39 -> orders 57 | B: IP=0+56-25=31 >= s=14 -> no order | C: IP=0+0-11=-11 < s=15 -> orders 41 | D: IP=0+73-41=32 >= s=24 -> no order
+  P5 ALLOCATE: priority C>A (ratios C=11/30, A=26/83); CENTRAL on hand 0; C: ships 0, cancels 41; A: ships 0, cancels 57
+  END: A: on_hand 0 bo 26 in_transit 52 | B: on_hand 0 bo 25 in_transit 56 | C: on_hand 0 bo 11 in_transit 0 | D: on_hand 0 bo 41 in_transit 73 | CENTRAL 0 | cum same-day served 591/785, cancelled 302
+=== Day 24 ===
+  P1 RECEIVE: A receives shipment: 52 exp d33; B receives shipment: 56 exp d36; D receives shipment: 73 exp d36
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 52, backorders 26 -> serves 26, demand 8 -> serves 8 (taken 34 exp d33), backorders now 0, left 18 exp d33 | B: on hand 56, backorders 25 -> serves 25, demand 5 -> serves 5 (taken 30 exp d36), backorders now 0, left 26 exp d36 | C: on hand 0, backorders 11 -> serves 0, demand 14 -> serves 0 (taken nothing), backorders now 25 STOCKOUT DAY, left nothing | D: on hand 73, backorders 41 -> serves 41, demand 4 -> serves 4 (taken 45 exp d36), backorders now 0, left 28 exp d36
+  P4 REVIEW: A: IP=18+0-0=18 < s=39 -> orders 65 | B: IP=26+0-0=26 >= s=14 -> no order | C: IP=0+0-25=-25 < s=15 -> orders 55 | D: IP=28+0-0=28 >= s=24 -> no order
+  P5 ALLOCATE: priority C>A (ratios C=25/30, A=0/83); CENTRAL on hand 0; C: ships 0, cancels 55; A: ships 0, cancels 65
+  END: A: on_hand 18 bo 0 in_transit 0 | B: on_hand 26 bo 0 in_transit 0 | C: on_hand 0 bo 25 in_transit 0 | D: on_hand 28 bo 0 in_transit 0 | CENTRAL 0 | cum same-day served 608/816, cancelled 422
+=== Day 25 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 18, backorders 0 -> serves 0, demand 9 -> serves 9 (taken 9 exp d33), backorders now 0, left 9 exp d33 | B: on hand 26, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d36), backorders now 0, left 19 exp d36 | C: on hand 0, backorders 25 -> serves 0, demand 4 -> serves 0 (taken nothing), backorders now 29 STOCKOUT DAY, left nothing | D: on hand 28, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left 28 exp d36
+  P4 REVIEW: A: IP=9+0-0=9 < s=39 -> orders 74 | B: IP=19+0-0=19 >= s=14 -> no order | C: IP=0+0-29=-29 < s=15 -> orders 59 | D: IP=28+0-0=28 >= s=24 -> no order
+  P5 ALLOCATE: priority C>A (ratios C=29/30, A=0/83); CENTRAL on hand 0; C: ships 0, cancels 59; A: ships 0, cancels 74
+  END: A: on_hand 9 bo 0 in_transit 0 | B: on_hand 19 bo 0 in_transit 0 | C: on_hand 0 bo 29 in_transit 0 | D: on_hand 28 bo 0 in_transit 0 | CENTRAL 0 | cum same-day served 624/836, cancelled 555
+=== Day 26 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 206 exp d37
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 9, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left 9 exp d33 | B: on hand 19, backorders 0 -> serves 0, demand 4 -> serves 4 (taken 4 exp d36), backorders now 0, left 15 exp d36 | C: on hand 0, backorders 29 -> serves 0, demand 5 -> serves 0 (taken nothing), backorders now 34 STOCKOUT DAY, left nothing | D: on hand 28, backorders 0 -> serves 0, demand 11 -> serves 11 (taken 11 exp d36), backorders now 0, left 17 exp d36
+  P4 REVIEW: A: IP=9+0-0=9 < s=39 -> orders 74 | B: IP=15+0-0=15 >= s=14 -> no order | C: IP=0+0-34=-34 < s=15 -> orders 64 | D: IP=17+0-0=17 < s=24 -> orders 38
+  P5 ALLOCATE: priority C>A>D (ratios C=34/30, A=0/83, D=0/55); CENTRAL on hand 206; C: ships 64 (64 exp d37) arriving d29; A: ships 74 (74 exp d37) arriving d29; D: ships 38 (38 exp d37) arriving d28
+  END: A: on_hand 9 bo 0 in_transit 74 | B: on_hand 15 bo 0 in_transit 0 | C: on_hand 0 bo 34 in_transit 64 | D: on_hand 17 bo 0 in_transit 38 | CENTRAL 30 | cum same-day served 639/856, cancelled 555
+=== Day 27 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 9, backorders 0 -> serves 0, demand 13 -> serves 9 (taken 9 exp d33), backorders now 4 STOCKOUT DAY, left nothing | B: on hand 15, backorders 0 -> serves 0, demand 7 -> serves 7 (taken 7 exp d36), backorders now 0, left 8 exp d36 | C: on hand 0, backorders 34 -> serves 0, demand 2 -> serves 0 (taken nothing), backorders now 36 STOCKOUT DAY, left nothing | D: on hand 17, backorders 0 -> serves 0, demand 9 -> serves 9 (taken 9 exp d36), backorders now 0, left 8 exp d36
+  P4 REVIEW: A: IP=0+74-4=70 >= s=39 -> no order | B: IP=8+0-0=8 < s=14 -> orders 27 | C: IP=0+64-36=28 >= s=15 -> no order | D: IP=8+38-0=46 >= s=24 -> no order
+  P5 ALLOCATE: priority B (ratios B=0/35); CENTRAL on hand 30; B: ships 27 (27 exp d37) arriving d29
+  END: A: on_hand 0 bo 4 in_transit 74 | B: on_hand 8 bo 0 in_transit 27 | C: on_hand 0 bo 36 in_transit 64 | D: on_hand 8 bo 0 in_transit 38 | CENTRAL 3 | cum same-day served 664/887, cancelled 555
+=== Day 28 ===
+  P1 RECEIVE: D receives shipment: 38 exp d37
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 0, backorders 4 -> serves 0, demand 34 -> serves 0 (taken nothing), backorders now 38 STOCKOUT DAY, left nothing | B: on hand 8, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d36), backorders now 0, left 3 exp d36 | C: on hand 0, backorders 36 -> serves 0, demand 5 -> serves 0 (taken nothing), backorders now 41 STOCKOUT DAY, left nothing | D: on hand 46, backorders 0 -> serves 0, demand 15 -> serves 15 (taken 8 exp d36, 7 exp d37), backorders now 0, left 31 exp d37
+  P4 REVIEW: A: IP=0+74-38=36 < s=39 -> orders 47 | B: IP=3+27-0=30 >= s=14 -> no order | C: IP=0+64-41=23 >= s=15 -> no order | D: IP=31+0-0=31 >= s=24 -> no order
+  P5 ALLOCATE: priority A (ratios A=38/83); CENTRAL on hand 3; A: ships 3 (3 exp d37) arriving d31, cancels 44
+  END: A: on_hand 0 bo 38 in_transit 77 | B: on_hand 3 bo 0 in_transit 27 | C: on_hand 0 bo 41 in_transit 64 | D: on_hand 31 bo 0 in_transit 0 | CENTRAL 0 | cum same-day served 684/946, cancelled 599
+=== Day 29 ===
+  P1 RECEIVE: CENTRAL receives supplier delivery 129 exp d47; A receives shipment: 74 exp d37; B receives shipment: 27 exp d37; C receives shipment: 64 exp d37
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 74, backorders 38 -> serves 38, demand 16 -> serves 16 (taken 54 exp d37), backorders now 0, left 20 exp d37 | B: on hand 30, backorders 0 -> serves 0, demand 4 -> serves 4 (taken 3 exp d36, 1 exp d37), backorders now 0, left 26 exp d37 | C: on hand 64, backorders 41 -> serves 41, demand 3 -> serves 3 (taken 44 exp d37), backorders now 0, left 20 exp d37 | D: on hand 31, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d37), backorders now 0, left 26 exp d37
+  P4 REVIEW: A: IP=20+3-0=23 < s=39 -> orders 60 | B: IP=26+0-0=26 >= s=14 -> no order | C: IP=20+0-0=20 >= s=15 -> no order | D: IP=26+0-0=26 >= s=24 -> no order
+  P5 ALLOCATE: priority A (ratios A=0/83); CENTRAL on hand 129; A: ships 60 (60 exp d47) arriving d32
+  END: A: on_hand 20 bo 0 in_transit 63 | B: on_hand 26 bo 0 in_transit 0 | C: on_hand 20 bo 0 in_transit 0 | D: on_hand 26 bo 0 in_transit 0 | CENTRAL 69 | cum same-day served 712/974, cancelled 599
+=== Day 30 ===
+  P1 RECEIVE: nothing arrives
+  P2 EXPIRE: nothing expires
+  P3 SERVE: A: on hand 20, backorders 0 -> serves 0, demand 6 -> serves 6 (taken 6 exp d37), backorders now 0, left 14 exp d37 | B: on hand 26, backorders 0 -> serves 0, demand 0 -> serves 0 (taken nothing), backorders now 0, left 26 exp d37 | C: on hand 20, backorders 0 -> serves 0, demand 5 -> serves 5 (taken 5 exp d37), backorders now 0, left 15 exp d37 | D: on hand 26, backorders 0 -> serves 0, demand 21 -> serves 21 (taken 21 exp d37), backorders now 0, left 5 exp d37
+  P4 REVIEW: A: IP=14+63-0=77 >= s=39 -> no order | B: IP=26+0-0=26 >= s=14 -> no order | C: IP=15+0-0=15 >= s=15 -> no order | D: IP=5+0-0=5 < s=24 -> orders 50
+  P5 ALLOCATE: priority D (ratios D=0/55); CENTRAL on hand 69; D: ships 50 (50 exp d47) arriving d32
+  END: A: on_hand 14 bo 0 in_transit 63 | B: on_hand 26 bo 0 in_transit 0 | C: on_hand 15 bo 0 in_transit 0 | D: on_hand 5 bo 0 in_transit 50 | CENTRAL 19 | cum same-day served 744/1006, cancelled 599

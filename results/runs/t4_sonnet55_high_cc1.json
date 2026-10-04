@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-28",
+ "answer": {
+  "text": "Meanwhile, a cache sits between an application and its database, holding recent query results in memory so repeated requests skip the slow storage layer; a well-tuned cache can turn seconds of delay into mere milliseconds for busy web users everywhere.\n\nHowever, speed brings risk, because cached data may drift away from the source of truth after a write; invalidation rules, expiry timers, and write-through updates help keep copies fresh. Teams weigh freshness against latency, memory cost, and cache churn, choosing eviction policies like least recently used that suit their workload and tolerance for stale answers.\n\nAlong with big growth in data, a fast copy of hot rows can cut wait a lot; skipping a slow disk trip is a big win. Still, old data can turn wrong or invalid, so staff must watch for drift and drop dull or bad copy quickly.\n\nFinally, measure hit rates, start with a small cache, tune, and revisit choices as traffic grows until work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2976,
+  "cache_read": 7137,
+  "output": 3822
+ },
+ "duration_s": 30.7,
+ "cost_usd": 0.0516,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 3491,
+    "total_cost_usd": 0.10168339999999998
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.1017
+ }
+}

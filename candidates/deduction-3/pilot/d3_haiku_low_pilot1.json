@@ -1,0 +1,66 @@
+{
+ "task": "D3",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "pilot1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "period": 13,
+  "key": "CONTAINERLOAD",
+  "answers": [
+   {
+    "id": 1,
+    "value": "XVKPQR"
+   },
+   {
+    "id": 2,
+    "value": "JHLMNX"
+   },
+   {
+    "id": 3,
+    "value": "520"
+   },
+   {
+    "id": 4,
+    "value": "3200"
+   },
+   {
+    "id": 5,
+    "value": "185000"
+   },
+   {
+    "id": 6,
+    "value": "425000"
+   },
+   {
+    "id": 7,
+    "value": "MERIDIAN HOLDINGS"
+   },
+   {
+    "id": 8,
+    "value": "PORT OF SINGAPORE"
+   },
+   {
+    "id": 9,
+    "value": "OCEAN HARMONY"
+   },
+   {
+    "id": 10,
+    "value": "PINNACLE TRADING CORP"
+   }
+  ]
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 6940,
+  "cache_read": 14880,
+  "output": 59728
+ },
+ "duration_s": 389.6,
+ "cost_usd": 0.3088,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": ""
+}

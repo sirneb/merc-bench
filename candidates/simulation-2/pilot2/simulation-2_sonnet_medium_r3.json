@@ -1,0 +1,285 @@
+{
+ "task": "simulation-2",
+ "model": "claude-sonnet-5",
+ "family": "sonnet",
+ "effort": "medium",
+ "sample": "r3",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [
+    3122,
+    2862,
+    1909,
+    175,
+    3813,
+    2079,
+    3597,
+    773,
+    3135,
+    3362,
+    3102,
+    3659,
+    1815,
+    2054,
+    2137,
+    3801,
+    2389,
+    3880,
+    3824,
+    2372
+   ],
+   "final_registers": [
+    4095,
+    0,
+    693,
+    193,
+    1,
+    0,
+    2372,
+    0
+   ],
+   "final_memory": [
+    1369,
+    971,
+    3836,
+    2137,
+    782,
+    2362,
+    83,
+    3945,
+    3824,
+    1097,
+    655,
+    812,
+    375,
+    3659,
+    557,
+    1518
+   ],
+   "steps_executed": 388,
+   "halted": true
+  },
+  "program_b": {
+   "out_stream": [
+    3712,
+    514,
+    3199,
+    1577,
+    1692,
+    0,
+    339,
+    0,
+    2712,
+    2688,
+    3527,
+    0,
+    372,
+    1216,
+    1755,
+    512,
+    2608,
+    3072,
+    2447,
+    12,
+    3020,
+    640,
+    2787,
+    130,
+    1352,
+    466,
+    2007,
+    2312,
+    3492,
+    1440,
+    1387,
+    0,
+    992,
+    162,
+    159,
+    1793,
+    3836,
+    4,
+    3699,
+    768
+   ],
+   "final_registers": [
+    1935,
+    2,
+    825,
+    7,
+    3870,
+    0,
+    0,
+    4067
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3401,
+    2986,
+    3403,
+    3601,
+    1774,
+    2990,
+    1664,
+    3605,
+    3604,
+    2015,
+    1812,
+    882,
+    2986,
+    3602
+   ],
+   "steps_executed": 1072,
+   "halted": true
+  }
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 0,
+  "cache_read": 9194,
+  "output": 33751
+ },
+ "duration_s": 253.9,
+ "cost_usd": 0.3394,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 33271,
+    "total_cost_usd": 0.3393528
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5"
+  ],
+  "total_cost_usd": 0.3394
+ },
+ "score": 44.83,
+ "total": 80,
+ "grade_detail": {
+  "program_a": {
+   "out_points": 2.0,
+   "out_total": 20,
+   "out_prefix_correct": 2,
+   "out_pointwise_matches": 2,
+   "first_wrong_out_index": 2,
+   "out_reported": 20,
+   "registers": {
+    "live": [
+     0,
+     1,
+     2,
+     5,
+     6,
+     7
+    ],
+    "ok": [
+     0,
+     1,
+     2,
+     5,
+     7
+    ],
+    "points": 3.333,
+    "all_8_ok": 7
+   },
+   "memory": {
+    "live": [
+     0,
+     2,
+     9,
+     10,
+     11,
+     12,
+     14,
+     15
+    ],
+    "ok": [
+     11
+    ],
+    "points": 0.5,
+    "all_16_ok": 5
+   },
+   "steps": {
+    "want": 390,
+    "got": 388,
+    "points": 0
+   },
+   "halted": {
+    "want": true,
+    "got": true
+   }
+  },
+  "program_b": {
+   "out_points": 29.5,
+   "out_total": 40,
+   "out_prefix_correct": 21,
+   "out_pointwise_matches": 38,
+   "first_wrong_out_index": 21,
+   "out_reported": 40,
+   "registers": {
+    "live": [
+     0,
+     1,
+     2,
+     4,
+     5,
+     6
+    ],
+    "ok": [
+     0,
+     1,
+     2,
+     4,
+     5,
+     6
+    ],
+    "points": 4.0,
+    "all_8_ok": 8
+   },
+   "memory": {
+    "live": [
+     3,
+     4,
+     5,
+     7,
+     9,
+     10,
+     14,
+     15
+    ],
+    "ok": [
+     4,
+     5,
+     7,
+     9,
+     10,
+     14,
+     15
+    ],
+    "points": 3.5,
+    "all_16_ok": 15
+   },
+   "steps": {
+    "want": 1072,
+    "got": 1072,
+    "points": 2
+   },
+   "halted": {
+    "want": true,
+    "got": true
+   }
+  }
+ }
+}

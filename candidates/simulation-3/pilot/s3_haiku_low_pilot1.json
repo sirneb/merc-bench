@@ -1,0 +1,128 @@
+{
+ "task": "S3",
+ "model": "claude-haiku-4-5",
+ "family": "haiku",
+ "effort": "low",
+ "sample": "pilot1",
+ "harness": "claude-code",
+ "date": "2026-09-26",
+ "answer": {
+  "checkpoints": {
+   "10": {
+    "A": {
+     "on_hand": 19,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 0,
+     "backorders": 0,
+     "in_transit": 99
+    },
+    "C": {
+     "on_hand": 89,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 90,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   },
+   "20": {
+    "A": {
+     "on_hand": 31,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 10,
+     "backorders": 0,
+     "in_transit": 88
+    },
+    "C": {
+     "on_hand": 148,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "D": {
+     "on_hand": 24,
+     "backorders": 0,
+     "in_transit": 50
+    }
+   },
+   "30": {
+    "A": {
+     "on_hand": 19,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "B": {
+     "on_hand": 71,
+     "backorders": 0,
+     "in_transit": 0
+    },
+    "C": {
+     "on_hand": 26,
+     "backorders": 0,
+     "in_transit": 47
+    },
+    "D": {
+     "on_hand": 111,
+     "backorders": 0,
+     "in_transit": 0
+    }
+   }
+  },
+  "depots": {
+   "A": {
+    "total_expired": 0,
+    "stockout_days": 2,
+    "units_received": 212
+   },
+   "B": {
+    "total_expired": 23,
+    "stockout_days": 0,
+    "units_received": 332
+   },
+   "C": {
+    "total_expired": 3,
+    "stockout_days": 0,
+    "units_received": 307
+   },
+   "D": {
+    "total_expired": 21,
+    "stockout_days": 2,
+    "units_received": 370
+   }
+  },
+  "central": {
+   "final_on_hand": 271,
+   "total_cancelled": 39,
+   "total_expired": 0
+  },
+  "fill_rate": 0.9851
+ },
+ "usage": {
+  "input": 10,
+  "cache_write": 11388,
+  "cache_read": 14880,
+  "output": 61181
+ },
+ "duration_s": 387.0,
+ "cost_usd": 0.3216,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "pilot_cli_meta": [
+  {
+   "attempt": 1,
+   "cli_cost_usd": 0.330179,
+   "cli_duration_ms": 385388,
+   "cli_duration_api_ms": 385318,
+   "is_error": false,
+   "num_turns": 1
+  }
+ ]
+}

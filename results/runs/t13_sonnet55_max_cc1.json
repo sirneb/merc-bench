@@ -1,0 +1,58 @@
+{
+ "task": "T13",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-30",
+ "answer": null,
+ "usage": null,
+ "duration_s": 2583.9,
+ "cost_usd": null,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": "output cap exceeded (harness max_tokens) on all 3 attempts (API: response exceeded the 128000 output token maximum; ~42 min each); scored as null answer. Diagnosed 2026-09-30 after two earlier quarantined runs of this cell showed the same signature.",
+ "cli": {
+  "attempts": [
+   {
+    "served": [],
+    "stop_reason": "max_tokens",
+    "tools": "disabled",
+    "num_turns": null,
+    "thinking_tokens": null,
+    "total_cost_usd": null,
+    "returncode": 1,
+    "duration_s": 2583.9,
+    "stderr_tail": "[claude-code:unrecognized_model] {\"model\":\"claude-sonnet-5-5\",\"query_source\":\"sdk\"}\n",
+    "stdout_tail": ":null,\"result\":\"API Error: Claude's response exceeded the 128000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable.\",\"type\":\"result\",\"duration_ms\":2582265,\"uuid\":\"691ec70b-e66e-4834-b37c-a7e009eda2ae\",\"queued_turn_count\":0,\"result_index\":0}\n"
+   },
+   {
+    "served": [],
+    "stop_reason": "max_tokens",
+    "tools": "disabled",
+    "num_turns": null,
+    "thinking_tokens": null,
+    "total_cost_usd": null,
+    "returncode": 1,
+    "duration_s": 2467.5,
+    "stderr_tail": "[claude-code:unrecognized_model] {\"model\":\"claude-sonnet-5-5\",\"query_source\":\"sdk\"}\n",
+    "stdout_tail": ":null,\"result\":\"API Error: Claude's response exceeded the 128000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable.\",\"type\":\"result\",\"duration_ms\":2466657,\"uuid\":\"755a5087-c5ee-4aad-9178-c0c610f17ffe\",\"queued_turn_count\":0,\"result_index\":0}\n"
+   },
+   {
+    "served": [],
+    "stop_reason": "max_tokens",
+    "tools": "disabled",
+    "num_turns": null,
+    "thinking_tokens": null,
+    "total_cost_usd": null,
+    "returncode": 1,
+    "duration_s": 2494.2,
+    "stderr_tail": "[claude-code:unrecognized_model] {\"model\":\"claude-sonnet-5-5\",\"query_source\":\"sdk\"}\n",
+    "stdout_tail": ":null,\"result\":\"API Error: Claude's response exceeded the 128000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable.\",\"type\":\"result\",\"duration_ms\":2493224,\"uuid\":\"b88bc124-570d-4192-be06-9a57e7dd28e9\",\"queued_turn_count\":0,\"result_index\":0}\n"
+   }
+  ],
+  "served_models": [],
+  "total_cost_usd": 0
+ }
+}

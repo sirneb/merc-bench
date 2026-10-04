@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-sonnet-5-5",
+ "family": "sonnet55",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-28",
+ "answer": {
+  "text": "Meanwhile, a cache keeps recent query results in memory, so repeated reads avoid slow disk trips; latency drops sharply, and the database can serve many more users with the same hardware than it otherwise could ever manage during busy hours.\n\nHowever, every cache brings a hard problem: stale data. When a row changes, the matching cache entry must be updated or removed; otherwise readers see old values. Teams often choose expiry timers, write-through updates, or explicit invalidation, and each option trades freshness against speed, complexity, and cost. A careful cache design measures hit rates first.\n\nAlong a busy path, a small fast pantry of popular data cuts wait and saves slow disks from constant toil. Many bugs grow if old data stays too long, so fix a short limit for all it holds.\n\nFinally, measure first; add one cache where reads dominate, watch hit rates, then tune as traffic shifts, you are done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2827,
+  "cache_read": 7137,
+  "output": 2631
+ },
+ "duration_s": 21.4,
+ "cost_usd": 0.039,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-sonnet-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 2317,
+    "total_cost_usd": 0.0766714
+   }
+  ],
+  "served_models": [
+   "claude-sonnet-5-5"
+  ],
+  "total_cost_usd": 0.0767
+ }
+}

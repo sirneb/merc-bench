@@ -1,0 +1,168 @@
+{
+ "task": "T13",
+ "model": "claude-opus-5-5",
+ "family": "opus55",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-09-27",
+ "answer": {
+  "program_a": {
+   "out_stream": [
+    3122,
+    2862,
+    1909,
+    175,
+    3813,
+    2079,
+    3597,
+    773,
+    3135,
+    3362,
+    3102,
+    3659,
+    1905,
+    2876,
+    3251,
+    3822,
+    2833,
+    3804,
+    773,
+    3135
+   ],
+   "final_registers": [
+    4095,
+    0,
+    693,
+    193,
+    1,
+    0,
+    3135,
+    0
+   ],
+   "final_memory": [
+    2746,
+    971,
+    3836,
+    571,
+    782,
+    2362,
+    83,
+    83,
+    4040,
+    1399,
+    3135,
+    3804,
+    375,
+    283,
+    557,
+    1518
+   ],
+   "steps_executed": 390,
+   "halted": true
+  },
+  "program_b": {
+   "out_stream": [
+    3712,
+    514,
+    3199,
+    1577,
+    1692,
+    0,
+    339,
+    0,
+    2712,
+    2688,
+    3527,
+    0,
+    372,
+    1216,
+    1755,
+    512,
+    2608,
+    3072,
+    2447,
+    12,
+    3020,
+    2816,
+    2787,
+    130,
+    1352,
+    466,
+    2007,
+    2,
+    3492,
+    1440,
+    1387,
+    0,
+    992,
+    162,
+    159,
+    1793,
+    3836,
+    4,
+    3699,
+    768
+   ],
+   "final_registers": [
+    1935,
+    2,
+    825,
+    7,
+    3870,
+    0,
+    0,
+    4067
+   ],
+   "final_memory": [
+    3602,
+    32,
+    3401,
+    1769,
+    3403,
+    3601,
+    1774,
+    2990,
+    1664,
+    3605,
+    3604,
+    2015,
+    1812,
+    882,
+    2986,
+    3602
+   ],
+   "steps_executed": 1072,
+   "halted": true
+  }
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 5366,
+  "cache_read": 4072,
+  "output": 23896
+ },
+ "duration_s": 191.6,
+ "cost_usd": 0.5217,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-opus-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 23419,
+    "total_cost_usd": 0.5216704
+   }
+  ],
+  "served_models": [
+   "claude-opus-5-5"
+  ],
+  "total_cost_usd": 0.5217
+ }
+}
