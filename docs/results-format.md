@@ -19,8 +19,13 @@ assumptions.
     "input": 123, "cache_write": 456, "cache_read": 789, "output": 1011
   },
   "duration_s": 42.5,                // wall-clock, or null
-  "cost_usd": 0.1234,                // computed at your price basis, or null
+  "cost_usd": 0.1234,                // computed at your price basis, or null (the
+                                     // aggregator recomputes it from `usage` for
+                                     // known families, so a price fix re-prices all)
   "cost_basis": "standard list prices, USD/MTok",
+  "cli": { ... },                    // claude-code only: per-attempt served models,
+                                     // stop_reason, num_turns, thinking tokens and the
+                                     // CLI's own total_cost_usd
   "cost_estimated": false,           // true when usage/cost is estimated or missing
   "notes": ""                        // condition deviations (e.g. "tools were available")
 }
@@ -38,7 +43,10 @@ Rules of the road:
   truncation, raised output limits.
 
 - **`invalid: true`** marks a record whose answer failed validation (e.g. the
-  response was truncated or unparseable even after the runner's retries). The
+  response was truncated or unparseable even after the runner's retries), or —
+  under `claude-code` — one whose tokens were produced by a model other than the
+  one requested (Claude Code falls back to another model after a
+  safety-classifier refusal; `cli.served_models` records what answered). The
   raw attempt is preserved for transparency, but graders and the report skip
   invalid records — a transport failure is not a model score. The shipped
   runner validates answers (JSON shape, required keys, and that any returned

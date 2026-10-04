@@ -9,18 +9,18 @@ cheapest config), and the tasks that don't define each tier's **perfection floor
 
 | Tier | Cheapest replicated-clean config (10 core tasks, n=2) | Cost | Wall-clock |
 |---|---|---|---|
-| Haiku 4.5 | never | $0.86–1.14/sweep | 25–29 min |
-| Sonnet 5 | `@max` | $4.79 | 33 min |
-| Opus 4.8 | never | $2.64–4.30/sweep | 13–22 min |
-| **Opus 5** | **`@medium`** | **$2.25** | **9 min** |
-| Opus 5.5 | `@xhigh` | $2.55 | 10 min |
-| Fable 5 | `@max` | $10.66 | 27 min |
-| Fable 5.1 | `@xhigh` | $6.92 | 16 min |
+| Haiku 4.5 | never | $0.93–1.21/sweep | 25–29 min |
+| Sonnet 5 | `@max` | $3.55 | 33 min |
+| Opus 4.8 | never | $3.11–4.77/sweep | 13–22 min |
+| **Opus 5** | **`@medium`** | **$2.76** | **9 min** |
+| Opus 5.5 | `@xhigh` | $3.08 | 10 min |
+| Fable 5 | `@max` | $11.53 | 27 min |
+| Fable 5.1 | `@xhigh` | $8.03 | 16 min |
 
 "Clean" means zero points dropped in **every** replicate. The floors follow
 neither the price list nor the generation order; four of the grid's ten
 replicated-clean configs belong to Opus 5; Opus 5.5 lands a close second
-(`@xhigh`, 30 cents more) — its lower list price is paid back in two extra
+(`@xhigh`, 32 cents more) — its lower list price is paid back in two extra
 effort steps — and Fable 5.1 moves the Fable tier's floor down one step to
 `@xhigh`. Replication killed three of our own
 single-sample headlines (Opus 4.8@low's sweep, Sonnet@xhigh's crossing, "max
