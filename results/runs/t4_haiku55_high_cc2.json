@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "high",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile a database cache sits between applications and storage, holding copies of frequently read rows so queries return quickly; when records change, the cache must be refreshed or invalidated, or users see stale results across many busy production systems today.\n\nHowever choosing what to store is harder than it looks. Teams must decide whether a cache entry expires after a fixed time, gets evicted when memory fills, or gets updated whenever a write occurs. Each cache strategy trades memory use, latency, and consistency; no single setting fits every workload, so measuring real traffic matters most.\n\nAlong with hit ratio, miss counts, and data age, watch a dashboard. Most groups find that small tuning shifts within a month bring big gains. Still, no option wins outright. A quick but wrong count hurts badly. A slow tally costs just a bit.\n\nFinally document every cache rule; teammates will thank you, so keep notes short, clear, and current. That step is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2620,
+  "cache_read": 2234,
+  "output": 9312
+ },
+ "duration_s": 38.5,
+ "cost_usd": 0.0052,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 8992,
+    "total_cost_usd": 0.00520254
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0052
+ }
+}

@@ -51,6 +51,10 @@ Rules of the road:
   invalid records — a transport failure is not a model score. The shipped
   runner validates answers (JSON shape, required keys, and that any returned
   code compiles) and retries up to 3 times with a corrective note before
-  marking a record invalid; retry token usage is included in `usage`.
+  marking a record invalid; retry token usage is included in `usage`. Two
+  outcomes are *not* invalid but valid null answers (score 0): a run the harness
+  cut off (output cap or one-hour wall clock), and a run whose every attempt
+  came back complete from the requested model yet never contained the JSON (the
+  model declined in prose). `notes` says which.
 - New model families: add a display entry to `report/config.json` (name, color,
   price) — unknown families still render with defaults.

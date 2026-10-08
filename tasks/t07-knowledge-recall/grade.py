@@ -18,7 +18,10 @@ def grade(ans):
     detail = {}
     ok = 0
     for i, alts in enumerate(key, 1):
+        # parentheses are a gloss, not an answer: "n (nano)" names both the
+        # SI symbol and the prefix (correction 2026-10-08, see README)
         g = norm(got.get(i, "")).replace(".", "").replace("'", "")
+        g = re.sub(r"[()]", " ", g).strip()
         aa = [norm(x).replace(".", "").replace("'", "") for x in alts]
         if i == 9:
             hit = set(aa[0].split()) <= set(re.findall(r"[a-z]+", g))

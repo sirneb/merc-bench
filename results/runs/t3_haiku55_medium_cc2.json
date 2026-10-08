@@ -1,0 +1,66 @@
+{
+ "task": "T3",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "Not determined: summing about 250 ACCT-C lines by hand is too error-prone to report an exact figure"
+   },
+   {
+    "id": 2,
+    "value": "64"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "899.37"
+   },
+   {
+    "id": 5,
+    "value": "Not determined: the credit totals for the tags are too close to separate by hand"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 49101,
+  "cache_read": 2234,
+  "output": 6865
+ },
+ "duration_s": 30.8,
+ "cost_usd": 0.0133,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 6706,
+    "total_cost_usd": 0.01327524
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0133
+ }
+}

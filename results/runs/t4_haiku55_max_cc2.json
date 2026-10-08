@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "max",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile the database cache keeps copies of frequently read rows in fast memory; thus applications skip slow disk trips and answer users almost instantly. Its goal is simple: serve repeated requests without hitting storage, saving time and money at scale.\n\nHowever the truly hard part is keeping cached copies correct once the underlying rows change; a stale entry can serve yesterday's prices, so writes must trigger cache invalidation or expiry. Many teams also discover that invalidation logic spreads into every service, which is why simple rules often win in busy production systems with many readers.\n\nAlong with this, a robust plan adds a short TTL for all data, tracks our hit ratio, logs all lookups, and stops hot spots from stalling a busy main shard.\n\nFinally a careful cache plan wins speed and trust; measure cache hits, expire stale entries, and call the job done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2617,
+  "cache_read": 2234,
+  "output": 27501
+ },
+ "duration_s": 106.7,
+ "cost_usd": 0.0143,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 27202,
+    "total_cost_usd": 0.01429644
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0143
+ }
+}

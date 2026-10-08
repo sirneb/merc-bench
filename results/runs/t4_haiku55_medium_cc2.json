@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile, the cache holds recent reads, while the cache layer drops stale entries after a short window; teams tune this setting often, because each workload differs and every database has its own hot paths. Good planning keeps memory use calm.\n\nHowever, a cache that never expires can serve wrong answers after writes; teams therefore pair every entry with invalidation rules, time limits, and clear ownership. Good designs also count hits and misses, since those numbers show whether the cache truly earns its memory cost in real traffic, so review those figures carefully every single month.\n\nAlong with that, data sits in a fast tank, and it works with all of us. Hot rows go up, so calls run quick. Still, a bit of data turns old; so a fix must run on a clock. Also, a dump of rows is a risk, so do it with skill and do it all day long.\n\nFinally, a warm cache helps morning traffic, so the whole team can rest now that the work is fully done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3620,
+  "cache_read": 4847,
+  "output": 7326
+ },
+ "duration_s": 31.0,
+ "cost_usd": 0.0044,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 7008,
+    "total_cost_usd": 0.00443567
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0044
+ }
+}
