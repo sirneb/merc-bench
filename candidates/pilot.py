@@ -79,8 +79,13 @@ def one_run(cdir, slug, prompt, schema, family, model, effort, rep, outdir):
     }
     stop = attempts[-1].get("stop_reason") if attempts else None
     capped = stop in ("max_tokens", "timeout")
+    declined = bool(attempts) and all(
+        a.get("stop_reason") == "end_turn" and a.get("served") == [model] for a in attempts)
     if fail and capped:
         notes.append(f"harness budget exceeded ({stop}); scored as null answer, not retried")
+    elif fail and declined and answer is None:
+        notes.append(f"no parsable answer in {n_att} complete responses "
+                     "(model answered in prose / declined the JSON); scored as null answer")
     elif fail:
         rec["invalid"] = True
     if attempts:

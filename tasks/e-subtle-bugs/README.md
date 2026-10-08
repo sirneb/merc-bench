@@ -12,4 +12,4 @@ Novel semantic defects (document-frequency semantics, operator precedence, case 
 
 ## What we found
 
-The generation wall: Opus 4.8 stalls at 4/5 below xhigh in both study generations; Opus 5, Opus 5.5, Sonnet 5.5, Fable 5 and Fable 5.1 find 5/5 at every effort. Sonnet 5 crosses only at high; Haiku is noisy (3-5/5).
+The generation wall: Opus 4.8 stalls at 4/5 below xhigh in both study generations; Opus 5, Opus 5.5, Sonnet 5.5, Fable 5 and Fable 5.1 find 5/5 at every effort. Sonnet 5 crosses only at high; Haiku 4.5 is noisy (3-5/5); Haiku 5.5 finds 5/5 at every effort bar one 4/5 sample at high.

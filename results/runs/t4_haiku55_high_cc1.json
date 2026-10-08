@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile a database cache keeps hot rows near the application; it cuts trips to disk and shrinks latency for busy services. Engineers often tune how long each entry stays before expiry, since stale answers can mislead users at any time.\n\nHowever a cache can also go wrong when writes update the database but leave old copies alive in memory. Teams call this invalidation, and it is famously hard. Strategies include write-through, write-behind, and time-based expiry; each trades speed against freshness. A cache miss forces a read from the source, while a cache hit saves work.\n\nAlong with that, most apps lack a tiny pool of fast data. Such hits cut load and boost flow. Still, a shot of logic adds risk. All tasks with hot data gain from a snap of quick hits. Also, a mirror of truth must hold up.\n\nFinally a cache must be sized and tested; otherwise, speed hides bugs, so verify every path before calling it done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 1828,
+  "cache_read": 2234,
+  "output": 9320
+ },
+ "duration_s": 38.1,
+ "cost_usd": 0.005,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 9000,
+    "total_cost_usd": 0.00504814
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.005
+ }
+}

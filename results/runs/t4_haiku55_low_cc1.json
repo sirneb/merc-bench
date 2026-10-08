@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "low",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile, the cache layer keeps hot rows close to the app; a cache miss sends the request to the database, which then fills the cache for later readers. Teams tune eviction carefully so memory stays bounded and staleness stays tolerable.\n\nHowever, invalidation remains the hard part; when source rows change, every stale copy must be dropped or refreshed. Good designs set clear rules: short time limits for loose data, explicit purges for critical records, and write-through paths for money. Engineers also watch cache hit ratios, tail latency, and eviction counts during every single load test.\n\nAlong with that, a fast stack of data sits in front of a slow disk. It holds rows and logic that run again and again, so hits win. Still, a small pool of bulk data gains from quick loads and a thin scan.\n\nFinally, size the cache sensibly; measure outcomes, adjust slowly, and treat freshness as a product choice, not an afterthought, done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2757,
+  "cache_read": 4847,
+  "output": 5690
+ },
+ "duration_s": 24.8,
+ "cost_usd": 0.0034,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 5367,
+    "total_cost_usd": 0.00344507
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0034
+ }
+}

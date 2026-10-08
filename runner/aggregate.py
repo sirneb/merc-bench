@@ -35,9 +35,42 @@ TASK_DIR = {
     "T15": "t15-quarry-duel",
 }
 EFFORT_ORDER = ["none", "low", "medium", "high", "xhigh", "max"]
-FAMILY_ORDER = ["haiku", "sonnet", "sonnet55", "opus48", "opus5", "opus55", "fable", "fable51"]
+FAMILY_ORDER = ["haiku", "haiku55", "sonnet", "sonnet55", "opus48", "opus5", "opus55", "fable", "fable51"]
 
 _graders = {}
+
+
+def cli_cost(rec, trusted):
+    """Cost of a record that carries no token usage (a run the harness cut off
+    at the output cap before any answer arrived; records made before 2026-10-08
+    did not keep the usage of such attempts). Claude Code still reports what it
+    billed per attempt, and where the CLI's own figure reproduces our list-price
+    computation on that family's complete records (`trusted`), the sum of those
+    figures is the honest cost of the cell. Where it does not (the CLI had no
+    price for claude-sonnet-5-5 during its window), the cost stays None and the
+    report flags the sweep total as approximate rather than understating it
+    silently. Falls back to the record's own cost_usd, else None."""
+    att = (rec.get("cli") or {}).get("attempts") or []
+    known = [a.get("total_cost_usd") for a in att if a.get("total_cost_usd")]
+    if known and rec["family"] in trusted:
+        return round(sum(known), 4)
+    return rec.get("cost_usd")
+
+
+def trusted_cli_families(recs, tol=0.05):
+    """Families whose CLI-reported cost matches ours (median ratio within tol)
+    over records that carry usage."""
+    import statistics
+    ratios = {}
+    for rec in recs:
+        if rec.get("invalid") or not rec.get("usage"):
+            continue
+        att = (rec.get("cli") or {}).get("attempts") or []
+        cli = sum(a.get("total_cost_usd") or 0 for a in att)
+        ours = cost_usd(rec["usage"], rec["family"], rec.get("harness", "api"))
+        if cli and ours:
+            ratios.setdefault(rec["family"], []).append(cli / ours)
+    return {f for f, r in ratios.items() if abs(statistics.median(r) - 1) <= tol}
 
 
 def grader(task):
@@ -54,8 +87,10 @@ def grader(task):
 def main():
     rows = []
     skipped = []
-    for f in sorted(glob.glob(os.path.join(ROOT, "results", "runs", "*.json"))):
-        rec = json.load(open(f))
+    files = sorted(glob.glob(os.path.join(ROOT, "results", "runs", "*.json")))
+    recs = [json.load(open(f)) for f in files]
+    trusted = trusted_cli_families(recs)
+    for f, rec in zip(files, recs):
         if rec.get("invalid"):
             skipped.append(os.path.basename(f))
             continue
@@ -77,7 +112,7 @@ def main():
             "sample": rec["sample"], "score": score, "total": total,
             "cost_usd": (cost_usd(rec.get("usage"), rec["family"],
                                   rec.get("harness", "api"))
-                         if rec.get("usage") else rec.get("cost_usd")),
+                         if rec.get("usage") else cli_cost(rec, trusted)),
             "cost_estimated": rec.get("cost_estimated"),
             "duration_s": rec.get("duration_s"),
             "output_tokens": (rec.get("usage") or {}).get("output"),

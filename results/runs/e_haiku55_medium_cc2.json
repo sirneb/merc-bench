@@ -1,0 +1,71 @@
+{
+ "task": "E",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "medium",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "bugs": [
+   {
+    "function": "_idf",
+    "description": "df is computed as the sum of posting-list lengths, which counts occurrences of the term, not documents. Per spec, df(term) is the number of documents containing the term, so it should be len(post)."
+   },
+   {
+    "function": "_score",
+    "description": "The score is divided by self._raw_len (total token count including stopwords). The spec says to divide by the document's INDEXED length (non-stopword token count), so it should use self._indexed_len."
+   },
+   {
+    "function": "search",
+    "description": "Query terms are not lowercased before the stopword check and index lookup, so a query like 'Cat' or 'The' fails to match the lowercased postings. Spec says query terms are normalized like document tokens (lowercased) and stopwords are dropped after that normalization."
+   },
+   {
+    "function": "search",
+    "description": "Operator precedence is wrong. The code splits on AND first and then on OR within each group, which yields (a OR b) AND c for 'a OR b AND c'. The spec requires AND to bind tighter, so the result must be a OR (b AND c)."
+   },
+   {
+    "function": "search",
+    "description": "Dropping stopwords from the token list can leave a dangling or adjacent operator, so the expression is malformed. For example, 'cat AND the' becomes the single term 'cat AND', which matches nothing. The parser should skip stopwords without leaving operators behind."
+   },
+   {
+    "function": "phrase",
+    "description": "Each subsequent query term is matched with min(p for p > cur), which allows any later position. The spec requires the exact consecutive position cur+1, so a term must occur at exactly the next position."
+   },
+   {
+    "function": "phrase",
+    "description": "An empty or stopword-only query leaves terms empty, so plists[0] raises IndexError. It should return [] when there are no query tokens."
+   }
+  ],
+  "fixed_code": "\"\"\"minisearch: a tiny in-memory text search engine.\n\nSpec (authoritative \u2014 behavior must match exactly):\n\nTokenization\n- Tokens are maximal runs of ASCII letters/digits, lowercased.\n- Position numbering refers to the full token stream of the document\n  (stopwords included in the numbering), starting at 0.\n- STOPWORDS are never indexed and are removed from queries.\n\nIndexing\n- add(doc_id, text): indexes a document. For every non-stopword token,\n  the index records its positions. The indexed length of a document is\n  its number of non-stopword tokens.\n\nScoring (used to rank boolean search results)\n- tf(term, doc) = number of occurrences of term in doc.\n- idf(term) = ln(N / df(term)), where N = number of documents in the\n  index and df(term) = number of DOCUMENTS that contain the term.\n- score(doc) = sum over the unique query terms of tf * idf, divided by\n  the document's INDEXED length (its non-stopword token count).\n\nBoolean search\n- search(query) -> list of doc_ids.\n- The query is a whitespace-separated sequence: term (op term)*, where\n  op is the literal uppercase word AND or OR.\n- Query terms are normalized like document tokens (lowercased); stopword\n  terms are dropped before parsing. A query with no remaining terms\n  returns [].\n- AND binds tighter than OR: \"a OR b AND c\" means a OR (b AND c).\n- Results are ranked by score, descending; ties broken by ascending\n  doc_id.\n\nPhrase search\n- phrase(query) -> sorted list of doc_ids (ascending).\n- A document matches when the query's tokens occur at consecutive\n  positions (p, p+1, ..., p+k-1) in the document's original token\n  stream. Phrase queries contain no stopwords.\n\"\"\"\nimport math\nimport re\n\nSTOPWORDS = {\"a\", \"an\", \"and\", \"the\", \"is\", \"in\", \"of\", \"to\", \"it\",\n             \"on\", \"for\", \"at\", \"by\", \"or\", \"be\", \"with\", \"as\"}\n\n_TOKEN_RE = re.compile(r\"[A-Za-z0-9]+\")\n\n\ndef _tokens(text):\n    return [t.lower() for t in _TOKEN_RE.findall(text)]\n\n\nclass MiniSearch:\n    def __init__(self):\n        self._postings = {}          # term -> {doc_id: [positions]}\n        self._indexed_len = {}       # doc_id -> non-stopword token count\n        self._raw_len = {}           # doc_id -> total token count\n        self._docs = set()\n\n    def add(self, doc_id, text):\n        toks = _tokens(text)\n        self._docs.add(doc_id)\n        self._raw_len[doc_id] = len(toks)\n        indexed = 0\n        for pos, tok in enumerate(toks):\n            if tok in STOPWORDS:\n                continue\n            indexed += 1\n            self._postings.setdefault(tok, {}).setdefault(doc_id, []).append(pos)\n        self._indexed_len[doc_id] = indexed\n\n    # --- scoring -----------------------------------------------------\n\n    def _idf(self, term):\n        post = self._postings.get(term)\n        if not post:\n            return 0.0\n        df = len(post)\n        return math.log(len(self._docs) / df)\n\n    def _score(self, doc_id, terms):\n        total = 0.0\n        for term in set(terms):\n            ps = self._postings.get(term, {}).get(doc_id)\n            if ps:\n                total += len(ps) * self._idf(term)\n        return total / self._indexed_len[doc_id]\n\n    def _docs_with(self, term):\n        return set(self._postings.get(term, {}))\n\n    # --- boolean search ----------------------------------------------\n\n    def search(self, query):\n        terms = []\n        or_groups = [[]]    # OR-separated chains of AND-ed terms\n        pending = None\n        for tok in query.split():\n            if tok in (\"AND\", \"OR\"):\n                pending = tok\n                continue\n            tok = tok.lower()\n            if tok in STOPWORDS:\n                continue\n            terms.append(tok)\n            if pending == \"OR\" and or_groups[-1]:\n                or_groups.append([])\n            or_groups[-1].append(tok)\n            pending = None\n        if not terms:\n            return []\n\n        # AND binds tighter than OR: union over OR-chains of AND-intersections.\n        matched = set()\n        for chain in or_groups:\n            docs = None\n            for term in chain:\n                d = self._docs_with(term)\n                docs = d if docs is None else (docs & d)\n            if docs:\n                matched |= docs\n\n        ranked = sorted(matched,\n                        key=lambda d: (-self._score(d, terms), d))\n        return ranked\n\n    # --- phrase search -------------------------------------------------\n\n    def phrase(self, query):\n        terms = _tokens(query)\n        if not terms:\n            return []\n        out = []\n        for doc_id in sorted(self._docs):\n            plists = [self._postings.get(t, {}).get(doc_id, [])\n                      for t in terms]\n            if any(not ps for ps in plists):\n                continue\n            for start in plists[0]:\n                cur = start\n                ok = True\n                for ps in plists[1:]:\n                    if cur + 1 in ps:\n                        cur += 1\n                    else:\n                        ok = False\n                        break\n                if ok:\n                    out.append(doc_id)\n                    break\n        return out\n"
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 4288,
+  "cache_read": 2234,
+  "output": 8550
+ },
+ "duration_s": 33.5,
+ "cost_usd": 0.0052,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 5917,
+    "total_cost_usd": 0.00515514
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0052
+ }
+}

@@ -8,7 +8,7 @@
   :root {
     --paper: #F6F7F5; --ink: #1C2126; --muted: #5A6572; --line: #D9DDDA;
     --card: #FFFFFF; --wash: #EEF0ED;
-    --haiku: #0E8A7B; --sonnet: #2E5FA3; --opus: #6A4FA3; --opus48: #A04E7C;
+    --haiku: #0E8A7B; --haiku55: #4C9A2A; --sonnet: #2E5FA3; --opus: #6A4FA3; --opus48: #A04E7C;
     --fable: #C2521F; --fable51: #B8860B; --opus55: #6A4FBF; --sonnet55: #1F7A8C;
     --good: #0E8A7B; --warn: #B3830A; --good-bg: #0E8A7B14; --warn-bg: #B3830A1F;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -16,7 +16,7 @@
   }
   @media (prefers-color-scheme: dark) {
     :root { --paper:#14181C; --ink:#E8EAE6; --muted:#97A1AB; --line:#2B323A;
-      --card:#1B2127; --wash:#1F262D; --haiku:#3BC0AE; --sonnet:#7AA5E8;
+      --card:#1B2127; --wash:#1F262D; --haiku:#3BC0AE; --haiku55:#8FD66A; --sonnet:#7AA5E8;
       --opus:#B29BE8; --opus48:#E08FC0; --opus55:#8F7BE0; --sonnet55:#5FC3D6; --fable:#EC8A55; --fable51:#E5B84A; --good:#3BC0AE; --warn:#D9A93C;
       --good-bg:#3BC0AE1C; --warn-bg:#D9A93C24; }
   }
@@ -150,7 +150,7 @@
     recomputed from raw answers on every build.</p>
     <div class="meta">
       <span>{{RUN_COUNT}} GRADED RUNS · ≈${{TOTAL_COST}} INFERENCE</span>
-      <span>12 TASKS · TRACKED: SCORE · $ · TOKENS · DURATION</span>
+      <span>15 TASKS · TRACKED: SCORE · $ · TOKENS · DURATION</span>
     </div>
   </header>
 
@@ -159,21 +159,22 @@
     <div class="kpis">
       <div class="kpi"><div class="big">Ten tasks saturate, three decide</div>
         <div class="cap">ten of the thirteen core tasks are solved by every tier
-        above Haiku at nearly every effort — there, the cheapest configuration
+        above the Haiku pair at nearly every effort — there, the cheapest configuration
         strictly wins. The three long simulations (T13 TALLY-12, T14 cold-chain,
         T15 Quarry Duel) are where the frontier separates.</div></div>
       <div class="kpi"><div class="big">The reliability floor</div>
         <div class="cap">cheapest config clean in every replicate of all 13 core
         tasks: {{FLOORS}}. Only two families ever get there — Opus 5.5 from xhigh
-        and Fable 5.1 from xhigh, at 2.7× the price. Haiku, Sonnet 5, Sonnet 5.5,
-        Opus 4.8, Opus 5 and Fable 5 are never clean at any effort; cold-chain
-        (T14) is what stops almost all of them.</div></div>
+        and Fable 5.1 from xhigh, at 2.7× the price. Haiku 4.5, Haiku 5.5, Sonnet 5,
+        Sonnet 5.5, Opus 4.8, Opus 5 and Fable 5 are never clean at any effort;
+        cold-chain (T14) is what stops almost all of them, the ledger and the
+        output cap what stop Haiku 5.5.</div></div>
       <div class="kpi"><div class="big">Effort has a ceiling</div>
         <div class="cap">below the floor, a config loses one or two stubborn
         points on the ten saturated tasks and a cascade on the simulations; above
         xhigh, max buys nothing it did not already have (Opus 5.5 $7.22→$13.43,
-        Fable 5.1 $19.61→$26.44 for identical scores) and on the Sonnet tier it
-        overruns the output budget and scores zero. Pick the first clean step;
+        Fable 5.1 $19.61→$26.44 for identical scores) and on the Sonnet and Haiku 5.5
+        tiers it overruns the output budget and scores zero. Pick the first clean step;
         never max.</div></div>
     </div>
     <div class="panel scatter" style="margin-top:16px">
