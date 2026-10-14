@@ -12,4 +12,4 @@ Tests exact arithmetic under load: 4-digit products, signed sums, modular expone
 
 ## What we found
 
-Near-saturated: only Haiku drops an item (n=1 cells). Effort spends multiples of tokens for identical scores. 2026 models simply do arithmetic.
+Near-saturated: only Haiku 4.5 drops an item (n=1 cells); Haiku 5.5 is clean at every effort. Effort spends multiples of tokens for identical scores. 2026 models simply do arithmetic.

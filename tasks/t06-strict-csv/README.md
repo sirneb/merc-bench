@@ -12,4 +12,4 @@ Attention-to-detail transform: date normalization, dedupe-by-latest, conditional
 
 ## What we found
 
-Saturated at every tier and effort (rare frontier-low one-line slips). Rules-following transforms are safe on the cheapest configs.
+Saturated at every tier and effort (rare frontier-low one-line slips). Rules-following transforms are safe on the cheapest configs — Haiku 5.5@low does the task for under a cent, where Haiku 4.5 spans 7-13/13.

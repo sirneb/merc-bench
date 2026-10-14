@@ -55,6 +55,11 @@
    schema JSON (notably the state-simulation task). Graders parse content out of
    prose rather than scoring format compliance; format deviations are recorded,
    not punished. Both corrections are reproducible from the shipped raw answers.
+3. **T7 item 12 (2026-10-08).** "SI prefix for 10^-9?" was keyed to `nano`
+   only; Haiku 5.5 answered with the symbol (`n`, or `n (nano)`) in eight of its
+   ten runs and was the only config marked wrong. The key now accepts the
+   symbol and the grader strips parenthesised glosses before matching. No other
+   record changed score.
 
 - **Budget overruns are data.** A run that exceeds the harness output-token
   maximum (128k under Claude Code) or the runner's one-hour wall clock is
@@ -62,7 +67,17 @@
   retried: a model that cannot finish inside the budget is a measured outcome of
   that configuration. Transport failures (CLI crash, usage-limit refusal, a
   fallback model answering) remain `invalid` and are refilled; the quarantined
-  originals are kept under `results/invalid/` with their provenance.
+  originals are kept under `results/invalid/` with their provenance. The same
+  rule covers a model that returns complete responses without the requested
+  JSON on every attempt (Haiku 5.5 at low effort declined the 200-turn Quarry
+  Duel simulation in prose): that is the model's answer, scored 0, not a
+  transport fault.
+- **Capped runs are still billed.** A run cut off at the output cap carries no
+  token usage in records made before 2026-10-08 (the runner now keeps it); for
+  those, the aggregator uses the CLI's own list-basis cost for the attempt,
+  but only for families whose CLI figure reproduces our pricing on complete
+  records (every family except Sonnet 5.5, which the CLI could not price in its
+  window). Cells it cannot price stay `null` and mark their sweep total ≈.
 
 ## Known limits
 

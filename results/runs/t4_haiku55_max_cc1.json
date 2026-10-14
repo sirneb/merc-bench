@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile most applications repeat identical reads thousands of times daily, and every trip to disk costs time and money; a cache keeps those answers nearby so repeated requests skip slow work, while busy systems rely on caches to absorb spikes.\n\nHowever carefully engineers design their keys, stale data still slips through when writes bypass the cache, so invalidation rules must be explicit; expiration times offer a blunt safety net, while event-driven updates keep fresh values flowing to every cached copy, and wise teams always measure hit rates, memory use, and latency before tuning anything else.\n\nAlong with dirty data risks, a fast hit that hands out old data can hurt badly; a slow miss only costs a bit of pain, so analysts should think about both with caution.\n\nFinally test each cache under realistic production load, then review invalidation rules regularly, because the work is never truly done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2645,
+  "cache_read": 2234,
+  "output": 24133
+ },
+ "duration_s": 94.8,
+ "cost_usd": 0.0126,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 23834,
+    "total_cost_usd": 0.01261804
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0126
+ }
+}

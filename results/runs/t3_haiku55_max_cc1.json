@@ -1,0 +1,32 @@
+{
+ "task": "T3",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "max",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": null,
+ "usage": null,
+ "duration_s": 1476.8,
+ "cost_usd": null,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": true,
+ "notes": "answer failed validation after 1 attempts: attempt 1: no JSON object could be parsed from the response (stop_reason=max_tokens; not retrying); harness budget exceeded (max_tokens); scored as null answer, not retried; multi-turn continuation (output cap hit)",
+ "cli": {
+  "attempts": [
+   {
+    "served": [],
+    "stop_reason": "max_tokens",
+    "tools": "disabled",
+    "num_turns": 4,
+    "thinking_tokens": null,
+    "total_cost_usd": 0.29567548,
+    "duration_s": 1476.8,
+    "error": "API Error: Claude's response exceeded the 128000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable."
+   }
+  ],
+  "served_models": [],
+  "total_cost_usd": 0.2957
+ }
+}

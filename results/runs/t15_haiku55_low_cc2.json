@@ -1,0 +1,59 @@
+{
+ "task": "T15",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": null,
+ "usage": {
+  "input": 6,
+  "cache_write": 15664,
+  "cache_read": 20285,
+  "output": 4469
+ },
+ "duration_s": 31.1,
+ "cost_usd": 0.0056,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "answer failed validation after 3 attempts: attempt 1: no JSON object could be parsed from the response | attempt 2: no JSON object could be parsed from the response | attempt 3: no JSON object could be parsed from the response; no parsable answer in 3 complete responses (model answered in prose / declined the JSON); scored as null answer",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 994,
+    "total_cost_usd": 0.00235167
+   },
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 1503,
+    "total_cost_usd": 0.0023833400000000003
+   },
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 1012,
+    "total_cost_usd": 0.0008357400000000001
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0056
+ }
+}

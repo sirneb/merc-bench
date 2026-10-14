@@ -1,5 +1,5 @@
 {
-  "dates": "2026-07-25 → 2026-07-26 (Fable 5.1: 2026-09-01 → 2026-09-02; Opus 5.5: 2026-09-26; Sonnet 5.5 + hard tier T13–T15: 2026-09-27 → 2026-10-03)",
+  "dates": "2026-07-25 → 2026-07-26 (Fable 5.1: 2026-09-01 → 2026-09-02; Opus 5.5: 2026-09-26; Sonnet 5.5 + hard tier T13–T15: 2026-09-27 → 2026-10-03; Haiku 5.5: 2026-10-08)",
   "models": [
     {
       "family": "haiku",
@@ -8,6 +8,13 @@
       "color": "var(--haiku)",
       "price": "$1/$5 per MTok",
       "note": "no effort parameter; low/high map to thinking settings in Claude Code"
+    },
+    {
+      "family": "haiku55",
+      "name": "Haiku 5.5",
+      "model_id": "claude-haiku-5-5",
+      "color": "var(--haiku55)",
+      "price": "$0.10/$0.50 (prompts ≤100k tokens)"
     },
     {
       "family": "sonnet",

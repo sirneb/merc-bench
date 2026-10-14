@@ -1,0 +1,66 @@
+{
+ "task": "T3",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "high",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "answers": [
+   {
+    "id": 1,
+    "value": "2091.20"
+   },
+   {
+    "id": 2,
+    "value": "64"
+   },
+   {
+    "id": 3,
+    "value": "#0168"
+   },
+   {
+    "id": 4,
+    "value": "899.37"
+   },
+   {
+    "id": 5,
+    "value": "undetermined: I did not finish summing credits by tag by hand"
+   },
+   {
+    "id": 6,
+    "value": "87"
+   }
+  ]
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 49163,
+  "cache_read": 4847,
+  "output": 24161
+ },
+ "duration_s": 88.4,
+ "cost_usd": 0.022,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 24036,
+    "total_cost_usd": 0.02196177
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.022
+ }
+}

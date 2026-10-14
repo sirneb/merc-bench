@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "low",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile, a cache sits between the app and the database, holding hot rows so reads skip disk trips; that single layer cuts total latency sharply. Teams often add a cache early, yet they must always plan invalidation with great care.\n\nHowever, a cache can also serve stale values after an update, which confuses users. Write-through designs keep the cache fresh; write-back designs buy speed but risk loss. Engineers weigh consistency against throughput, and they test each path before launch. Good keys matter greatly, since stale data spreads quickly across replicas when invalidation misses a key.\n\nAlong with rapid fix, a small firm got big wins: a stash of hot data sits in fast ram, so it works. Still, that task is hard, but a tidy plan with logs and stats puts all things on track.\n\nFinally, keep each cache small; measure hit rates, expire old entries, check every single key, and call the job done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 3620,
+  "cache_read": 4847,
+  "output": 6029
+ },
+ "duration_s": 26.7,
+ "cost_usd": 0.0038,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 5721,
+    "total_cost_usd": 0.0037871700000000003
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0038
+ }
+}

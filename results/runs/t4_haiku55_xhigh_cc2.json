@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "xhigh",
+ "sample": "cc2",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile teams often add a cache in front of the database to speed up reads; a well-tuned cache can cut latency sharply, but it also introduces stale data that must be managed carefully by every service owner across the stack.\n\nHowever every cache is only as reliable as its invalidation rules; when the source changes and nobody clears the old entry, users see outdated prices, balances, or profiles for minutes or even hours. Teams pair each cached read path with a clear expiry policy, careful key naming, and dashboards that flag falling hit rates quickly.\n\nAlong with that, a joint pool of data snapshots can sit on top of raw logs, but it must stay small, fast, and mostly sound. Still, all rows flow through a path, so nothing drifts for long.\n\nFinally keep each cache small; measure hit rates, test invalidation paths, and watch staleness closely until the migration is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2620,
+  "cache_read": 2234,
+  "output": 10801
+ },
+ "duration_s": 43.2,
+ "cost_usd": 0.0059,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 10500,
+    "total_cost_usd": 0.00594704
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0059
+ }
+}

@@ -37,6 +37,11 @@ TASK_DIR = {
 }
 DEFAULT_PRICES = {  # $/MTok: input, cache_write (5-minute cache), cache_read, output
     "haiku": (1.0, 1.25, 0.1, 5.0),
+    # Haiku 5.5 (2026-10-08): $0.10/$0.50 list for prompts up to 100k tokens, cache
+    # reads $0.01 (platform.claude.com/docs pricing page; reproduces the CLI's
+    # list-basis costUSD exactly). Every MERC prompt is far below 100k tokens, so
+    # the over-100k tier ($0.50/$2.50) never applies here.
+    "haiku55": (0.1, 0.125, 0.01, 0.5),
     # Sonnet 5 lists at $2/$10 (verified 2026-09-27 against the CLI's list-basis
     # costUSD; the $3/$15 used before that date overstated every Sonnet cost ~1.5x)
     "sonnet": (2.0, 2.5, 0.2, 10.0),
@@ -150,12 +155,21 @@ def run_claude_code(model, effort, prompt, schema):
         # "record the failure honestly — both outcomes are data"), not a
         # transport failure: return no answer, flag it, and do not retry.
         out = extract_json(r.stdout) or {}
-        cli_attempts().append({"served": [], "stop_reason": "max_tokens",
+        u = out.get("usage") or {}
+        usage = {"input": u.get("input_tokens", 0),
+                 "cache_write": u.get("cache_creation_input_tokens", 0) or 0,
+                 "cache_read": u.get("cache_read_input_tokens", 0) or 0,
+                 "output": u.get("output_tokens", 0)} if u else None
+        cli_attempts().append({"served": sorted((out.get("modelUsage") or {}).keys()),
+                               "stop_reason": "max_tokens",
                                "tools": "disabled", "num_turns": out.get("num_turns"),
-                               "thinking_tokens": None, "total_cost_usd": out.get("total_cost_usd"),
+                               "thinking_tokens": ((u.get("output_tokens_details") or {})
+                                                   .get("thinking_tokens")),
+                               "total_cost_usd": out.get("total_cost_usd"),
                                "duration_s": round(dur, 1),
                                "error": (out.get("result") or r.stdout[-300:])[:300]})
-        return None, None, dur
+        # the tokens were billed even though no answer arrived: keep the usage
+        return None, usage, dur
     if r.returncode != 0:
         cli_attempts().append({"served": [], "stop_reason": "cli_error",
                                "tools": "disabled", "num_turns": None,
@@ -336,10 +350,20 @@ def main():
         }
         stop = CLI_ATTEMPTS[-1].get("stop_reason") if CLI_ATTEMPTS else None
         capped = stop in ("max_tokens", "timeout")
+        # Every attempt came back as a complete, non-refused response from the
+        # requested model (end_turn, no harness error), yet none contained a
+        # usable answer: the model answered in prose or declined to emit the
+        # JSON. That is the model's outcome on the task, not a transport fault.
+        declined = bool(CLI_ATTEMPTS) and all(
+            a.get("stop_reason") == "end_turn" and a.get("served") == [args.model]
+            for a in CLI_ATTEMPTS)
         if fail and capped:
             # answered nothing within the harness budget (output cap or the
             # 1-hour wall-clock cap): a measured outcome, scored as a null answer
             notes.append(f"harness budget exceeded ({stop}); scored as null answer, not retried")
+        elif fail and declined and answer is None:
+            notes.append(f"no parsable answer in {attempts} complete responses "
+                         "(model answered in prose / declined the JSON); scored as null answer")
         elif fail:
             rec["invalid"] = True
         if CLI_ATTEMPTS:

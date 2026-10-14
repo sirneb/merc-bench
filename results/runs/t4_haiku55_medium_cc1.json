@@ -1,0 +1,41 @@
+{
+ "task": "T4",
+ "model": "claude-haiku-5-5",
+ "family": "haiku55",
+ "effort": "medium",
+ "sample": "cc1",
+ "harness": "claude-code",
+ "date": "2026-10-08",
+ "answer": {
+  "text": "Meanwhile, a cache sits between your application and the database, holding copies of frequent results so repeated reads skip slow disk work; each cache hit trims latency and lowers load on the primary server during busy hours at peak times.\n\nHowever, a cache brings risks, because stale entries can outlive the rows they describe. Teams must pick expiry windows, invalidate keys after writes, and monitor hit ratios closely; without that discipline, users may see outdated balances, prices, or inventory counts. Design treats every cache as a tradeoff between speed and freshness, not a free win.\n\nAlong with that, data that just sits idle in a full pool of RAM is first to fall. Nothing stops a slow drop, so a hot list of rows with a high miss ratio is at risk. Hit counts, logs, and sums all show a robust story, and that story points a plan.\n\nFinally, measure first, cache only proven hotspots; real traffic reveals winners, so start small and expand slowly. Work is done."
+ },
+ "usage": {
+  "input": 2,
+  "cache_write": 2874,
+  "cache_read": 4847,
+  "output": 7629
+ },
+ "duration_s": 33.1,
+ "cost_usd": 0.0044,
+ "cost_basis": "standard list prices, USD/MTok",
+ "cost_estimated": false,
+ "notes": "",
+ "cli": {
+  "attempts": [
+   {
+    "served": [
+     "claude-haiku-5-5"
+    ],
+    "stop_reason": "end_turn",
+    "tools": "disabled",
+    "num_turns": 1,
+    "thinking_tokens": 7293,
+    "total_cost_usd": 0.00443797
+   }
+  ],
+  "served_models": [
+   "claude-haiku-5-5"
+  ],
+  "total_cost_usd": 0.0044
+ }
+}

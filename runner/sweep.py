@@ -21,6 +21,7 @@ TASKS = ["T1", "T2", "T3", "T4", "T5A", "T5B", "T6", "T7", "T8", "T9", "T10", "E
 # (family, model id, efforts) — cheap/fast configs first, grinds last
 GRID = [
     ("haiku", "claude-haiku-4-5", ["low", "medium", "high"]),
+    ("haiku55", "claude-haiku-5-5", ["low", "medium", "high"]),
     ("sonnet", "claude-sonnet-5", ["low", "medium", "high"]),
     ("sonnet55", "claude-sonnet-5-5", ["low", "medium", "high"]),
     ("opus48", "claude-opus-4-8", ["low", "high"]),
@@ -28,6 +29,7 @@ GRID = [
     ("opus55", "claude-opus-5-5", ["low", "medium", "high"]),
     ("fable", "claude-fable-5", ["low", "medium", "high"]),
     ("fable51", "claude-fable-5-1", ["low", "medium", "high"]),
+    ("haiku55", "claude-haiku-5-5", ["xhigh"]),
     ("sonnet", "claude-sonnet-5", ["xhigh"]),
     ("sonnet55", "claude-sonnet-5-5", ["xhigh"]),
     ("opus48", "claude-opus-4-8", ["xhigh"]),
@@ -35,6 +37,7 @@ GRID = [
     ("opus55", "claude-opus-5-5", ["xhigh"]),
     ("fable", "claude-fable-5", ["xhigh"]),
     ("fable51", "claude-fable-5-1", ["xhigh"]),
+    ("haiku55", "claude-haiku-5-5", ["max"]),
     ("sonnet", "claude-sonnet-5", ["max"]),
     ("sonnet55", "claude-sonnet-5-5", ["max"]),
     ("opus5", "claude-opus-5", ["max"]),

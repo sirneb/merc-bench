@@ -12,4 +12,4 @@ Pure deduction with irreducible clue sets. Used for reliability replicates: same
 
 ## What we found
 
-Separates Haiku from everyone: every non-Haiku config solved all 6 in both replicates (one Fable@low, one Fable 5.1@medium and one Sonnet 5.5@low sample: 5/6). Haiku@high spans 3-6/6 across samples — a wide variance band where the first generation of this study saw a crisp collapse.
+Separates Haiku 4.5 from everyone: every other config, Haiku 5.5 at every effort included, solved all 6 in both replicates (one Fable@low, one Fable 5.1@medium and one Sonnet 5.5@low sample: 5/6). Haiku@high spans 3-6/6 across samples — a wide variance band where the first generation of this study saw a crisp collapse.
